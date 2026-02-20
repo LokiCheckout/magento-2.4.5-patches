@@ -1,0 +1,22 @@
+diff --git a/Component/Checkout/Sidebar/Items/EditItemRepository.php b/Component/Checkout/Sidebar/Items/EditItemRepository.php
+index 9ed258a..38e1e5b 100644
+--- a/Component/Checkout/Sidebar/Items/EditItemRepository.php
++++ b/Component/Checkout/Sidebar/Items/EditItemRepository.php
+@@ -22,7 +22,7 @@ class EditItemRepository extends ComponentRepository
+     ) {
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (!isset($value['task'])) {
+             return;
+@@ -91,7 +91,7 @@ class EditItemRepository extends ComponentRepository
+         $this->component->getGlobalMessageRegistry()->addNotice((string)$message);
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return null;
+     }
