@@ -1,17 +1,47 @@
+diff --git a/Controller/Adminhtml/Check/Index.php b/Controller/Adminhtml/Check/Index.php
+index 182222e..3cb106f 100644
+--- a/Controller/Adminhtml/Check/Index.php
++++ b/Controller/Adminhtml/Check/Index.php
+@@ -12,7 +12,7 @@ class Index extends Action
+     const ADMIN_RESOURCE = 'LokiCheckout_CoreAdminhtml::check';
+ 
+     public function __construct(
+-        private readonly ResultPageFactory $resultPageFactory,
++        private ResultPageFactory $resultPageFactory,
+         Context $context
+     ) {
+         parent::__construct($context);
+diff --git a/Controller/Adminhtml/Modules/Index.php b/Controller/Adminhtml/Modules/Index.php
+index 1044e86..9b5f48e 100644
+--- a/Controller/Adminhtml/Modules/Index.php
++++ b/Controller/Adminhtml/Modules/Index.php
+@@ -12,7 +12,7 @@ class Index extends Action
+     const ADMIN_RESOURCE = 'LokiCheckout_CoreAdminhtml::modules';
+ 
+     public function __construct(
+-        private readonly ResultPageFactory $resultPageFactory,
++        private ResultPageFactory $resultPageFactory,
+         Context $context
+     ) {
+         parent::__construct($context);
 diff --git a/ValueObject/CheckResult.php b/ValueObject/CheckResult.php
-index c56bdc9..270795f 100644
+index c56bdc9..1f40b0a 100644
 --- a/ValueObject/CheckResult.php
 +++ b/ValueObject/CheckResult.php
-@@ -6,10 +6,10 @@ class CheckResult
+@@ -5,11 +5,11 @@ namespace LokiCheckout\CoreAdminhtml\ValueObject;
+ class CheckResult
  {
      public function __construct(
-         private readonly string $label,
+-        private readonly string $label,
 -        private readonly mixed $value,
-+        private readonly $value,
-         private readonly bool $valid,
-         private readonly string $recommendation,
+-        private readonly bool $valid,
+-        private readonly string $recommendation,
 -        private readonly string|null $url = null,
-+        private readonly $url = null,
++        private string $label,
++        private $value,
++        private bool $valid,
++        private string $recommendation,
++        private $url = null,
      ) {
      }
  
@@ -24,6 +54,65 @@ index c56bdc9..270795f 100644
      {
          return $this->value;
      }
+diff --git a/ValueObject/GitInfo.php b/ValueObject/GitInfo.php
+index 80c4ee1..b333540 100644
+--- a/ValueObject/GitInfo.php
++++ b/ValueObject/GitInfo.php
+@@ -5,7 +5,7 @@ namespace LokiCheckout\CoreAdminhtml\ValueObject;
+ class GitInfo
+ {
+     public function __construct(
+-        private readonly string $path = ''
++        private string $path = ''
+     ) {
+     }
+ 
+diff --git a/ValueObject/Module.php b/ValueObject/Module.php
+index ca24f57..342d4ca 100644
+--- a/ValueObject/Module.php
++++ b/ValueObject/Module.php
+@@ -11,13 +11,13 @@ use LokiCheckout\Core\Util\Composer\ComposerPackage;
+ class Module
+ {
+     public function __construct(
+-        private readonly ComponentRegistrar $componentRegistrar,
+-        private readonly ModuleManager $moduleManager,
+-        private readonly LokiCheckoutModules $lokiCheckoutModules,
+-        private readonly GitInfoFactory $gitInfoFactory,
+-        private readonly ComposerApi $composerApi,
+-        private readonly string $moduleName,
+-        private readonly ComposerPackage $composerPackage,
++        private ComponentRegistrar $componentRegistrar,
++        private ModuleManager $moduleManager,
++        private LokiCheckoutModules $lokiCheckoutModules,
++        private GitInfoFactory $gitInfoFactory,
++        private ComposerApi $composerApi,
++        private string $moduleName,
++        private ComposerPackage $composerPackage,
+     ) {
+     }
+ 
+diff --git a/ViewModel/Modules.php b/ViewModel/Modules.php
+index fc65d1a..dbfd4b3 100644
+--- a/ViewModel/Modules.php
++++ b/ViewModel/Modules.php
+@@ -15,11 +15,11 @@ use LokiCheckout\CoreAdminhtml\ValueObject\ModuleFactory;
+ class Modules implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly ModuleListLoader $moduleListLoader,
+-        private readonly ComposerPackageFactory $composerPackageFactory,
+-        private readonly LokiCheckoutModules $lokiCheckoutModules,
+-        private readonly ModuleFactory $moduleFactory,
+-        private readonly ScopeConfigInterface $scopeConfig,
++        private ModuleListLoader $moduleListLoader,
++        private ComposerPackageFactory $composerPackageFactory,
++        private LokiCheckoutModules $lokiCheckoutModules,
++        private ModuleFactory $moduleFactory,
++        private ScopeConfigInterface $scopeConfig,
+     ) {
+     }
+ 
 diff --git a/ViewModel/SystemCheck/AddressLines.php b/ViewModel/SystemCheck/AddressLines.php
 index 5df0cdd..c3b19e7 100644
 --- a/ViewModel/SystemCheck/AddressLines.php
@@ -37,6 +126,61 @@ index 5df0cdd..c3b19e7 100644
      {
          return $this->urlFactory->create()->getUrl(
              'admin/system_config/edit',
+diff --git a/ViewModel/SystemCheck/DevModules.php b/ViewModel/SystemCheck/DevModules.php
+index 3be128d..16053d7 100644
+--- a/ViewModel/SystemCheck/DevModules.php
++++ b/ViewModel/SystemCheck/DevModules.php
+@@ -9,8 +9,8 @@ use LokiCheckout\CoreAdminhtml\ValueObject\CheckResultCollectionFactory;
+ class DevModules extends SystemCheck
+ {
+     public function __construct(
+-        private readonly ModuleManager $moduleManager,
+-        private readonly AppState $appState,
++        private ModuleManager $moduleManager,
++        private AppState $appState,
+         CheckResultCollectionFactory $checkResultCollectionFactory
+     ) {
+         parent::__construct($checkResultCollectionFactory);
+diff --git a/ViewModel/SystemCheck/ModulesEnabled.php b/ViewModel/SystemCheck/ModulesEnabled.php
+index d0859c1..99d5cb7 100644
+--- a/ViewModel/SystemCheck/ModulesEnabled.php
++++ b/ViewModel/SystemCheck/ModulesEnabled.php
+@@ -14,13 +14,13 @@ use LokiCheckout\CoreAdminhtml\ValueObject\CheckResultCollectionFactory;
+ class ModulesEnabled extends SystemCheck
+ {
+     public function __construct(
+-        private readonly ComponentRegistrar $componentRegistrar,
+-        private readonly ModuleList $moduleList,
+-        private readonly ModuleManager $moduleManager,
+-        private readonly FilesystemDriver $filesystemDriver,
+-        private readonly ParserFactory $parserFactory,
+-        private readonly DomConvertor $domConvertor,
+-        private readonly LokiCheckoutModules $lokiCheckoutModules,
++        private ComponentRegistrar $componentRegistrar,
++        private ModuleList $moduleList,
++        private ModuleManager $moduleManager,
++        private FilesystemDriver $filesystemDriver,
++        private ParserFactory $parserFactory,
++        private DomConvertor $domConvertor,
++        private LokiCheckoutModules $lokiCheckoutModules,
+         CheckResultCollectionFactory $checkResultCollectionFactory
+     ) {
+         parent::__construct($checkResultCollectionFactory);
+diff --git a/ViewModel/SystemCheck/ScopeConfigValue.php b/ViewModel/SystemCheck/ScopeConfigValue.php
+index 328b47c..1f487a9 100644
+--- a/ViewModel/SystemCheck/ScopeConfigValue.php
++++ b/ViewModel/SystemCheck/ScopeConfigValue.php
+@@ -9,8 +9,8 @@ use Magento\Framework\UrlFactory;
+ abstract class ScopeConfigValue extends SystemCheck
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        protected readonly UrlFactory $urlFactory,
++        private ScopeConfigInterface $scopeConfig,
++        protected UrlFactory $urlFactory,
+         CheckResultCollectionFactory $checkResultCollectionFactory,
+     ) {
+         parent::__construct($checkResultCollectionFactory);
 diff --git a/ViewModel/SystemCheck/SystemCheck.php b/ViewModel/SystemCheck/SystemCheck.php
 index 5b7c113..60ed0d4 100644
 --- a/ViewModel/SystemCheck/SystemCheck.php
@@ -70,3 +214,16 @@ index d71aa24..081f8c4 100644
 -    public function getUrl(): string|null;
 +    public function getUrl();
  }
+diff --git a/ViewModel/SystemCheckCollection.php b/ViewModel/SystemCheckCollection.php
+index 1b9c36c..aa0d755 100644
+--- a/ViewModel/SystemCheckCollection.php
++++ b/ViewModel/SystemCheckCollection.php
+@@ -8,7 +8,7 @@ use LokiCheckout\CoreAdminhtml\ViewModel\SystemCheck\SystemCheckInterface;
+ class SystemCheckCollection implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly array $systemChecks = []
++        private array $systemChecks = []
+     ) {
+     }
+ 
