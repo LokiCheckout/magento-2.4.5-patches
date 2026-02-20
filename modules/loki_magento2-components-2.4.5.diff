@@ -1,3 +1,33 @@
+diff --git a/Component/ComponentFactory.php b/Component/ComponentFactory.php
+index dfd4871..e0df5ef 100644
+--- a/Component/ComponentFactory.php
++++ b/Component/ComponentFactory.php
+@@ -10,7 +10,7 @@ use Loki\Components\Config\XmlConfig\Definition\ComponentDefinition;
+ class ComponentFactory
+ {
+     public function __construct(
+-        private readonly ObjectManagerInterface $objectManager
++        private ObjectManagerInterface $objectManager
+     ) {
+     }
+ 
+diff --git a/Component/ComponentRegistry.php b/Component/ComponentRegistry.php
+index 901e95a..ee9b583 100644
+--- a/Component/ComponentRegistry.php
++++ b/Component/ComponentRegistry.php
+@@ -12,9 +12,9 @@ class ComponentRegistry
+     private array $components = [];
+ 
+     public function __construct(
+-        private readonly XmlConfig $xmlConfig,
+-        private readonly ComponentFactory $componentFactory,
+-        private readonly IdConvertor $idConvertor
++        private XmlConfig $xmlConfig,
++        private ComponentFactory $componentFactory,
++        private IdConvertor $idConvertor
+     ) {
+     }
+ 
 diff --git a/Component/ComponentRepository.php b/Component/ComponentRepository.php
 index 913a6fa..4c6d145 100644
 --- a/Component/ComponentRepository.php
@@ -64,11 +94,104 @@ index 798fe99..aed370c 100644
  
      public function getValidators(): array;
  
+diff --git a/Config/Config.php b/Config/Config.php
+index f1d81a0..112e328 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -9,7 +9,7 @@ use Magento\Store\Model\ScopeInterface;
+ class Config implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
++        private ScopeConfigInterface $scopeConfig,
+     ) {
+     }
+ 
+diff --git a/Config/XmlConfig/Converter.php b/Config/XmlConfig/Converter.php
+index ffa6c01..152de82 100644
+--- a/Config/XmlConfig/Converter.php
++++ b/Config/XmlConfig/Converter.php
+@@ -15,7 +15,7 @@ use Loki\Components\Util\DefaultTargets;
+ class Converter implements ConverterInterface
+ {
+     public function __construct(
+-        private readonly DefaultTargets $defaultTargets,
++        private DefaultTargets $defaultTargets,
+     ) {
+     }
+ 
+diff --git a/Config/XmlConfig/Definition/ComponentDefinition.php b/Config/XmlConfig/Definition/ComponentDefinition.php
+index 793a962..38c3d44 100644
+--- a/Config/XmlConfig/Definition/ComponentDefinition.php
++++ b/Config/XmlConfig/Definition/ComponentDefinition.php
+@@ -5,14 +5,14 @@ namespace Loki\Components\Config\XmlConfig\Definition;
+ class ComponentDefinition
+ {
+     public function __construct(
+-        private readonly string $name,
+-        private readonly string $className,
+-        private readonly string $context = '',
+-        private readonly string $viewModel = '',
+-        private readonly string $repository = '',
+-        private readonly array $targets = [],
+-        private readonly array $validators = [],
+-        private readonly array $filters = [],
++        private string $name,
++        private string $className,
++        private string $context = '',
++        private string $viewModel = '',
++        private string $repository = '',
++        private array $targets = [],
++        private array $validators = [],
++        private array $filters = [],
+     ) {
+     }
+ 
+diff --git a/Config/XmlConfig/SchemaLocator.php b/Config/XmlConfig/SchemaLocator.php
+index c1d77d8..7a336a1 100644
+--- a/Config/XmlConfig/SchemaLocator.php
++++ b/Config/XmlConfig/SchemaLocator.php
+@@ -15,7 +15,7 @@ class SchemaLocator implements SchemaLocatorInterface
+     protected string $perFileSchema = '';
+ 
+     public function __construct(
+-        private readonly Reader $moduleReader
++        private Reader $moduleReader
+     ) {
+     }
+ 
 diff --git a/Controller/Adminhtml/Index/Html.php b/Controller/Adminhtml/Index/Html.php
-index 4b5585a..b09f94b 100644
+index 4b5585a..d26cbd6 100644
 --- a/Controller/Adminhtml/Index/Html.php
 +++ b/Controller/Adminhtml/Index/Html.php
-@@ -49,7 +49,7 @@ class Html extends Action
+@@ -33,23 +33,23 @@ class Html extends Action
+     const ADMIN_RESOURCE = 'Loki_Components::index';
+ 
+     public function __construct(
+-        private readonly LayoutLoader $layoutLoader,
+-        private readonly RequestDataLoader $requestDataLoader,
+-        private readonly RepositoryDispatcher $repositoryDispatcher,
+-        private readonly TargetRenderer $targetRenderer,
+-        private readonly HtmlResultFactory $htmlResultFactory,
+-        private readonly JsonResultFactory $jsonResultFactory,
+-        private readonly GlobalMessageRegistry $globalMessageRegistry,
+-        private readonly Config $config,
+-        private readonly AppState $appState,
+-        private readonly LoggerInterface $logger,
+-        private readonly ComponentRegistry $componentRegistry,
++        private LayoutLoader $layoutLoader,
++        private RequestDataLoader $requestDataLoader,
++        private RepositoryDispatcher $repositoryDispatcher,
++        private TargetRenderer $targetRenderer,
++        private HtmlResultFactory $htmlResultFactory,
++        private JsonResultFactory $jsonResultFactory,
++        private GlobalMessageRegistry $globalMessageRegistry,
++        private Config $config,
++        private AppState $appState,
++        private LoggerInterface $logger,
++        private ComponentRegistry $componentRegistry,
+         Context $context,
+     ) {
          parent::__construct($context);
      }
  
@@ -78,10 +201,37 @@ index 4b5585a..b09f94b 100644
          $data = $this->requestDataLoader->load();
          $this->requestDataLoader->mergeRequestParams();
 diff --git a/Controller/Index/Html.php b/Controller/Index/Html.php
-index d196538..37a5f80 100644
+index d196538..32dee40 100644
 --- a/Controller/Index/Html.php
 +++ b/Controller/Index/Html.php
-@@ -47,7 +47,7 @@ class Html implements HttpPostActionInterface, HttpGetActionInterface
+@@ -32,22 +32,22 @@ use Magento\Framework\Message\ManagerInterface as MessageManager;
+ class Html implements HttpPostActionInterface, HttpGetActionInterface
+ {
+     public function __construct(
+-        private readonly LayoutLoader $layoutLoader,
+-        private readonly RequestDataLoader $requestDataLoader,
+-        private readonly RepositoryDispatcher $repositoryDispatcher,
+-        private readonly TargetRenderer $targetRenderer,
+-        private readonly HtmlResultFactory $htmlResultFactory,
+-        private readonly JsonResultFactory $jsonResultFactory,
+-        private readonly MessageManager $messageManager,
+-        private readonly Config $config,
+-        private readonly AppState $appState,
+-        private readonly LoggerInterface $logger,
+-        private readonly ComponentRegistry $componentRegistry,
+-        private readonly ComponentUpdateFactory $componentUpdateFactory,
++        private LayoutLoader $layoutLoader,
++        private RequestDataLoader $requestDataLoader,
++        private RepositoryDispatcher $repositoryDispatcher,
++        private TargetRenderer $targetRenderer,
++        private HtmlResultFactory $htmlResultFactory,
++        private JsonResultFactory $jsonResultFactory,
++        private MessageManager $messageManager,
++        private Config $config,
++        private AppState $appState,
++        private LoggerInterface $logger,
++        private ComponentRegistry $componentRegistry,
++        private ComponentUpdateFactory $componentUpdateFactory,
      ) {
      }
  
@@ -91,9 +241,18 @@ index d196538..37a5f80 100644
          $data = $this->requestDataLoader->load();
          $this->requestDataLoader->mergeRequestParams();
 diff --git a/Factory/ViewModelFactory.php b/Factory/ViewModelFactory.php
-index 60ac3f2..4b623c3 100644
+index 60ac3f2..b7da840 100644
 --- a/Factory/ViewModelFactory.php
 +++ b/Factory/ViewModelFactory.php
+@@ -9,7 +9,7 @@ use RuntimeException;
+ class ViewModelFactory
+ {
+     public function __construct(
+-        private readonly ObjectManagerInterface $objectManager
++        private ObjectManagerInterface $objectManager
+     ) {
+     }
+ 
 @@ -27,7 +27,7 @@ class ViewModelFactory
          return $viewModel;
      }
@@ -117,10 +276,19 @@ index 4dec725..81ae987 100644
          return ucfirst((string)$value);
      }
 diff --git a/Filter/Filter.php b/Filter/Filter.php
-index fcdf413..d464c23 100644
+index fcdf413..df0be97 100644
 --- a/Filter/Filter.php
 +++ b/Filter/Filter.php
-@@ -14,9 +14,9 @@ class Filter
+@@ -7,16 +7,16 @@ use Loki\Components\Component\ComponentInterface;
+ class Filter
+ {
+     public function __construct(
+-        private readonly FilterRegistry $filterRegistry,
+-        private readonly FilterScopeFactory $filterScopeFactory,
++        private FilterRegistry $filterRegistry,
++        private FilterScopeFactory $filterScopeFactory,
+     ) {
+     }
  
      public function filter(
          ComponentInterface $component,
@@ -252,10 +420,162 @@ index 2c5179f..88ff87e 100644
      {
          return strtoupper((string)$value);
      }
+diff --git a/Location/Address.php b/Location/Address.php
+index a86e205..1910243 100644
+--- a/Location/Address.php
++++ b/Location/Address.php
+@@ -7,7 +7,7 @@ use Magento\Framework\DataObject;
+ class Address extends DataObject
+ {
+     public function __construct(
+-        private readonly AddressRenderer $addressRenderer,
++        private AddressRenderer $addressRenderer,
+         private string $street = '',
+         private string $houseNumber = '',
+         private string $houseNumberAddition = '',
+diff --git a/Location/Address/BusinessHourSegment.php b/Location/Address/BusinessHourSegment.php
+index 1c1b5f9..bb86825 100644
+--- a/Location/Address/BusinessHourSegment.php
++++ b/Location/Address/BusinessHourSegment.php
+@@ -7,10 +7,10 @@ use Magento\Framework\DataObject;
+ class BusinessHourSegment extends DataObject
+ {
+     public function __construct(
+-        private readonly string $day,
+-        private readonly string $openingHour,
+-        private readonly string $closingHour,
+-        private readonly string $comment = '',
++        private string $day,
++        private string $openingHour,
++        private string $closingHour,
++        private string $comment = '',
+         array $data = [],
+     ) {
+         parent::__construct($data);
+diff --git a/Location/Address/BusinessHours.php b/Location/Address/BusinessHours.php
+index d814321..dcd56ed 100644
+--- a/Location/Address/BusinessHours.php
++++ b/Location/Address/BusinessHours.php
+@@ -9,7 +9,7 @@ class BusinessHours extends DataObject
+     private array $businessHourSegments = [];
+ 
+     public function __construct(
+-        private readonly BusinessHourSegmentFactory $businessHourSegmentFactory,
++        private BusinessHourSegmentFactory $businessHourSegmentFactory,
+         array $data = [],
+     ) {
+         parent::__construct($data);
+diff --git a/Location/AddressFactory.php b/Location/AddressFactory.php
+index e94cff2..f7d870f 100644
+--- a/Location/AddressFactory.php
++++ b/Location/AddressFactory.php
+@@ -8,8 +8,8 @@ use Magento\Quote\Api\Data\AddressInterface;
+ class AddressFactory
+ {
+     public function __construct(
+-        private readonly ObjectManagerInterface $objectManager,
+-        private readonly AddressParserComposite $addressParserComposite
++        private ObjectManagerInterface $objectManager,
++        private AddressParserComposite $addressParserComposite
+     ) {
+     }
+ 
+diff --git a/Location/AddressRenderer.php b/Location/AddressRenderer.php
+index 7852eb3..0ac19e5 100644
+--- a/Location/AddressRenderer.php
++++ b/Location/AddressRenderer.php
+@@ -8,7 +8,7 @@ use Magento\Customer\Model\Address\Config as AddressConfig;
+ class AddressRenderer
+ {
+     public function __construct(
+-        private readonly AddressConfig $addressConfig,
++        private AddressConfig $addressConfig,
+     ) {
+     }
+ 
+diff --git a/Location/Location.php b/Location/Location.php
+index 6dfa7c2..fa2ebd3 100644
+--- a/Location/Location.php
++++ b/Location/Location.php
+@@ -8,14 +8,14 @@ use Magento\Framework\DataObject;
+ class Location extends DataObject
+ {
+     public function __construct(
+-        private readonly Address $address,
+-        private readonly ?BusinessHours $businessHours = null,
+-        private readonly string $id = '',
+-        private readonly string $code = '',
+-        private readonly string $label = '',
+-        private readonly int $distance = 0,
+-        private readonly ?string $pickupFrom = null,
+-        private readonly ?int $price = null,
++        private Address $address,
++        private ?BusinessHours $businessHours = null,
++        private string $id = '',
++        private string $code = '',
++        private string $label = '',
++        private int $distance = 0,
++        private ?string $pickupFrom = null,
++        private ?int $price = null,
+         array $data = []
+     ) {
+         parent::__construct($data);
+diff --git a/Location/LocationFactory.php b/Location/LocationFactory.php
+index 6312a32..f78c7ab 100644
+--- a/Location/LocationFactory.php
++++ b/Location/LocationFactory.php
+@@ -8,7 +8,7 @@ use Loki\Components\Location\Address\BusinessHours;
+ class LocationFactory
+ {
+     public function __construct(
+-        private readonly ObjectManagerInterface $objectManager
++        private ObjectManagerInterface $objectManager
+     ) {
+     }
+ 
+diff --git a/Messages/GlobalMessage.php b/Messages/GlobalMessage.php
+index f0e85ca..eb011f2 100644
+--- a/Messages/GlobalMessage.php
++++ b/Messages/GlobalMessage.php
+@@ -17,8 +17,8 @@ class GlobalMessage
+         return new GlobalMessage($message->getText(), $message->getType());
+     }
+     public function __construct(
+-        private readonly string $text,
+-        private readonly string $type = self::TYPE_NOTICE
++        private string $text,
++        private string $type = self::TYPE_NOTICE
+     ) {
+     }
+ 
+diff --git a/Messages/GlobalMessageRegistry.php b/Messages/GlobalMessageRegistry.php
+index f4cf05c..f94684d 100644
+--- a/Messages/GlobalMessageRegistry.php
++++ b/Messages/GlobalMessageRegistry.php
+@@ -15,7 +15,7 @@ class GlobalMessageRegistry implements ArgumentInterface
+     protected array $messages = [];
+ 
+     public function __construct(
+-        private readonly MessageManager $messageManager,
++        private MessageManager $messageManager,
+     ) {
+     }
+ 
 diff --git a/Messages/LocalMessage.php b/Messages/LocalMessage.php
-index 8180e71..68ade61 100644
+index 8180e71..0b8c226 100644
 --- a/Messages/LocalMessage.php
 +++ b/Messages/LocalMessage.php
+@@ -13,8 +13,8 @@ class LocalMessage implements JsonSerializable
+     const TYPE_ERROR = 'error';
+ 
+     public function __construct(
+-        private readonly string $text,
+-        private readonly string $type = self::TYPE_NOTICE
++        private string $text,
++        private string $type = self::TYPE_NOTICE
+     ) {
+     }
+ 
 @@ -36,7 +36,7 @@ class LocalMessage implements JsonSerializable
          ];
      }
@@ -265,11 +585,79 @@ index 8180e71..68ade61 100644
      {
          return $this->toArray();
      }
+diff --git a/Observer/AddDomIdToBlock.php b/Observer/AddDomIdToBlock.php
+index 09fd98e..1c00878 100644
+--- a/Observer/AddDomIdToBlock.php
++++ b/Observer/AddDomIdToBlock.php
+@@ -11,8 +11,8 @@ use Magento\Framework\View\Element\Template;
+ class AddDomIdToBlock implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly GetElementId $getElementId,
+-        private readonly array $blockNames = [],
++        private GetElementId $getElementId,
++        private array $blockNames = [],
+     ) {
+     }
+ 
+diff --git a/Observer/AddHtmlAttributesToComponentBlock.php b/Observer/AddHtmlAttributesToComponentBlock.php
+index dbf09b3..8011279 100644
+--- a/Observer/AddHtmlAttributesToComponentBlock.php
++++ b/Observer/AddHtmlAttributesToComponentBlock.php
+@@ -18,11 +18,11 @@ use Loki\Components\Util\Component\JsDataProvider;
+ class AddHtmlAttributesToComponentBlock implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly ComponentRegistry $componentRegistry,
+-        private readonly JsDataProvider $jsDataProvider,
+-        private readonly Ajax $ajax,
+-        private readonly AppMode $appMode,
+-        private readonly GetElementId $getElementId
++        private ComponentRegistry $componentRegistry,
++        private JsDataProvider $jsDataProvider,
++        private Ajax $ajax,
++        private AppMode $appMode,
++        private GetElementId $getElementId
+     ) {
+     }
+ 
+diff --git a/Observer/AssignAdditionalBlockVariables.php b/Observer/AssignAdditionalBlockVariables.php
+index 948e338..14b7e7a 100644
+--- a/Observer/AssignAdditionalBlockVariables.php
++++ b/Observer/AssignAdditionalBlockVariables.php
+@@ -20,14 +20,14 @@ use Loki\Components\Util\Block\TemplateRenderer;
+ class AssignAdditionalBlockVariables implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly ViewModelFactory $viewModelFactory,
+-        private readonly BlockRenderer $blockRenderer,
+-        private readonly ChildRenderer $childRenderer,
+-        private readonly TemplateRenderer $templateRenderer,
+-        private readonly ImageRenderer $imageRenderer,
+-        private readonly ComponentRegistry $componentRegistry,
+-        private readonly ComponentUtil $componentUtil,
+-        private readonly array $blockPrefixes = []
++        private ViewModelFactory $viewModelFactory,
++        private BlockRenderer $blockRenderer,
++        private ChildRenderer $childRenderer,
++        private TemplateRenderer $templateRenderer,
++        private ImageRenderer $imageRenderer,
++        private ComponentRegistry $componentRegistry,
++        private ComponentUtil $componentUtil,
++        private array $blockPrefixes = []
+     ) {
+     }
+ 
 diff --git a/Router/LokiRouter.php b/Router/LokiRouter.php
-index f0ab9a1..b409e57 100644
+index f0ab9a1..ccd7c87 100644
 --- a/Router/LokiRouter.php
 +++ b/Router/LokiRouter.php
-@@ -16,7 +16,7 @@ class LokiRouter implements RouterInterface
+@@ -12,11 +12,11 @@ use Magento\Framework\App\RouterInterface;
+ class LokiRouter implements RouterInterface
+ {
+     public function __construct(
+-        private readonly ActionFactory $actionFactory
++        private ActionFactory $actionFactory
      ) {
      }
  
@@ -343,16 +731,120 @@ index 5778508..46ece8c 100644
      {
          $validator = new PastDateValidator();
          $result = $validator->validate($value);
+diff --git a/Util/Ajax.php b/Util/Ajax.php
+index f1445c4..e8447de 100644
+--- a/Util/Ajax.php
++++ b/Util/Ajax.php
+@@ -9,7 +9,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class Ajax implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly HttpRequest $httpRequest
++        private HttpRequest $httpRequest
+     ) {
+     }
+ 
+diff --git a/Util/AppMode.php b/Util/AppMode.php
+index 913c719..47c5f66 100644
+--- a/Util/AppMode.php
++++ b/Util/AppMode.php
+@@ -9,7 +9,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class AppMode implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly AppState $appState
++        private AppState $appState
+     ) {
+     }
+ 
+diff --git a/Util/Block/GetElementId.php b/Util/Block/GetElementId.php
+index f56ed6b..af2309c 100644
+--- a/Util/Block/GetElementId.php
++++ b/Util/Block/GetElementId.php
+@@ -8,7 +8,7 @@ use Magento\Framework\View\Element\AbstractBlock;
+ class GetElementId
+ {
+     public function __construct(
+-        private readonly IdConvertor $idConvertor,
++        private IdConvertor $idConvertor,
+     ) {
+     }
+ 
+diff --git a/Util/Block/ImageRenderer.php b/Util/Block/ImageRenderer.php
+index f5a5211..7fd3e6b 100644
+--- a/Util/Block/ImageRenderer.php
++++ b/Util/Block/ImageRenderer.php
+@@ -21,12 +21,12 @@ class ImageRenderer implements ArgumentInterface
+ 
+     public function __construct(
+         Filesystem $filesystem,
+-        private readonly AssetRepository $assetRepository,
+-        private readonly DirectoryList $directoryList,
+-        private readonly AppState $appState,
+-        private readonly string $iconSet = 'default',
+-        private readonly string $iconPrefix = 'Loki_Components::icon',
+-        private readonly int $iconSize = 20,
++        private AssetRepository $assetRepository,
++        private DirectoryList $directoryList,
++        private AppState $appState,
++        private string $iconSet = 'default',
++        private string $iconPrefix = 'Loki_Components::icon',
++        private int $iconSize = 20,
+     ) {
+         $this->fileDriver = $filesystem->getDirectoryRead(DirectoryList::ROOT);
+     }
+diff --git a/Util/Component/JsDataProvider.php b/Util/Component/JsDataProvider.php
+index 0bccf88..2fb751a 100644
+--- a/Util/Component/JsDataProvider.php
++++ b/Util/Component/JsDataProvider.php
+@@ -12,10 +12,10 @@ use Loki\Components\Util\IdConvertor;
+ class JsDataProvider implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly ComponentUtil $componentUtil,
+-        private readonly GetElementId $getElementId,
+-        private readonly IdConvertor $idConvertor,
+-        private readonly CamelCaseConvertor $camelCaseConvertor,
++        private ComponentUtil $componentUtil,
++        private GetElementId $getElementId,
++        private IdConvertor $idConvertor,
++        private CamelCaseConvertor $camelCaseConvertor,
+     ) {
+     }
+ 
+diff --git a/Util/ComponentUtil.php b/Util/ComponentUtil.php
+index ec2b184..a8721a0 100644
+--- a/Util/ComponentUtil.php
++++ b/Util/ComponentUtil.php
+@@ -12,10 +12,10 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class ComponentUtil implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly UrlFactory $urlFactory,
+-        private readonly RequestInterface $request,
+-        private readonly FormKeyModel $formKey,
+-        private readonly IdConvertor $idConvertor
++        private UrlFactory $urlFactory,
++        private RequestInterface $request,
++        private FormKeyModel $formKey,
++        private IdConvertor $idConvertor
+     ) {
+     }
+ 
 diff --git a/Util/Controller/ComponentUpdate.php b/Util/Controller/ComponentUpdate.php
-index 6f6cb5b..8f06480 100644
+index 6f6cb5b..41db31f 100644
 --- a/Util/Controller/ComponentUpdate.php
 +++ b/Util/Controller/ComponentUpdate.php
-@@ -10,7 +10,7 @@ class ComponentUpdate
+@@ -8,9 +8,9 @@ use Magento\Framework\View\Element\AbstractBlock;
+ class ComponentUpdate
+ {
      public function __construct(
-         private readonly AbstractBlock $block,
-         private readonly Component $component,
+-        private readonly AbstractBlock $block,
+-        private readonly Component $component,
 -        private readonly mixed $componentData = null
-+        private readonly $componentData = null
++        private AbstractBlock $block,
++        private Component $component,
++        private $componentData = null
      ) {
      }
  
@@ -365,11 +857,46 @@ index 6f6cb5b..8f06480 100644
      {
          return $this->componentData;
      }
+diff --git a/Util/Controller/ComponentUpdateFactory.php b/Util/Controller/ComponentUpdateFactory.php
+index 7cddb20..525130d 100644
+--- a/Util/Controller/ComponentUpdateFactory.php
++++ b/Util/Controller/ComponentUpdateFactory.php
+@@ -7,7 +7,7 @@ use Magento\Framework\ObjectManagerInterface;
+ class ComponentUpdateFactory
+ {
+     public function __construct(
+-        private readonly ObjectManagerInterface $objectManager
++        private ObjectManagerInterface $objectManager
+     ) {
+     }
+ 
+diff --git a/Util/Controller/LayoutLoader.php b/Util/Controller/LayoutLoader.php
+index 399df6e..2530b7f 100644
+--- a/Util/Controller/LayoutLoader.php
++++ b/Util/Controller/LayoutLoader.php
+@@ -8,7 +8,7 @@ use Magento\Framework\View\Result\PageFactory as ResultPageFactory;
+ class LayoutLoader
+ {
+     public function __construct(
+-        private readonly ResultPageFactory $resultPageFactory,
++        private ResultPageFactory $resultPageFactory,
+     ) {
+     }
+ 
 diff --git a/Util/Controller/RepositoryDispatcher.php b/Util/Controller/RepositoryDispatcher.php
-index 6495e38..1de3908 100644
+index 6495e38..8157200 100644
 --- a/Util/Controller/RepositoryDispatcher.php
 +++ b/Util/Controller/RepositoryDispatcher.php
-@@ -18,7 +18,7 @@ class RepositoryDispatcher
+@@ -12,13 +12,13 @@ use Magento\Framework\View\LayoutInterface;
+ class RepositoryDispatcher
+ {
+     public function __construct(
+-        private readonly EventManager $eventManager,
+-        private readonly Filter $filter,
+-        private readonly Validator $validator,
++        private EventManager $eventManager,
++        private Filter $filter,
++        private Validator $validator,
      ) {
      }
  
@@ -377,6 +904,51 @@ index 6495e38..1de3908 100644
 +    public function dispatch(ComponentInterface $component, $componentData): void
      {
          $this->eventManager->dispatch('loki_components_repository_dispatch', ['component' => $component]);
+ 
+diff --git a/Util/Controller/RequestDataLoader.php b/Util/Controller/RequestDataLoader.php
+index fbd4355..2dd34cc 100644
+--- a/Util/Controller/RequestDataLoader.php
++++ b/Util/Controller/RequestDataLoader.php
+@@ -12,8 +12,8 @@ use Loki\Components\Util\Ajax;
+ class RequestDataLoader
+ {
+     public function __construct(
+-        private readonly RequestInterface $request,
+-        private readonly Ajax $ajax
++        private RequestInterface $request,
++        private Ajax $ajax
+     ) {
+     }
+ 
+diff --git a/Util/Controller/TargetRenderer.php b/Util/Controller/TargetRenderer.php
+index 656863b..4f2e75a 100644
+--- a/Util/Controller/TargetRenderer.php
++++ b/Util/Controller/TargetRenderer.php
+@@ -10,9 +10,9 @@ use Magento\Framework\View\LayoutInterface;
+ class TargetRenderer
+ {
+     public function __construct(
+-        private readonly EventManager $eventManager,
+-        private readonly LayoutInterface $layout,
+-        private readonly IdConvertor $idConvertor,
++        private EventManager $eventManager,
++        private LayoutInterface $layout,
++        private IdConvertor $idConvertor,
+     ) {
+     }
+ 
+diff --git a/Util/DefaultTargets.php b/Util/DefaultTargets.php
+index 6e89ad1..b30af00 100644
+--- a/Util/DefaultTargets.php
++++ b/Util/DefaultTargets.php
+@@ -5,7 +5,7 @@ namespace Loki\Components\Util;
+ class DefaultTargets
+ {
+     public function __construct(
+-        private readonly array $targets = []
++        private array $targets = []
+     ) {
+     }
  
 diff --git a/Util/IsEmpty.php b/Util/IsEmpty.php
 index 5116514..4c19c44 100644
@@ -391,6 +963,19 @@ index 5116514..4c19c44 100644
      {
          if ($this->shouldBeNumber($component) && is_numeric($value)) {
              return false;
+diff --git a/Util/MagentoVersion.php b/Util/MagentoVersion.php
+index fb25502..13b1043 100644
+--- a/Util/MagentoVersion.php
++++ b/Util/MagentoVersion.php
+@@ -7,7 +7,7 @@ use Magento\Framework\App\ProductMetadataInterface;
+ class MagentoVersion
+ {
+     public function __construct(
+-        private readonly ProductMetadataInterface $productMetadata,
++        private ProductMetadataInterface $productMetadata,
+     ) {
+     }
+ 
 diff --git a/Validator/DateValidator.php b/Validator/DateValidator.php
 index 73d3ee9..f224586 100644
 --- a/Validator/DateValidator.php
@@ -470,10 +1055,19 @@ index 22d1027..c95e6bd 100644
          if (false === is_numeric($value)) {
              return [(string)__('Value must contain numbers only')];
 diff --git a/Validator/RequiredValidator.php b/Validator/RequiredValidator.php
-index 0e35109..e349dc3 100644
+index 0e35109..cbb7289 100644
 --- a/Validator/RequiredValidator.php
 +++ b/Validator/RequiredValidator.php
-@@ -16,7 +16,7 @@ class RequiredValidator implements ValidatorInterface
+@@ -10,13 +10,13 @@ use Magento\Framework\App\RequestInterface;
+ class RequiredValidator implements ValidatorInterface
+ {
+     public function __construct(
+-        private readonly IsEmpty $isEmpty,
+-        private readonly RequestInterface $request,
+-        private readonly Ajax $ajax,
++        private IsEmpty $isEmpty,
++        private RequestInterface $request,
++        private Ajax $ajax,
      ) {
      }
  
@@ -483,10 +1077,17 @@ index 0e35109..e349dc3 100644
          if (false === $this->ajax->isAjax()) {
              return true;
 diff --git a/Validator/Validator.php b/Validator/Validator.php
-index 957bbf0..3c64e47 100644
+index 957bbf0..59fbc71 100644
 --- a/Validator/Validator.php
 +++ b/Validator/Validator.php
-@@ -15,7 +15,7 @@ class Validator
+@@ -9,13 +9,13 @@ use Loki\Components\Messages\LocalMessage;
+ class Validator
+ {
+     public function __construct(
+-        private readonly ValidatorRegistry $validatorRegistry,
++        private ValidatorRegistry $validatorRegistry,
+     ) {
+     }
  
      public function validate(
          ComponentInterface $component,
@@ -506,3 +1107,20 @@ index dffabfb..8967280 100644
 -    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array;
 +    public function validate($value, ?ComponentInterface $component = null);
  }
+diff --git a/ViewModel/Messages.php b/ViewModel/Messages.php
+index 087ce16..a24b10e 100644
+--- a/ViewModel/Messages.php
++++ b/ViewModel/Messages.php
+@@ -12,9 +12,9 @@ use Magento\Framework\View\Element\Message\InterpretationStrategyInterface;
+ class Messages implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly MessageManager $messageManager,
+-        private readonly InterpretationStrategyInterface $interpretationStrategy,
+-        private readonly Ajax $ajax
++        private MessageManager $messageManager,
++        private InterpretationStrategyInterface $interpretationStrategy,
++        private Ajax $ajax
+     ) {
+     }
+ 
