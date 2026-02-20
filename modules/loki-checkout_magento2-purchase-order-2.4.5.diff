@@ -1,0 +1,19 @@
+diff --git a/Component/Checkout/Billing/PaymentMethod/PurchaseOrderRepository.php b/Component/Checkout/Billing/PaymentMethod/PurchaseOrderRepository.php
+index c3e1fed..f689f4f 100644
+--- a/Component/Checkout/Billing/PaymentMethod/PurchaseOrderRepository.php
++++ b/Component/Checkout/Billing/PaymentMethod/PurchaseOrderRepository.php
+@@ -10,12 +10,12 @@ use Loki\Components\Component\ComponentRepository;
+  */
+ class PurchaseOrderRepository extends ComponentRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return (string)$this->getContext()->getCheckoutState()->getQuote()->getPayment()->getPoNumber();
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $value = (string)$value;
+         $quote = $this->getContext()->getCheckoutState()->getQuote();
