@@ -1,0 +1,39 @@
+diff --git a/Plugin/ValidateEmailMxRecordPlugin.php b/Plugin/ValidateEmailMxRecordPlugin.php
+index 883c11c..6338baa 100644
+--- a/Plugin/ValidateEmailMxRecordPlugin.php
++++ b/Plugin/ValidateEmailMxRecordPlugin.php
+@@ -18,9 +18,9 @@ class ValidateEmailMxRecordPlugin
+ 
+     public function afterValidate(
+         EmailValidator $subject,
+-        bool|array $result,
+-        mixed $value,
+-    ): bool|array {
++        $result,
++        $value,
++    ) {
+         if ($this->config->enableMxValidationForEmail() && !empty($value)) {
+             $result = $this->checkMxRecord((string)$value);
+             if (is_array($result)) {
+@@ -31,7 +31,7 @@ class ValidateEmailMxRecordPlugin
+         return $result;
+     }
+ 
+-    private function checkMxRecord(string $email): bool|array
++    private function checkMxRecord(string $email)
+     {
+         $parts = explode('@', $email);
+         if (count($parts) < 2) {
+diff --git a/Test/Integration/Validator/EmailValidatorTest.php b/Test/Integration/Validator/EmailValidatorTest.php
+index 4f21e86..259f165 100644
+--- a/Test/Integration/Validator/EmailValidatorTest.php
++++ b/Test/Integration/Validator/EmailValidatorTest.php
+@@ -25,7 +25,7 @@ class EmailValidatorTest extends TestCase
+      * @dataProvider getValues
+      */
+     #[Config('loki_components/validators/enable_mx_validation_for_email', true)]
+-    public function testWithVariousValues(string $email, true|string $expectedResult): void
++    public function testWithVariousValues(string $email, $expectedResult): void
+     {
+         $validator = ObjectManager::getInstance()->get(EmailValidator::class);
+         $actualResult = $validator->validate($email);
