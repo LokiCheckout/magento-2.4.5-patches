@@ -1,0 +1,26 @@
+diff --git a/Payment/Icon/IconResolver.php b/Payment/Icon/IconResolver.php
+index f6b5fa8..42d9220 100644
+--- a/Payment/Icon/IconResolver.php
++++ b/Payment/Icon/IconResolver.php
+@@ -13,7 +13,7 @@ class IconResolver implements IconResolverInterface
+     ) {
+     }
+ 
+-    public function resolve(IconResolverContext $iconResolverContext): false|string
++    public function resolve(IconResolverContext $iconResolverContext)
+     {
+         $paymentMethodCode = $iconResolverContext->getPaymentMethodCode();
+         if (false === $this->moduleManager->isEnabled('Magento_Paypal')) {
+diff --git a/Payment/Redirect/RedirectResolver.php b/Payment/Redirect/RedirectResolver.php
+index 92c1a7f..52c9eb0 100644
+--- a/Payment/Redirect/RedirectResolver.php
++++ b/Payment/Redirect/RedirectResolver.php
+@@ -13,7 +13,7 @@ class RedirectResolver implements RedirectResolverInterface
+     ) {
+     }
+ 
+-    public function resolve(RedirectContext $redirectContext): false|string
++    public function resolve(RedirectContext $redirectContext)
+     {
+         return $this->urlFactory->create()->getUrl('paypal/express/review');
+     }
