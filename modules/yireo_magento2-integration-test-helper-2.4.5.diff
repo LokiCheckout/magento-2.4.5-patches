@@ -1,0 +1,48 @@
+diff --git a/Test/Integration/Traits/AssertResponseHeader.php b/Test/Integration/Traits/AssertResponseHeader.php
+index cf77bc9..eb340de 100644
+--- a/Test/Integration/Traits/AssertResponseHeader.php
++++ b/Test/Integration/Traits/AssertResponseHeader.php
+@@ -22,7 +22,7 @@ trait AssertResponseHeader
+         $this->assertNotEmpty($headers->toArray());
+     }
+ 
+-    protected function assertResponseHeaderValue(string $headerName, mixed $headerValue)
++    protected function assertResponseHeaderValue(string $headerName, $headerValue)
+     {
+         $this->assertInstanceOf(AbstractController::class, $this);
+         $headers = $this->getResponseHeaders();
+diff --git a/Utilities/DisableModules.php b/Utilities/DisableModules.php
+index 4bfddca..62d5615 100644
+--- a/Utilities/DisableModules.php
++++ b/Utilities/DisableModules.php
+@@ -337,7 +337,7 @@ class DisableModules
+      * @param string $variableName
+      * @return mixed
+      */
+-    private function getVariable(string $variableName): mixed
++    private function getVariable(string $variableName)
+     {
+         if (isset($_ENV[$variableName]) && !empty($_ENV[$variableName])) {
+             return $_ENV[$variableName];
+diff --git a/Utilities/InstallConfig.php b/Utilities/InstallConfig.php
+index 301d269..72f8460 100644
+--- a/Utilities/InstallConfig.php
++++ b/Utilities/InstallConfig.php
+@@ -59,7 +59,7 @@ class InstallConfig
+     public function addSearchEngine(
+         string $searchEngine = 'opensearch',
+         string $serverName = 'localhost',
+-        int|string $serverPort = '9200'
++        $serverPort = '9200'
+     ): InstallConfig {
+         $this->installConfig['search-engine'] = $searchEngine;
+         if ($searchEngine === 'opensearch') {
+@@ -83,7 +83,7 @@ class InstallConfig
+     public function addElasticSearch(
+         string $searchEngine = 'elasticsearch7',
+         string $serverName = 'localhost',
+-        int|string $serverPort = '9200'
++        $serverPort = '9200'
+     ): InstallConfig {
+         return $this->addSearchEngine($searchEngine, $serverName, $serverPort);
+     }

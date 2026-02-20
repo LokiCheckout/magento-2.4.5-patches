@@ -138,6 +138,9 @@
             },
             "loki/magento2-map-components": {
                 "Magento 2.4.5 patch": "patches/loki_magento2-map-components-2.4.5.diff"
+            },
+            "yireo/magento2-integration-test-helper": {
+                "Magento 2.4.5 patch": "patches/yireo_magento2-integration-test-helper-2.4.5.diff"
             }
         }
     }
