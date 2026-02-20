@@ -90,6 +90,9 @@
             },
             "loki-checkout/magento2-pay-nl": {
                 "Magento 2.4.5 patch": "patches/loki-checkout_magento2-pay-nl-2.4.5.diff"
+            },
+            "loki-checkout/magento2-pay-one": {
+                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-pay-one-2.4.5.diff"
             }
         }
     }
