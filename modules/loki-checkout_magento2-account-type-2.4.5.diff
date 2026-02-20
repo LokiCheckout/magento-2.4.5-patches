@@ -1,3 +1,29 @@
+diff --git a/Component/Checkout/Address/AccountType/AccountTypeContext.php b/Component/Checkout/Address/AccountType/AccountTypeContext.php
+index d15943c..362a522 100644
+--- a/Component/Checkout/Address/AccountType/AccountTypeContext.php
++++ b/Component/Checkout/Address/AccountType/AccountTypeContext.php
+@@ -29,8 +29,8 @@ class AccountTypeContext implements ComponentContextInterface
+ {
+     public function __construct(
+         public RequestInterface $request,
+-        private readonly AccountTypeConfig $accountTypeConfig,
+-        private readonly AccountTypeOptions $accountTypeOptions,
++        private AccountTypeConfig $accountTypeConfig,
++        private AccountTypeOptions $accountTypeOptions,
+         private AddressStateProvider $addressStateProvider,
+         private CheckoutState $checkoutState,
+         private ShippingAddressState $shippingAddressState,
+@@ -43,8 +43,8 @@ class AccountTypeContext implements ComponentContextInterface
+         private AttributeProvider $attributeProvider,
+         private GlobalMessageRegistry $globalMessageRegistry,
+         private CoreMessageManager $coreMessageManager,
+-        private readonly CustomerSession $customerSession,
+-        private readonly UrlFactory $urlFactory,
++        private CustomerSession $customerSession,
++        private UrlFactory $urlFactory,
+     ) {
+     }
+ 
 diff --git a/Component/Checkout/Address/AccountType/AccountTypeRepository.php b/Component/Checkout/Address/AccountType/AccountTypeRepository.php
 index a34bbb0..7210abd 100644
 --- a/Component/Checkout/Address/AccountType/AccountTypeRepository.php
@@ -29,3 +55,74 @@ index a34bbb0..7210abd 100644
      {
          return $this->getContext()->getAccountTypeConfig()->getDefaultValue();
      }
+diff --git a/Config/Config.php b/Config/Config.php
+index c8d1624..24621cb 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -10,8 +10,8 @@ use Magento\Store\Model\ScopeInterface;
+ class Config
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly CheckoutState $checkoutState,
++        private ScopeConfigInterface $scopeConfig,
++        private CheckoutState $checkoutState,
+     ) {
+     }
+ 
+diff --git a/Config/Source/AccountTypeOptions.php b/Config/Source/AccountTypeOptions.php
+index cf0ac7d..afb6854 100644
+--- a/Config/Source/AccountTypeOptions.php
++++ b/Config/Source/AccountTypeOptions.php
+@@ -9,7 +9,7 @@ use Magento\Eav\Model\Entity\Attribute\Source\AbstractSource;
+ class AccountTypeOptions extends AbstractSource implements OptionSourceInterface
+ {
+     public function __construct(
+-        private readonly array $options = []
++        private array $options = []
+     ) {
+     }
+ 
+diff --git a/Plugin/ToggleCompanyComponentPlugin.php b/Plugin/ToggleCompanyComponentPlugin.php
+index b04904f..4291db9 100644
+--- a/Plugin/ToggleCompanyComponentPlugin.php
++++ b/Plugin/ToggleCompanyComponentPlugin.php
+@@ -9,8 +9,8 @@ use LokiCheckout\AccountType\Config\Config;
+ class ToggleCompanyComponentPlugin
+ {
+     public function __construct(
+-        private readonly AddressStateProvider $addressStateProvider,
+-        private readonly Config $config
++        private AddressStateProvider $addressStateProvider,
++        private Config $config
+     ) {
+     }
+ 
+diff --git a/Plugin/ToggleVatIdComponentPlugin.php b/Plugin/ToggleVatIdComponentPlugin.php
+index 51afc52..6917e40 100644
+--- a/Plugin/ToggleVatIdComponentPlugin.php
++++ b/Plugin/ToggleVatIdComponentPlugin.php
+@@ -10,8 +10,8 @@ use LokiCheckout\AccountType\Config\Source\AccountTypeOptions;
+ class ToggleVatIdComponentPlugin
+ {
+     public function __construct(
+-        private readonly AddressStateProvider $addressStateProvider,
+-        private readonly Config $config
++        private AddressStateProvider $addressStateProvider,
++        private Config $config
+     ) {
+     }
+ 
+diff --git a/ViewModel/OptionModel/AccountTypeOptionModel.php b/ViewModel/OptionModel/AccountTypeOptionModel.php
+index 9b3d0ae..d5653eb 100644
+--- a/ViewModel/OptionModel/AccountTypeOptionModel.php
++++ b/ViewModel/OptionModel/AccountTypeOptionModel.php
+@@ -10,7 +10,7 @@ use Loki\Components\Component\ComponentViewModelInterface;
+ class AccountTypeOptionModel implements ArgumentInterface, OptionModelInterface
+ {
+     public function __construct(
+-        private readonly AccountTypeOptions $accountTypeOptions,
++        private AccountTypeOptions $accountTypeOptions,
+     ) {
+     }
+ 
