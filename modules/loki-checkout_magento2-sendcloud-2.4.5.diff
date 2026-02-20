@@ -1,0 +1,32 @@
+diff --git a/Component/Checkout/Shipping/Sendcloud/SendcloudRepository.php b/Component/Checkout/Shipping/Sendcloud/SendcloudRepository.php
+index 03b7f40..9a4c646 100644
+--- a/Component/Checkout/Shipping/Sendcloud/SendcloudRepository.php
++++ b/Component/Checkout/Shipping/Sendcloud/SendcloudRepository.php
+@@ -14,12 +14,12 @@ use Magento\Quote\Model\Quote;
+  */
+ class SendcloudRepository extends ComponentRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return null;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (!is_array($value)) {
+             return;
+diff --git a/Shipment/Icon/IconResolver.php b/Shipment/Icon/IconResolver.php
+index 3a20693..3b7f179 100644
+--- a/Shipment/Icon/IconResolver.php
++++ b/Shipment/Icon/IconResolver.php
+@@ -13,7 +13,7 @@ class IconResolver implements IconResolverInterface
+     ) {
+     }
+ 
+-    public function resolve(IconResolverContext $iconResolverContext): false|string
++    public function resolve(IconResolverContext $iconResolverContext)
+     {
+         if (false === $this->moduleManager->isEnabled('SendCloud_SendCloud')) {
+             return false;
