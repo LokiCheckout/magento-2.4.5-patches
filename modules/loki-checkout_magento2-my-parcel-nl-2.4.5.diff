@@ -1,0 +1,48 @@
+diff --git a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
+index 674f8f6..2671b21 100644
+--- a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
++++ b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
+@@ -18,7 +18,7 @@ class DeliveryOptionsRepository extends FieldRepository
+     ) {
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $quote = $this->getContext()->getCheckoutState()->getQuote();
+ 
+@@ -32,7 +32,7 @@ class DeliveryOptionsRepository extends FieldRepository
+         return json_decode((string)$quote->getMyparcelDeliveryOptions(), true);
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (!is_array($value)) {
+             return;
+diff --git a/Plugin/RemoveMyParcelNlDetailsPlugin.php b/Plugin/RemoveMyParcelNlDetailsPlugin.php
+index c014b18..b91ee6e 100644
+--- a/Plugin/RemoveMyParcelNlDetailsPlugin.php
++++ b/Plugin/RemoveMyParcelNlDetailsPlugin.php
+@@ -20,7 +20,7 @@ class RemoveMyParcelNlDetailsPlugin
+     public function afterSaveValue(
+         ShippingMethodsRepository $shippingMethodsRepository,
+         $return,
+-        mixed $value
++        $value
+     ): void {
+         $quote = $this->checkoutState->getQuote();
+         $shippingMethod = $quote->getShippingAddress()->getShippingMethod();
+diff --git a/Shipment/Icon/IconResolver.php b/Shipment/Icon/IconResolver.php
+index e3a6992..aa963ec 100644
+--- a/Shipment/Icon/IconResolver.php
++++ b/Shipment/Icon/IconResolver.php
+@@ -13,7 +13,7 @@ class IconResolver implements IconResolverInterface
+     ) {
+     }
+ 
+-    public function resolve(IconResolverContext $iconResolverContext): false|string
++    public function resolve(IconResolverContext $iconResolverContext)
+     {
+         $paymentMethodCode = $iconResolverContext->getShipmentMethodCode();
+         if (false === $this->moduleManager->isEnabled('MyParcelNL_Magento')) {
