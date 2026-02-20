@@ -49,13 +49,13 @@ index 506e8f3..11a8817 100644
          if ($this->currentMarker !== null) {
              return $this->currentMarker;
 diff --git a/Map/Marker.php b/Map/Marker.php
-index 0292104..669562a 100644
+index d7de255..93695f5 100644
 --- a/Map/Marker.php
 +++ b/Map/Marker.php
-@@ -116,7 +116,7 @@ class Marker extends DataObject implements JsonSerializable
-         return $attributes;
+@@ -117,7 +117,7 @@ class Marker extends DataObject implements JsonSerializable
      }
  
+     #[\ReturnTypeWillChange]
 -    public function jsonSerialize(): mixed
 +    public function jsonSerialize()
      {
