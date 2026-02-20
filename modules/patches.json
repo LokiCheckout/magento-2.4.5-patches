@@ -141,6 +141,9 @@
             },
             "yireo/magento2-integration-test-helper": {
                 "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/yireo_magento2-integration-test-helper-2.4.5.diff"
+            },
+            "loki/magento2-base": {
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki_magento2-base-2.4.5.diff"
             }
         }
     }

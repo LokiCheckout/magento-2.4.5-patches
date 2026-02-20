@@ -1,0 +1,52 @@
+diff --git a/Config/Config.php b/Config/Config.php
+index 1f8663e..5014db9 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -9,7 +9,7 @@ use Magento\Store\Model\ScopeInterface;
+ class Config implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
++        private ScopeConfigInterface $scopeConfig,
+     ) {
+     }
+ 
+diff --git a/ViewModel/CookieConfig.php b/ViewModel/CookieConfig.php
+index b9aaa7f..a40ae33 100644
+--- a/ViewModel/CookieConfig.php
++++ b/ViewModel/CookieConfig.php
+@@ -9,7 +9,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class CookieConfig implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly Config $sessionConfig,
++        private Config $sessionConfig,
+     ) {
+     }
+ 
+diff --git a/ViewModel/ModuleConfig.php b/ViewModel/ModuleConfig.php
+index 2f0cd85..ed8873b 100644
+--- a/ViewModel/ModuleConfig.php
++++ b/ViewModel/ModuleConfig.php
+@@ -9,7 +9,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class ModuleConfig implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly Manager $moduleManager
++        private Manager $moduleManager
+     ) {
+     }
+ 
+diff --git a/ViewModel/SectionConfig.php b/ViewModel/SectionConfig.php
+index cafd3ee..ca56324 100644
+--- a/ViewModel/SectionConfig.php
++++ b/ViewModel/SectionConfig.php
+@@ -10,7 +10,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class SectionConfig implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
++        private ScopeConfigInterface $scopeConfig,
+     ) {
+     }
+ 
