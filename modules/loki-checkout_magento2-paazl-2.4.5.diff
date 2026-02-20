@@ -1,0 +1,13 @@
+diff --git a/Shipment/Icon/IconResolver.php b/Shipment/Icon/IconResolver.php
+index e6ded5f..ff6277b 100644
+--- a/Shipment/Icon/IconResolver.php
++++ b/Shipment/Icon/IconResolver.php
+@@ -13,7 +13,7 @@ class IconResolver implements IconResolverInterface
+     ) {
+     }
+ 
+-    public function resolve(IconResolverContext $iconResolverContext): false|string
++    public function resolve(IconResolverContext $iconResolverContext)
+     {
+         if (false === $this->moduleManager->isEnabled('Paazl_Magento2')) {
+             return false;
