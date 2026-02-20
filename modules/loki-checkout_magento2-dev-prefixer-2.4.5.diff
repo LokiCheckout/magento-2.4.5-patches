@@ -1,0 +1,13 @@
+diff --git a/Console/Command/PrefixPaymentMethods.php b/Console/Command/PrefixPaymentMethods.php
+index d62c850..394b553 100644
+--- a/Console/Command/PrefixPaymentMethods.php
++++ b/Console/Command/PrefixPaymentMethods.php
+@@ -64,7 +64,7 @@ class PrefixPaymentMethods extends Command
+         return Command::SUCCESS;
+     }
+ 
+-    private function getTitlePrefix(array $paymentMethod): false|string
++    private function getTitlePrefix(array $paymentMethod)
+     {
+         if (str_starts_with($paymentMethod['model'], 'Buckaroo')) {
+             return 'Buckaroo';
