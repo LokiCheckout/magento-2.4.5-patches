@@ -1,0 +1,41 @@
+diff --git a/Observer/AssignAdditionalBlockVariables.php b/Observer/AssignAdditionalBlockVariables.php
+index 1d1be51..2c456ea 100644
+--- a/Observer/AssignAdditionalBlockVariables.php
++++ b/Observer/AssignAdditionalBlockVariables.php
+@@ -12,8 +12,8 @@ use Loki\CssUtils\Util\CssStyleFactory;
+ class AssignAdditionalBlockVariables implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly CssClassFactory $cssClassFactory,
+-        private readonly CssStyleFactory $cssStyleFactory
++        private CssClassFactory $cssClassFactory,
++        private CssStyleFactory $cssStyleFactory
+     ) {
+     }
+ 
+diff --git a/Util/CssClass.php b/Util/CssClass.php
+index 234ae07..383d7b6 100644
+--- a/Util/CssClass.php
++++ b/Util/CssClass.php
+@@ -14,7 +14,7 @@ class CssClass
+      * @param CssClassParserInterface[] $cssClassParsers
+      */
+     public function __construct(
+-        private readonly array $cssClassParsers = [],
++        private array $cssClassParsers = [],
+     ) {
+     }
+ 
+diff --git a/Util/CssStyle.php b/Util/CssStyle.php
+index 4460294..e3a219c 100644
+--- a/Util/CssStyle.php
++++ b/Util/CssStyle.php
+@@ -13,7 +13,7 @@ class CssStyle
+      * @param CssStyleParserInterface[] $cssStyleParsers
+      */
+     public function __construct(
+-        private readonly array $cssStyleParsers = [],
++        private array $cssStyleParsers = [],
+     ) {
+     }
+ 
