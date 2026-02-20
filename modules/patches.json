@@ -39,6 +39,9 @@
             },
             "loki-checkout/magento2-braintree": {
                 "Magento 2.4.5 patch": "patches/loki-checkout_magento2-braintree-2.4.5.diff"
+            },
+            "loki-checkout/magento2-breeze": {
+                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-breeze-2.4.5.diff"
             }
         }
     }
