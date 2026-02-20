@@ -33,6 +33,9 @@
             },
             "loki-checkout/magento2-billing-first": {
                 "Magento 2.4.5 patch": "patches/loki-checkout_magento2-billing-first-2.4.5.diff"
+            },
+            "loki-checkout/magento2-billink": {
+                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-billink-2.4.5.diff"
             }
         }
     }

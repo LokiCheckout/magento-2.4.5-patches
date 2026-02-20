@@ -1,0 +1,45 @@
+diff --git a/Component/Checkout/Payment/Method/Billink/BillinkRepository.php b/Component/Checkout/Payment/Method/Billink/BillinkRepository.php
+index 15af89a..dd65558 100644
+--- a/Component/Checkout/Payment/Method/Billink/BillinkRepository.php
++++ b/Component/Checkout/Payment/Method/Billink/BillinkRepository.php
+@@ -19,12 +19,12 @@ class BillinkRepository extends FieldRepository
+     ) {
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return null;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (!is_array($value)) {
+             return;
+diff --git a/Payment/Icon/IconResolver.php b/Payment/Icon/IconResolver.php
+index d74d6d1..bfa3cb4 100644
+--- a/Payment/Icon/IconResolver.php
++++ b/Payment/Icon/IconResolver.php
+@@ -18,7 +18,7 @@ class IconResolver implements IconResolverInterface
+     ) {
+     }
+ 
+-    public function resolve(IconResolverContext $iconResolverContext): false|string
++    public function resolve(IconResolverContext $iconResolverContext)
+     {
+         $paymentMethodCode = $iconResolverContext->getPaymentMethodCode();
+ 
+diff --git a/Payment/Redirect/RedirectResolver.php b/Payment/Redirect/RedirectResolver.php
+index 98f982e..25b5e1a 100644
+--- a/Payment/Redirect/RedirectResolver.php
++++ b/Payment/Redirect/RedirectResolver.php
+@@ -8,7 +8,7 @@ use LokiCheckout\Core\Step\FinalStep\RedirectContext;
+ 
+ class RedirectResolver implements RedirectResolverInterface
+ {
+-    public function resolve(RedirectContext $redirectContext): false|string
++    public function resolve(RedirectContext $redirectContext)
+     {
+         if (false === str_starts_with($redirectContext->getPaymentMethod()->getCode(), 'billink_')) {
+             return false;
