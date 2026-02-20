@@ -562,7 +562,7 @@ index f4cf05c..f94684d 100644
      }
  
 diff --git a/Messages/LocalMessage.php b/Messages/LocalMessage.php
-index 8180e71..0b8c226 100644
+index b851e03..d78c636 100644
 --- a/Messages/LocalMessage.php
 +++ b/Messages/LocalMessage.php
 @@ -13,8 +13,8 @@ class LocalMessage implements JsonSerializable
@@ -576,10 +576,10 @@ index 8180e71..0b8c226 100644
      ) {
      }
  
-@@ -36,7 +36,7 @@ class LocalMessage implements JsonSerializable
-         ];
+@@ -37,7 +37,7 @@ class LocalMessage implements JsonSerializable
      }
  
+     #[\ReturnTypeWillChange]
 -    public function jsonSerialize(): mixed
 +    public function jsonSerialize()
      {
