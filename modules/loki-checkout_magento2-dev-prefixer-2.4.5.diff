@@ -1,7 +1,20 @@
 diff --git a/Console/Command/PrefixPaymentMethods.php b/Console/Command/PrefixPaymentMethods.php
-index d62c850..394b553 100644
+index d62c850..e17b998 100644
 --- a/Console/Command/PrefixPaymentMethods.php
 +++ b/Console/Command/PrefixPaymentMethods.php
+@@ -12,9 +12,9 @@ class PrefixPaymentMethods extends Command
+ {
+     public function __construct(
+         private ScopeConfigInterface $scopeConfig,
+-        private readonly \Magento\Framework\App\Config\Storage\WriterInterface $configStoreWriter,
+-        private readonly \Magento\Config\Model\Config\StructureLazy $configStructure,
+-        private readonly \Magento\Payment\Helper\Data $paymentHelper,
++        private \Magento\Framework\App\Config\Storage\WriterInterface $configStoreWriter,
++        private \Magento\Config\Model\Config\StructureLazy $configStructure,
++        private \Magento\Payment\Helper\Data $paymentHelper,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
 @@ -64,7 +64,7 @@ class PrefixPaymentMethods extends Command
          return Command::SUCCESS;
      }
