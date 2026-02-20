@@ -9,6 +9,9 @@
             },
             "loki-checkout/magento2-adyen": {
                 "Magento 2.4.5 patch": "patches/loki-checkout_magento2-adyen-2.4.5.diff"
+            },
+            "loki-checkout/magento2-amasty-storelocator": {
+                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-amasty-storelocator-2.4.5.diff"
             }
         }
     }
