@@ -1,0 +1,97 @@
+diff --git a/Component/Checkout/Payment/Method/ApplePay/ApplePayRepository.php b/Component/Checkout/Payment/Method/ApplePay/ApplePayRepository.php
+index 31c5b59..55b6616 100644
+--- a/Component/Checkout/Payment/Method/ApplePay/ApplePayRepository.php
++++ b/Component/Checkout/Payment/Method/ApplePay/ApplePayRepository.php
+@@ -11,12 +11,12 @@ use LokiCheckout\Mollie\Component\MollieContext;
+  */
+ class ApplePayRepository extends FieldRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return null;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $value = (string)$value;
+         $quote = $this->getContext()->getCheckoutState()->getQuote();
+diff --git a/Component/Checkout/Payment/Method/Creditcard/CreditcardRepository.php b/Component/Checkout/Payment/Method/Creditcard/CreditcardRepository.php
+index 91e97de..f1308d4 100644
+--- a/Component/Checkout/Payment/Method/Creditcard/CreditcardRepository.php
++++ b/Component/Checkout/Payment/Method/Creditcard/CreditcardRepository.php
+@@ -11,12 +11,12 @@ use LokiCheckout\Mollie\Component\MollieContext;
+  */
+ class CreditcardRepository extends FieldRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return null;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $value = (string)$value['token'];
+         $quote = $this->getContext()->getCheckoutState()->getQuote();
+diff --git a/Component/Checkout/Payment/Method/CreditcardVault/CreditcardVaultRepository.php b/Component/Checkout/Payment/Method/CreditcardVault/CreditcardVaultRepository.php
+index fdb9bb5..936180f 100644
+--- a/Component/Checkout/Payment/Method/CreditcardVault/CreditcardVaultRepository.php
++++ b/Component/Checkout/Payment/Method/CreditcardVault/CreditcardVaultRepository.php
+@@ -12,13 +12,13 @@ use LokiCheckout\Mollie\Component\MollieContext;
+  */
+ class CreditcardVaultRepository extends FieldRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $quote = $this->getContext()->getCheckoutState()->getQuote();
+         return $quote->getPayment()->getAdditionalInformation(PaymentTokenInterface::PUBLIC_HASH);
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $hash = (string)$value;
+         $quote = $this->getContext()->getCheckoutState()->getQuote();
+diff --git a/Payment/Icon/IconResolver.php b/Payment/Icon/IconResolver.php
+index 251f7b8..8a0ecd9 100644
+--- a/Payment/Icon/IconResolver.php
++++ b/Payment/Icon/IconResolver.php
+@@ -17,7 +17,7 @@ class IconResolver implements IconResolverInterface
+     ) {
+     }
+ 
+-    public function resolve(IconResolverContext $iconResolverContext): false|string
++    public function resolve(IconResolverContext $iconResolverContext)
+     {
+         $paymentMethodCode = $iconResolverContext->getPaymentMethodCode();
+         if (false === $this->moduleManager->isEnabled('Mollie_Payment')) {
+diff --git a/Payment/Redirect/RedirectResolver.php b/Payment/Redirect/RedirectResolver.php
+index 504b651..68ef409 100644
+--- a/Payment/Redirect/RedirectResolver.php
++++ b/Payment/Redirect/RedirectResolver.php
+@@ -17,7 +17,7 @@ class RedirectResolver implements RedirectResolverInterface
+     ) {
+     }
+ 
+-    public function resolve(RedirectContext $redirectContext): false|string
++    public function resolve(RedirectContext $redirectContext)
+     {
+         $paymentMethod = $redirectContext->getPaymentMethod();
+         if (false === $paymentMethod instanceof Mollie) {
+diff --git a/Validator/Component/In3DobValidator.php b/Validator/Component/In3DobValidator.php
+index 108c78a..2457b11 100644
+--- a/Validator/Component/In3DobValidator.php
++++ b/Validator/Component/In3DobValidator.php
+@@ -14,7 +14,7 @@ class In3DobValidator implements ValidatorInterface
+     ) {
+     }
+ 
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         if ($value !== 'mollie_methods_in3') {
+             return true;
