@@ -2,145 +2,145 @@
     "extra": {
         "patches": {
             "loki/magento2-admin-components": {
-                "Magento 2.4.5 patch": "patches/loki_magento2-admin-components-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki_magento2-admin-components-2.4.5.diff"
             },
             "loki-checkout/magento2-account-type": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-account-type-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-account-type-2.4.5.diff"
             },
             "loki-checkout/magento2-adyen": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-adyen-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-adyen-2.4.5.diff"
             },
             "loki-checkout/magento2-amasty-storelocator": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-amasty-storelocator-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-amasty-storelocator-2.4.5.diff"
             },
             "loki-checkout/magento2-billink": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-billink-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-billink-2.4.5.diff"
             },
             "loki-checkout/magento2-braintree": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-braintree-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-braintree-2.4.5.diff"
             },
             "loki-checkout/magento2-buckaroo": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-buckaroo-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-buckaroo-2.4.5.diff"
             },
             "loki-checkout/magento2-coc-nl": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-coc-nl-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-coc-nl-2.4.5.diff"
             },
             "loki-checkout/magento2-core": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-core-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-core-2.4.5.diff"
             },
             "loki-checkout/magento2-core-adminhtml": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-core-adminhtml-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-core-adminhtml-2.4.5.diff"
             },
             "loki-checkout/magento2-csp": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-csp-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-csp-2.4.5.diff"
             },
             "loki-checkout/magento2-customer-note": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-customer-note-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-customer-note-2.4.5.diff"
             },
             "loki-checkout/magento2-delivery-date": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-delivery-date-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-delivery-date-2.4.5.diff"
             },
             "loki-checkout/magento2-demo": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-demo-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-demo-2.4.5.diff"
             },
             "loki-checkout/magento2-dev-prefixer": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-dev-prefixer-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-dev-prefixer-2.4.5.diff"
             },
             "loki-checkout/magento2-dev-profiles": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-dev-profiles-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-dev-profiles-2.4.5.diff"
             },
             "loki-checkout/magento2-dev-tools": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-dev-tools-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-dev-tools-2.4.5.diff"
             },
             "loki-checkout/magento2-dhl": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-dhl-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-dhl-2.4.5.diff"
             },
             "loki-checkout/magento2-edit-cart": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-edit-cart-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-edit-cart-2.4.5.diff"
             },
             "loki-checkout/magento2-empty-payment": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-empty-payment-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-empty-payment-2.4.5.diff"
             },
             "loki-checkout/magento2-empty-shipment": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-empty-shipment-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-empty-shipment-2.4.5.diff"
             },
             "loki-checkout/magento2-eu-vat": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-eu-vat-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-eu-vat-2.4.5.diff"
             },
             "loki-checkout/magento2-functional-tests": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-functional-tests-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-functional-tests-2.4.5.diff"
             },
             "loki-checkout/magento2-icepay": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-icepay-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-icepay-2.4.5.diff"
             },
             "loki-checkout/magento2-login-before-other-steps": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-login-before-other-steps-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-login-before-other-steps-2.4.5.diff"
             },
             "loki-checkout/magento2-mollie": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-mollie-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-mollie-2.4.5.diff"
             },
             "loki-checkout/magento2-multi-safepay": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-multi-safepay-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-multi-safepay-2.4.5.diff"
             },
             "loki-checkout/magento2-my-parcel-nl": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-my-parcel-nl-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-my-parcel-nl-2.4.5.diff"
             },
             "loki-checkout/magento2-paazl": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-paazl-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-paazl-2.4.5.diff"
             },
             "loki-checkout/magento2-pay-nl": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-pay-nl-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-pay-nl-2.4.5.diff"
             },
             "loki-checkout/magento2-pay-one": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-pay-one-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-pay-one-2.4.5.diff"
             },
             "loki-checkout/magento2-paypal-express": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-paypal-express-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-paypal-express-2.4.5.diff"
             },
             "loki-checkout/magento2-postcode-nl": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-postcode-nl-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-postcode-nl-2.4.5.diff"
             },
             "loki-checkout/magento2-post-nl": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-post-nl-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-post-nl-2.4.5.diff"
             },
             "loki-checkout/magento2-purchase-order": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-purchase-order-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-purchase-order-2.4.5.diff"
             },
             "loki-checkout/magento2-sendcloud": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-sendcloud-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-sendcloud-2.4.5.diff"
             },
             "loki-checkout/magento2-shipper-hq": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-shipper-hq-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-shipper-hq-2.4.5.diff"
             },
             "loki-checkout/magento2-shipper-hq-enhanced": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-shipper-hq-enhanced-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-shipper-hq-enhanced-2.4.5.diff"
             },
             "loki-checkout/magento2-simple-shipping": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-simple-shipping-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-simple-shipping-2.4.5.diff"
             },
             "loki-checkout/magento2-stripe": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-stripe-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-stripe-2.4.5.diff"
             },
             "loki-checkout/magento2-test": {
-                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-test-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-test-2.4.5.diff"
             },
             "loki/magento2-components": {
-                "Magento 2.4.5 patch": "patches/loki_magento2-components-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki_magento2-components-2.4.5.diff"
             },
             "loki/magento2-debugger": {
-                "Magento 2.4.5 patch": "patches/loki_magento2-debugger-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki_magento2-debugger-2.4.5.diff"
             },
             "loki/magento2-email-mx-validator": {
-                "Magento 2.4.5 patch": "patches/loki_magento2-email-mx-validator-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki_magento2-email-mx-validator-2.4.5.diff"
             },
             "loki/magento2-field-components": {
-                "Magento 2.4.5 patch": "patches/loki_magento2-field-components-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki_magento2-field-components-2.4.5.diff"
             },
             "loki/magento2-map-components": {
-                "Magento 2.4.5 patch": "patches/loki_magento2-map-components-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki_magento2-map-components-2.4.5.diff"
             },
             "yireo/magento2-integration-test-helper": {
-                "Magento 2.4.5 patch": "patches/yireo_magento2-integration-test-helper-2.4.5.diff"
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/yireo_magento2-integration-test-helper-2.4.5.diff"
             }
         }
     }
