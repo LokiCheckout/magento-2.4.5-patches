@@ -1,0 +1,57 @@
+diff --git a/Component/Checkout/Address/Debug/DebugViewModel.php b/Component/Checkout/Address/Debug/DebugViewModel.php
+index 09fa67d..16f09e1 100644
+--- a/Component/Checkout/Address/Debug/DebugViewModel.php
++++ b/Component/Checkout/Address/Debug/DebugViewModel.php
+@@ -37,7 +37,7 @@ class DebugViewModel extends AddressFieldViewModel
+         return '-';
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return null;
+     }
+diff --git a/Component/Checkout/Address/Toggle/ToggleRepository.php b/Component/Checkout/Address/Toggle/ToggleRepository.php
+index f332133..1b46cf3 100644
+--- a/Component/Checkout/Address/Toggle/ToggleRepository.php
++++ b/Component/Checkout/Address/Toggle/ToggleRepository.php
+@@ -10,7 +10,7 @@ use LokiCheckout\PostcodeNl\Component\Checkout\Address\PostcodeNlContext;
+  */
+ class ToggleRepository extends FieldRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $streetlines = (int)$this->getContext()->getScopeConfig()->getValue('customer/address/street_lines');
+         if ($streetlines < 3) {
+@@ -24,7 +24,7 @@ class ToggleRepository extends FieldRepository
+         return $this->getContext()->getAutocompletionState()->isActive();
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $active = (bool)$value;
+ 
+diff --git a/Service/AutocompletionState.php b/Service/AutocompletionState.php
+index b216be0..41c595f 100644
+--- a/Service/AutocompletionState.php
++++ b/Service/AutocompletionState.php
+@@ -86,7 +86,7 @@ class AutocompletionState
+         return (string)$this->load('raw_data');
+     }
+ 
+-    public function setRawData(mixed $rawData): void
++    public function setRawData($rawData): void
+     {
+         $this->save('raw_data', json_encode($rawData));
+     }
+@@ -107,7 +107,7 @@ class AutocompletionState
+         $this->setErrors([]);
+     }
+ 
+-    private function load(string $name): mixed
++    private function load(string $name)
+     {
+         if (empty($this->addressType)) {
+             throw new RuntimeException('No address type set');

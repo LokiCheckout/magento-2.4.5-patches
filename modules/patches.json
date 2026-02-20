@@ -96,6 +96,9 @@
             },
             "loki-checkout/magento2-paypal-express": {
                 "Magento 2.4.5 patch": "patches/loki-checkout_magento2-paypal-express-2.4.5.diff"
+            },
+            "loki-checkout/magento2-postcode-nl": {
+                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-postcode-nl-2.4.5.diff"
             }
         }
     }
