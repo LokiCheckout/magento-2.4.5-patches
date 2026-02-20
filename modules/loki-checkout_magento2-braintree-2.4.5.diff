@@ -30,6 +30,19 @@ index 2b1a8eb..a9032fc 100644
      {
          if (!is_array($value)) {
              return;
+diff --git a/Config/Config.php b/Config/Config.php
+index ad8c129..ff747a0 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -9,7 +9,7 @@ use Magento\Store\Model\ScopeInterface;
+ class Config
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
++        private ScopeConfigInterface $scopeConfig,
+     ) {
+     }
+ 
 diff --git a/Payment/Icon/IconResolver.php b/Payment/Icon/IconResolver.php
 index 79f9146..aa2124d 100644
 --- a/Payment/Icon/IconResolver.php
