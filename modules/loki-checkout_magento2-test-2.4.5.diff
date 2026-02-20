@@ -1,0 +1,28 @@
+diff --git a/Plugin/PluginTest.php b/Plugin/PluginTest.php
+index ebf0ef0..5f086fa 100644
+--- a/Plugin/PluginTest.php
++++ b/Plugin/PluginTest.php
+@@ -13,8 +13,8 @@ class PluginTest
+      * @return array
+      */
+     public function beforeFoobar(ExampleService $subject,
+-        string|array $foobar
+-    ): null|false|string|array {
++        $foobar
++    ) {
+         return [$foobar];
+     }
+ }
+diff --git a/Service/ExampleService.php b/Service/ExampleService.php
+index 1bc0c4f..81a8e22 100644
+--- a/Service/ExampleService.php
++++ b/Service/ExampleService.php
+@@ -4,7 +4,7 @@ namespace LokiCheckout\Test\Service;
+ 
+ class ExampleService
+ {
+-    public function getFoobar(string|array $foobar): null|false|string|array
++    public function getFoobar($foobar)
+     {
+         if (is_string($foobar)) {
+             return strtoupper($foobar);
