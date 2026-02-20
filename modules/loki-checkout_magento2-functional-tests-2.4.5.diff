@@ -1,7 +1,91 @@
+diff --git a/Service/CacheManager.php b/Service/CacheManager.php
+index adca6e7..7975c96 100644
+--- a/Service/CacheManager.php
++++ b/Service/CacheManager.php
+@@ -17,7 +17,7 @@ class CacheManager
+         private Cache $cache,
+         private CleanupFiles $cleanupFiles,
+         private Pool $cacheFrontPool,
+-        private readonly AppState $appState,
++        private AppState $appState,
+     ) {
+     }
+ 
+diff --git a/Service/CustomerManager.php b/Service/CustomerManager.php
+index fad44a1..6eedea2 100644
+--- a/Service/CustomerManager.php
++++ b/Service/CustomerManager.php
+@@ -21,17 +21,17 @@ use Magento\Customer\Model\ResourceModel\Customer as CustomerResource;
+ class CustomerManager
+ {
+     public function __construct(
+-        private readonly CustomerRepositoryInterface $customerRepository,
+-        private readonly CustomerSession $customerSession,
+-        private readonly StoreManagerInterface $storeManager,
+-        private readonly CustomerInterfaceFactory $customerDataFactory,
+-        private readonly CustomerModelFactory $customerModelFactory,
+-        private readonly ProfileListing $profileListing,
+-        private readonly AddressRepositoryInterface $addressRepository,
+-        private readonly AddressInterfaceFactory $addressFactory,
+-        private readonly CustomerRegistry $customerRegistry,
+-        private readonly EncryptorInterface $encryptor,
+-        private readonly CustomerResource $customerResource
++        private CustomerRepositoryInterface $customerRepository,
++        private CustomerSession $customerSession,
++        private StoreManagerInterface $storeManager,
++        private CustomerInterfaceFactory $customerDataFactory,
++        private CustomerModelFactory $customerModelFactory,
++        private ProfileListing $profileListing,
++        private AddressRepositoryInterface $addressRepository,
++        private AddressInterfaceFactory $addressFactory,
++        private CustomerRegistry $customerRegistry,
++        private EncryptorInterface $encryptor,
++        private CustomerResource $customerResource
+ 
+     ) {
+     }
+diff --git a/Service/ModuleStatusManager.php b/Service/ModuleStatusManager.php
+index 297ff4a..a3c9483 100644
+--- a/Service/ModuleStatusManager.php
++++ b/Service/ModuleStatusManager.php
+@@ -11,12 +11,12 @@ use LokiCheckout\FunctionalTests\Util\ModuleXmlDependencies;
+ class ModuleStatusManager
+ {
+     public function __construct(
+-        private readonly ModuleList $moduleList,
+-        private readonly ModuleManager $moduleManager,
+-        private readonly ModuleStatus $moduleStatus,
+-        private readonly CacheManager $cacheManager,
+-        private readonly ModuleXmlDependencies $moduleXmlDependencies,
+-        private readonly ComponentRegistrar $componentRegistrar
++        private ModuleList $moduleList,
++        private ModuleManager $moduleManager,
++        private ModuleStatus $moduleStatus,
++        private CacheManager $cacheManager,
++        private ModuleXmlDependencies $moduleXmlDependencies,
++        private ComponentRegistrar $componentRegistrar
+     ) {
+     }
+ 
 diff --git a/Service/StoreConfigurationManager.php b/Service/StoreConfigurationManager.php
-index f460e94..3f2f500 100644
+index f460e94..9d2c0fb 100644
 --- a/Service/StoreConfigurationManager.php
 +++ b/Service/StoreConfigurationManager.php
+@@ -9,10 +9,10 @@ use Magento\Framework\App\ResourceConnection;
+ class StoreConfigurationManager
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly ConfigWriter $configWriter,
+-        private readonly CacheManager $cacheManager,
+-        private readonly ResourceConnection $resourceConnection
++        private ScopeConfigInterface $scopeConfig,
++        private ConfigWriter $configWriter,
++        private CacheManager $cacheManager,
++        private ResourceConnection $resourceConnection
+     ) {
+     }
+ 
 @@ -34,7 +34,7 @@ class StoreConfigurationManager
          return $result;
      }
