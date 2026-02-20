@@ -20,6 +20,19 @@ index 9b972d2..3e2cff3 100644
      {
          if ($this->getPropertyName() === 'termsCondition') {
              $value = (int)$value > 0 ? 1 : 0;
+diff --git a/Component/Creditcard/CreditcardViewModel.php b/Component/Creditcard/CreditcardViewModel.php
+index fa3144f..a67923a 100644
+--- a/Component/Creditcard/CreditcardViewModel.php
++++ b/Component/Creditcard/CreditcardViewModel.php
+@@ -12,7 +12,7 @@ use LokiCheckout\Core\Component\Checkout\Billing\PaymentMethod\PaymentMethodView
+ class CreditcardViewModel extends PaymentMethodViewModel
+ {
+     public function __construct(
+-        private readonly CreditcardConfigProvider $creditcardConfigProvider
++        private CreditcardConfigProvider $creditcardConfigProvider
+     ) {
+     }
+ 
 diff --git a/Component/HostedFields/HostedFieldsRepository.php b/Component/HostedFields/HostedFieldsRepository.php
 index 13b1ec8..349fd91 100644
 --- a/Component/HostedFields/HostedFieldsRepository.php
@@ -53,10 +66,15 @@ index fa17710..2e51e8e 100644
          $properyName = $this->getPropertyName();
          $quote = $this->getContext()->getQuote();
 diff --git a/Component/Voucher/VoucherRepository.php b/Component/Voucher/VoucherRepository.php
-index ea90816..1e4b5d1 100644
+index ea90816..3feddd2 100644
 --- a/Component/Voucher/VoucherRepository.php
 +++ b/Component/Voucher/VoucherRepository.php
-@@ -12,12 +12,12 @@ class VoucherRepository extends ComponentRepository
+@@ -8,16 +8,16 @@ use Loki\Components\Component\ComponentRepository;
+ class VoucherRepository extends ComponentRepository
+ {
+     public function __construct(
+-        private readonly ApplyVoucherInterface $applyVoucher,
++        private ApplyVoucherInterface $applyVoucher,
      ){
      }
  
@@ -98,9 +116,20 @@ index 83373ad..117fff1 100644
          $paymentMethod = $redirectContext->getPaymentMethod();
          if (false === $paymentMethod instanceof AbstractMethod) {
 diff --git a/ViewModel/AdditionalPaymentDetails.php b/ViewModel/AdditionalPaymentDetails.php
-index bec8f44..77483dc 100644
+index bec8f44..e3c95de 100644
 --- a/ViewModel/AdditionalPaymentDetails.php
 +++ b/ViewModel/AdditionalPaymentDetails.php
+@@ -9,8 +9,8 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
+ class AdditionalPaymentDetails implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly GenderOptionModel $genderOptionModel,
++        private CheckoutState $checkoutState,
++        private GenderOptionModel $genderOptionModel,
+     ) {
+     }
+ 
 @@ -112,7 +112,7 @@ class AdditionalPaymentDetails implements ArgumentInterface
          ];
      }
