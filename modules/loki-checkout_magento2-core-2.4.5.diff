@@ -1,3 +1,211 @@
+diff --git a/Component/Base/AddressField/AddressFieldRepository.php b/Component/Base/AddressField/AddressFieldRepository.php
+index 22029777..e9d7b493 100644
+--- a/Component/Base/AddressField/AddressFieldRepository.php
++++ b/Component/Base/AddressField/AddressFieldRepository.php
+@@ -15,8 +15,8 @@ use Magento\Quote\Model\Quote\Address;
+ class AddressFieldRepository extends FieldRepository
+ {
+     public function __construct(
+-        protected readonly AddressStateProvider $addressStateProvider,
+-        protected readonly EventManager $eventManager
++        protected AddressStateProvider $addressStateProvider,
++        protected EventManager $eventManager
+     ) {
+     }
+ 
+@@ -27,12 +27,12 @@ class AddressFieldRepository extends FieldRepository
+         return array_pop($blockNameParts);
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return $this->getAddressState()->get($this->getFieldName());
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if ($value === null) {
+             return;
+diff --git a/Component/Base/Payment/AdditionalInformation/AdditionalInformationRepository.php b/Component/Base/Payment/AdditionalInformation/AdditionalInformationRepository.php
+index cef3d00a..3fb10f9a 100644
+--- a/Component/Base/Payment/AdditionalInformation/AdditionalInformationRepository.php
++++ b/Component/Base/Payment/AdditionalInformation/AdditionalInformationRepository.php
+@@ -10,7 +10,7 @@ use LokiCheckout\Core\Component\Base\Generic\CheckoutContext;
+  */
+ abstract class AdditionalInformationRepository extends FieldRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $value = trim((string)$this->getPropertyValue());
+         if (!empty($value)) {
+@@ -24,7 +24,7 @@ abstract class AdditionalInformationRepository extends FieldRepository
+         return $defaultValue;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $this->saveProperty((string)$value);
+     }
+@@ -36,7 +36,7 @@ abstract class AdditionalInformationRepository extends FieldRepository
+         return end($parts);
+     }
+ 
+-    public function getPropertyValue(mixed $defaultValue = null, ?string $propertyName = null): mixed
++    public function getPropertyValue($defaultValue = null, ?string $propertyName = null)
+     {
+         if ($propertyName === null) {
+             $propertyName = $this->getPropertyName();
+@@ -50,7 +50,7 @@ abstract class AdditionalInformationRepository extends FieldRepository
+         return $defaultValue;
+     }
+ 
+-    protected function saveProperty(mixed $propertyValue, ?string $propertyName = null): void
++    protected function saveProperty($propertyValue, ?string $propertyName = null): void
+     {
+         if ($propertyName === null) {
+             $propertyName = $this->getPropertyName();
+diff --git a/Component/Base/Payment/ApplePay/ApplePayRepository.php b/Component/Base/Payment/ApplePay/ApplePayRepository.php
+index da735959..7ebe3782 100644
+--- a/Component/Base/Payment/ApplePay/ApplePayRepository.php
++++ b/Component/Base/Payment/ApplePay/ApplePayRepository.php
+@@ -7,12 +7,12 @@ use Loki\Components\Component\ComponentRepository;
+ 
+ abstract class ApplePayRepository extends ComponentRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return null;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (false === is_array($value)) {
+             return;
+diff --git a/Component/Base/QuoteField/QuoteFieldRepository.php b/Component/Base/QuoteField/QuoteFieldRepository.php
+index 343e2514..0f37b8ca 100644
+--- a/Component/Base/QuoteField/QuoteFieldRepository.php
++++ b/Component/Base/QuoteField/QuoteFieldRepository.php
+@@ -11,12 +11,12 @@ use Loki\Field\Component\Base\Field\FieldRepository;
+  */
+ class QuoteFieldRepository extends FieldRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return (string)$this->getQuote()->getData($this->getFieldName());
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $quote = $this->getQuote();
+         $quote->setData($this->getFieldName(), $value);
+diff --git a/Component/Checkout/Address/Firstname/FirstnameRepository.php b/Component/Checkout/Address/Firstname/FirstnameRepository.php
+index 0471bebb..637b3c89 100644
+--- a/Component/Checkout/Address/Firstname/FirstnameRepository.php
++++ b/Component/Checkout/Address/Firstname/FirstnameRepository.php
+@@ -6,7 +6,7 @@ use LokiCheckout\Core\Component\Base\AddressField\AddressFieldRepository;
+ 
+ class FirstnameRepository extends AddressFieldRepository
+ {
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if ($this->getContext()->getCheckoutState()->getQuote()->getCustomerIsGuest()) {
+             $this->getContext()->getCheckoutState()->getQuote()->setCustomerFirstname($value);
+diff --git a/Component/Checkout/Address/Lastname/LastnameRepository.php b/Component/Checkout/Address/Lastname/LastnameRepository.php
+index f910fd05..79eaa18d 100644
+--- a/Component/Checkout/Address/Lastname/LastnameRepository.php
++++ b/Component/Checkout/Address/Lastname/LastnameRepository.php
+@@ -6,7 +6,7 @@ use LokiCheckout\Core\Component\Base\AddressField\AddressFieldRepository;
+ 
+ class LastnameRepository extends AddressFieldRepository
+ {
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if ($this->getContext()->getCheckoutState()->getQuote()->getCustomerIsGuest()) {
+             $this->getContext()->getCheckoutState()->getQuote()->setCustomerLastname($value);
+diff --git a/Component/Checkout/Address/Middlename/MiddlenameRepository.php b/Component/Checkout/Address/Middlename/MiddlenameRepository.php
+index 57e36f2b..8ed5a6bf 100644
+--- a/Component/Checkout/Address/Middlename/MiddlenameRepository.php
++++ b/Component/Checkout/Address/Middlename/MiddlenameRepository.php
+@@ -6,7 +6,7 @@ use LokiCheckout\Core\Component\Base\AddressField\AddressFieldRepository;
+ 
+ class MiddlenameRepository extends AddressFieldRepository
+ {
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if ($this->getContext()->getCheckoutState()->getQuote()->getCustomerIsGuest()) {
+             $this->getContext()->getCheckoutState()->getQuote()->setCustomerMiddlename($value);
+diff --git a/Component/Checkout/Address/Postcode/PostcodeContext.php b/Component/Checkout/Address/Postcode/PostcodeContext.php
+index 408ddce6..0e777cc1 100644
+--- a/Component/Checkout/Address/Postcode/PostcodeContext.php
++++ b/Component/Checkout/Address/Postcode/PostcodeContext.php
+@@ -22,20 +22,20 @@ use Loki\Components\Messages\GlobalMessageRegistry;
+ class PostcodeContext implements ComponentContextInterface
+ {
+     public function __construct(
+-        private readonly DirectoryData $directoryData,
+-        private readonly AddressStateProvider $addressStateProvider,
+-        private readonly CheckoutState $checkoutState,
+-        private readonly ShippingAddressState $shippingAddressState,
+-        private readonly BillingAddressState $billingAddressState,
+-        private readonly CustomerProvider $customerProvider,
+-        private readonly StepProvider $stepProvider,
+-        private readonly StepNavigator $stepNavigator,
+-        private readonly ModuleConfig $moduleConfig,
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly AttributeProvider $attributeProvider,
+-        private readonly GlobalMessageRegistry $globalMessageRegistry,
+-        private readonly CoreMessageManager $coreMessageManager,
+-        private readonly UrlFactory $urlFactory,
++        private DirectoryData $directoryData,
++        private AddressStateProvider $addressStateProvider,
++        private CheckoutState $checkoutState,
++        private ShippingAddressState $shippingAddressState,
++        private BillingAddressState $billingAddressState,
++        private CustomerProvider $customerProvider,
++        private StepProvider $stepProvider,
++        private StepNavigator $stepNavigator,
++        private ModuleConfig $moduleConfig,
++        private ScopeConfigInterface $scopeConfig,
++        private AttributeProvider $attributeProvider,
++        private GlobalMessageRegistry $globalMessageRegistry,
++        private CoreMessageManager $coreMessageManager,
++        private UrlFactory $urlFactory,
+     ) {
+     }
+ 
+diff --git a/Component/Checkout/Address/Region/RegionRepository.php b/Component/Checkout/Address/Region/RegionRepository.php
+index 15d90c86..cb596ed3 100644
+--- a/Component/Checkout/Address/Region/RegionRepository.php
++++ b/Component/Checkout/Address/Region/RegionRepository.php
+@@ -6,7 +6,7 @@ use LokiCheckout\Core\Component\Base\AddressField\AddressFieldRepository;
+ 
+ class RegionRepository extends AddressFieldRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $regionId = (string)$this->getAddressState()->get('region_id');
+         if (is_numeric($regionId) && $regionId > 0) {
+@@ -16,7 +16,7 @@ class RegionRepository extends AddressFieldRepository
+         return (string)$this->getAddressState()->get('region');
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (is_numeric($value)) {
+             $this->getAddressState()->set('region_id', $value);
 diff --git a/Component/Checkout/Address/SaveInAddressBook/SaveInAddressBookViewModel.php b/Component/Checkout/Address/SaveInAddressBook/SaveInAddressBookViewModel.php
 index 7afbfbc7..b6fae393 100644
 --- a/Component/Checkout/Address/SaveInAddressBook/SaveInAddressBookViewModel.php
@@ -11,6 +219,533 @@ index 7afbfbc7..b6fae393 100644
      {
          return (bool)parent::getValue();
      }
+diff --git a/Component/Checkout/Address/Select/SelectRepository.php b/Component/Checkout/Address/Select/SelectRepository.php
+index 6b55309b..3f4dd298 100644
+--- a/Component/Checkout/Address/Select/SelectRepository.php
++++ b/Component/Checkout/Address/Select/SelectRepository.php
+@@ -32,7 +32,7 @@ class SelectRepository extends ComponentRepository
+         return $sanitizedAddressId;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (false === $this->getContext()->getCustomerProvider()->isLoggedIn()) {
+             return;
+diff --git a/Component/Checkout/Address/StreetLine/StreetLineContext.php b/Component/Checkout/Address/StreetLine/StreetLineContext.php
+index f5607351..3744369d 100644
+--- a/Component/Checkout/Address/StreetLine/StreetLineContext.php
++++ b/Component/Checkout/Address/StreetLine/StreetLineContext.php
+@@ -22,20 +22,20 @@ use Loki\Components\Messages\GlobalMessageRegistry;
+ class StreetLineContext implements ComponentContextInterface
+ {
+     public function __construct(
+-        private readonly StreetLinesFactory $streetLinesFactory,
+-        private readonly AddressStateProvider $addressStateProvider,
+-        private readonly CheckoutState $checkoutState,
+-        private readonly ShippingAddressState $shippingAddressState,
+-        private readonly BillingAddressState $billingAddressState,
+-        private readonly CustomerProvider $customerProvider,
+-        private readonly StepProvider $stepProvider,
+-        private readonly StepNavigator $stepNavigator,
+-        private readonly ModuleConfig $moduleConfig,
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly AttributeProvider $attributeProvider,
+-        private readonly GlobalMessageRegistry $globalMessageRegistry,
+-        private readonly CoreMessageManager $coreMessageManager,
+-        private readonly UrlFactory $urlFactory,
++        private StreetLinesFactory $streetLinesFactory,
++        private AddressStateProvider $addressStateProvider,
++        private CheckoutState $checkoutState,
++        private ShippingAddressState $shippingAddressState,
++        private BillingAddressState $billingAddressState,
++        private CustomerProvider $customerProvider,
++        private StepProvider $stepProvider,
++        private StepNavigator $stepNavigator,
++        private ModuleConfig $moduleConfig,
++        private ScopeConfigInterface $scopeConfig,
++        private AttributeProvider $attributeProvider,
++        private GlobalMessageRegistry $globalMessageRegistry,
++        private CoreMessageManager $coreMessageManager,
++        private UrlFactory $urlFactory,
+     ) {
+     }
+ 
+diff --git a/Component/Checkout/Address/StreetLine/StreetLineRepository.php b/Component/Checkout/Address/StreetLine/StreetLineRepository.php
+index 40a58ed4..eff9339b 100644
+--- a/Component/Checkout/Address/StreetLine/StreetLineRepository.php
++++ b/Component/Checkout/Address/StreetLine/StreetLineRepository.php
+@@ -9,7 +9,7 @@ use LokiCheckout\Core\Component\Base\AddressField\AddressFieldRepository;
+  */
+ class StreetLineRepository extends AddressFieldRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $numberOfStreetLines = (int)$this->getContext()->getScopeConfig()->getValue('customer/address/street_lines');
+ 
+@@ -26,7 +26,7 @@ class StreetLineRepository extends AddressFieldRepository
+             . $streetLines->getLineByIndex($this->getIndex() + 3);
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $street = (string)$this->getAddressState()->get('street');
+         $countryId = (string)$this->getAddressState()->get('country_id');
+diff --git a/Component/Checkout/Address/ToggleSelect/ToggleSelectRepository.php b/Component/Checkout/Address/ToggleSelect/ToggleSelectRepository.php
+index 1a02a28b..6bd2d54f 100644
+--- a/Component/Checkout/Address/ToggleSelect/ToggleSelectRepository.php
++++ b/Component/Checkout/Address/ToggleSelect/ToggleSelectRepository.php
+@@ -10,7 +10,7 @@ use Loki\Components\Component\ComponentRepository;
+  */
+ class ToggleSelectRepository extends ComponentRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $value = (bool)$this->getContext()->isNewAddress($this->getComponent());
+         if ((int)$value > 0) {
+@@ -20,7 +20,7 @@ class ToggleSelectRepository extends ComponentRepository
+         return $value;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if ((int)$value > 0) {
+             $this->resetCustomerAddressId();
+diff --git a/Component/Checkout/Billing/PaymentMethods/PaymentMethodsContext.php b/Component/Checkout/Billing/PaymentMethods/PaymentMethodsContext.php
+index 3c5dc6fc..386bd5ec 100644
+--- a/Component/Checkout/Billing/PaymentMethods/PaymentMethodsContext.php
++++ b/Component/Checkout/Billing/PaymentMethods/PaymentMethodsContext.php
+@@ -21,19 +21,19 @@ use Loki\Components\Messages\GlobalMessageRegistry;
+ class PaymentMethodsContext implements ComponentContextInterface
+ {
+     public function __construct(
+-        private readonly PaymentMethodManagementInterface $paymentMethodManagement,
+-        private readonly CheckoutState $checkoutState,
+-        private readonly ShippingAddressState $shippingAddressState,
+-        private readonly BillingAddressState $billingAddressState,
+-        private readonly CustomerProvider $customerProvider,
+-        private readonly StepProvider $stepProvider,
+-        private readonly StepNavigator $stepNavigator,
+-        private readonly ModuleConfig $moduleConfig,
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly AttributeProvider $attributeProvider,
+-        private readonly GlobalMessageRegistry $globalMessageRegistry,
+-        private readonly CoreMessageManager $coreMessageManager,
+-        private readonly UrlFactory $urlFactory,
++        private PaymentMethodManagementInterface $paymentMethodManagement,
++        private CheckoutState $checkoutState,
++        private ShippingAddressState $shippingAddressState,
++        private BillingAddressState $billingAddressState,
++        private CustomerProvider $customerProvider,
++        private StepProvider $stepProvider,
++        private StepNavigator $stepNavigator,
++        private ModuleConfig $moduleConfig,
++        private ScopeConfigInterface $scopeConfig,
++        private AttributeProvider $attributeProvider,
++        private GlobalMessageRegistry $globalMessageRegistry,
++        private CoreMessageManager $coreMessageManager,
++        private UrlFactory $urlFactory,
+     ) {
+     }
+ 
+diff --git a/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php b/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
+index 170f43d3..83f86f24 100644
+--- a/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
++++ b/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
+@@ -46,7 +46,7 @@ class PaymentMethodsRepository extends ComponentRepository
+         return $defaultPayment;
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         static $paymentMethod = false;
+         if (is_string($paymentMethod)) {
+@@ -65,7 +65,7 @@ class PaymentMethodsRepository extends ComponentRepository
+         return $sanitizedPaymentMethod;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $value = $this->sanitizePaymentMethod((string)$value);
+         $quote = $this->getQuote();
+diff --git a/Component/Checkout/Billing/ShippingAsBilling/ShippingAsBillingRepository.php b/Component/Checkout/Billing/ShippingAsBilling/ShippingAsBillingRepository.php
+index e9984f87..3d28a544 100644
+--- a/Component/Checkout/Billing/ShippingAsBilling/ShippingAsBillingRepository.php
++++ b/Component/Checkout/Billing/ShippingAsBilling/ShippingAsBillingRepository.php
+@@ -10,7 +10,7 @@ use Loki\Components\Component\ComponentRepository;
+  */
+ class ShippingAsBillingRepository extends ComponentRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $sameAddressService = $this->getContext()->getSameAddressService();
+         $useSameAddress = $sameAddressService->isSame();
+@@ -22,7 +22,7 @@ class ShippingAsBillingRepository extends ComponentRepository
+         return $useSameAddress;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $billingAsShipping = (bool)$value;
+         $quote = $this->getContext()->getCheckoutState()->getQuote();
+diff --git a/Component/Checkout/GridLayout/GridLayoutViewModel.php b/Component/Checkout/GridLayout/GridLayoutViewModel.php
+index 0707b92c..982875af 100644
+--- a/Component/Checkout/GridLayout/GridLayoutViewModel.php
++++ b/Component/Checkout/GridLayout/GridLayoutViewModel.php
+@@ -11,7 +11,7 @@ class GridLayoutViewModel extends ComponentViewModel
+     protected bool $skipValidation = true;
+ 
+     public function __construct(
+-        private readonly Config $config,
++        private Config $config,
+     ) {
+     }
+ 
+diff --git a/Component/Checkout/Other/Agreements/AgreementsRepository.php b/Component/Checkout/Other/Agreements/AgreementsRepository.php
+index 9f2c9e43..a5f877f3 100644
+--- a/Component/Checkout/Other/Agreements/AgreementsRepository.php
++++ b/Component/Checkout/Other/Agreements/AgreementsRepository.php
+@@ -20,7 +20,7 @@ class AgreementsRepository extends ComponentRepository
+         return $this->getContext()->getCheckoutAgreementsList()->getList($searchCriteria);
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $savedAgreements = (array)$this->getContext()->getCheckoutState()->getCheckoutSession()->getAgreementIds();
+ 
+@@ -33,7 +33,7 @@ class AgreementsRepository extends ComponentRepository
+         return $value;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (empty($value) || false === is_array($value)) {
+             return;
+diff --git a/Component/Checkout/Other/Newsletter/NewsletterContext.php b/Component/Checkout/Other/Newsletter/NewsletterContext.php
+index 1dd28537..22189b97 100644
+--- a/Component/Checkout/Other/Newsletter/NewsletterContext.php
++++ b/Component/Checkout/Other/Newsletter/NewsletterContext.php
+@@ -26,24 +26,24 @@ use LokiCheckout\Core\Repository\NewsletterRepository;
+ class NewsletterContext implements ComponentContextInterface
+ {
+     public function __construct(
+-        private readonly SubscriptionManagerInterface $subscriptionManager,
+-        private readonly SubscriberFactory $subscriberFactory,
+-        private readonly StoreManagerInterface $storeManager,
+-        private readonly AddressStateProvider $addressStateProvider,
+-        private readonly CheckoutState $checkoutState,
+-        private readonly ShippingAddressState $shippingAddressState,
+-        private readonly BillingAddressState $billingAddressState,
+-        private readonly CustomerProvider $customerProvider,
+-        private readonly StepProvider $stepProvider,
+-        private readonly StepNavigator $stepNavigator,
+-        private readonly ModuleConfig $moduleConfig,
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly AttributeProvider $attributeProvider,
+-        private readonly GlobalMessageRegistry $globalMessageRegistry,
+-        private readonly CoreMessageManager $coreMessageManager,
+-        private readonly UrlFactory $urlFactory,
+-        private readonly ResourceConnection $resourceConnection,
+-        private readonly NewsletterRepository $newsletterRepository,
++        private SubscriptionManagerInterface $subscriptionManager,
++        private SubscriberFactory $subscriberFactory,
++        private StoreManagerInterface $storeManager,
++        private AddressStateProvider $addressStateProvider,
++        private CheckoutState $checkoutState,
++        private ShippingAddressState $shippingAddressState,
++        private BillingAddressState $billingAddressState,
++        private CustomerProvider $customerProvider,
++        private StepProvider $stepProvider,
++        private StepNavigator $stepNavigator,
++        private ModuleConfig $moduleConfig,
++        private ScopeConfigInterface $scopeConfig,
++        private AttributeProvider $attributeProvider,
++        private GlobalMessageRegistry $globalMessageRegistry,
++        private CoreMessageManager $coreMessageManager,
++        private UrlFactory $urlFactory,
++        private ResourceConnection $resourceConnection,
++        private NewsletterRepository $newsletterRepository,
+     ) {
+     }
+ 
+diff --git a/Component/Checkout/Other/Newsletter/NewsletterRepository.php b/Component/Checkout/Other/Newsletter/NewsletterRepository.php
+index a6d69a3d..8d893998 100644
+--- a/Component/Checkout/Other/Newsletter/NewsletterRepository.php
++++ b/Component/Checkout/Other/Newsletter/NewsletterRepository.php
+@@ -10,7 +10,7 @@ use Loki\Field\Component\Base\Field\FieldRepository;
+  */
+ class NewsletterRepository extends FieldRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $email = (string)$this->getContext()->getCheckoutState()->getQuote()->getCustomerEmail();
+         if (strlen($email) < 1) {
+@@ -35,7 +35,7 @@ class NewsletterRepository extends FieldRepository
+         return false;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $email = (string)$this->getContext()->getCheckoutState()->getQuote()->getCustomerEmail();
+         if ((bool)$value) {
+diff --git a/Component/Checkout/ProgressBar/ProgressBarRepository.php b/Component/Checkout/ProgressBar/ProgressBarRepository.php
+index 818e40f7..d6711d00 100644
+--- a/Component/Checkout/ProgressBar/ProgressBarRepository.php
++++ b/Component/Checkout/ProgressBar/ProgressBarRepository.php
+@@ -10,12 +10,12 @@ use Loki\Components\Component\ComponentRepository;
+  */
+ class ProgressBarRepository extends ComponentRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return $this->getContext()->getStepNavigator()->getCurrentStep()->getCode();
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $this->getContext()->getStepNavigator()->setCurrentStepByCode((string)$value);
+     }
+diff --git a/Component/Checkout/Shipping/BillingAsShipping/BillingAsShippingRepository.php b/Component/Checkout/Shipping/BillingAsShipping/BillingAsShippingRepository.php
+index 91c5b790..7468f2a8 100644
+--- a/Component/Checkout/Shipping/BillingAsShipping/BillingAsShippingRepository.php
++++ b/Component/Checkout/Shipping/BillingAsShipping/BillingAsShippingRepository.php
+@@ -10,7 +10,7 @@ use Loki\Components\Component\ComponentRepository;
+  */
+ class BillingAsShippingRepository extends ComponentRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $sameAddressService = $this->getContext()->getSameAddressService();
+         $useSameAddress = $sameAddressService->isSame();
+@@ -22,7 +22,7 @@ class BillingAsShippingRepository extends ComponentRepository
+         return $useSameAddress;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $quote = $this->getContext()->getCheckoutState()->getQuote();
+         $quote->getShippingAddress()->setSameAsBilling((int)$value);
+diff --git a/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsContext.php b/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsContext.php
+index 521dea01..7fb5e736 100644
+--- a/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsContext.php
++++ b/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsContext.php
+@@ -23,21 +23,21 @@ use Loki\Components\Messages\GlobalMessageRegistry;
+ class ShippingMethodsContext implements ComponentContextInterface
+ {
+     public function __construct(
+-        private readonly ShippingMethodManagementInterface $shippingMethodManagement,
+-        private readonly CheckoutState $checkoutState,
+-        private readonly ShippingAddressState $shippingAddressState,
+-        private readonly BillingAddressState $billingAddressState,
+-        private readonly CustomerProvider $customerProvider,
+-        private readonly StepProvider $stepProvider,
+-        private readonly StepNavigator $stepNavigator,
+-        private readonly ModuleConfig $moduleConfig,
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly AttributeProvider $attributeProvider,
+-        private readonly GlobalMessageRegistry $globalMessageRegistry,
+-        private readonly CoreMessageManager $coreMessageManager,
+-        private readonly RateFactory $rateFactory,
+-        private readonly UrlFactory $urlFactory,
+-        private readonly TotalsCollector $totalsCollector
++        private ShippingMethodManagementInterface $shippingMethodManagement,
++        private CheckoutState $checkoutState,
++        private ShippingAddressState $shippingAddressState,
++        private BillingAddressState $billingAddressState,
++        private CustomerProvider $customerProvider,
++        private StepProvider $stepProvider,
++        private StepNavigator $stepNavigator,
++        private ModuleConfig $moduleConfig,
++        private ScopeConfigInterface $scopeConfig,
++        private AttributeProvider $attributeProvider,
++        private GlobalMessageRegistry $globalMessageRegistry,
++        private CoreMessageManager $coreMessageManager,
++        private RateFactory $rateFactory,
++        private UrlFactory $urlFactory,
++        private TotalsCollector $totalsCollector
+     ) {
+     }
+ 
+diff --git a/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php b/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php
+index b9700c97..017da936 100644
+--- a/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php
++++ b/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php
+@@ -17,7 +17,7 @@ class ShippingMethodsRepository extends ComponentRepository
+     private array $shippingMethods = [];
+ 
+     public function __construct(
+-        private readonly UpdateShippingMethod $updateShippingMethod,
++        private UpdateShippingMethod $updateShippingMethod,
+     ) {
+     }
+ 
+@@ -58,7 +58,7 @@ class ShippingMethodsRepository extends ComponentRepository
+         return $this->shippingMethods;
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         if (strlen($this->currentShippingMethod) > 0) {
+             return $this->currentShippingMethod;
+@@ -76,7 +76,7 @@ class ShippingMethodsRepository extends ComponentRepository
+         return $sanitizedShippingMethod;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $shippingMethodCode = (string)$value;
+         $shippingMethodCode = $this->sanitizeShippingMethod($shippingMethodCode);
+diff --git a/Component/Checkout/Sidebar/CouponCode/CouponCodeRepository.php b/Component/Checkout/Sidebar/CouponCode/CouponCodeRepository.php
+index 207a3521..a35d4471 100644
+--- a/Component/Checkout/Sidebar/CouponCode/CouponCodeRepository.php
++++ b/Component/Checkout/Sidebar/CouponCode/CouponCodeRepository.php
+@@ -15,12 +15,12 @@ class CouponCodeRepository extends FieldRepository
+     ) {
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return $this->filter((string)$this->getContext()->getCheckoutState()->getQuote()->getCouponCode());
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (empty($value['task']) || !isset($value['code'])) {
+             return;
+diff --git a/Component/Checkout/Sidebar/Preview/BillingAddress/BillingAddressViewModel.php b/Component/Checkout/Sidebar/Preview/BillingAddress/BillingAddressViewModel.php
+index b97df9a0..4903d0d9 100644
+--- a/Component/Checkout/Sidebar/Preview/BillingAddress/BillingAddressViewModel.php
++++ b/Component/Checkout/Sidebar/Preview/BillingAddress/BillingAddressViewModel.php
+@@ -13,10 +13,10 @@ class BillingAddressViewModel implements ArgumentInterface
+ {
+     protected bool $skipValidation = true;
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly BillingAddressState $billingAddressState,
+-        private readonly AddressRenderer $addressRenderer,
+-        private readonly SameAddressService $sameAddressService
++        private CheckoutState $checkoutState,
++        private BillingAddressState $billingAddressState,
++        private AddressRenderer $addressRenderer,
++        private SameAddressService $sameAddressService
+     ) {
+     }
+ 
+diff --git a/Component/Checkout/Sidebar/Preview/PaymentDetails/PaymentDetailsViewModel.php b/Component/Checkout/Sidebar/Preview/PaymentDetails/PaymentDetailsViewModel.php
+index be4b2b24..c7262531 100644
+--- a/Component/Checkout/Sidebar/Preview/PaymentDetails/PaymentDetailsViewModel.php
++++ b/Component/Checkout/Sidebar/Preview/PaymentDetails/PaymentDetailsViewModel.php
+@@ -10,7 +10,7 @@ class PaymentDetailsViewModel implements ArgumentInterface
+ {
+     protected bool $skipValidation = true;
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
++        private CheckoutState $checkoutState,
+     ) {
+     }
+ 
+diff --git a/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php b/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php
+index 5891847e..89aa13ad 100644
+--- a/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php
++++ b/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php
+@@ -19,12 +19,12 @@ class ShippingDetailsViewModel extends CheckoutViewModel
+     protected bool $skipValidation = true;
+ 
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly ShippingConfig $shippingConfig,
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly ShippingAddressState $shippingAddressState,
+-        private readonly AddressRenderer $addressRenderer,
+-        private readonly SameAddressService $sameAddressService,
++        private CheckoutState $checkoutState,
++        private ShippingConfig $shippingConfig,
++        private ScopeConfigInterface $scopeConfig,
++        private ShippingAddressState $shippingAddressState,
++        private AddressRenderer $addressRenderer,
++        private SameAddressService $sameAddressService,
+         private string $separator = ' - '
+     ) {
+     }
+diff --git a/Component/Checkout/Step/AbstractStepViewModel.php b/Component/Checkout/Step/AbstractStepViewModel.php
+index c8cf0bb5..8dd34f28 100644
+--- a/Component/Checkout/Step/AbstractStepViewModel.php
++++ b/Component/Checkout/Step/AbstractStepViewModel.php
+@@ -13,7 +13,7 @@ abstract class AbstractStepViewModel extends ComponentViewModel implements StepV
+ {
+     protected bool $valid = true;
+     public function __construct(
+-        private readonly StepNavigator $stepNavigator,
++        private StepNavigator $stepNavigator,
+     ) {
+     }
+ 
+@@ -42,7 +42,7 @@ abstract class AbstractStepViewModel extends ComponentViewModel implements StepV
+         return $this->stepNavigator->isCurrentStep($this);
+     }
+ 
+-    public function validate(): bool|array
++    public function validate()
+     {
+         return true;
+     }
+diff --git a/Component/Checkout/Step/BillingStep/BillingStepContext.php b/Component/Checkout/Step/BillingStep/BillingStepContext.php
+index 9aa71a26..cd7aef7a 100644
+--- a/Component/Checkout/Step/BillingStep/BillingStepContext.php
++++ b/Component/Checkout/Step/BillingStep/BillingStepContext.php
+@@ -21,19 +21,19 @@ use Loki\Components\Messages\GlobalMessageRegistry;
+ class BillingStepContext implements StepContextInterface
+ {
+     public function __construct(
+-        private readonly ValidatorInterface $stepValidator,
+-        private readonly CheckoutState $checkoutState,
+-        private readonly ShippingAddressState $shippingAddressState,
+-        private readonly BillingAddressState $billingAddressState,
+-        private readonly CustomerProvider $customerProvider,
+-        private readonly StepProvider $stepProvider,
+-        private readonly StepNavigator $stepNavigator,
+-        private readonly ModuleConfig $moduleConfig,
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly AttributeProvider $attributeProvider,
+-        private readonly GlobalMessageRegistry $globalMessageRegistry,
+-        private readonly CoreMessageManager $coreMessageManager,
+-        private readonly UrlFactory $urlFactory,
++        private ValidatorInterface $stepValidator,
++        private CheckoutState $checkoutState,
++        private ShippingAddressState $shippingAddressState,
++        private BillingAddressState $billingAddressState,
++        private CustomerProvider $customerProvider,
++        private StepProvider $stepProvider,
++        private StepNavigator $stepNavigator,
++        private ModuleConfig $moduleConfig,
++        private ScopeConfigInterface $scopeConfig,
++        private AttributeProvider $attributeProvider,
++        private GlobalMessageRegistry $globalMessageRegistry,
++        private CoreMessageManager $coreMessageManager,
++        private UrlFactory $urlFactory,
+     ) {
+     }
+     public function getStepValidator(): ValidatorInterface
 diff --git a/Component/Checkout/Step/BillingStep/BillingStepViewModel.php b/Component/Checkout/Step/BillingStep/BillingStepViewModel.php
 index c98208f6..429e58e8 100644
 --- a/Component/Checkout/Step/BillingStep/BillingStepViewModel.php
@@ -24,6 +759,43 @@ index c98208f6..429e58e8 100644
      {
          $result = $this->getContext()->getStepValidator()->validate();
          $this->valid = true === $result;
+diff --git a/Component/Checkout/Step/OneStep/OneStepContext.php b/Component/Checkout/Step/OneStep/OneStepContext.php
+index 46fefae8..881c7a16 100644
+--- a/Component/Checkout/Step/OneStep/OneStepContext.php
++++ b/Component/Checkout/Step/OneStep/OneStepContext.php
+@@ -21,19 +21,19 @@ use Loki\Components\Messages\GlobalMessageRegistry;
+ class OneStepContext implements StepContextInterface
+ {
+     public function __construct(
+-        private readonly ValidatorInterface $stepValidator,
+-        private readonly CheckoutState $checkoutState,
+-        private readonly ShippingAddressState $shippingAddressState,
+-        private readonly BillingAddressState $billingAddressState,
+-        private readonly CustomerProvider $customerProvider,
+-        private readonly StepProvider $stepProvider,
+-        private readonly StepNavigator $stepNavigator,
+-        private readonly ModuleConfig $moduleConfig,
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly AttributeProvider $attributeProvider,
+-        private readonly GlobalMessageRegistry $globalMessageRegistry,
+-        private readonly CoreMessageManager $coreMessageManager,
+-        private readonly UrlFactory $urlFactory,
++        private ValidatorInterface $stepValidator,
++        private CheckoutState $checkoutState,
++        private ShippingAddressState $shippingAddressState,
++        private BillingAddressState $billingAddressState,
++        private CustomerProvider $customerProvider,
++        private StepProvider $stepProvider,
++        private StepNavigator $stepNavigator,
++        private ModuleConfig $moduleConfig,
++        private ScopeConfigInterface $scopeConfig,
++        private AttributeProvider $attributeProvider,
++        private GlobalMessageRegistry $globalMessageRegistry,
++        private CoreMessageManager $coreMessageManager,
++        private UrlFactory $urlFactory,
+     ) {
+     }
+     public function getStepValidator(): ValidatorInterface
 diff --git a/Component/Checkout/Step/OneStep/OneStepViewModel.php b/Component/Checkout/Step/OneStep/OneStepViewModel.php
 index b2e9b41f..074b313d 100644
 --- a/Component/Checkout/Step/OneStep/OneStepViewModel.php
@@ -37,6 +809,43 @@ index b2e9b41f..074b313d 100644
      {
          $result = $this->getContext()->getStepValidator()->validate();
          $this->valid = true === $result;
+diff --git a/Component/Checkout/Step/ShippingStep/ShippingStepContext.php b/Component/Checkout/Step/ShippingStep/ShippingStepContext.php
+index 82e26fa0..d855ca7f 100644
+--- a/Component/Checkout/Step/ShippingStep/ShippingStepContext.php
++++ b/Component/Checkout/Step/ShippingStep/ShippingStepContext.php
+@@ -21,19 +21,19 @@ use Loki\Components\Messages\GlobalMessageRegistry;
+ class ShippingStepContext implements StepContextInterface
+ {
+     public function __construct(
+-        private readonly ValidatorInterface $stepValidator,
+-        private readonly CheckoutState $checkoutState,
+-        private readonly ShippingAddressState $shippingAddressState,
+-        private readonly BillingAddressState $billingAddressState,
+-        private readonly CustomerProvider $customerProvider,
+-        private readonly StepProvider $stepProvider,
+-        private readonly StepNavigator $stepNavigator,
+-        private readonly ModuleConfig $moduleConfig,
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly AttributeProvider $attributeProvider,
+-        private readonly GlobalMessageRegistry $globalMessageRegistry,
+-        private readonly CoreMessageManager $coreMessageManager,
+-        private readonly UrlFactory $urlFactory,
++        private ValidatorInterface $stepValidator,
++        private CheckoutState $checkoutState,
++        private ShippingAddressState $shippingAddressState,
++        private BillingAddressState $billingAddressState,
++        private CustomerProvider $customerProvider,
++        private StepProvider $stepProvider,
++        private StepNavigator $stepNavigator,
++        private ModuleConfig $moduleConfig,
++        private ScopeConfigInterface $scopeConfig,
++        private AttributeProvider $attributeProvider,
++        private GlobalMessageRegistry $globalMessageRegistry,
++        private CoreMessageManager $coreMessageManager,
++        private UrlFactory $urlFactory,
+     ) {
+     }
+ 
 diff --git a/Component/Checkout/Step/ShippingStep/ShippingStepViewModel.php b/Component/Checkout/Step/ShippingStep/ShippingStepViewModel.php
 index 27ee9c8d..63f6c3c6 100644
 --- a/Component/Checkout/Step/ShippingStep/ShippingStepViewModel.php
@@ -62,6 +871,1004 @@ index b504b85d..a687b993 100644
 +    public function validate();
      public function isValid(): bool;
  }
+diff --git a/Component/Checkout/StepButton/StepBackwardButton/StepBackwardButtonRepository.php b/Component/Checkout/StepButton/StepBackwardButton/StepBackwardButtonRepository.php
+index a90d14cf..8770437e 100644
+--- a/Component/Checkout/StepButton/StepBackwardButton/StepBackwardButtonRepository.php
++++ b/Component/Checkout/StepButton/StepBackwardButton/StepBackwardButtonRepository.php
+@@ -13,7 +13,7 @@ use Loki\Components\Component\ComponentRepository;
+  */
+ class StepBackwardButtonRepository extends ComponentRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         try {
+             return $this->getStepNavigator()->getPreviousStep()->getCode();
+@@ -22,7 +22,7 @@ class StepBackwardButtonRepository extends ComponentRepository
+         }
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         try {
+             $this->getStepNavigator()->setPreviousStep();
+diff --git a/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php b/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php
+index 10f4af85..7b8b837d 100644
+--- a/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php
++++ b/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php
+@@ -12,7 +12,7 @@ use Loki\Components\Component\ComponentRepository;
+  */
+ class StepForwardButtonRepository extends ComponentRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         try {
+             return $this->getContext()->getStepNavigator()->getNextStep()->getCode();
+@@ -21,7 +21,7 @@ class StepForwardButtonRepository extends ComponentRepository
+         }
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         try {
+             $this->getStepNavigator()->setNextStep();
+diff --git a/Component/Customer/LoginForm/LoginFormRepository.php b/Component/Customer/LoginForm/LoginFormRepository.php
+index 4236a722..9be3cc9d 100644
+--- a/Component/Customer/LoginForm/LoginFormRepository.php
++++ b/Component/Customer/LoginForm/LoginFormRepository.php
+@@ -21,21 +21,21 @@ use Magento\Framework\Stdlib\Cookie\PhpCookieManager;
+ class LoginFormRepository extends ComponentRepository
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly AccountManagementInterface $accountManagement,
+-        private readonly PhpCookieManager $cookieManager,
+-        private readonly CookieMetadataFactory $cookieMetadataFactory,
+-        private readonly Manager $messageManager,
+-        private readonly CustomerUrl $customerUrl,
++        private CheckoutState $checkoutState,
++        private AccountManagementInterface $accountManagement,
++        private PhpCookieManager $cookieManager,
++        private CookieMetadataFactory $cookieMetadataFactory,
++        private Manager $messageManager,
++        private CustomerUrl $customerUrl,
+     ) {
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return $this->getCustomerSession()->isLoggedIn();
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (false === is_array($value)) {
+             return;
+diff --git a/Config/Config.php b/Config/Config.php
+index ba1eff45..22c682f4 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -14,10 +14,10 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
+ class Config implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly ModuleManager $moduleManager,
+-        private readonly XmlConfig $xmlConfig,
++        private CheckoutState $checkoutState,
++        private ScopeConfigInterface $scopeConfig,
++        private ModuleManager $moduleManager,
++        private XmlConfig $xmlConfig,
+     ) {
+     }
+ 
+diff --git a/Config/LokiCheckoutModules.php b/Config/LokiCheckoutModules.php
+index b374b290..d78683f1 100644
+--- a/Config/LokiCheckoutModules.php
++++ b/Config/LokiCheckoutModules.php
+@@ -8,8 +8,8 @@ use Magento\Framework\Module\Manager as ModuleManager;
+ class LokiCheckoutModules
+ {
+     public function __construct(
+-        private readonly ModuleManager $moduleManager,
+-        private readonly ComponentRegistrar $componentRegistrar,
++        private ModuleManager $moduleManager,
++        private ComponentRegistrar $componentRegistrar,
+         private array $modules = []
+     ) {
+     }
+diff --git a/Config/Source/GridLayoutOptions.php b/Config/Source/GridLayoutOptions.php
+index 68e3c33d..1386df9f 100644
+--- a/Config/Source/GridLayoutOptions.php
++++ b/Config/Source/GridLayoutOptions.php
+@@ -9,7 +9,7 @@ use LokiCheckout\Core\Config\XmlConfig;
+ class GridLayoutOptions implements OptionSourceInterface
+ {
+     public function __construct(
+-        private readonly XmlConfig $xmlConfig,
++        private XmlConfig $xmlConfig,
+     ) {
+     }
+ 
+diff --git a/Config/Source/ThemeOptions.php b/Config/Source/ThemeOptions.php
+index f29d3a7b..133fcfeb 100644
+--- a/Config/Source/ThemeOptions.php
++++ b/Config/Source/ThemeOptions.php
+@@ -9,7 +9,7 @@ use LokiCheckout\Core\Config\XmlConfig;
+ class ThemeOptions implements OptionSourceInterface
+ {
+     public function __construct(
+-        private readonly XmlConfig $xmlConfig,
++        private XmlConfig $xmlConfig,
+     ) {
+     }
+ 
+diff --git a/Config/XmlConfig/Defaults.php b/Config/XmlConfig/Defaults.php
+index 0da45d83..0fbe93e7 100644
+--- a/Config/XmlConfig/Defaults.php
++++ b/Config/XmlConfig/Defaults.php
+@@ -6,9 +6,9 @@ namespace LokiCheckout\Core\Config\XmlConfig;
+ class Defaults
+ {
+     public function __construct(
+-        private readonly int $sortOrder = 99,
+-        private readonly int $colSpan = 12,
+-        private readonly int $mdColSpan = 6
++        private int $sortOrder = 99,
++        private int $colSpan = 12,
++        private int $mdColSpan = 6
+     ) {
+     }
+ 
+diff --git a/Config/XmlConfig/SchemaLocator.php b/Config/XmlConfig/SchemaLocator.php
+index c7b2b362..acd96e44 100644
+--- a/Config/XmlConfig/SchemaLocator.php
++++ b/Config/XmlConfig/SchemaLocator.php
+@@ -15,7 +15,7 @@ class SchemaLocator implements SchemaLocatorInterface
+     protected string $perFileSchema = '';
+ 
+     public function __construct(
+-        private readonly Reader $moduleReader
++        private Reader $moduleReader
+     ) {
+     }
+ 
+diff --git a/Config/XmlConfig/Value/GridLayout.php b/Config/XmlConfig/Value/GridLayout.php
+index fd84be7d..e48ca8c2 100644
+--- a/Config/XmlConfig/Value/GridLayout.php
++++ b/Config/XmlConfig/Value/GridLayout.php
+@@ -8,12 +8,12 @@ use LokiCheckout\Core\Config\XmlConfig\Value\GridLayout\Grid;
+ class GridLayout
+ {
+     public function __construct(
+-        private readonly string $name,
+-        private readonly string $label,
+-        private readonly int $defaultSortOrder = 99,
+-        private readonly int $defaultColSpan = 6,
+-        private readonly int $defaultMdColSpan = 6,
+-        private readonly array $grids = []
++        private string $name,
++        private string $label,
++        private int $defaultSortOrder = 99,
++        private int $defaultColSpan = 6,
++        private int $defaultMdColSpan = 6,
++        private array $grids = []
+     ) {
+     }
+ 
+diff --git a/Config/XmlConfig/Value/GridLayout/Grid.php b/Config/XmlConfig/Value/GridLayout/Grid.php
+index efefbc9d..67be2c44 100644
+--- a/Config/XmlConfig/Value/GridLayout/Grid.php
++++ b/Config/XmlConfig/Value/GridLayout/Grid.php
+@@ -8,10 +8,10 @@ use LokiCheckout\Core\Exception\BlockNotFoundException;
+ class Grid
+ {
+     public function __construct(
+-        private readonly string $name,
+-        private readonly string $countryId,
+-        private readonly string $parent,
+-        private readonly array $blocks = []
++        private string $name,
++        private string $countryId,
++        private string $parent,
++        private array $blocks = []
+     ) {
+     }
+ 
+diff --git a/Config/XmlConfig/Value/GridLayout/Grid/Block.php b/Config/XmlConfig/Value/GridLayout/Grid/Block.php
+index 718aceea..0104f9ba 100644
+--- a/Config/XmlConfig/Value/GridLayout/Grid/Block.php
++++ b/Config/XmlConfig/Value/GridLayout/Grid/Block.php
+@@ -5,10 +5,10 @@ namespace LokiCheckout\Core\Config\XmlConfig\Value\GridLayout\Grid;
+ class Block
+ {
+     public function __construct(
+-        private readonly string $alias,
+-        private readonly int $sortOrder,
+-        private readonly int $colSpan,
+-        private readonly int $mdColSpan,
++        private string $alias,
++        private int $sortOrder,
++        private int $colSpan,
++        private int $mdColSpan,
+     ) {
+     }
+ 
+diff --git a/Config/XmlConfig/Value/Theme.php b/Config/XmlConfig/Value/Theme.php
+index 078932b2..2a2f62f0 100644
+--- a/Config/XmlConfig/Value/Theme.php
++++ b/Config/XmlConfig/Value/Theme.php
+@@ -9,9 +9,9 @@ use LokiCheckout\Core\Exception\UnknownStepException;
+ class Theme
+ {
+     public function __construct(
+-        private readonly string $name,
+-        private readonly string $label,
+-        private readonly array $steps = []
++        private string $name,
++        private string $label,
++        private array $steps = []
+     ) {
+     }
+ 
+diff --git a/Config/XmlConfig/Value/Theme/Step.php b/Config/XmlConfig/Value/Theme/Step.php
+index 023ae052..1d781b07 100644
+--- a/Config/XmlConfig/Value/Theme/Step.php
++++ b/Config/XmlConfig/Value/Theme/Step.php
+@@ -5,9 +5,9 @@ namespace LokiCheckout\Core\Config\XmlConfig\Value\Theme;
+ class Step
+ {
+     public function __construct(
+-        private readonly string $name,
+-        private readonly string $blockName,
+-        private readonly int $sortOrder = 0,
++        private string $name,
++        private string $blockName,
++        private int $sortOrder = 0,
+     ) {
+     }
+ 
+diff --git a/Controller/Index/Finalize.php b/Controller/Index/Finalize.php
+index 65a9dae8..18f7c8be 100644
+--- a/Controller/Index/Finalize.php
++++ b/Controller/Index/Finalize.php
+@@ -14,11 +14,11 @@ use RuntimeException;
+ class Finalize implements HttpGetActionInterface
+ {
+     public function __construct(
+-        private readonly RequestInterface $request,
+-        private readonly RedirectResultFactory $resultRedirectFactory,
+-        private readonly FinalStep $finalStep,
+-        private readonly FormKeyValidator $formKeyValidator,
+-        private readonly HandlerListing $handlerListing
++        private RequestInterface $request,
++        private RedirectResultFactory $resultRedirectFactory,
++        private FinalStep $finalStep,
++        private FormKeyValidator $formKeyValidator,
++        private HandlerListing $handlerListing
+     ) {
+     }
+ 
+diff --git a/Controller/Index/Index.php b/Controller/Index/Index.php
+index 94b2eac4..a6d0a888 100644
+--- a/Controller/Index/Index.php
++++ b/Controller/Index/Index.php
+@@ -17,13 +17,13 @@ use Magento\Framework\Controller\Result\Redirect as RedirectResult;
+ class Index implements HttpGetActionInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly PageResultFactory $pageResultFactory,
+-        private readonly RedirectResultFactory $redirectResultFactory,
+-        private readonly Data $checkoutHelper,
+-        private readonly Manager $messageManager,
+-        private readonly AccountManagementInterface $accountManagement,
+-        private readonly UrlFactory $urlFactory,
++        private CheckoutState $checkoutState,
++        private PageResultFactory $pageResultFactory,
++        private RedirectResultFactory $redirectResultFactory,
++        private Data $checkoutHelper,
++        private Manager $messageManager,
++        private AccountManagementInterface $accountManagement,
++        private UrlFactory $urlFactory,
+     ) {
+     }
+ 
+@@ -62,7 +62,7 @@ class Index implements HttpGetActionInterface
+         return $pageResult;
+     }
+ 
+-    private function validateCustomer(): RedirectResult|bool
++    private function validateCustomer()
+     {
+         if (!$this->getCustomerSession()->isLoggedIn()) {
+             return true;
+diff --git a/Filter/CountryId.php b/Filter/CountryId.php
+index 80bc596d..49cc9de1 100644
+--- a/Filter/CountryId.php
++++ b/Filter/CountryId.php
+@@ -7,7 +7,7 @@ use Loki\Components\Filter\FilterScope;
+ 
+ class CountryId implements FilterInterface
+ {
+-    public function filter(mixed $value, FilterScope $scope): mixed
++    public function filter($value, FilterScope $scope)
+     {
+         $value = strtoupper((string)$value);
+         $value = preg_replace('/([^A-Z]+)/', '', $value);
+diff --git a/Filter/VatId.php b/Filter/VatId.php
+index f2dec99b..ee98e6db 100644
+--- a/Filter/VatId.php
++++ b/Filter/VatId.php
+@@ -7,7 +7,7 @@ use Loki\Components\Filter\FilterScope;
+ 
+ class VatId implements FilterInterface
+ {
+-    public function filter(mixed $value, FilterScope $scope): mixed
++    public function filter($value, FilterScope $scope)
+     {
+         $value = strtoupper((string)$value);
+         return preg_replace('/([^A-Z0-9]+)/', '', $value);
+diff --git a/Observer/AddDebuggingInfo.php b/Observer/AddDebuggingInfo.php
+index c96d8de2..f9224cf5 100644
+--- a/Observer/AddDebuggingInfo.php
++++ b/Observer/AddDebuggingInfo.php
+@@ -16,9 +16,9 @@ class AddDebuggingInfo implements ObserverInterface
+     const DEBUG_BLOCK = 'loki-checkout.utils.debug';
+ 
+     public function __construct(
+-        private readonly ComponentRegistry $componentRegistry,
+-        private readonly Config $config,
+-        private readonly array $blockPrefixes = [],
++        private ComponentRegistry $componentRegistry,
++        private Config $config,
++        private array $blockPrefixes = [],
+     ) {
+     }
+ 
+diff --git a/Observer/AddHtmlAttributes.php b/Observer/AddHtmlAttributes.php
+index c0e601fb..423d8fba 100644
+--- a/Observer/AddHtmlAttributes.php
++++ b/Observer/AddHtmlAttributes.php
+@@ -13,8 +13,8 @@ use Magento\Framework\View\Element\Template;
+ class AddHtmlAttributes implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly GetElementId $getElementId,
+-        private readonly PushHtmlAttributes $pushHtmlAttributes
++        private GetElementId $getElementId,
++        private PushHtmlAttributes $pushHtmlAttributes
+     ) {
+     }
+ 
+diff --git a/Observer/AssignAdditionalBlockVariables.php b/Observer/AssignAdditionalBlockVariables.php
+index 0b237dab..3853d95d 100644
+--- a/Observer/AssignAdditionalBlockVariables.php
++++ b/Observer/AssignAdditionalBlockVariables.php
+@@ -12,7 +12,7 @@ use Loki\Components\Util\CamelCaseConvertor;
+ class AssignAdditionalBlockVariables implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly CamelCaseConvertor $camelCaseConvertor,
++        private CamelCaseConvertor $camelCaseConvertor,
+     ) {
+     }
+ 
+diff --git a/Observer/EnableCheckout.php b/Observer/EnableCheckout.php
+index 3679870a..1bcdad96 100644
+--- a/Observer/EnableCheckout.php
++++ b/Observer/EnableCheckout.php
+@@ -12,8 +12,8 @@ use Magento\Framework\View\LayoutInterface;
+ class EnableCheckout implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly AllowCheckoutAccess $allowCheckoutAccess,
+-        private readonly AddLayoutHandles $addLayoutHandles,
++        private AllowCheckoutAccess $allowCheckoutAccess,
++        private AddLayoutHandles $addLayoutHandles,
+     ) {
+     }
+ 
+diff --git a/Observer/ResetStepAfterCartSave.php b/Observer/ResetStepAfterCartSave.php
+index a69d50a9..55638ba1 100644
+--- a/Observer/ResetStepAfterCartSave.php
++++ b/Observer/ResetStepAfterCartSave.php
+@@ -11,9 +11,9 @@ use LokiCheckout\Core\Step\StepNavigator;
+ class ResetStepAfterCartSave implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly StepNavigator $stepNavigator,
+-        private readonly MessageManager $messageManager,
+-        private readonly Config $config
++        private StepNavigator $stepNavigator,
++        private MessageManager $messageManager,
++        private Config $config
+     ) {
+     }
+ 
+diff --git a/Observer/SaveAfterRepositoryDispatch.php b/Observer/SaveAfterRepositoryDispatch.php
+index ac012879..f8ae342e 100644
+--- a/Observer/SaveAfterRepositoryDispatch.php
++++ b/Observer/SaveAfterRepositoryDispatch.php
+@@ -12,7 +12,7 @@ class SaveAfterRepositoryDispatch implements ObserverInterface
+ {
+     public function __construct(
+         protected SameAddressService $sameAddressService,
+-        private readonly CheckoutState $checkoutState,
++        private CheckoutState $checkoutState,
+     ) {
+     }
+ 
+diff --git a/Observer/SetSortOrder.php b/Observer/SetSortOrder.php
+index aa349d75..0a867404 100644
+--- a/Observer/SetSortOrder.php
++++ b/Observer/SetSortOrder.php
+@@ -11,7 +11,7 @@ use Magento\Framework\View\LayoutInterface;
+ class SetSortOrder implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly Config $config,
++        private Config $config,
+         private LayoutInterface $layout
+     ) {
+     }
+diff --git a/Payment/Icon/IconResolverContext.php b/Payment/Icon/IconResolverContext.php
+index 9352ce89..5798fce7 100644
+--- a/Payment/Icon/IconResolverContext.php
++++ b/Payment/Icon/IconResolverContext.php
+@@ -16,12 +16,12 @@ class IconResolverContext
+ 
+     public function __construct(
+         Filesystem $filesystem,
+-        private readonly ComponentRegistrar $componentRegistrar,
+-        private readonly AssetRepository $assetRepository,
+-        private readonly AssetSource $assetSource,
+-        private readonly ImageRenderer $imageRenderer,
+-        private readonly string $paymentMethodCode,
+-        private readonly array $attributes = [],
++        private ComponentRegistrar $componentRegistrar,
++        private AssetRepository $assetRepository,
++        private AssetSource $assetSource,
++        private ImageRenderer $imageRenderer,
++        private string $paymentMethodCode,
++        private array $attributes = [],
+     ) {
+         $this->fileDriver = $filesystem->getDirectoryWrite(DirectoryList::PUB)->getDriver();
+     }
+@@ -31,7 +31,7 @@ class IconResolverContext
+         return $this->paymentMethodCode;
+     }
+ 
+-    public function getIconAsset(string $assetId, array $suffixes = ['png', 'svg']): false|string
++    public function getIconAsset(string $assetId, array $suffixes = ['png', 'svg'])
+     {
+         $assetSource = false;
+         $asset = false;
+@@ -54,7 +54,7 @@ class IconResolverContext
+         return $this->imageRenderer->get($asset->getUrl(), $this->attributes);
+     }
+ 
+-    public function getIconPath(string $moduleName, string $path): false|string
++    public function getIconPath(string $moduleName, string $path)
+     {
+         $modulePath = $this->componentRegistrar->getPath(ComponentRegistrar::MODULE, $moduleName);
+         $iconPath = $modulePath.DIRECTORY_SEPARATOR.$path;
+@@ -65,7 +65,7 @@ class IconResolverContext
+         return false;
+     }
+ 
+-    public function getIconOutput(false|string $iconPath, string $iconType = ''): string
++    public function getIconOutput($iconPath, string $iconType = ''): string
+     {
+         if (false === $iconPath) {
+             return '';
+diff --git a/Payment/Icon/IconResolverInterface.php b/Payment/Icon/IconResolverInterface.php
+index a7022fa0..8bf1674b 100644
+--- a/Payment/Icon/IconResolverInterface.php
++++ b/Payment/Icon/IconResolverInterface.php
+@@ -5,5 +5,5 @@ namespace LokiCheckout\Core\Payment\Icon;
+ 
+ interface IconResolverInterface
+ {
+-    public function resolve(IconResolverContext $iconResolverContext): false|string;
++    public function resolve(IconResolverContext $iconResolverContext);
+ }
+diff --git a/Payment/Redirect/RedirectResolverInterface.php b/Payment/Redirect/RedirectResolverInterface.php
+index 43d24757..9c0dcfc9 100644
+--- a/Payment/Redirect/RedirectResolverInterface.php
++++ b/Payment/Redirect/RedirectResolverInterface.php
+@@ -7,5 +7,5 @@ use LokiCheckout\Core\Step\FinalStep\RedirectContext;
+ 
+ interface RedirectResolverInterface
+ {
+-    public function resolve(RedirectContext $redirectContext): false|string;
++    public function resolve(RedirectContext $redirectContext);
+ }
+diff --git a/Payment/Redirect/SessionRedirectResolver.php b/Payment/Redirect/SessionRedirectResolver.php
+index 06826593..cd291352 100644
+--- a/Payment/Redirect/SessionRedirectResolver.php
++++ b/Payment/Redirect/SessionRedirectResolver.php
+@@ -9,11 +9,11 @@ use LokiCheckout\Core\Step\FinalStep\RedirectContext;
+ class SessionRedirectResolver implements RedirectResolverInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
++        private CheckoutState $checkoutState,
+     ) {
+     }
+ 
+-    public function resolve(RedirectContext $redirectContext): false|string
++    public function resolve(RedirectContext $redirectContext)
+     {
+         $redirectUrl = (string)$this->checkoutState->getCheckoutSession()->getRedirectUrl();
+         if ($redirectUrl !== '' && $redirectUrl !== '0') {
+diff --git a/Payment/Vault/NormalizedPaymentToken.php b/Payment/Vault/NormalizedPaymentToken.php
+index 3d560bdd..512c1804 100644
+--- a/Payment/Vault/NormalizedPaymentToken.php
++++ b/Payment/Vault/NormalizedPaymentToken.php
+@@ -8,8 +8,8 @@ use Magento\Vault\Api\Data\PaymentTokenInterface;
+ class NormalizedPaymentToken
+ {
+     public function __construct(
+-        private readonly PaymentTokenInterface $paymentToken,
+-        private readonly SerializerInterface $serializer,
++        private PaymentTokenInterface $paymentToken,
++        private SerializerInterface $serializer,
+     ) {
+     }
+ 
+diff --git a/Payment/Vault/NormalizedPaymentTokenFactory.php b/Payment/Vault/NormalizedPaymentTokenFactory.php
+index 47116e79..a3b0f4d5 100644
+--- a/Payment/Vault/NormalizedPaymentTokenFactory.php
++++ b/Payment/Vault/NormalizedPaymentTokenFactory.php
+@@ -10,7 +10,7 @@ use Magento\Vault\Api\Data\PaymentTokenInterface;
+ class NormalizedPaymentTokenFactory
+ {
+     public function __construct(
+-        private readonly ObjectManagerInterface $objectManager,
++        private ObjectManagerInterface $objectManager,
+     ) {
+     }
+ 
+diff --git a/Payment/Vault/PaymentTokenProvider.php b/Payment/Vault/PaymentTokenProvider.php
+index 2c585023..5f1d7384 100644
+--- a/Payment/Vault/PaymentTokenProvider.php
++++ b/Payment/Vault/PaymentTokenProvider.php
+@@ -12,10 +12,10 @@ use Magento\Vault\Api\PaymentTokenRepositoryInterface;
+ class PaymentTokenProvider
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly SearchCriteriaBuilder $searchCriteriaBuilder,
+-        private readonly PaymentTokenRepositoryInterface $paymentTokenRepository,
+-        private readonly NormalizedPaymentTokenFactory $normalizedPaymentTokenFactory
++        private CheckoutState $checkoutState,
++        private SearchCriteriaBuilder $searchCriteriaBuilder,
++        private PaymentTokenRepositoryInterface $paymentTokenRepository,
++        private NormalizedPaymentTokenFactory $normalizedPaymentTokenFactory
+     ) {
+     }
+ 
+diff --git a/Plugin/FixFreeShippingSubtotalPlugin.php b/Plugin/FixFreeShippingSubtotalPlugin.php
+index d976e8e9..886cd2c9 100644
+--- a/Plugin/FixFreeShippingSubtotalPlugin.php
++++ b/Plugin/FixFreeShippingSubtotalPlugin.php
+@@ -9,8 +9,8 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
+ class FixFreeShippingSubtotalPlugin
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly CheckoutState $checkoutState
++        private ScopeConfigInterface $scopeConfig,
++        private CheckoutState $checkoutState
+     ) {
+     }
+ 
+diff --git a/Plugin/RedirectEmptyQuoteAfterRepositoryDispatchPlugin.php b/Plugin/RedirectEmptyQuoteAfterRepositoryDispatchPlugin.php
+index 9ef910ed..87c24422 100644
+--- a/Plugin/RedirectEmptyQuoteAfterRepositoryDispatchPlugin.php
++++ b/Plugin/RedirectEmptyQuoteAfterRepositoryDispatchPlugin.php
+@@ -13,9 +13,9 @@ use Loki\Components\Util\Controller\RepositoryDispatcher;
+ class RedirectEmptyQuoteAfterRepositoryDispatchPlugin
+ {
+     public function __construct(
+-        private readonly UrlFactory $urlFactory,
+-        private readonly ManagerInterface $messageManager,
+-        private readonly array $allowedExceptionClasses = []
++        private UrlFactory $urlFactory,
++        private ManagerInterface $messageManager,
++        private array $allowedExceptionClasses = []
+     ) {
+     }
+ 
+@@ -23,7 +23,7 @@ class RedirectEmptyQuoteAfterRepositoryDispatchPlugin
+         RepositoryDispatcher $repositoryDispatcher,
+         callable $proceed,
+         ComponentInterface $component,
+-        mixed $componentData
++        $componentData
+     ): void {
+         try {
+             $proceed($component, $componentData);
+diff --git a/Repository/NewsletterRepository.php b/Repository/NewsletterRepository.php
+index 819359dc..255af9d2 100644
+--- a/Repository/NewsletterRepository.php
++++ b/Repository/NewsletterRepository.php
+@@ -13,8 +13,8 @@ use Magento\Store\Model\Website;
+ class NewsletterRepository
+ {
+     public function __construct(
+-        private readonly ResourceConnection $resourceConnection,
+-        private readonly StoreManagerInterface $storeManager,
++        private ResourceConnection $resourceConnection,
++        private StoreManagerInterface $storeManager,
+     ) {
+     }
+ 
+diff --git a/Router/LokiCheckoutRouter.php b/Router/LokiCheckoutRouter.php
+index bc4b44d3..58647dde 100644
+--- a/Router/LokiCheckoutRouter.php
++++ b/Router/LokiCheckoutRouter.php
+@@ -13,12 +13,12 @@ use Magento\Framework\App\RouterInterface;
+ class LokiCheckoutRouter implements RouterInterface
+ {
+     public function __construct(
+-        private readonly ActionFactory $actionFactory,
+-        private readonly AllowCheckoutAccess $allowCheckoutAccess,
++        private ActionFactory $actionFactory,
++        private AllowCheckoutAccess $allowCheckoutAccess,
+     ) {
+     }
+ 
+-    public function match(RequestInterface $request): ActionInterface|null
++    public function match(RequestInterface $request)
+     {
+         /** @var HttpRequest $request */
+         $identifier = trim($request->getPathInfo(), '/');
+diff --git a/Shipment/DeliveryDate.php b/Shipment/DeliveryDate.php
+index 9cc14e4c..6e20ac17 100644
+--- a/Shipment/DeliveryDate.php
++++ b/Shipment/DeliveryDate.php
+@@ -10,11 +10,11 @@ use LokiCheckout\Core\Shipment\DeliveryDate\Timeframe;
+ class DeliveryDate
+ {
+     public function __construct(
+-        private readonly LocaleResolver $localeResolver,
+-        private readonly Timezone $timezone,
+-        private readonly int $timestamp,
++        private LocaleResolver $localeResolver,
++        private Timezone $timezone,
++        private int $timestamp,
+         private array $timeframes = [],
+-        private readonly string $datePattern = 'EEEE, MMMM dd', // @doc
++        private string $datePattern = 'EEEE, MMMM dd', // @doc
+     ) {
+     }
+ 
+diff --git a/Shipment/DeliveryDate/Timeframe.php b/Shipment/DeliveryDate/Timeframe.php
+index 34ddce2f..797a5324 100644
+--- a/Shipment/DeliveryDate/Timeframe.php
++++ b/Shipment/DeliveryDate/Timeframe.php
+@@ -9,14 +9,14 @@ use Magento\Framework\Stdlib\DateTime\Timezone;
+ class Timeframe
+ {
+     public function __construct(
+-        private readonly LocaleResolver $localeResolver,
+-        private readonly Timezone $timezone,
+-        private readonly string $code,
+-        private readonly string $id,
+-        private readonly string $label,
+-        private readonly int $fromTimestamp,
+-        private readonly int $toTimestamp,
+-        private readonly float $price = 0
++        private LocaleResolver $localeResolver,
++        private Timezone $timezone,
++        private string $code,
++        private string $id,
++        private string $label,
++        private int $fromTimestamp,
++        private int $toTimestamp,
++        private float $price = 0
+     ) {
+     }
+ 
+diff --git a/Shipment/DeliveryDate/TimeframeFactory.php b/Shipment/DeliveryDate/TimeframeFactory.php
+index e0c7af11..a2a2f003 100644
+--- a/Shipment/DeliveryDate/TimeframeFactory.php
++++ b/Shipment/DeliveryDate/TimeframeFactory.php
+@@ -7,7 +7,7 @@ use Magento\Framework\ObjectManagerInterface;
+ class TimeframeFactory
+ {
+     public function __construct(
+-        private readonly ObjectManagerInterface $objectManager
++        private ObjectManagerInterface $objectManager
+     ) {
+     }
+ 
+diff --git a/Shipment/DeliveryDateFactory.php b/Shipment/DeliveryDateFactory.php
+index a64ba85e..3c51b83b 100644
+--- a/Shipment/DeliveryDateFactory.php
++++ b/Shipment/DeliveryDateFactory.php
+@@ -7,7 +7,7 @@ use Magento\Framework\ObjectManagerInterface;
+ class DeliveryDateFactory
+ {
+     public function __construct(
+-        private readonly ObjectManagerInterface $objectManager
++        private ObjectManagerInterface $objectManager
+     ) {
+     }
+ 
+diff --git a/Shipment/Icon/IconResolverContext.php b/Shipment/Icon/IconResolverContext.php
+index 01f40421..95dc0349 100644
+--- a/Shipment/Icon/IconResolverContext.php
++++ b/Shipment/Icon/IconResolverContext.php
+@@ -14,11 +14,11 @@ class IconResolverContext
+     private ?DriverInterface $fileDriver = null;
+ 
+     public function __construct(
+-        private readonly ComponentRegistrar $componentRegistrar,
+-        private readonly ImageRenderer $imageRenderer,
++        private ComponentRegistrar $componentRegistrar,
++        private ImageRenderer $imageRenderer,
+         Filesystem $filesystem,
+-        private readonly AssetRepository $assetRepository,
+-        private readonly string $shipmentMethodCode
++        private AssetRepository $assetRepository,
++        private string $shipmentMethodCode
+     ) {
+         $this->fileDriver = $filesystem->getDirectoryWrite(DirectoryList::PUB)->getDriver();
+     }
+@@ -28,7 +28,7 @@ class IconResolverContext
+         return $this->shipmentMethodCode;
+     }
+ 
+-    public function getIconPath(string $moduleName, string $path): false|string
++    public function getIconPath(string $moduleName, string $path)
+     {
+         $modulePath = $this->componentRegistrar->getPath(ComponentRegistrar::MODULE, $moduleName);
+         $iconPath = $modulePath . DIRECTORY_SEPARATOR . $path;
+@@ -39,7 +39,7 @@ class IconResolverContext
+         return false;
+     }
+ 
+-    public function getIconOutput(false|string $iconPath, string $iconType): string
++    public function getIconOutput($iconPath, string $iconType): string
+     {
+         if (false === $iconPath) {
+             return '';
+diff --git a/Shipment/Icon/IconResolverInterface.php b/Shipment/Icon/IconResolverInterface.php
+index 56a3f27c..ce74f60a 100644
+--- a/Shipment/Icon/IconResolverInterface.php
++++ b/Shipment/Icon/IconResolverInterface.php
+@@ -5,5 +5,5 @@ namespace LokiCheckout\Core\Shipment\Icon;
+ 
+ interface IconResolverInterface
+ {
+-    public function resolve(IconResolverContext $iconResolverContext): false|string;
++    public function resolve(IconResolverContext $iconResolverContext);
+ }
+diff --git a/Shipment/Icon/IconResolverListing.php b/Shipment/Icon/IconResolverListing.php
+index 0e491c50..b29ec03c 100644
+--- a/Shipment/Icon/IconResolverListing.php
++++ b/Shipment/Icon/IconResolverListing.php
+@@ -6,7 +6,7 @@ namespace LokiCheckout\Core\Shipment\Icon;
+ class IconResolverListing
+ {
+     public function __construct(
+-        private readonly array $iconResolvers = []
++        private array $iconResolvers = []
+     ) {
+     }
+ 
+diff --git a/Step/FinalStep.php b/Step/FinalStep.php
+index a6f3ff6e..f5e95364 100644
+--- a/Step/FinalStep.php
++++ b/Step/FinalStep.php
+@@ -24,14 +24,14 @@ use Loki\Components\Exception\RedirectException;
+ class FinalStep
+ {
+     public function __construct(
+-        private readonly QuoteValidator $quoteValidator,
+-        private readonly CheckoutState $checkoutState,
+-        private readonly Redirect $redirect,
+-        private readonly EventManager $eventManager,
+-        private readonly CartManagementInterface $cartManagement,
+-        private readonly OrderRepositoryInterface $orderRepository,
+-        private readonly OrderSender $orderSender,
+-        private readonly CartRepositoryInterface $cartRepository
++        private QuoteValidator $quoteValidator,
++        private CheckoutState $checkoutState,
++        private Redirect $redirect,
++        private EventManager $eventManager,
++        private CartManagementInterface $cartManagement,
++        private OrderRepositoryInterface $orderRepository,
++        private OrderSender $orderSender,
++        private CartRepositoryInterface $cartRepository
+     ) {
+     }
+ 
+@@ -40,7 +40,7 @@ class FinalStep
+      * @throws NoSuchEntityException
+      * @throws Exception
+      */
+-    public function validate(): bool|array
++    public function validate()
+     {
+         return $this->quoteValidator->validate();
+     }
+diff --git a/Step/FinalStep/Redirect.php b/Step/FinalStep/Redirect.php
+index 98466c44..72f97ca7 100644
+--- a/Step/FinalStep/Redirect.php
++++ b/Step/FinalStep/Redirect.php
+@@ -8,9 +8,9 @@ use LokiCheckout\Core\Payment\Redirect\RedirectResolverListing;
+ class Redirect
+ {
+     public function __construct(
+-        private readonly RedirectResolverListing $redirectResolverListing,
+-        private readonly UrlFactory $urlFactory,
+-        private readonly RedirectContext $redirectContext,
++        private RedirectResolverListing $redirectResolverListing,
++        private UrlFactory $urlFactory,
++        private RedirectContext $redirectContext,
+     ) {
+     }
+ 
+diff --git a/Step/FinalStep/RedirectContext.php b/Step/FinalStep/RedirectContext.php
+index 2b7b84bd..845b10a9 100644
+--- a/Step/FinalStep/RedirectContext.php
++++ b/Step/FinalStep/RedirectContext.php
+@@ -13,13 +13,13 @@ use Magento\Sales\Api\OrderRepositoryInterface;
+ class RedirectContext
+ {
+     public function __construct(
+-        private readonly OrderRepositoryInterface $orderRepository,
+-        private readonly PaymentHelper $paymentHelper,
+-        private readonly CheckoutState $checkoutState,
++        private OrderRepositoryInterface $orderRepository,
++        private PaymentHelper $paymentHelper,
++        private CheckoutState $checkoutState,
+     ) {
+     }
+ 
+-    public function getPaymentMethod(): false|MethodInterface
++    public function getPaymentMethod()
+     {
+         $order = $this->getOrder();
+         if (false === $order) {
+@@ -43,7 +43,7 @@ class RedirectContext
+         }
+     }
+ 
+-    public function getOrder(): false|OrderInterface
++    public function getOrder()
+     {
+         $lastOrderId = $this->checkoutState->getCheckoutSession()->getLastOrderId();
+         if (empty($lastOrderId)) {
+diff --git a/Step/StepNavigator.php b/Step/StepNavigator.php
+index b2a21863..41fc8e47 100644
+--- a/Step/StepNavigator.php
++++ b/Step/StepNavigator.php
+@@ -16,19 +16,19 @@ use Loki\Components\Component\ComponentRegistry;
+ 
+ class StepNavigator implements ArgumentInterface
+ {
+-    private StepViewModelInterface|false $currentStep = false;
++    private $currentStep = false;
+     private ?array $steps = null;
+     private ?array $unsortedSteps = null;
+     private array $stepDefinitions = [];
+ 
+     public function __construct(
+-        private readonly XmlConfig $xmlConfig,
+-        private readonly Config $config,
+-        private readonly CheckoutState $checkoutState,
+-        private readonly FinalStep $finalStep,
+-        private readonly MessageManager $messageManager,
+-        private readonly ComponentRegistry $componentRegistry,
+-        private readonly RequestInterface $request,
++        private XmlConfig $xmlConfig,
++        private Config $config,
++        private CheckoutState $checkoutState,
++        private FinalStep $finalStep,
++        private MessageManager $messageManager,
++        private ComponentRegistry $componentRegistry,
++        private RequestInterface $request,
+     ) {
+     }
+ 
+diff --git a/Test/Fixture/CustomerAddressFixture.php b/Test/Fixture/CustomerAddressFixture.php
+index 302c1834..afd69164 100644
+--- a/Test/Fixture/CustomerAddressFixture.php
++++ b/Test/Fixture/CustomerAddressFixture.php
+@@ -24,7 +24,7 @@ class CustomerAddressFixture implements RevertibleDataFixtureInterface
+     ];
+ 
+     public function __construct(
+-        private readonly ServiceFactory $serviceFactory,
++        private ServiceFactory $serviceFactory,
+     ) {
+     }
+ 
+diff --git a/Test/Fixture/PaymentMethodFixture.php b/Test/Fixture/PaymentMethodFixture.php
+index bc4ab9e8..eff22b6d 100644
+--- a/Test/Fixture/PaymentMethodFixture.php
++++ b/Test/Fixture/PaymentMethodFixture.php
+@@ -10,7 +10,7 @@ use Magento\TestFramework\Fixture\DataFixtureInterface;
+ class PaymentMethodFixture implements DataFixtureInterface
+ {
+     public function __construct(
+-        private readonly CartRepositoryInterface $cartRepository,
++        private CartRepositoryInterface $cartRepository,
+     ) {
+     }
+ 
+diff --git a/Test/Fixture/ShippingAddressFixture.php b/Test/Fixture/ShippingAddressFixture.php
+index 28e63691..d2b200e7 100644
+--- a/Test/Fixture/ShippingAddressFixture.php
++++ b/Test/Fixture/ShippingAddressFixture.php
+@@ -23,7 +23,7 @@ class ShippingAddressFixture implements RevertibleDataFixtureInterface
+     ];
+ 
+     public function __construct(
+-        private readonly CartRepositoryInterface $cartRepository,
++        private CartRepositoryInterface $cartRepository,
+     ) {
+     }
+ 
+diff --git a/Test/Integration/LokiCheckoutTestCase.php b/Test/Integration/LokiCheckoutTestCase.php
+index 0ed29923..8f77086a 100644
+--- a/Test/Integration/LokiCheckoutTestCase.php
++++ b/Test/Integration/LokiCheckoutTestCase.php
+@@ -102,7 +102,7 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
+     }
+ 
+     // @todo: Move into trait
+-    protected function assertRepositorySave(ComponentInterface $component, mixed $value)
++    protected function assertRepositorySave(ComponentInterface $component, $value)
+     {
+         $repository = $component->getRepository();
+         $this->assertInstanceOf(ComponentRepositoryInterface::class, $repository);
+@@ -113,10 +113,10 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
+ 
+     // @todo: Move into trait
+     protected function assertConfigValue(
+-        mixed $expectedValue,
++        $expectedValue,
+         string $path,
+         string $scopeType = 'default',
+-        mixed $scopeValue = null
++        $scopeValue = null
+     ): void {
+         $scopeConfig = $this->getObjectManager()->get(ScopeConfigInterface::class);
+         $value = $scopeConfig->getValue($path, $scopeType, $scopeValue);
+@@ -128,7 +128,7 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
+         bool $expectedValue,
+         string $path,
+         string $scopeType = 'default',
+-        mixed $scopeValue = null
++        $scopeValue = null
+     ): void {
+         $scopeConfig = $this->getObjectManager()->get(ScopeConfigInterface::class);
+         $value = $scopeConfig->isSetFlag($path, $scopeType, $scopeValue);
+diff --git a/Test/Integration/Validator/Component/PostcodeFormatValidatorTest.php b/Test/Integration/Validator/Component/PostcodeFormatValidatorTest.php
+index 00bb0ebb..e6086255 100644
+--- a/Test/Integration/Validator/Component/PostcodeFormatValidatorTest.php
++++ b/Test/Integration/Validator/Component/PostcodeFormatValidatorTest.php
+@@ -31,7 +31,7 @@ class PostcodeFormatValidatorTest extends LokiCheckoutTestCase
+     /**
+      * @dataProvider getValues
+      */
+-    public function testValidateWithValues(string $postcode, string $countryId, bool|string $expectedResult): void
++    public function testValidateWithValues(string $postcode, string $countryId, $expectedResult): void
+     {
+         $component = $this->getPostcodeComponent();
+         $postcodeFormatValidator = $this->getPostcodeFormatValidator($countryId);
 diff --git a/Test/Unit/Util/Block/CssClassTest.php b/Test/Unit/Util/Block/CssClassTest.php
 index 8f464dc8..9763896c 100644
 --- a/Test/Unit/Util/Block/CssClassTest.php
@@ -75,3 +1882,893 @@ index 8f464dc8..9763896c 100644
      {
          $layout = $this->createMock(LayoutInterface::class);
          $context = $this->createMock(Context::class);
+diff --git a/Test/Unit/Util/Html/PushHtmlAttributesTest.php b/Test/Unit/Util/Html/PushHtmlAttributesTest.php
+index e0a8cc87..7f390904 100644
+--- a/Test/Unit/Util/Html/PushHtmlAttributesTest.php
++++ b/Test/Unit/Util/Html/PushHtmlAttributesTest.php
+@@ -11,7 +11,7 @@ class PushHtmlAttributesTest extends TestCase
+      * @return void
+      * @dataProvider getTestValues
+      */
+-    public function testExecute(mixed $html, mixed $expectedHtml, array $attributes = [])
++    public function testExecute($html, $expectedHtml, array $attributes = [])
+     {
+         $pushHtmlAttributes = new PushHtmlAttributes();
+         $this->assertEquals($expectedHtml, $pushHtmlAttributes->execute($html, $attributes));
+diff --git a/Test/Unit/Validator/Component/IbanValidatorTest.php b/Test/Unit/Validator/Component/IbanValidatorTest.php
+index 1bdf6ccf..044be84a 100644
+--- a/Test/Unit/Validator/Component/IbanValidatorTest.php
++++ b/Test/Unit/Validator/Component/IbanValidatorTest.php
+@@ -14,7 +14,7 @@ class IbanValidatorTest extends TestCase
+      * @return void
+      * @dataProvider getTestValues
+      */
+-    public function testValidate(string $ibanNumber, bool|array $expectedResult, string $expectedMessage = '')
++    public function testValidate(string $ibanNumber, $expectedResult, string $expectedMessage = '')
+     {
+         $ibanValidator = new IbanValidator();
+         $actualResult = $ibanValidator->validate($ibanNumber);
+diff --git a/Util/AddressRenderer.php b/Util/AddressRenderer.php
+index c6d20ea0..960a9b38 100644
+--- a/Util/AddressRenderer.php
++++ b/Util/AddressRenderer.php
+@@ -10,8 +10,8 @@ use Magento\Quote\Model\Quote\Address;
+ class AddressRenderer
+ {
+     public function __construct(
+-        private readonly AddressConfig $addressConfig,
+-        private readonly AddressMapper $addressMapper,
++        private AddressConfig $addressConfig,
++        private AddressMapper $addressMapper,
+     ) {
+     }
+ 
+diff --git a/Util/Block/CssStyleParser/GridStyleParser.php b/Util/Block/CssStyleParser/GridStyleParser.php
+index f652e007..933981f0 100644
+--- a/Util/Block/CssStyleParser/GridStyleParser.php
++++ b/Util/Block/CssStyleParser/GridStyleParser.php
+@@ -11,7 +11,7 @@ use Loki\CssUtils\Util\CssStyleParser\CssStyleParserInterface;
+ class GridStyleParser implements CssStyleParserInterface
+ {
+     public function __construct(
+-        private readonly Config $config,
++        private Config $config,
+     ) {
+     }
+ 
+@@ -66,7 +66,7 @@ class GridStyleParser implements CssStyleParserInterface
+         return $cssStyles;
+     }
+ 
+-    private function getBlockDefinitionByBlock(AbstractBlock $block): false|Block
++    private function getBlockDefinitionByBlock(AbstractBlock $block)
+     {
+         $grid = $this->config->getGrid();
+         $blockAlias = (string)$block->getLayout()->getElementAlias($block->getNameInLayout());
+diff --git a/Util/Block/SortedBlocks.php b/Util/Block/SortedBlocks.php
+index 449be7e4..201a2067 100644
+--- a/Util/Block/SortedBlocks.php
++++ b/Util/Block/SortedBlocks.php
+@@ -13,7 +13,7 @@ use LokiCheckout\Core\Exception\BlockNotFoundException;
+ class SortedBlocks implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly Config $config,
++        private Config $config,
+     ) {
+     }
+ 
+diff --git a/Util/Cart/CartTotals.php b/Util/Cart/CartTotals.php
+index c824a30f..daca226e 100644
+--- a/Util/Cart/CartTotals.php
++++ b/Util/Cart/CartTotals.php
+@@ -11,9 +11,9 @@ use Magento\Quote\Api\Data\TotalsInterface;
+ class CartTotals implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly TotalsInformationManagementInterface $totalsInformationManagement,
+-        private readonly TotalsInformationInterfaceFactory $totalsInformationFactory,
++        private CheckoutState $checkoutState,
++        private TotalsInformationManagementInterface $totalsInformationManagement,
++        private TotalsInformationInterfaceFactory $totalsInformationFactory,
+     ) {
+     }
+ 
+diff --git a/Util/Checkout/AddLayoutHandles.php b/Util/Checkout/AddLayoutHandles.php
+index 6d403dbd..467b3761 100644
+--- a/Util/Checkout/AddLayoutHandles.php
++++ b/Util/Checkout/AddLayoutHandles.php
+@@ -9,9 +9,9 @@ use Magento\Framework\View\LayoutInterface;
+ class AddLayoutHandles
+ {
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly LayoutInterface $layout,
+-        private readonly CurrentTheme $currentTheme
++        private Config $config,
++        private LayoutInterface $layout,
++        private CurrentTheme $currentTheme
+     ) {
+     }
+ 
+diff --git a/Util/Checkout/AllowCheckoutAccess.php b/Util/Checkout/AllowCheckoutAccess.php
+index bc0bd080..a8778952 100644
+--- a/Util/Checkout/AllowCheckoutAccess.php
++++ b/Util/Checkout/AllowCheckoutAccess.php
+@@ -8,8 +8,8 @@ use Magento\Framework\App\RequestInterface;
+ class AllowCheckoutAccess
+ {
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly RequestInterface $request,
++        private Config $config,
++        private RequestInterface $request,
+     ) {
+     }
+ 
+diff --git a/Util/Checkout/SaveCart.php b/Util/Checkout/SaveCart.php
+index 5cf641ad..956d663d 100644
+--- a/Util/Checkout/SaveCart.php
++++ b/Util/Checkout/SaveCart.php
+@@ -11,8 +11,8 @@ use Magento\Quote\Model\ResourceModel\Quote\Address as QuoteAddressResourceModel
+ class SaveCart
+ {
+     public function __construct(
+-        private readonly CartRepositoryInterface $cartRepository,
+-        private readonly QuoteAddressResourceModel $quoteAddressResourceModel,
++        private CartRepositoryInterface $cartRepository,
++        private QuoteAddressResourceModel $quoteAddressResourceModel,
+ 
+     ) {
+     }
+diff --git a/Util/Component/AddressStateProvider.php b/Util/Component/AddressStateProvider.php
+index 5991887f..fad34b76 100644
+--- a/Util/Component/AddressStateProvider.php
++++ b/Util/Component/AddressStateProvider.php
+@@ -11,12 +11,12 @@ use LokiCheckout\Core\ViewModel\State\ShippingAddressState;
+ class AddressStateProvider
+ {
+     public function __construct(
+-        private readonly ShippingAddressState $shippingAddressState,
+-        private readonly BillingAddressState  $billingAddressState,
++        private ShippingAddressState $shippingAddressState,
++        private BillingAddressState  $billingAddressState,
+     ) {
+     }
+ 
+-    public function getAddressType(AbstractBlock|string $block): string
++    public function getAddressType($block): string
+     {
+         if ($block instanceof AbstractBlock) {
+             $block = $block->getNameInLayout();
+@@ -29,7 +29,7 @@ class AddressStateProvider
+         return 'shipping';
+     }
+ 
+-    public function getAddressState(AbstractBlock|string $block): AddressStateInterface
++    public function getAddressState($block): AddressStateInterface
+     {
+         if ($this->isBillingAddressType($block)) {
+             return $this->getBillingAddressState();
+@@ -38,12 +38,12 @@ class AddressStateProvider
+         return $this->getShippingAddressState();
+     }
+ 
+-    public function isShippingAddressType(AbstractBlock|string $block): bool
++    public function isShippingAddressType($block): bool
+     {
+         return $this->getAddressType($block) === 'shipping';
+     }
+ 
+-    public function isBillingAddressType(AbstractBlock|string $block): bool
++    public function isBillingAddressType($block): bool
+     {
+         return $this->getAddressType($block) === 'billing';
+     }
+diff --git a/Util/Component/StepProvider.php b/Util/Component/StepProvider.php
+index e8242e1b..8c09438b 100644
+--- a/Util/Component/StepProvider.php
++++ b/Util/Component/StepProvider.php
+@@ -11,8 +11,8 @@ use LokiCheckout\Core\Step\StepNavigator;
+ class StepProvider
+ {
+     public function __construct(
+-        private readonly StepNavigator $stepNavigator,
+-        private readonly LayoutInterface $layout
++        private StepNavigator $stepNavigator,
++        private LayoutInterface $layout
+     ) {
+     }
+ 
+diff --git a/Util/Composer/ComposerLock.php b/Util/Composer/ComposerLock.php
+index 3316288e..89445ed3 100644
+--- a/Util/Composer/ComposerLock.php
++++ b/Util/Composer/ComposerLock.php
+@@ -7,7 +7,7 @@ use Magento\Framework\Filesystem\DirectoryList;
+ class ComposerLock
+ {
+     public function __construct(
+-        private readonly DirectoryList $directoryList
++        private DirectoryList $directoryList
+     ) {
+     }
+ 
+diff --git a/Util/Composer/ComposerPackage.php b/Util/Composer/ComposerPackage.php
+index 945cfa51..0d84c433 100644
+--- a/Util/Composer/ComposerPackage.php
++++ b/Util/Composer/ComposerPackage.php
+@@ -5,10 +5,10 @@ namespace LokiCheckout\Core\Util\Composer;
+ class ComposerPackage
+ {
+     public function __construct(
+-        private readonly string $moduleName,
+-        private readonly string $composerName,
+-        private readonly string $composerVersion,
+-        private readonly string $composerDate,
++        private string $moduleName,
++        private string $composerName,
++        private string $composerVersion,
++        private string $composerDate,
+     ) {
+     }
+ 
+diff --git a/Util/Composer/ComposerPackageFactory.php b/Util/Composer/ComposerPackageFactory.php
+index c8f7c52e..b55b07b3 100644
+--- a/Util/Composer/ComposerPackageFactory.php
++++ b/Util/Composer/ComposerPackageFactory.php
+@@ -8,8 +8,8 @@ use RuntimeException;
+ class ComposerPackageFactory
+ {
+     public function __construct(
+-        private readonly ComponentRegistrar $componentRegistrar,
+-        private readonly ComposerLock $composerLock,
++        private ComponentRegistrar $componentRegistrar,
++        private ComposerLock $composerLock,
+     ) {
+     }
+ 
+diff --git a/Util/CurrentTheme.php b/Util/CurrentTheme.php
+index 98c9c752..34cbc756 100644
+--- a/Util/CurrentTheme.php
++++ b/Util/CurrentTheme.php
+@@ -7,7 +7,7 @@ use Magento\Framework\View\DesignInterface;
+ class CurrentTheme
+ {
+     public function __construct(
+-        private readonly DesignInterface $design,
++        private DesignInterface $design,
+     ) {
+     }
+ 
+diff --git a/Util/CustomerProvider.php b/Util/CustomerProvider.php
+index bff7833f..378a7c3b 100644
+--- a/Util/CustomerProvider.php
++++ b/Util/CustomerProvider.php
+@@ -20,13 +20,13 @@ use Magento\Framework\UrlFactory;
+ class CustomerProvider
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly CustomerRepositoryInterface $customerRepository,
+-        private readonly CustomerAddressRepository $customerAddressRepository,
+-        private readonly SearchCriteriaBuilder $searchCriteriaBuilder,
+-        private readonly AddressConfig $addressConfig,
+-        private readonly AddressMapper $addressMapper,
+-        private readonly OptionFactory $optionFactory,
++        private CheckoutState $checkoutState,
++        private CustomerRepositoryInterface $customerRepository,
++        private CustomerAddressRepository $customerAddressRepository,
++        private SearchCriteriaBuilder $searchCriteriaBuilder,
++        private AddressConfig $addressConfig,
++        private AddressMapper $addressMapper,
++        private OptionFactory $optionFactory,
+         private MessageManager $messageManager,
+         private CustomerAddressValidator $customerAddressValidator,
+         private UrlFactory $urlFactory
+diff --git a/Util/RegionProvider.php b/Util/RegionProvider.php
+index 0736779d..415b7085 100644
+--- a/Util/RegionProvider.php
++++ b/Util/RegionProvider.php
+@@ -9,7 +9,7 @@ use Magento\Quote\Api\Data\AddressInterface;
+ class RegionProvider
+ {
+     public function __construct(
+-        private readonly RegionCollectionFactory $regionCollectionFactory,
++        private RegionCollectionFactory $regionCollectionFactory,
+     ) {
+     }
+ 
+diff --git a/Util/SameAddressService.php b/Util/SameAddressService.php
+index 70375528..98f17468 100644
+--- a/Util/SameAddressService.php
++++ b/Util/SameAddressService.php
+@@ -10,9 +10,9 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
+ class SameAddressService
+ {
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly Copy $copyService,
+-        private readonly CheckoutState $checkoutState,
++        private Config $config,
++        private Copy $copyService,
++        private CheckoutState $checkoutState,
+     ) {
+     }
+ 
+diff --git a/Util/StreetLines.php b/Util/StreetLines.php
+index 33054fa0..3b4dae6f 100644
+--- a/Util/StreetLines.php
++++ b/Util/StreetLines.php
+@@ -9,8 +9,8 @@ class StreetLines
+         private string $houseNumber = '',
+         private string $houseNumberAddition = '',
+         private string $street4 = '',
+-        private readonly string $countryId = '',
+-        private readonly int $maximumNumber = 2,
++        private string $countryId = '',
++        private int $maximumNumber = 2,
+     ) {
+     }
+ 
+diff --git a/Util/StreetLinesFactory.php b/Util/StreetLinesFactory.php
+index 5f20e776..02be6aaf 100644
+--- a/Util/StreetLinesFactory.php
++++ b/Util/StreetLinesFactory.php
+@@ -9,9 +9,9 @@ use Magento\Framework\ObjectManagerInterface;
+ class StreetLinesFactory
+ {
+     public function __construct(
+-        private readonly ObjectManagerInterface $objectManager,
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly StreetLinesParser $streetLinesParser,
++        private ObjectManagerInterface $objectManager,
++        private ScopeConfigInterface $scopeConfig,
++        private StreetLinesParser $streetLinesParser,
+     ) {
+     }
+ 
+diff --git a/Validator/Component/CustomerAddressValidator.php b/Validator/Component/CustomerAddressValidator.php
+index f3286e06..5737d50f 100644
+--- a/Validator/Component/CustomerAddressValidator.php
++++ b/Validator/Component/CustomerAddressValidator.php
+@@ -12,12 +12,12 @@ use Loki\Field\Component\Base\Field\FieldComponent;
+ class CustomerAddressValidator implements ValidatorInterface
+ {
+     public function __construct(
+-        private readonly CustomerAddressFactory $customerAddressFactory,
+-        private readonly ValidatorFactory $validatorFactory
++        private CustomerAddressFactory $customerAddressFactory,
++        private ValidatorFactory $validatorFactory
+     ) {
+     }
+ 
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         if (false === $component instanceof FieldComponent) {
+             return true;
+diff --git a/Validator/Component/DobValidator.php b/Validator/Component/DobValidator.php
+index 119ca4ac..5f78870b 100644
+--- a/Validator/Component/DobValidator.php
++++ b/Validator/Component/DobValidator.php
+@@ -8,12 +8,12 @@ use Loki\Components\Validator\ValidatorInterface;
+ class DobValidator implements ValidatorInterface
+ {
+     public function __construct(
+-        private readonly int $minimumAge = 10,
+-        private readonly int $maximumAge = 150
++        private int $minimumAge = 10,
++        private int $maximumAge = 150
+     ) {
+     }
+ 
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         if (false === is_string($value) || empty($value)) {
+             return true;
+diff --git a/Validator/Component/EmailAvailableValidator.php b/Validator/Component/EmailAvailableValidator.php
+index 32becccf..28e68332 100644
+--- a/Validator/Component/EmailAvailableValidator.php
++++ b/Validator/Component/EmailAvailableValidator.php
+@@ -9,11 +9,11 @@ use Loki\Components\Validator\ValidatorInterface;
+ class EmailAvailableValidator implements ValidatorInterface
+ {
+     public function __construct(
+-        private readonly AccountManagementInterface $accountManagement,
++        private AccountManagementInterface $accountManagement,
+     ) {
+     }
+ 
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         $email = trim((string)$value);
+ 
+diff --git a/Validator/Component/GenderValidator.php b/Validator/Component/GenderValidator.php
+index f4663a10..bde0866a 100644
+--- a/Validator/Component/GenderValidator.php
++++ b/Validator/Component/GenderValidator.php
+@@ -9,11 +9,11 @@ use Loki\Components\Validator\ValidatorInterface;
+ class GenderValidator implements ValidatorInterface
+ {
+     public function __construct(
+-        private readonly GenderOptionModel $genderOptionModel,
++        private GenderOptionModel $genderOptionModel,
+     ) {
+     }
+ 
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         $gender = trim((string)$value);
+ 
+diff --git a/Validator/Component/IbanValidator.php b/Validator/Component/IbanValidator.php
+index 5888dd50..e5860672 100644
+--- a/Validator/Component/IbanValidator.php
++++ b/Validator/Component/IbanValidator.php
+@@ -7,7 +7,7 @@ use Loki\Components\Validator\ValidatorInterface;
+ 
+ class IbanValidator implements ValidatorInterface
+ {
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         if (false === is_string($value)) {
+             return true;
+diff --git a/Validator/Component/OptionsValidator.php b/Validator/Component/OptionsValidator.php
+index 61aa52c2..74869489 100644
+--- a/Validator/Component/OptionsValidator.php
++++ b/Validator/Component/OptionsValidator.php
+@@ -9,7 +9,7 @@ use Loki\Field\Util\OptionModelInterface;
+ 
+ class OptionsValidator implements ValidatorInterface
+ {
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         $value = trim((string)$value);
+         if ($value === '' || $value === '0') {
+diff --git a/Validator/Component/PostcodeFormatValidator.php b/Validator/Component/PostcodeFormatValidator.php
+index c290b15d..7ccda34b 100644
+--- a/Validator/Component/PostcodeFormatValidator.php
++++ b/Validator/Component/PostcodeFormatValidator.php
+@@ -10,12 +10,12 @@ use Loki\Components\Validator\ValidatorInterface;
+ class PostcodeFormatValidator implements ValidatorInterface
+ {
+     public function __construct(
+-        private readonly ConfigInterface $postcodeConfig,
+-        private readonly AddressStateProvider $addressStateProvider
++        private ConfigInterface $postcodeConfig,
++        private AddressStateProvider $addressStateProvider
+     ) {
+     }
+ 
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         $addressState = $this->addressStateProvider->getAddressState($component->getBlock());
+         $countryId = $addressState->get('country_id');
+diff --git a/Validator/CustomerAddressValidator.php b/Validator/CustomerAddressValidator.php
+index 51379adb..b94a548c 100644
+--- a/Validator/CustomerAddressValidator.php
++++ b/Validator/CustomerAddressValidator.php
+@@ -11,7 +11,7 @@ use Magento\Customer\Model\AddressFactory;
+ class CustomerAddressValidator
+ {
+     public function __construct(
+-        private readonly AddressMapper $addressMapper,
++        private AddressMapper $addressMapper,
+         private AddressFactory $addressFactory,
+         private ValidatorFactory $validatorFactory,
+     ) {
+diff --git a/Validator/Quote/ValidationRule/Email.php b/Validator/Quote/ValidationRule/Email.php
+index 15ff8bbe..1a64774b 100644
+--- a/Validator/Quote/ValidationRule/Email.php
++++ b/Validator/Quote/ValidationRule/Email.php
+@@ -9,7 +9,7 @@ use Magento\Quote\Model\ValidationRules\QuoteValidationRuleInterface;
+ class Email implements QuoteValidationRuleInterface
+ {
+     public function __construct(
+-        private readonly ValidationResultFactory $validationResultFactory,
++        private ValidationResultFactory $validationResultFactory,
+     ) {
+     }
+ 
+diff --git a/Validator/QuoteValidator.php b/Validator/QuoteValidator.php
+index 7b2088fc..3281d147 100644
+--- a/Validator/QuoteValidator.php
++++ b/Validator/QuoteValidator.php
+@@ -11,8 +11,8 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
+ class QuoteValidator implements ValidatorInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly CoreQuoteValidator $quoteValidator,
++        private CheckoutState $checkoutState,
++        private CoreQuoteValidator $quoteValidator,
+     ) {
+     }
+ 
+@@ -22,7 +22,7 @@ class QuoteValidator implements ValidatorInterface
+      * @throws LocalizedException
+      * @throws NoSuchEntityException
+      */
+-    public function validate(): bool|array
++    public function validate()
+     {
+         $quote = $this->checkoutState->getQuote();
+         $this->quoteValidator->validateBeforeSubmit($quote);
+diff --git a/Validator/StepValidator.php b/Validator/StepValidator.php
+index 51613299..c753f566 100644
+--- a/Validator/StepValidator.php
++++ b/Validator/StepValidator.php
+@@ -10,8 +10,8 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
+ class StepValidator implements ValidatorInterface
+ {
+     public function __construct(
+-        protected readonly CheckoutState $checkoutState,
+-        protected readonly array $validationRules = [],
++        protected CheckoutState $checkoutState,
++        protected array $validationRules = [],
+     ) {
+     }
+ 
+@@ -20,7 +20,7 @@ class StepValidator implements ValidatorInterface
+      * @throws LocalizedException
+      * @throws NoSuchEntityException
+      */
+-    public function validate(): bool|array
++    public function validate()
+     {
+         $errors = [];
+         if ($this->validationRules === []) {
+diff --git a/Validator/ValidatorInterface.php b/Validator/ValidatorInterface.php
+index 39cbd0f8..767b473e 100644
+--- a/Validator/ValidatorInterface.php
++++ b/Validator/ValidatorInterface.php
+@@ -4,5 +4,5 @@ namespace LokiCheckout\Core\Validator;
+ 
+ interface ValidatorInterface
+ {
+-    public function validate(): bool|array;
++    public function validate();
+ }
+diff --git a/ViewModel/CheckoutState.php b/ViewModel/CheckoutState.php
+index 8b2f6315..48a074da 100644
+--- a/ViewModel/CheckoutState.php
++++ b/ViewModel/CheckoutState.php
+@@ -22,14 +22,14 @@ class CheckoutState implements ArgumentInterface
+     private array $quotes = [];
+ 
+     public function __construct(
+-        private readonly CheckoutSession $checkoutSession,
+-        private readonly CustomerSession $customerSession,
+-        private readonly CartRepositoryInterface $cartRepository,
+-        private readonly QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId,
+-        private readonly UrlFactory $urlFactory,
+-        private readonly ResponseFactory $responseFactory,
+-        private readonly Ajax $ajax,
+-        private readonly SaveCart $saveCart
++        private CheckoutSession $checkoutSession,
++        private CustomerSession $customerSession,
++        private CartRepositoryInterface $cartRepository,
++        private QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId,
++        private UrlFactory $urlFactory,
++        private ResponseFactory $responseFactory,
++        private Ajax $ajax,
++        private SaveCart $saveCart
+     ) {
+     }
+ 
+diff --git a/ViewModel/CssVariables.php b/ViewModel/CssVariables.php
+index dfe51c3d..ed16ff9a 100644
+--- a/ViewModel/CssVariables.php
++++ b/ViewModel/CssVariables.php
+@@ -13,7 +13,7 @@ class CssVariables implements ArgumentInterface
+     private array $cssVariables = [];
+ 
+     public function __construct(
+-        private readonly CssVariableFactory $cssVariableFactory
++        private CssVariableFactory $cssVariableFactory
+     ) {
+     }
+ 
+diff --git a/ViewModel/CssVariables/CssVariableFactory.php b/ViewModel/CssVariables/CssVariableFactory.php
+index c970e3ef..3f5154f2 100644
+--- a/ViewModel/CssVariables/CssVariableFactory.php
++++ b/ViewModel/CssVariables/CssVariableFactory.php
+@@ -8,7 +8,7 @@ use Magento\Framework\ObjectManagerInterface;
+ class CssVariableFactory
+ {
+     public function __construct(
+-        private readonly ObjectManagerInterface $objectManager
++        private ObjectManagerInterface $objectManager
+     ) {
+     }
+ 
+diff --git a/ViewModel/OptionModel/CountryOptionModel.php b/ViewModel/OptionModel/CountryOptionModel.php
+index 74b89c83..f361a858 100644
+--- a/ViewModel/OptionModel/CountryOptionModel.php
++++ b/ViewModel/OptionModel/CountryOptionModel.php
+@@ -10,7 +10,7 @@ use Loki\Field\Util\OptionModelInterface;
+ class CountryOptionModel implements ArgumentInterface, OptionModelInterface
+ {
+     public function __construct(
+-        private readonly DirectoryHelper $directoryHelper,
++        private DirectoryHelper $directoryHelper,
+     ) {
+     }
+ 
+diff --git a/ViewModel/OptionModel/CustomerAddressOptionModel.php b/ViewModel/OptionModel/CustomerAddressOptionModel.php
+index 2ab5edbe..18876590 100644
+--- a/ViewModel/OptionModel/CustomerAddressOptionModel.php
++++ b/ViewModel/OptionModel/CustomerAddressOptionModel.php
+@@ -11,7 +11,7 @@ use Loki\Field\Util\OptionModelInterface;
+ class CustomerAddressOptionModel implements ArgumentInterface, OptionModelInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState
++        private CheckoutState $checkoutState
+     ) {
+     }
+ 
+diff --git a/ViewModel/OptionModel/PrefixOptionModel.php b/ViewModel/OptionModel/PrefixOptionModel.php
+index b51e632a..bd7c233b 100644
+--- a/ViewModel/OptionModel/PrefixOptionModel.php
++++ b/ViewModel/OptionModel/PrefixOptionModel.php
+@@ -11,7 +11,7 @@ use Loki\Field\Util\OptionModelInterface;
+ class PrefixOptionModel implements ArgumentInterface, OptionModelInterface
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
++        private ScopeConfigInterface $scopeConfig,
+     ) {
+     }
+ 
+diff --git a/ViewModel/OptionModel/RegionOptionModel.php b/ViewModel/OptionModel/RegionOptionModel.php
+index cfa04471..ee43726c 100644
+--- a/ViewModel/OptionModel/RegionOptionModel.php
++++ b/ViewModel/OptionModel/RegionOptionModel.php
+@@ -12,7 +12,7 @@ use Loki\Field\Util\OptionModelInterface;
+ class RegionOptionModel implements ArgumentInterface, OptionModelInterface
+ {
+     public function __construct(
+-        private readonly RegionCollectionFactory $regionCollectionFactory,
++        private RegionCollectionFactory $regionCollectionFactory,
+     ) {
+     }
+ 
+diff --git a/ViewModel/PaymentDetails/Purchaseorder.php b/ViewModel/PaymentDetails/Purchaseorder.php
+index 0099f1ad..e028d862 100644
+--- a/ViewModel/PaymentDetails/Purchaseorder.php
++++ b/ViewModel/PaymentDetails/Purchaseorder.php
+@@ -8,7 +8,7 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
+ class Purchaseorder implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState
++        private CheckoutState $checkoutState
+     ) {
+     }
+ 
+diff --git a/ViewModel/PaymentMethod/Banktransfer.php b/ViewModel/PaymentMethod/Banktransfer.php
+index 44332188..c7477574 100644
+--- a/ViewModel/PaymentMethod/Banktransfer.php
++++ b/ViewModel/PaymentMethod/Banktransfer.php
+@@ -12,7 +12,7 @@ use Magento\Store\Model\ScopeInterface;
+ class Banktransfer implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
++        private ScopeConfigInterface $scopeConfig,
+     ) {
+     }
+ 
+diff --git a/ViewModel/PaymentMethod/CashOnDelivery.php b/ViewModel/PaymentMethod/CashOnDelivery.php
+index 6622832d..3a0bdd30 100644
+--- a/ViewModel/PaymentMethod/CashOnDelivery.php
++++ b/ViewModel/PaymentMethod/CashOnDelivery.php
+@@ -11,7 +11,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class CashOnDelivery implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
++        private ScopeConfigInterface $scopeConfig,
+     ) {
+     }
+ 
+diff --git a/ViewModel/PaymentMethod/CheckMoneyOrder.php b/ViewModel/PaymentMethod/CheckMoneyOrder.php
+index 83318f1c..e1aef16d 100644
+--- a/ViewModel/PaymentMethod/CheckMoneyOrder.php
++++ b/ViewModel/PaymentMethod/CheckMoneyOrder.php
+@@ -11,7 +11,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class CheckMoneyOrder implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
++        private ScopeConfigInterface $scopeConfig,
+     ) {
+     }
+ 
+diff --git a/ViewModel/PaymentMethodIcon.php b/ViewModel/PaymentMethodIcon.php
+index a0a99dbf..386c60d4 100644
+--- a/ViewModel/PaymentMethodIcon.php
++++ b/ViewModel/PaymentMethodIcon.php
+@@ -13,8 +13,8 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class PaymentMethodIcon implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly IconResolverListing $iconResolverListing,
+-        private readonly IconResolverContextFactory $iconResolverContextFactory,
++        private IconResolverListing $iconResolverListing,
++        private IconResolverContextFactory $iconResolverContextFactory,
+     ) {
+     }
+ 
+diff --git a/ViewModel/PostcodePatterns.php b/ViewModel/PostcodePatterns.php
+index fd0e1e52..86f7dc43 100644
+--- a/ViewModel/PostcodePatterns.php
++++ b/ViewModel/PostcodePatterns.php
+@@ -9,8 +9,8 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class PostcodePatterns implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly ConfigInterface $postcodeConfig,
+-        private readonly AllowedCountries $allowedCountries
++        private ConfigInterface $postcodeConfig,
++        private AllowedCountries $allowedCountries
+     ) {
+     }
+ 
+diff --git a/ViewModel/PriceFormatter.php b/ViewModel/PriceFormatter.php
+index 09142b00..f5c62157 100644
+--- a/ViewModel/PriceFormatter.php
++++ b/ViewModel/PriceFormatter.php
+@@ -8,7 +8,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class PriceFormatter implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly PriceCurrencyInterface $priceCurrency
++        private PriceCurrencyInterface $priceCurrency
+     ) {
+     }
+ 
+diff --git a/ViewModel/ProductRenderer.php b/ViewModel/ProductRenderer.php
+index 7eaf7b9f..9046dccd 100644
+--- a/ViewModel/ProductRenderer.php
++++ b/ViewModel/ProductRenderer.php
+@@ -13,9 +13,9 @@ use Magento\Quote\Api\Data\CartItemInterface;
+ class ProductRenderer implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly LayoutInterface $layout,
+-        private readonly Configuration $productConfigurationHelper,
+-        private readonly array $productOptionParams = []
++        private LayoutInterface $layout,
++        private Configuration $productConfigurationHelper,
++        private array $productOptionParams = []
+     ) {
+     }
+ 
+diff --git a/ViewModel/QuoteDetails.php b/ViewModel/QuoteDetails.php
+index 9f185833..fa82922d 100644
+--- a/ViewModel/QuoteDetails.php
++++ b/ViewModel/QuoteDetails.php
+@@ -9,8 +9,8 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class QuoteDetails implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly DateTimeFactory $dateTimeFactory
++        private CheckoutState $checkoutState,
++        private DateTimeFactory $dateTimeFactory
+     ) {
+     }
+ 
+diff --git a/ViewModel/ShipmentMethodIcon.php b/ViewModel/ShipmentMethodIcon.php
+index 04172df5..a2253933 100644
+--- a/ViewModel/ShipmentMethodIcon.php
++++ b/ViewModel/ShipmentMethodIcon.php
+@@ -13,8 +13,8 @@ use LokiCheckout\Core\Shipment\Icon\IconResolverListing;
+ class ShipmentMethodIcon implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly IconResolverListing $iconResolverListing,
+-        private readonly IconResolverContextFactory $iconResolverContextFactory,
++        private IconResolverListing $iconResolverListing,
++        private IconResolverContextFactory $iconResolverContextFactory,
+     ) {
+     }
+ 
+diff --git a/ViewModel/ShippingAmount.php b/ViewModel/ShippingAmount.php
+index 140153d8..ffd3a5f8 100644
+--- a/ViewModel/ShippingAmount.php
++++ b/ViewModel/ShippingAmount.php
+@@ -9,7 +9,7 @@ use Magento\Quote\Api\Data\TotalsInterface;
+ class ShippingAmount implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly \Magento\Tax\Model\Config $config
++        private \Magento\Tax\Model\Config $config
+     ) {
+     }
+ 
+diff --git a/ViewModel/State/AddressStateInterface.php b/ViewModel/State/AddressStateInterface.php
+index acfed019..3945fed2 100644
+--- a/ViewModel/State/AddressStateInterface.php
++++ b/ViewModel/State/AddressStateInterface.php
+@@ -7,7 +7,7 @@ use Magento\Quote\Model\Quote\Address;
+ 
+ interface AddressStateInterface extends ArgumentInterface
+ {
+-    public function get(string $attributeCode): mixed;
++    public function get(string $attributeCode);
+ 
+     public function set(string $attributeCode, string $value): void;
+ 
+diff --git a/ViewModel/State/BillingAddressState.php b/ViewModel/State/BillingAddressState.php
+index 2393e19a..e17a0720 100644
+--- a/ViewModel/State/BillingAddressState.php
++++ b/ViewModel/State/BillingAddressState.php
+@@ -10,9 +10,9 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
+ class BillingAddressState implements AddressStateInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly SameAddressService $sameAddressService,
++        private CheckoutState $checkoutState,
++        private ScopeConfigInterface $scopeConfig,
++        private SameAddressService $sameAddressService,
+     ) {
+     }
+ 
+@@ -22,12 +22,12 @@ class BillingAddressState implements AddressStateInterface
+      *
+      * @return mixed
+      */
+-    public function load(string $attributeCode): mixed
++    public function load(string $attributeCode)
+     {
+         return $this->get($attributeCode);
+     }
+ 
+-    public function get(string $attributeCode): mixed
++    public function get(string $attributeCode)
+     {
+         return $this->getAddress()->getData($attributeCode);
+     }
+diff --git a/ViewModel/State/ShippingAddressState.php b/ViewModel/State/ShippingAddressState.php
+index 7fbe378a..06a6c7c2 100644
+--- a/ViewModel/State/ShippingAddressState.php
++++ b/ViewModel/State/ShippingAddressState.php
+@@ -10,9 +10,9 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
+ class ShippingAddressState implements AddressStateInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly SameAddressService $sameAddressService,
++        private CheckoutState $checkoutState,
++        private ScopeConfigInterface $scopeConfig,
++        private SameAddressService $sameAddressService,
+     ) {
+     }
+ 
+@@ -22,12 +22,12 @@ class ShippingAddressState implements AddressStateInterface
+      *
+      * @return mixed
+      */
+-    public function load(string $attributeCode): mixed
++    public function load(string $attributeCode)
+     {
+         return $this->get($attributeCode);
+     }
+ 
+-    public function get(string $attributeCode): mixed
++    public function get(string $attributeCode)
+     {
+         return $this->getAddress()->getData($attributeCode);
+     }
