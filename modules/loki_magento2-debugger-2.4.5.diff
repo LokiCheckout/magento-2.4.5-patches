@@ -1,3 +1,44 @@
+diff --git a/Observer/AddBlockHints.php b/Observer/AddBlockHints.php
+index ee17bf6..aa838cb 100644
+--- a/Observer/AddBlockHints.php
++++ b/Observer/AddBlockHints.php
+@@ -10,8 +10,8 @@ use Magento\Framework\Event\ObserverInterface;
+ class AddBlockHints implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly AppState $appState,
++        private Config $config,
++        private AppState $appState,
+     ) {
+     }
+ 
+diff --git a/Observer/DebugBlocks.php b/Observer/DebugBlocks.php
+index a4d27a6..5e58908 100644
+--- a/Observer/DebugBlocks.php
++++ b/Observer/DebugBlocks.php
+@@ -9,7 +9,7 @@ use Loki\Debugger\Util\Debugger;
+ class DebugBlocks implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly Debugger $debugger
++        private Debugger $debugger
+     ) {
+     }
+ 
+diff --git a/Observer/DebugRepository.php b/Observer/DebugRepository.php
+index 3540fc3..f20d03d 100644
+--- a/Observer/DebugRepository.php
++++ b/Observer/DebugRepository.php
+@@ -10,7 +10,7 @@ use Loki\Debugger\Util\Debugger;
+ class DebugRepository implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly Debugger $debugger
++        private Debugger $debugger
+     ) {
+     }
+ 
 diff --git a/Util/Debugger.php b/Util/Debugger.php
 index b47cce7..8e91153 100644
 --- a/Util/Debugger.php
