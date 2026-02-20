@@ -1,3 +1,33 @@
+diff --git a/ModuleData/ModuleSequence.php b/ModuleData/ModuleSequence.php
+index 229646d..fa2c88d 100644
+--- a/ModuleData/ModuleSequence.php
++++ b/ModuleData/ModuleSequence.php
+@@ -7,7 +7,7 @@ use Magento\Framework\Component\ComponentRegistrar;
+ class ModuleSequence
+ {
+     public function __construct(
+-        private readonly ComponentRegistrar $componentRegistrar
++        private ComponentRegistrar $componentRegistrar
+     ) {
+     }
+ 
+diff --git a/Observer/SetStickyCart.php b/Observer/SetStickyCart.php
+index c540f6f..e6229f4 100644
+--- a/Observer/SetStickyCart.php
++++ b/Observer/SetStickyCart.php
+@@ -19,9 +19,9 @@ class SetStickyCart implements ObserverInterface
+ {
+     public function __construct(
+         private CustomerCart $cart,
+-        private readonly ProductRepositoryInterface $productRepository,
+-        private readonly SearchCriteriaBuilder $searchCriteriaBuilder,
+-        private readonly MessageManager $messageManager,
++        private ProductRepositoryInterface $productRepository,
++        private SearchCriteriaBuilder $searchCriteriaBuilder,
++        private MessageManager $messageManager,
+         private CookieMetadataFactory $cookieMetadataFactory,
+         private CookieManagerInterface $cookieManager,
+         private Http $request,
 diff --git a/Test/Generator/UnitTest/ComponentRepositoryTestGenerator.php b/Test/Generator/UnitTest/ComponentRepositoryTestGenerator.php
 index 205f9f5..f009e8d 100644
 --- a/Test/Generator/UnitTest/ComponentRepositoryTestGenerator.php
