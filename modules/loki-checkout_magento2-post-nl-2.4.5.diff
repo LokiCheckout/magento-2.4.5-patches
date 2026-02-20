@@ -1,0 +1,35 @@
+diff --git a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
+index f1c8086..db6f656 100644
+--- a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
++++ b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
+@@ -35,7 +35,7 @@ class DeliveryOptionsRepository extends FieldRepository
+         return $this->deliveryDateProvider->getAll();
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $postnlOrder = $this->getPostNLOrderByQuote();
+         $type = strtolower((string)$postnlOrder->getType());
+@@ -54,7 +54,7 @@ class DeliveryOptionsRepository extends FieldRepository
+         return $type.'|'.$date;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $parts = explode('|', (string)$value);
+         if ($parts[0] === 'pg') {
+diff --git a/Shipment/Icon/IconResolver.php b/Shipment/Icon/IconResolver.php
+index b5cccac..4631289 100644
+--- a/Shipment/Icon/IconResolver.php
++++ b/Shipment/Icon/IconResolver.php
+@@ -14,7 +14,7 @@ class IconResolver implements IconResolverInterface
+     ) {
+     }
+ 
+-    public function resolve(IconResolverContext $iconResolverContext): false|string
++    public function resolve(IconResolverContext $iconResolverContext)
+     {
+         if (false === $this->moduleManager->isEnabled('TIG_PostNL')) {
+             return false;
