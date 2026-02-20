@@ -153,6 +153,9 @@
             },
             "loki/magento2-css-utils": {
                 "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki_magento2-css-utils-2.4.5.diff"
+            },
+            "loki-theme/magento2-luma-components": {
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-theme_magento2-luma-components-2.4.5.diff"
             }
         }
     }

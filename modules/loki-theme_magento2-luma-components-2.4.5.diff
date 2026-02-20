@@ -1,0 +1,86 @@
+diff --git a/Config/Source/ThemePathOptions.php b/Config/Source/ThemePathOptions.php
+index 08000fb..18d70de 100644
+--- a/Config/Source/ThemePathOptions.php
++++ b/Config/Source/ThemePathOptions.php
+@@ -10,7 +10,7 @@ use Magento\Framework\View\Design\ThemeInterface;
+ class ThemePathOptions implements OptionSourceInterface
+ {
+     public function __construct(
+-        private readonly ThemeList $themeList,
++        private ThemeList $themeList,
+     ) {
+     }
+ 
+diff --git a/Config/ThemeConfig.php b/Config/ThemeConfig.php
+index 3ec4bf5..32d4adf 100644
+--- a/Config/ThemeConfig.php
++++ b/Config/ThemeConfig.php
+@@ -9,8 +9,8 @@ use Magento\Framework\View\DesignInterface;
+ class ThemeConfig
+ {
+     public function __construct(
+-        private readonly DesignInterface $design,
+-        private readonly ScopeConfigInterface $scopeConfig,
++        private DesignInterface $design,
++        private ScopeConfigInterface $scopeConfig,
+     ) {
+     }
+ 
+diff --git a/Observer/AddAlpineComponents.php b/Observer/AddAlpineComponents.php
+index 0e9c07b..c75ff4c 100644
+--- a/Observer/AddAlpineComponents.php
++++ b/Observer/AddAlpineComponents.php
+@@ -11,8 +11,8 @@ use Magento\Framework\View\Element\AbstractBlock;
+ class AddAlpineComponents implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly ThemeConfig $themeConfig,
+-        private readonly AppState $appState,
++        private ThemeConfig $themeConfig,
++        private AppState $appState,
+         private array $componentDefinitions = []
+     ) {
+     }
+diff --git a/Observer/AddJsComponents.php b/Observer/AddJsComponents.php
+index 02d7616..553e8ad 100644
+--- a/Observer/AddJsComponents.php
++++ b/Observer/AddJsComponents.php
+@@ -9,7 +9,7 @@ use Magento\Framework\Event\ObserverInterface;
+ class AddJsComponents implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly ThemeConfig $themeConfig,
++        private ThemeConfig $themeConfig,
+         private array $componentDefinitions = []
+     ) {
+     }
+diff --git a/Observer/ApplyLayoutHandles.php b/Observer/ApplyLayoutHandles.php
+index 7557eee..4153edd 100644
+--- a/Observer/ApplyLayoutHandles.php
++++ b/Observer/ApplyLayoutHandles.php
+@@ -10,8 +10,8 @@ use Magento\Framework\View\LayoutInterface;
+ class ApplyLayoutHandles implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly ThemeConfig $themeConfig,
+-        private readonly LayoutInterface $layout,
++        private ThemeConfig $themeConfig,
++        private LayoutInterface $layout,
+     ) {
+     }
+ 
+diff --git a/Observer/RemoveLegacyHtmlBindings.php b/Observer/RemoveLegacyHtmlBindings.php
+index 919cf9c..1656ac5 100644
+--- a/Observer/RemoveLegacyHtmlBindings.php
++++ b/Observer/RemoveLegacyHtmlBindings.php
+@@ -10,8 +10,8 @@ use Magento\Framework\Event\ObserverInterface;
+ class RemoveLegacyHtmlBindings implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly ThemeConfig $themeConfig,
+-        private readonly RequestConfig $requestConfig,
++        private ThemeConfig $themeConfig,
++        private RequestConfig $requestConfig,
+         private array $patterns = [],
+     ) {
+     }
