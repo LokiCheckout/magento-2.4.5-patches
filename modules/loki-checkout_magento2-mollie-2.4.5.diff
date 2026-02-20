@@ -56,6 +56,33 @@ index fdb9bb5..936180f 100644
      {
          $hash = (string)$value;
          $quote = $this->getContext()->getCheckoutState()->getQuote();
+diff --git a/Component/MollieContext.php b/Component/MollieContext.php
+index db1c8bb..304f4d9 100644
+--- a/Component/MollieContext.php
++++ b/Component/MollieContext.php
+@@ -39,14 +39,14 @@ class MollieContext implements ComponentContextInterface
+         private AttributeProvider $attributeProvider,
+         private GlobalMessageRegistry $globalMessageRegistry,
+         private CoreMessageManager $coreMessageManager,
+-        private readonly CustomerSession $customerSession,
+-        private readonly StoreManagerInterface $storeManager,
+-        private readonly MollieConfig $mollieConfig,
+-        private readonly UrlFactory $urlFactory,
+-        private readonly LocaleResolver $localeResolver,
+-        private readonly PaymentTokenProvider $paymentTokenProvider,
+-        private readonly IssuerProvider $issuerProvider,
+-        private readonly SupportedNetworks $supportedNetworks,
++        private CustomerSession $customerSession,
++        private StoreManagerInterface $storeManager,
++        private MollieConfig $mollieConfig,
++        private UrlFactory $urlFactory,
++        private LocaleResolver $localeResolver,
++        private PaymentTokenProvider $paymentTokenProvider,
++        private IssuerProvider $issuerProvider,
++        private SupportedNetworks $supportedNetworks,
+     ) {
+     }
+ 
 diff --git a/Payment/Icon/IconResolver.php b/Payment/Icon/IconResolver.php
 index 251f7b8..8a0ecd9 100644
 --- a/Payment/Icon/IconResolver.php
@@ -95,3 +122,16 @@ index 108c78a..2457b11 100644
      {
          if ($value !== 'mollie_methods_in3') {
              return true;
+diff --git a/ViewModel/AdditionalPaymentDetails.php b/ViewModel/AdditionalPaymentDetails.php
+index 7dfcbd7..dc78eca 100644
+--- a/ViewModel/AdditionalPaymentDetails.php
++++ b/ViewModel/AdditionalPaymentDetails.php
+@@ -11,7 +11,7 @@ use LokiCheckout\Mollie\Provider\IssuerProvider;
+ class AdditionalPaymentDetails implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
++        private CheckoutState $checkoutState,
+         private IssuerProvider $issuerProvider,
+         private PaymentTokenProvider $paymentTokenProvider,
+     ) {
