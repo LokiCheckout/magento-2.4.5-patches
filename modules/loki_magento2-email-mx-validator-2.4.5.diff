@@ -1,3 +1,16 @@
+diff --git a/Config/Config.php b/Config/Config.php
+index 927fa17..dc9cb77 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -9,7 +9,7 @@ use Magento\Store\Model\ScopeInterface;
+ class Config implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
++        private ScopeConfigInterface $scopeConfig,
+     ) {
+     }
+ 
 diff --git a/Plugin/ValidateEmailMxRecordPlugin.php b/Plugin/ValidateEmailMxRecordPlugin.php
 index 883c11c..6338baa 100644
 --- a/Plugin/ValidateEmailMxRecordPlugin.php
