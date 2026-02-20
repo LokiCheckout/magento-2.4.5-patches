@@ -1,0 +1,38 @@
+diff --git a/Console/Command/DumpModulesCommand.php b/Console/Command/DumpModulesCommand.php
+index 2d23a49..5194c67 100644
+--- a/Console/Command/DumpModulesCommand.php
++++ b/Console/Command/DumpModulesCommand.php
+@@ -14,11 +14,11 @@ use LokiCheckout\Core\Config\LokiCheckoutModules;
+ class DumpModulesCommand extends Command
+ {
+     public function __construct(
+-        private readonly LokiCheckoutModules $lokiCheckoutModules,
+-        private readonly ComponentRegistrar $componentRegistrar,
+-        private readonly ModuleManager $moduleManager,
+-        private readonly Filesystem $filesystem,
+-        private readonly DirectoryList $directoryList,
++        private LokiCheckoutModules $lokiCheckoutModules,
++        private ComponentRegistrar $componentRegistrar,
++        private ModuleManager $moduleManager,
++        private Filesystem $filesystem,
++        private DirectoryList $directoryList,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Console/Command/ListModulesCommand.php b/Console/Command/ListModulesCommand.php
+index 096738d..eca27eb 100644
+--- a/Console/Command/ListModulesCommand.php
++++ b/Console/Command/ListModulesCommand.php
+@@ -14,9 +14,9 @@ use LokiCheckout\Core\Config\LokiCheckoutModules;
+ class ListModulesCommand extends Command
+ {
+     public function __construct(
+-        private readonly LokiCheckoutModules $lokiCheckoutModules,
+-        private readonly ComponentRegistrar $componentRegistrar,
+-        private readonly ModuleManager $moduleManager,
++        private LokiCheckoutModules $lokiCheckoutModules,
++        private ComponentRegistrar $componentRegistrar,
++        private ModuleManager $moduleManager,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
