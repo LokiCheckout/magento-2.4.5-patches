@@ -24,6 +24,9 @@
             },
             "loki-checkout/magento2-coc-nl": {
                 "Magento 2.4.5 patch": "patches/loki-checkout_magento2-coc-nl-2.4.5.diff"
+            },
+            "loki-checkout/magento2-core": {
+                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-core-2.4.5.diff"
             }
         }
     }
