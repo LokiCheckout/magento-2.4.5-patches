@@ -39,6 +39,9 @@
             },
             "loki-checkout/magento2-delivery-date": {
                 "Magento 2.4.5 patch": "patches/loki-checkout_magento2-delivery-date-2.4.5.diff"
+            },
+            "loki-checkout/magento2-demo": {
+                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-demo-2.4.5.diff"
             }
         }
     }
