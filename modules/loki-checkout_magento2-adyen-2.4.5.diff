@@ -17,11 +17,50 @@ index e90447a..baf0984 100644
      {
          if (!is_array($value)) {
              return;
+diff --git a/Component/Checkout/Payment/Method/AbstractMethodViewModel.php b/Component/Checkout/Payment/Method/AbstractMethodViewModel.php
+index 0fe3836..61575aa 100644
+--- a/Component/Checkout/Payment/Method/AbstractMethodViewModel.php
++++ b/Component/Checkout/Payment/Method/AbstractMethodViewModel.php
+@@ -17,11 +17,11 @@ use Magento\Store\Model\StoreManagerInterface;
+ abstract class AbstractMethodViewModel extends CheckoutViewModel
+ {
+     public function __construct(
+-        protected readonly Config $config,
+-        protected readonly AdyenConfig $adyenConfig,
+-        protected readonly StoreManagerInterface $storeManager,
+-        protected readonly ResolverInterface $localeResolver,
+-        protected readonly UrlFactory $urlFactory,
++        protected Config $config,
++        protected AdyenConfig $adyenConfig,
++        protected StoreManagerInterface $storeManager,
++        protected ResolverInterface $localeResolver,
++        protected UrlFactory $urlFactory,
+     ) {
+     }
+ 
+diff --git a/Config/Config.php b/Config/Config.php
+index dd7882a..dea4413 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -9,7 +9,7 @@ use Magento\Store\Model\ScopeInterface;
+ class Config
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
++        private ScopeConfigInterface $scopeConfig,
+     ) {
+     }
+ 
 diff --git a/Payment/Icon/IconResolver.php b/Payment/Icon/IconResolver.php
-index 3216f3d..67a6ce6 100644
+index 3216f3d..9a6d5b4 100644
 --- a/Payment/Icon/IconResolver.php
 +++ b/Payment/Icon/IconResolver.php
-@@ -21,7 +21,7 @@ class IconResolver implements IconResolverInterface
+@@ -17,11 +17,11 @@ class IconResolver implements IconResolverInterface
+     ];
+ 
+     public function __construct(
+-        private readonly ModuleManager $moduleManager,
++        private ModuleManager $moduleManager,
      ) {
      }
  
