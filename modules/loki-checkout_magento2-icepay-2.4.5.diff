@@ -1,0 +1,26 @@
+diff --git a/Payment/Icon/IconResolver.php b/Payment/Icon/IconResolver.php
+index 60d1a0a..22d1cde 100644
+--- a/Payment/Icon/IconResolver.php
++++ b/Payment/Icon/IconResolver.php
+@@ -12,7 +12,7 @@ class IconResolver implements IconResolverInterface
+     ) {
+     }
+ 
+-    public function resolve(IconResolverContext $iconResolverContext): false|string
++    public function resolve(IconResolverContext $iconResolverContext)
+     {
+         $paymentMethodCode = $iconResolverContext->getPaymentMethodCode();
+         if (!preg_match('/^icepay_(.*)$/', $paymentMethodCode)) {
+diff --git a/Payment/Redirect/RedirectResolver.php b/Payment/Redirect/RedirectResolver.php
+index 5ca593d..91619ad 100644
+--- a/Payment/Redirect/RedirectResolver.php
++++ b/Payment/Redirect/RedirectResolver.php
+@@ -13,7 +13,7 @@ class RedirectResolver implements RedirectResolverInterface
+     ) {
+     }
+ 
+-    public function resolve(RedirectContext $redirectContext): false|string
++    public function resolve(RedirectContext $redirectContext)
+     {
+         if (str_starts_with($redirectContext->getPaymentMethod(), 'icepay_icepay')) {
+             return $this->urlFactory->create()->getUrl('icepay/payment/redirect');
