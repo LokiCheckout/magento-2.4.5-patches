@@ -1,8 +1,30 @@
+diff --git a/Block/Order/DeliveryDate.php b/Block/Order/DeliveryDate.php
+index bd3506f..7ed6168 100644
+--- a/Block/Order/DeliveryDate.php
++++ b/Block/Order/DeliveryDate.php
+@@ -15,9 +15,9 @@ class DeliveryDate extends Template
+ {
+     public function __construct(
+         Context $context,
+-        private readonly DeliveryDateRepository $deliveryDateRepository,
+-        private readonly Config $config,
+-        private readonly Registry $registry,
++        private DeliveryDateRepository $deliveryDateRepository,
++        private Config $config,
++        private Registry $registry,
+         array $data = []
+     ) {
+         parent::__construct($context, $data);
 diff --git a/Component/Checkout/Shipping/DeliveryDate/DeliveryDateRepository.php b/Component/Checkout/Shipping/DeliveryDate/DeliveryDateRepository.php
-index b36aa96..4f913b9 100644
+index b36aa96..7aabf21 100644
 --- a/Component/Checkout/Shipping/DeliveryDate/DeliveryDateRepository.php
 +++ b/Component/Checkout/Shipping/DeliveryDate/DeliveryDateRepository.php
-@@ -19,7 +19,7 @@ class DeliveryDateRepository extends FieldRepository
+@@ -15,11 +15,11 @@ use LokiCheckout\DeliveryDate\Repository\DeliveryDateRepository as ModelReposito
+ class DeliveryDateRepository extends FieldRepository
+ {
+     public function __construct(
+-        private readonly ModelRepository $modelRepository,
++        private ModelRepository $modelRepository,
      ) {
      }
  
@@ -20,3 +42,432 @@ index b36aa96..4f913b9 100644
      {
          if (!is_array($value)) {
              return;
+diff --git a/Component/Checkout/Shipping/DeliveryDate/DeliveryDateViewModel.php b/Component/Checkout/Shipping/DeliveryDate/DeliveryDateViewModel.php
+index ea73559..c6ad3a8 100644
+--- a/Component/Checkout/Shipping/DeliveryDate/DeliveryDateViewModel.php
++++ b/Component/Checkout/Shipping/DeliveryDate/DeliveryDateViewModel.php
+@@ -17,10 +17,10 @@ use LokiCheckout\DeliveryDate\Repository\TimeslotRepository;
+ class DeliveryDateViewModel extends CheckoutViewModel
+ {
+     public function __construct(
+-        private readonly ExclusionRepository $exclusionRepository,
+-        private readonly TimeslotRepository $timeslotRepository,
+-        private readonly Config $config,
+-        private readonly CheckoutState $checkoutState
++        private ExclusionRepository $exclusionRepository,
++        private TimeslotRepository $timeslotRepository,
++        private Config $config,
++        private CheckoutState $checkoutState
+     ) {
+     }
+ 
+diff --git a/Config/Config.php b/Config/Config.php
+index 0354dab..581ca2a 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -20,7 +20,7 @@ class Config implements ArgumentInterface
+     private const XML_PATH_TIMESPAN_OPTIONS = 'loki_checkout_delivery_date/timeslot/options';
+ 
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig
++        private ScopeConfigInterface $scopeConfig
+     ) {
+     }
+ 
+diff --git a/Console/Command/DeliveryDate/CreateCommand.php b/Console/Command/DeliveryDate/CreateCommand.php
+index 9db8ca6..8629ba0 100644
+--- a/Console/Command/DeliveryDate/CreateCommand.php
++++ b/Console/Command/DeliveryDate/CreateCommand.php
+@@ -22,8 +22,8 @@ class CreateCommand extends Command
+     private const OPTION_DELIVERY_TIMESPAN = 'delivery-timeslot';
+ 
+     public function __construct(
+-        private readonly DeliveryDateRepository $deliveryDateRepository,
+-        private readonly DeliveryDateFactory $deliveryDateFactory,
++        private DeliveryDateRepository $deliveryDateRepository,
++        private DeliveryDateFactory $deliveryDateFactory,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Console/Command/DeliveryDate/DeleteCommand.php b/Console/Command/DeliveryDate/DeleteCommand.php
+index 63fa003..07eccc0 100644
+--- a/Console/Command/DeliveryDate/DeleteCommand.php
++++ b/Console/Command/DeliveryDate/DeleteCommand.php
+@@ -19,7 +19,7 @@ class DeleteCommand extends Command
+     private const ARGUMENT_ENTITY_ID = 'entity-id';
+ 
+     public function __construct(
+-        private readonly DeliveryDateRepository $deliveryDateRepository,
++        private DeliveryDateRepository $deliveryDateRepository,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Console/Command/DeliveryDate/EditCommand.php b/Console/Command/DeliveryDate/EditCommand.php
+index 0b1e744..5d44aa5 100644
+--- a/Console/Command/DeliveryDate/EditCommand.php
++++ b/Console/Command/DeliveryDate/EditCommand.php
+@@ -23,7 +23,7 @@ class EditCommand extends Command
+     private const OPTION_DELIVERY_TIMESPAN = 'delivery-timeslot';
+ 
+     public function __construct(
+-        private readonly DeliveryDateRepository $deliveryDateRepository,
++        private DeliveryDateRepository $deliveryDateRepository,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Console/Command/DeliveryDate/ListCommand.php b/Console/Command/DeliveryDate/ListCommand.php
+index ef0c572..58f00f0 100644
+--- a/Console/Command/DeliveryDate/ListCommand.php
++++ b/Console/Command/DeliveryDate/ListCommand.php
+@@ -21,8 +21,8 @@ class ListCommand extends Command
+     private const OPTION_DATE_TO = 'date-to';
+ 
+     public function __construct(
+-        private readonly DeliveryDateRepository $deliveryDateRepository,
+-        private readonly SearchCriteriaBuilder $searchCriteriaBuilder,
++        private DeliveryDateRepository $deliveryDateRepository,
++        private SearchCriteriaBuilder $searchCriteriaBuilder,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Console/Command/Exclusion/CreateCommand.php b/Console/Command/Exclusion/CreateCommand.php
+index 67c3aac..4b17cc3 100644
+--- a/Console/Command/Exclusion/CreateCommand.php
++++ b/Console/Command/Exclusion/CreateCommand.php
+@@ -37,8 +37,8 @@ class CreateCommand extends Command
+     ];
+ 
+     public function __construct(
+-        private readonly ExclusionRepository $exclusionRepository,
+-        private readonly ExclusionFactory $exclusionFactory,
++        private ExclusionRepository $exclusionRepository,
++        private ExclusionFactory $exclusionFactory,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Console/Command/Exclusion/DeleteCommand.php b/Console/Command/Exclusion/DeleteCommand.php
+index 861b5a7..507b76f 100644
+--- a/Console/Command/Exclusion/DeleteCommand.php
++++ b/Console/Command/Exclusion/DeleteCommand.php
+@@ -29,7 +29,7 @@ class DeleteCommand extends Command
+     ];
+ 
+     public function __construct(
+-        private readonly ExclusionRepository $exclusionRepository,
++        private ExclusionRepository $exclusionRepository,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Console/Command/Exclusion/EditCommand.php b/Console/Command/Exclusion/EditCommand.php
+index 4bfe4c6..7bb39c3 100644
+--- a/Console/Command/Exclusion/EditCommand.php
++++ b/Console/Command/Exclusion/EditCommand.php
+@@ -37,7 +37,7 @@ class EditCommand extends Command
+     ];
+ 
+     public function __construct(
+-        private readonly ExclusionRepository $exclusionRepository,
++        private ExclusionRepository $exclusionRepository,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Console/Command/Exclusion/ListCommand.php b/Console/Command/Exclusion/ListCommand.php
+index 2c548df..4c311b1 100644
+--- a/Console/Command/Exclusion/ListCommand.php
++++ b/Console/Command/Exclusion/ListCommand.php
+@@ -31,8 +31,8 @@ class ListCommand extends Command
+     ];
+ 
+     public function __construct(
+-        private readonly ExclusionRepository $exclusionRepository,
+-        private readonly SearchCriteriaBuilder $searchCriteriaBuilder,
++        private ExclusionRepository $exclusionRepository,
++        private SearchCriteriaBuilder $searchCriteriaBuilder,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Console/Command/Timeslot/CreateCommand.php b/Console/Command/Timeslot/CreateCommand.php
+index 7bbc4b9..b5de528 100644
+--- a/Console/Command/Timeslot/CreateCommand.php
++++ b/Console/Command/Timeslot/CreateCommand.php
+@@ -37,8 +37,8 @@ class CreateCommand extends Command
+     ];
+ 
+     public function __construct(
+-        private readonly TimeslotRepository $timeslotRepository,
+-        private readonly TimeslotFactory $timeslotFactory,
++        private TimeslotRepository $timeslotRepository,
++        private TimeslotFactory $timeslotFactory,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Console/Command/Timeslot/DeleteCommand.php b/Console/Command/Timeslot/DeleteCommand.php
+index 6473572..0578322 100644
+--- a/Console/Command/Timeslot/DeleteCommand.php
++++ b/Console/Command/Timeslot/DeleteCommand.php
+@@ -29,7 +29,7 @@ class DeleteCommand extends Command
+     ];
+ 
+     public function __construct(
+-        private readonly TimeslotRepository $timeslotRepository,
++        private TimeslotRepository $timeslotRepository,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Console/Command/Timeslot/EditCommand.php b/Console/Command/Timeslot/EditCommand.php
+index 130bd12..4f530ec 100644
+--- a/Console/Command/Timeslot/EditCommand.php
++++ b/Console/Command/Timeslot/EditCommand.php
+@@ -37,7 +37,7 @@ class EditCommand extends Command
+     ];
+ 
+     public function __construct(
+-        private readonly TimeslotRepository $timeslotRepository,
++        private TimeslotRepository $timeslotRepository,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Console/Command/Timeslot/ListCommand.php b/Console/Command/Timeslot/ListCommand.php
+index e4f22be..399c072 100644
+--- a/Console/Command/Timeslot/ListCommand.php
++++ b/Console/Command/Timeslot/ListCommand.php
+@@ -31,8 +31,8 @@ class ListCommand extends Command
+     ];
+ 
+     public function __construct(
+-        private readonly TimeslotRepository $timeslotRepository,
+-        private readonly SearchCriteriaBuilder $searchCriteriaBuilder,
++        private TimeslotRepository $timeslotRepository,
++        private SearchCriteriaBuilder $searchCriteriaBuilder,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Controller/Adminhtml/Exclusion/Delete.php b/Controller/Adminhtml/Exclusion/Delete.php
+index e829509..005f099 100644
+--- a/Controller/Adminhtml/Exclusion/Delete.php
++++ b/Controller/Adminhtml/Exclusion/Delete.php
+@@ -15,7 +15,7 @@ class Delete extends Action
+ 
+     public function __construct(
+         Context $context,
+-        private readonly ExclusionRepository $exclusionRepository
++        private ExclusionRepository $exclusionRepository
+     ) {
+         parent::__construct($context);
+     }
+diff --git a/Controller/Adminhtml/Exclusion/Form.php b/Controller/Adminhtml/Exclusion/Form.php
+index 164bf4d..8216e40 100644
+--- a/Controller/Adminhtml/Exclusion/Form.php
++++ b/Controller/Adminhtml/Exclusion/Form.php
+@@ -15,7 +15,7 @@ class Form extends Action
+ 
+     public function __construct(
+         Context $context,
+-        private readonly PageFactory $resultPageFactory
++        private PageFactory $resultPageFactory
+     ) {
+         parent::__construct($context);
+     }
+diff --git a/Controller/Adminhtml/Exclusion/Grid.php b/Controller/Adminhtml/Exclusion/Grid.php
+index 88f7ab0..0fbd846 100644
+--- a/Controller/Adminhtml/Exclusion/Grid.php
++++ b/Controller/Adminhtml/Exclusion/Grid.php
+@@ -15,7 +15,7 @@ class Grid extends Action
+ 
+     public function __construct(
+         Context $context,
+-        private readonly PageFactory $resultPageFactory
++        private PageFactory $resultPageFactory
+     ) {
+         parent::__construct($context);
+     }
+diff --git a/Controller/Adminhtml/Exclusion/MassDelete.php b/Controller/Adminhtml/Exclusion/MassDelete.php
+index 6bff101..472ff99 100644
+--- a/Controller/Adminhtml/Exclusion/MassDelete.php
++++ b/Controller/Adminhtml/Exclusion/MassDelete.php
+@@ -15,7 +15,7 @@ class MassDelete extends Action
+ 
+     public function __construct(
+         Context $context,
+-        private readonly ExclusionRepository $exclusionRepository
++        private ExclusionRepository $exclusionRepository
+     ) {
+         parent::__construct($context);
+     }
+diff --git a/Controller/Adminhtml/Timeslot/Delete.php b/Controller/Adminhtml/Timeslot/Delete.php
+index ca894d0..5963b3a 100644
+--- a/Controller/Adminhtml/Timeslot/Delete.php
++++ b/Controller/Adminhtml/Timeslot/Delete.php
+@@ -15,7 +15,7 @@ class Delete extends Action
+ 
+     public function __construct(
+         Context $context,
+-        private readonly TimeslotRepository $timeslotRepository
++        private TimeslotRepository $timeslotRepository
+     ) {
+         parent::__construct($context);
+     }
+diff --git a/Controller/Adminhtml/Timeslot/Form.php b/Controller/Adminhtml/Timeslot/Form.php
+index 6337197..37b9eaf 100644
+--- a/Controller/Adminhtml/Timeslot/Form.php
++++ b/Controller/Adminhtml/Timeslot/Form.php
+@@ -15,7 +15,7 @@ class Form extends Action
+ 
+     public function __construct(
+         Context $context,
+-        private readonly PageFactory $resultPageFactory
++        private PageFactory $resultPageFactory
+     ) {
+         parent::__construct($context);
+     }
+diff --git a/Controller/Adminhtml/Timeslot/Grid.php b/Controller/Adminhtml/Timeslot/Grid.php
+index 4277c59..31f9e4e 100644
+--- a/Controller/Adminhtml/Timeslot/Grid.php
++++ b/Controller/Adminhtml/Timeslot/Grid.php
+@@ -15,7 +15,7 @@ class Grid extends Action
+ 
+     public function __construct(
+         Context $context,
+-        private readonly PageFactory $resultPageFactory
++        private PageFactory $resultPageFactory
+     ) {
+         parent::__construct($context);
+     }
+diff --git a/Controller/Adminhtml/Timeslot/MassDelete.php b/Controller/Adminhtml/Timeslot/MassDelete.php
+index 495c9f9..837b0b2 100644
+--- a/Controller/Adminhtml/Timeslot/MassDelete.php
++++ b/Controller/Adminhtml/Timeslot/MassDelete.php
+@@ -21,7 +21,7 @@ class MassDelete implements HttpPostActionInterface
+         private RedirectFactory $resultRedirectFactory,
+         private Manager $messageManager,
+         private RequestInterface $request,
+-        private readonly TimeslotRepository $timeslotRepository
++        private TimeslotRepository $timeslotRepository
+     ) {
+     }
+ 
+diff --git a/Observer/QuoteSubmitBeforeObserver.php b/Observer/QuoteSubmitBeforeObserver.php
+index ceed578..e4b616d 100644
+--- a/Observer/QuoteSubmitBeforeObserver.php
++++ b/Observer/QuoteSubmitBeforeObserver.php
+@@ -12,8 +12,8 @@ use Psr\Log\LoggerInterface;
+ class QuoteSubmitBeforeObserver implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly DeliveryDateRepository $deliveryDateRepository,
+-        private readonly LoggerInterface $logger
++        private DeliveryDateRepository $deliveryDateRepository,
++        private LoggerInterface $logger
+     ) {
+     }
+ 
+diff --git a/Plugin/Order/LoadDeliveryDateExtensionAttribute.php b/Plugin/Order/LoadDeliveryDateExtensionAttribute.php
+index 1e80b75..22d7c39 100644
+--- a/Plugin/Order/LoadDeliveryDateExtensionAttribute.php
++++ b/Plugin/Order/LoadDeliveryDateExtensionAttribute.php
+@@ -12,8 +12,8 @@ use Magento\Sales\Api\OrderRepositoryInterface;
+ class LoadDeliveryDateExtensionAttribute
+ {
+     public function __construct(
+-        private readonly DeliveryDateRepository $deliveryDateRepository,
+-        private readonly OrderExtensionFactory $orderExtensionFactory
++        private DeliveryDateRepository $deliveryDateRepository,
++        private OrderExtensionFactory $orderExtensionFactory
+     ) {
+     }
+ 
+diff --git a/Plugin/Quote/LoadDeliveryDateExtensionAttribute.php b/Plugin/Quote/LoadDeliveryDateExtensionAttribute.php
+index f1e396c..dd15aab 100644
+--- a/Plugin/Quote/LoadDeliveryDateExtensionAttribute.php
++++ b/Plugin/Quote/LoadDeliveryDateExtensionAttribute.php
+@@ -12,8 +12,8 @@ use Magento\Quote\Api\Data\CartInterface;
+ class LoadDeliveryDateExtensionAttribute
+ {
+     public function __construct(
+-        private readonly DeliveryDateRepository $deliveryDateRepository,
+-        private readonly CartExtensionFactory $cartExtensionFactory
++        private DeliveryDateRepository $deliveryDateRepository,
++        private CartExtensionFactory $cartExtensionFactory
+     ) {
+     }
+ 
+diff --git a/Repository/DeliveryDateRepository.php b/Repository/DeliveryDateRepository.php
+index e205570..16204d7 100644
+--- a/Repository/DeliveryDateRepository.php
++++ b/Repository/DeliveryDateRepository.php
+@@ -19,11 +19,11 @@ use Magento\Framework\Exception\NoSuchEntityException;
+ class DeliveryDateRepository
+ {
+     public function __construct(
+-        private readonly Resource $resource,
+-        private readonly ModelFactory $modelFactory,
+-        private readonly CollectionFactory $collectionFactory,
+-        private readonly SearchResultsFactory $searchResultsFactory,
+-        private readonly CollectionProcessorInterface $collectionProcessor
++        private Resource $resource,
++        private ModelFactory $modelFactory,
++        private CollectionFactory $collectionFactory,
++        private SearchResultsFactory $searchResultsFactory,
++        private CollectionProcessorInterface $collectionProcessor
+     ) {
+     }
+ 
+diff --git a/Repository/ExclusionRepository.php b/Repository/ExclusionRepository.php
+index 2cc24c7..c96af1e 100644
+--- a/Repository/ExclusionRepository.php
++++ b/Repository/ExclusionRepository.php
+@@ -19,11 +19,11 @@ use Magento\Framework\Api\SearchResults;
+ class ExclusionRepository
+ {
+     public function __construct(
+-        private readonly ExclusionResource $resource,
+-        private readonly ExclusionFactory $exclusionFactory,
+-        private readonly CollectionFactory $collectionFactory,
+-        private readonly SearchResultsFactory $searchResultsFactory,
+-        private readonly CollectionProcessorInterface $collectionProcessor
++        private ExclusionResource $resource,
++        private ExclusionFactory $exclusionFactory,
++        private CollectionFactory $collectionFactory,
++        private SearchResultsFactory $searchResultsFactory,
++        private CollectionProcessorInterface $collectionProcessor
+     ) {
+     }
+ 
+diff --git a/Repository/TimeslotRepository.php b/Repository/TimeslotRepository.php
+index fe1bdee..257b439 100644
+--- a/Repository/TimeslotRepository.php
++++ b/Repository/TimeslotRepository.php
+@@ -19,11 +19,11 @@ use Magento\Framework\Exception\NoSuchEntityException;
+ class TimeslotRepository
+ {
+     public function __construct(
+-        private readonly TimeslotResource $resource,
+-        private readonly TimeslotFactory $timeslotFactory,
+-        private readonly CollectionFactory $collectionFactory,
+-        private readonly SearchResultsFactory $searchResultsFactory,
+-        private readonly CollectionProcessorInterface $collectionProcessor
++        private TimeslotResource $resource,
++        private TimeslotFactory $timeslotFactory,
++        private CollectionFactory $collectionFactory,
++        private SearchResultsFactory $searchResultsFactory,
++        private CollectionProcessorInterface $collectionProcessor
+     ) {
+     }
+ 
+diff --git a/Setup/Patch/Data/AddDefaultTimeslots.php b/Setup/Patch/Data/AddDefaultTimeslots.php
+index ba9ad1f..dbf0b6b 100644
+--- a/Setup/Patch/Data/AddDefaultTimeslots.php
++++ b/Setup/Patch/Data/AddDefaultTimeslots.php
+@@ -16,9 +16,9 @@ class AddDefaultTimeslots implements DataPatchInterface
+      * @param TimeslotFactory $timeslotFactory
+      */
+     public function __construct(
+-        private readonly ModuleDataSetupInterface $moduleDataSetup,
+-        private readonly TimeslotRepository $timeslotRepository,
+-        private readonly TimeslotFactory $timeslotFactory
++        private ModuleDataSetupInterface $moduleDataSetup,
++        private TimeslotRepository $timeslotRepository,
++        private TimeslotFactory $timeslotFactory
+     ) {
+     }
+ 
