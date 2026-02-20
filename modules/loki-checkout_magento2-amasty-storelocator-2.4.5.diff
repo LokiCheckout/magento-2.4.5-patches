@@ -20,6 +20,35 @@ index b1ff45c..d2ac8f9 100644
      {
          if (false === is_array($value)) {
              return;
+diff --git a/Component/Shipment/LocationSelect/LocationSelectViewModel.php b/Component/Shipment/LocationSelect/LocationSelectViewModel.php
+index 11abbf4..c89f7b7 100644
+--- a/Component/Shipment/LocationSelect/LocationSelectViewModel.php
++++ b/Component/Shipment/LocationSelect/LocationSelectViewModel.php
+@@ -28,15 +28,15 @@ use Magento\Store\Model\StoreManagerInterface;
+ class LocationSelectViewModel extends MapViewModel
+ {
+     public function __construct(
+-        private readonly CollectionFactory $locationCollectionFactory,
+-        private readonly ScheduleProvider $scheduleProvider,
+-        private readonly TimeHandler $timeHandler,
+-        private readonly CheckoutSession $checkoutSession,
+-        private readonly RequestInterface $request,
+-        private readonly StoreManagerInterface $storeManager,
+-        private readonly RegionCollectionFactory $regionCollectionFactory,
+-        private readonly LocationProductFilterApplier $locationProductFilterApplier,
+-        private readonly Filter $templateFilter,
++        private CollectionFactory $locationCollectionFactory,
++        private ScheduleProvider $scheduleProvider,
++        private TimeHandler $timeHandler,
++        private CheckoutSession $checkoutSession,
++        private RequestInterface $request,
++        private StoreManagerInterface $storeManager,
++        private RegionCollectionFactory $regionCollectionFactory,
++        private LocationProductFilterApplier $locationProductFilterApplier,
++        private Filter $templateFilter,
+         private MarkerFactory $markerFactory,
+         private LocationFactory $locationFactory,
+         private AddressFactory $addressFactory,
 diff --git a/Shipment/Icon/IconResolver.php b/Shipment/Icon/IconResolver.php
 index 05a6bb8..6e36e33 100644
 --- a/Shipment/Icon/IconResolver.php
