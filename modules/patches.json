@@ -72,6 +72,9 @@
             },
             "loki-checkout/magento2-icepay": {
                 "Magento 2.4.5 patch": "patches/loki-checkout_magento2-icepay-2.4.5.diff"
+            },
+            "loki-checkout/magento2-login-before-other-steps": {
+                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-login-before-other-steps-2.4.5.diff"
             }
         }
     }

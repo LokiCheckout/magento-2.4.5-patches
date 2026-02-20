@@ -1,0 +1,13 @@
+diff --git a/Component/Checkout/Step/LoginStep/LoginStepViewModel.php b/Component/Checkout/Step/LoginStep/LoginStepViewModel.php
+index 3dfcf59..200dd09 100644
+--- a/Component/Checkout/Step/LoginStep/LoginStepViewModel.php
++++ b/Component/Checkout/Step/LoginStep/LoginStepViewModel.php
+@@ -46,7 +46,7 @@ class LoginStepViewModel extends ComponentViewModel implements StepViewModelInte
+         return 'none';
+     }
+ 
+-    public function validate(): bool|array
++    public function validate()
+     {
+         if (true === $this->getContext()->getCustomerSession()->isLoggedIn()) {
+             return true;
