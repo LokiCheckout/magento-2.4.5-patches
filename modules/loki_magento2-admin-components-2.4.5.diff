@@ -73,6 +73,31 @@ index dc2619d..808c066 100644
      {
          $propertyMethod = 'get'.ucfirst($this->camelCaseConvertor->toCamelCase($propertyName));
  
+diff --git a/Data/CategoryTreeNode.php b/Data/CategoryTreeNode.php
+index 87a903f..12f9dd0 100644
+--- a/Data/CategoryTreeNode.php
++++ b/Data/CategoryTreeNode.php
+@@ -7,13 +7,13 @@ namespace Loki\AdminComponents\Data;
+ class CategoryTreeNode
+ {
+     public function __construct(
+-        public readonly int $id,
+-        public readonly string $label,
+-        public readonly bool $isActive,
+-        public readonly int $level,
+-        public readonly ?int $parentId = null,
+-        public readonly array $parentIds = [],
+-        public readonly array $children = [],
++        public int $id,
++        public string $label,
++        public bool $isActive,
++        public int $level,
++        public ?int $parentId = null,
++        public array $parentIds = [],
++        public array $children = [],
+     ) {
+     }
+ 
 diff --git a/Filter/Security.php b/Filter/Security.php
 index 4e244a4..c7d8f5e 100644
 --- a/Filter/Security.php
@@ -86,6 +111,36 @@ index 4e244a4..c7d8f5e 100644
      {
         if (is_object($value)) {
              return $value;
+diff --git a/Form/Field/FieldType/CategorySelection.php b/Form/Field/FieldType/CategorySelection.php
+index 21d7861..3b2ced3 100644
+--- a/Form/Field/FieldType/CategorySelection.php
++++ b/Form/Field/FieldType/CategorySelection.php
+@@ -14,9 +14,9 @@ use Magento\Framework\Serialize\SerializerInterface;
+ class CategorySelection extends FieldTypeAbstract
+ {
+     public function __construct(
+-        private readonly CategoryTreeBuilder $categoryTreeBuilder,
+-        private readonly CategoryTreeRenderer $categoryTreeRenderer,
+-        private readonly SerializerInterface $serializer,
++        private CategoryTreeBuilder $categoryTreeBuilder,
++        private CategoryTreeRenderer $categoryTreeRenderer,
++        private SerializerInterface $serializer,
+     ) {
+     }
+ 
+diff --git a/Form/Field/FieldType/Select.php b/Form/Field/FieldType/Select.php
+index 6ea2451..57465b4 100644
+--- a/Form/Field/FieldType/Select.php
++++ b/Form/Field/FieldType/Select.php
+@@ -10,7 +10,7 @@ use Magento\Framework\ObjectManagerInterface;
+ class Select extends FieldTypeAbstract implements FieldTypeInterface
+ {
+     public function __construct(
+-        private readonly ObjectManagerInterface $objectManager,
++        private ObjectManagerInterface $objectManager,
+     ) {
+     }
+ 
 diff --git a/Form/FieldResolver.php b/Form/FieldResolver.php
 index 060c667..5c7bf24 100644
 --- a/Form/FieldResolver.php
@@ -112,6 +167,23 @@ index 1a25c97..bbc1c4b 100644
      {
          return [
              'code' => $this->getCode(),
+diff --git a/Grid/ColumnLoader.php b/Grid/ColumnLoader.php
+index b6c72d8..c900b55 100644
+--- a/Grid/ColumnLoader.php
++++ b/Grid/ColumnLoader.php
+@@ -10,9 +10,9 @@ use Magento\Framework\View\Element\AbstractBlock;
+ class ColumnLoader
+ {
+     public function __construct(
+-        private readonly ColumnFactory $columnFactory,
+-        private readonly BookmarkLoader $bookmarkLoader,
+-        private readonly StateManager $stateManager
++        private ColumnFactory $columnFactory,
++        private BookmarkLoader $bookmarkLoader,
++        private StateManager $stateManager
+     ) {
+     }
+ 
 diff --git a/Grid/Filter/Filter.php b/Grid/Filter/Filter.php
 index 291685c..0d33475 100644
 --- a/Grid/Filter/Filter.php
@@ -233,6 +305,19 @@ index dae4193..c0ed8f4 100644
          string $conditionType = '',
      ): FilterState {
          return $this->objectManager->create(FilterState::class, [
+diff --git a/Model/CategorySelection/CategoryTreeCacheKeyGenerator.php b/Model/CategorySelection/CategoryTreeCacheKeyGenerator.php
+index 593fa0d..1ca9c3b 100644
+--- a/Model/CategorySelection/CategoryTreeCacheKeyGenerator.php
++++ b/Model/CategorySelection/CategoryTreeCacheKeyGenerator.php
+@@ -11,7 +11,7 @@ class CategoryTreeCacheKeyGenerator
+     public const CACHE_TAG_PREFIX = 'loki_admin_components_form_category_tree';
+ 
+     public function __construct(
+-        private readonly Session $authSession,
++        private Session $authSession,
+     ) {
+     }
+ 
 diff --git a/ProviderHandler/ArrayHandler.php b/ProviderHandler/ArrayHandler.php
 index e9976ed..02177ee 100644
 --- a/ProviderHandler/ArrayHandler.php
@@ -374,3 +459,91 @@ index e508a65..1c98759 100644
      {
          return false;
      }
+diff --git a/Service/CategorySelection/CategoryFilterService.php b/Service/CategorySelection/CategoryFilterService.php
+index 60920ed..a172d73 100644
+--- a/Service/CategorySelection/CategoryFilterService.php
++++ b/Service/CategorySelection/CategoryFilterService.php
+@@ -12,8 +12,8 @@ use Magento\Framework\DB\Helper as DbHelper;
+ class CategoryFilterService
+ {
+     public function __construct(
+-        private readonly CollectionFactory $categoryCollectionFactory,
+-        private readonly DbHelper $dbHelper,
++        private CollectionFactory $categoryCollectionFactory,
++        private DbHelper $dbHelper,
+     ) {
+     }
+ 
+diff --git a/Service/CategorySelection/CategoryTreeBuilder.php b/Service/CategorySelection/CategoryTreeBuilder.php
+index 7eb7f94..d8b56e9 100644
+--- a/Service/CategorySelection/CategoryTreeBuilder.php
++++ b/Service/CategorySelection/CategoryTreeBuilder.php
+@@ -16,11 +16,11 @@ use Magento\Framework\Serialize\SerializerInterface;
+ class CategoryTreeBuilder
+ {
+     public function __construct(
+-        private readonly CollectionFactory $categoryCollectionFactory,
+-        private readonly CategoryFilterService $categoryFilterService,
+-        private readonly CacheInterface $cache,
+-        private readonly SerializerInterface $serializer,
+-        private readonly CategoryTreeCacheKeyGenerator $cacheKeyGenerator,
++        private CollectionFactory $categoryCollectionFactory,
++        private CategoryFilterService $categoryFilterService,
++        private CacheInterface $cache,
++        private SerializerInterface $serializer,
++        private CategoryTreeCacheKeyGenerator $cacheKeyGenerator,
+     ) {
+     }
+ 
+diff --git a/Service/CategorySelection/CategoryTreeRenderer.php b/Service/CategorySelection/CategoryTreeRenderer.php
+index 2eeccfd..2cde377 100644
+--- a/Service/CategorySelection/CategoryTreeRenderer.php
++++ b/Service/CategorySelection/CategoryTreeRenderer.php
+@@ -19,7 +19,7 @@ class CategoryTreeRenderer
+     private const TEMPLATE_SEARCH = 'Loki_AdminComponents::form/field_type/category_selection/search_input.phtml';
+ 
+     public function __construct(
+-        private readonly LayoutInterface $layout,
++        private LayoutInterface $layout,
+     ) {
+     }
+ 
+diff --git a/ViewModel/Options/CountryOptions.php b/ViewModel/Options/CountryOptions.php
+index ce481da..4f01cd7 100644
+--- a/ViewModel/Options/CountryOptions.php
++++ b/ViewModel/Options/CountryOptions.php
+@@ -9,7 +9,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class CountryOptions implements ArgumentInterface, OptionSourceInterface
+ {
+     public function __construct(
+-        private readonly DirectoryHelper $directoryHelper,
++        private DirectoryHelper $directoryHelper,
+     ) {
+     }
+ 
+diff --git a/ViewModel/Options/StoreViewOptions.php b/ViewModel/Options/StoreViewOptions.php
+index 18ff029..25f2fcf 100644
+--- a/ViewModel/Options/StoreViewOptions.php
++++ b/ViewModel/Options/StoreViewOptions.php
+@@ -12,7 +12,7 @@ use Magento\Store\Model\Website;
+ class StoreViewOptions implements ArgumentInterface, OptionSourceInterface
+ {
+     public function __construct(
+-        private readonly StoreManagerInterface $storeManager
++        private StoreManagerInterface $storeManager
+     ) {
+     }
+ 
+diff --git a/ViewModel/PriceFormatter.php b/ViewModel/PriceFormatter.php
+index cdda97c..fa5c519 100644
+--- a/ViewModel/PriceFormatter.php
++++ b/ViewModel/PriceFormatter.php
+@@ -8,7 +8,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class PriceFormatter implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly PriceCurrencyInterface $priceCurrency
++        private PriceCurrencyInterface $priceCurrency
+     ) {
+     }
+ 
