@@ -51,6 +51,9 @@
             },
             "loki-checkout/magento2-dev-tools": {
                 "Magento 2.4.5 patch": "patches/loki-checkout_magento2-dev-tools-2.4.5.diff"
+            },
+            "loki-checkout/magento2-dhl": {
+                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-dhl-2.4.5.diff"
             }
         }
     }
