@@ -1,0 +1,13 @@
+diff --git a/Util/Debugger.php b/Util/Debugger.php
+index b47cce7..8e91153 100644
+--- a/Util/Debugger.php
++++ b/Util/Debugger.php
+@@ -6,7 +6,7 @@ class Debugger
+ {
+     private array $data = [];
+ 
+-    public function add(string $name, mixed $value): void
++    public function add(string $name, $value): void
+     {
+         $this->data[$name] = $value;
+     }

@@ -126,6 +126,9 @@
             },
             "loki/magento2-components": {
                 "Magento 2.4.5 patch": "patches/loki_magento2-components-2.4.5.diff"
+            },
+            "loki/magento2-debugger": {
+                "Magento 2.4.5 patch": "patches/loki_magento2-debugger-2.4.5.diff"
             }
         }
     }
