@@ -9,6 +9,9 @@
             },
             "loki/magento2-base": {
                 "Magento 2.4.5 patch": "patches/loki_magento2-base-2.4.5.diff"
+            },
+            "loki-checkout/magento2-account-type": {
+                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-account-type-2.4.5.diff"
             }
         }
     }
