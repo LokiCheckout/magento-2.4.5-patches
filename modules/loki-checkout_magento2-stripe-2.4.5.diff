@@ -1,7 +1,41 @@
+diff --git a/Controller/Payment/ClientSecret.php b/Controller/Payment/ClientSecret.php
+index ca9248c..73e9bd4 100644
+--- a/Controller/Payment/ClientSecret.php
++++ b/Controller/Payment/ClientSecret.php
+@@ -13,10 +13,10 @@ use Magento\Framework\Exception\LocalizedException;
+ class ClientSecret implements ActionInterface
+ {
+     public function __construct(
+-        private readonly CreatePaymentIntent $createPaymentIntent,
+-        private readonly RequestInterface $request,
+-        private readonly ResultFactory $resultFactory,
+-        private readonly CheckoutState $checkoutState,
++        private CreatePaymentIntent $createPaymentIntent,
++        private RequestInterface $request,
++        private ResultFactory $resultFactory,
++        private CheckoutState $checkoutState,
+     ) {
+     }
+ 
 diff --git a/Payment/CreatePaymentIntent.php b/Payment/CreatePaymentIntent.php
-index d8d6062..bba0936 100644
+index d8d6062..888e812 100644
 --- a/Payment/CreatePaymentIntent.php
 +++ b/Payment/CreatePaymentIntent.php
+@@ -12,10 +12,10 @@ use StripeIntegration\Payments\Model\Config as StripeConfig;
+ class CreatePaymentIntent
+ {
+     public function __construct(
+-        private readonly StripeConfig $stripeConfig,
+-        private readonly CustomerSession $customerSession,
+-        private readonly CheckoutState $checkoutState,
+-        private readonly BankTransfers $bankTransfers,
++        private StripeConfig $stripeConfig,
++        private CustomerSession $customerSession,
++        private CheckoutState $checkoutState,
++        private BankTransfers $bankTransfers,
+     ) {
+     }
+ 
 @@ -66,7 +66,7 @@ class CreatePaymentIntent
          return (int)($quote->getGrandTotal() * 100);
      }
