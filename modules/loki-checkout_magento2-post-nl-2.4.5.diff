@@ -1,3 +1,22 @@
+diff --git a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsContext.php b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsContext.php
+index 8c32798..4e8e660 100644
+--- a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsContext.php
++++ b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsContext.php
+@@ -36,10 +36,10 @@ class DeliveryOptionsContext implements ComponentContextInterface
+         private AttributeProvider $attributeProvider,
+         private GlobalMessageRegistry $globalMessageRegistry,
+         private CoreMessageManager $coreMessageManager,
+-        private readonly CustomerSession $customerSession,
+-        private readonly StoreManagerInterface $storeManager,
+-        private readonly UrlFactory $urlFactory,
+-        private readonly LocaleResolver $localeResolver,
++        private CustomerSession $customerSession,
++        private StoreManagerInterface $storeManager,
++        private UrlFactory $urlFactory,
++        private LocaleResolver $localeResolver,
+     ) {
+     }
+ 
 diff --git a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
 index f1c8086..db6f656 100644
 --- a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
