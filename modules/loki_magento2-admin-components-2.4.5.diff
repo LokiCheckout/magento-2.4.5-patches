@@ -155,13 +155,13 @@ index 060c667..5c7bf24 100644
              return 'view';
          }
 diff --git a/Grid/Column/Column.php b/Grid/Column/Column.php
-index 1a25c97..bbc1c4b 100644
+index 90dec23..a0b650c 100644
 --- a/Grid/Column/Column.php
 +++ b/Grid/Column/Column.php
-@@ -52,7 +52,7 @@ class Column extends DataObject implements JsonSerializable
-         return $this->getCode();
+@@ -53,7 +53,7 @@ class Column extends DataObject implements JsonSerializable
      }
  
+     #[\ReturnTypeWillChange]
 -    public function jsonSerialize(): mixed
 +    public function jsonSerialize()
      {
@@ -262,7 +262,7 @@ index 34451d9..41c171c 100644
          $this->session->setData($this->namespace.'.'.$name, $value);
      }
 diff --git a/Grid/State/FilterState.php b/Grid/State/FilterState.php
-index 90c3a60..892b40a 100644
+index 79c7390..426708d 100644
 --- a/Grid/State/FilterState.php
 +++ b/Grid/State/FilterState.php
 @@ -7,7 +7,7 @@ class FilterState implements \JsonSerializable
@@ -283,10 +283,10 @@ index 90c3a60..892b40a 100644
      {
          return $this->value;
      }
-@@ -45,7 +45,7 @@ class FilterState implements \JsonSerializable
-         return $this->value;
+@@ -46,7 +46,7 @@ class FilterState implements \JsonSerializable
      }
  
+     #[\ReturnTypeWillChange]
 -    public function jsonSerialize(): mixed
 +    public function jsonSerialize()
      {
