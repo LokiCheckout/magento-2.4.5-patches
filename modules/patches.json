@@ -132,6 +132,9 @@
             },
             "loki/magento2-email-mx-validator": {
                 "Magento 2.4.5 patch": "patches/loki_magento2-email-mx-validator-2.4.5.diff"
+            },
+            "loki/magento2-field-components": {
+                "Magento 2.4.5 patch": "patches/loki_magento2-field-components-2.4.5.diff"
             }
         }
     }

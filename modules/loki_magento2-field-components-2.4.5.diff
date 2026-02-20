@@ -1,0 +1,117 @@
+diff --git a/Component/Base/Field/FieldRepository.php b/Component/Base/Field/FieldRepository.php
+index 04ff829..8b42bd2 100644
+--- a/Component/Base/Field/FieldRepository.php
++++ b/Component/Base/Field/FieldRepository.php
+@@ -18,7 +18,7 @@ abstract class FieldRepository extends ComponentRepository
+         return array_pop($blockNameParts);
+     }
+ 
+-    public function getDefaultValue(): mixed
++    public function getDefaultValue()
+     {
+         $defaultValue = $this->getComponent()->getBlock()->getDefaultValue();
+ 
+diff --git a/Component/Base/Field/FieldViewModel.php b/Component/Base/Field/FieldViewModel.php
+index 27efb7e..cdaa311 100644
+--- a/Component/Base/Field/FieldViewModel.php
++++ b/Component/Base/Field/FieldViewModel.php
+@@ -128,7 +128,7 @@ class FieldViewModel extends ComponentViewModel implements FieldViewModelInterfa
+         ];
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $value = parent::getValue();
+         if (!empty($value)) {
+diff --git a/Component/FileUploader/FileUploaderRepository.php b/Component/FileUploader/FileUploaderRepository.php
+index 85f2b0d..bfd35b1 100644
+--- a/Component/FileUploader/FileUploaderRepository.php
++++ b/Component/FileUploader/FileUploaderRepository.php
+@@ -19,12 +19,12 @@ class FileUploaderRepository extends FieldRepository
+     ) {
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return false;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         // @todo: Move this to uploader utility instead
+         $folder = 'yireo-test';
+diff --git a/Test/Unit/Validator/Component/PasswordComplexityValidatorTest.php b/Test/Unit/Validator/Component/PasswordComplexityValidatorTest.php
+index feccd3e..6a1dd40 100644
+--- a/Test/Unit/Validator/Component/PasswordComplexityValidatorTest.php
++++ b/Test/Unit/Validator/Component/PasswordComplexityValidatorTest.php
+@@ -12,7 +12,7 @@ class PasswordComplexityValidatorTest extends TestCase
+      * @return void
+      * @dataProvider getTestValues
+      */
+-    public function testValidate(string $password, bool|string $expectedResult)
++    public function testValidate(string $password, $expectedResult)
+     {
+         $passwordComplexity = new PasswordComplexity();
+         $validator = new PasswordComplexityValidator($passwordComplexity);
+diff --git a/Util/Option.php b/Util/Option.php
+index 9c41aa9..2ab50c4 100644
+--- a/Util/Option.php
++++ b/Util/Option.php
+@@ -5,13 +5,13 @@ namespace Loki\Field\Util;
+ class Option implements OptionInterface
+ {
+     public function __construct(
+-        private mixed $value,
++        private $value,
+         private string $label,
+         private bool $disabled = false
+     ) {
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return $this->value;
+     }
+diff --git a/Util/OptionFactory.php b/Util/OptionFactory.php
+index 61d4fdf..c17dea8 100644
+--- a/Util/OptionFactory.php
++++ b/Util/OptionFactory.php
+@@ -11,7 +11,7 @@ class OptionFactory
+     ) {
+     }
+ 
+-    public function create(mixed $value, string $label, bool $disabled = false): Option
++    public function create($value, string $label, bool $disabled = false): Option
+     {
+         return $this->objectManager->create(Option::class, [
+             'value' => $value,
+diff --git a/Util/OptionInterface.php b/Util/OptionInterface.php
+index a87b27f..acb8345 100644
+--- a/Util/OptionInterface.php
++++ b/Util/OptionInterface.php
+@@ -5,7 +5,7 @@ namespace Loki\Field\Util;
+ 
+ interface OptionInterface
+ {
+-    public function getValue(): mixed;
++    public function getValue();
+ 
+     public function getLabel(): string;
+     public function isDisabled(): bool;
+diff --git a/Validator/PasswordComplexityValidator.php b/Validator/PasswordComplexityValidator.php
+index fab6aab..692e261 100644
+--- a/Validator/PasswordComplexityValidator.php
++++ b/Validator/PasswordComplexityValidator.php
+@@ -13,7 +13,7 @@ class PasswordComplexityValidator implements ValidatorInterface
+     ) {
+     }
+ 
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         if (empty($value)) {
+             return true;
