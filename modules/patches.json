@@ -108,6 +108,9 @@
             },
             "loki-checkout/magento2-sendcloud": {
                 "Magento 2.4.5 patch": "patches/loki-checkout_magento2-sendcloud-2.4.5.diff"
+            },
+            "loki-checkout/magento2-shipper-hq": {
+                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-shipper-hq-2.4.5.diff"
             }
         }
     }
