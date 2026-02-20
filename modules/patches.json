@@ -147,6 +147,9 @@
             },
             "loki-checkout/magento2-core-cli": {
                 "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-core-cli-2.4.5.diff"
+            },
+            "loki-checkout/magento2-url-router": {
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-url-router-2.4.5.diff"
             }
         }
     }

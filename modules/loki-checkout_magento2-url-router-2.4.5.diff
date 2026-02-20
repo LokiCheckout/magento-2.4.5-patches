@@ -1,0 +1,47 @@
+diff --git a/Config/Config.php b/Config/Config.php
+index ba28af9..88a94f1 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -8,7 +8,7 @@ use Magento\Store\Model\ScopeInterface;
+ class Config
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig
++        private ScopeConfigInterface $scopeConfig
+     ) {
+     }
+ 
+diff --git a/Plugin/RewriteCheckoutUrl.php b/Plugin/RewriteCheckoutUrl.php
+index 442a68a..66384bb 100644
+--- a/Plugin/RewriteCheckoutUrl.php
++++ b/Plugin/RewriteCheckoutUrl.php
+@@ -9,8 +9,8 @@ use Magento\Framework\UrlInterface;
+ class RewriteCheckoutUrl
+ {
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly IsOriginalCheckoutUrl $isOriginalCheckoutUrl
++        private Config $config,
++        private IsOriginalCheckoutUrl $isOriginalCheckoutUrl
+     ) {
+     }
+ 
+diff --git a/Router/Router.php b/Router/Router.php
+index db8c9ec..cba4d1e 100644
+--- a/Router/Router.php
++++ b/Router/Router.php
+@@ -15,10 +15,10 @@ use Magento\Framework\Url;
+ class Router implements RouterInterface
+ {
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly ActionFactory $actionFactory,
+-        private readonly ResponseInterface $response,
+-        private readonly IsOriginalCheckoutUrl $isOriginalCheckoutUrl
++        private Config $config,
++        private ActionFactory $actionFactory,
++        private ResponseInterface $response,
++        private IsOriginalCheckoutUrl $isOriginalCheckoutUrl
+     ) {
+     }
+ 
