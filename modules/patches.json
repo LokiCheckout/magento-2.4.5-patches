@@ -78,6 +78,9 @@
             },
             "loki-checkout/magento2-dev-prefixer": {
                 "Magento 2.4.5 patch": "patches/loki-checkout_magento2-dev-prefixer-2.4.5.diff"
+            },
+            "loki-checkout/magento2-dev-profiles": {
+                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-dev-profiles-2.4.5.diff"
             }
         }
     }
