@@ -117,6 +117,9 @@
             },
             "loki-checkout/magento2-simple-shipping": {
                 "Magento 2.4.5 patch": "patches/loki-checkout_magento2-simple-shipping-2.4.5.diff"
+            },
+            "loki-checkout/magento2-stripe": {
+                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-stripe-2.4.5.diff"
             }
         }
     }
