@@ -1,8 +1,34 @@
+diff --git a/Component/GridLayout/GridLayoutContext.php b/Component/GridLayout/GridLayoutContext.php
+index 2e9112b..e1fcde9 100644
+--- a/Component/GridLayout/GridLayoutContext.php
++++ b/Component/GridLayout/GridLayoutContext.php
+@@ -11,10 +11,10 @@ use Loki\Components\Component\ComponentContextInterface;
+ class GridLayoutContext implements ComponentContextInterface
+ {
+     public function __construct(
+-        private readonly CheckoutSession $checkoutSession,
+-        private readonly XmlConfig $xmlConfig,
+-        private readonly ResponseFactory $responseFactory,
+-        private readonly UrlFactory $urlFactory,
++        private CheckoutSession $checkoutSession,
++        private XmlConfig $xmlConfig,
++        private ResponseFactory $responseFactory,
++        private UrlFactory $urlFactory,
+     ) {
+     }
+ 
 diff --git a/Component/GridLayout/GridLayoutRepository.php b/Component/GridLayout/GridLayoutRepository.php
-index 4cde5bc..ecb6630 100644
+index 4cde5bc..460f443 100644
 --- a/Component/GridLayout/GridLayoutRepository.php
 +++ b/Component/GridLayout/GridLayoutRepository.php
-@@ -18,7 +18,7 @@ class GridLayoutRepository extends ComponentRepository
+@@ -13,12 +13,12 @@ use Loki\Components\Exception\RedirectException;
+ class GridLayoutRepository extends ComponentRepository
+ {
+     public function __construct(
+-        private readonly MessageManager $messageManager,
+-        private readonly Config $config
++        private MessageManager $messageManager,
++        private Config $config
      ) {
      }
  
@@ -20,11 +46,37 @@ index 4cde5bc..ecb6630 100644
      {
          if (empty($value)) {
              return;
+diff --git a/Component/Theme/ThemeContext.php b/Component/Theme/ThemeContext.php
+index f5aad56..f2bdf57 100644
+--- a/Component/Theme/ThemeContext.php
++++ b/Component/Theme/ThemeContext.php
+@@ -11,10 +11,10 @@ use Loki\Components\Component\ComponentContextInterface;
+ class ThemeContext implements ComponentContextInterface
+ {
+     public function __construct(
+-        private readonly CheckoutSession $checkoutSession,
+-        private readonly XmlConfig $xmlConfig,
+-        private readonly ResponseFactory $responseFactory,
+-        private readonly UrlFactory $urlFactory,
++        private CheckoutSession $checkoutSession,
++        private XmlConfig $xmlConfig,
++        private ResponseFactory $responseFactory,
++        private UrlFactory $urlFactory,
+     ) {
+     }
+ 
 diff --git a/Component/Theme/ThemeRepository.php b/Component/Theme/ThemeRepository.php
-index 5e76979..821d549 100644
+index 5e76979..ac9ca2b 100644
 --- a/Component/Theme/ThemeRepository.php
 +++ b/Component/Theme/ThemeRepository.php
-@@ -18,7 +18,7 @@ class ThemeRepository extends ComponentRepository
+@@ -13,12 +13,12 @@ use Loki\Components\Exception\RedirectException;
+ class ThemeRepository extends ComponentRepository
+ {
+     public function __construct(
+-        private readonly MessageManager $messageManager,
+-        private readonly Config $config
++        private MessageManager $messageManager,
++        private Config $config
      ) {
      }
  
@@ -42,3 +94,16 @@ index 5e76979..821d549 100644
      {
          if (empty($value)) {
              return;
+diff --git a/Plugin/OverrideConfigFromSessionPlugin.php b/Plugin/OverrideConfigFromSessionPlugin.php
+index 9b5863f..4e4e738 100644
+--- a/Plugin/OverrideConfigFromSessionPlugin.php
++++ b/Plugin/OverrideConfigFromSessionPlugin.php
+@@ -8,7 +8,7 @@ use LokiCheckout\Core\Config\Config;
+ class OverrideConfigFromSessionPlugin
+ {
+     public function __construct(
+-        private readonly CheckoutSession $checkoutSession,
++        private CheckoutSession $checkoutSession,
+     ) {
+     }
+ 
