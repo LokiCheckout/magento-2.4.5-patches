@@ -11,3 +11,44 @@ index 3dfcf59..200dd09 100644
      {
          if (true === $this->getContext()->getCustomerSession()->isLoggedIn()) {
              return true;
+diff --git a/Plugin/DisableBillingStepForGuestPlugin.php b/Plugin/DisableBillingStepForGuestPlugin.php
+index c3c55be..d72da17 100644
+--- a/Plugin/DisableBillingStepForGuestPlugin.php
++++ b/Plugin/DisableBillingStepForGuestPlugin.php
+@@ -10,7 +10,7 @@ use Magento\Customer\Model\Session as CustomerSession;
+ class DisableBillingStepForGuestPlugin
+ {
+     public function __construct(
+-        private readonly AllowStep $allowStep
++        private AllowStep $allowStep
+     ) {
+     }
+ 
+diff --git a/Plugin/DisableShippingStepForGuestPlugin.php b/Plugin/DisableShippingStepForGuestPlugin.php
+index 9009b88..3a1b377 100644
+--- a/Plugin/DisableShippingStepForGuestPlugin.php
++++ b/Plugin/DisableShippingStepForGuestPlugin.php
+@@ -9,7 +9,7 @@ use LokiCheckout\LoginBeforeOtherSteps\Util\AllowStep;
+ class DisableShippingStepForGuestPlugin
+ {
+     public function __construct(
+-        private readonly AllowStep $allowStep
++        private AllowStep $allowStep
+     ) {
+     }
+ 
+diff --git a/Util/AllowStep.php b/Util/AllowStep.php
+index 3c0bac8..b852c6e 100644
+--- a/Util/AllowStep.php
++++ b/Util/AllowStep.php
+@@ -8,8 +8,8 @@ use Magento\Customer\Model\Session as CustomerSession;
+ class AllowStep
+ {
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly CustomerSession $customerSession
++        private Config $config,
++        private CustomerSession $customerSession
+     ) {
+     }
+ 
