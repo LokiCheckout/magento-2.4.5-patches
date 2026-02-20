@@ -1,0 +1,92 @@
+diff --git a/Plugin/EnhanceCountryIdRepositoryPlugin.php b/Plugin/EnhanceCountryIdRepositoryPlugin.php
+index f708c63..499d38a 100644
+--- a/Plugin/EnhanceCountryIdRepositoryPlugin.php
++++ b/Plugin/EnhanceCountryIdRepositoryPlugin.php
+@@ -17,7 +17,7 @@ class EnhanceCountryIdRepositoryPlugin
+     ) {
+     }
+ 
+-    public function afterSaveValue(CountryIdRepository $repository, $return, mixed $countryId): mixed
++    public function afterSaveValue(CountryIdRepository $repository, $return, $countryId)
+     {
+         if (empty($countryId)) {
+             return $countryId;
+diff --git a/Plugin/EnhanceVatIdRepositoryPlugin.php b/Plugin/EnhanceVatIdRepositoryPlugin.php
+index 1964df3..ab564df 100644
+--- a/Plugin/EnhanceVatIdRepositoryPlugin.php
++++ b/Plugin/EnhanceVatIdRepositoryPlugin.php
+@@ -19,7 +19,7 @@ class EnhanceVatIdRepositoryPlugin
+     ) {
+     }
+ 
+-    public function beforeSaveValue(VatIdRepository $repository, mixed $value): mixed
++    public function beforeSaveValue(VatIdRepository $repository, $value)
+     {
+         if (strlen($value) < 4 && preg_match('/^([A-Z]+)$/', $value)) {
+             $value = '';
+@@ -28,7 +28,7 @@ class EnhanceVatIdRepositoryPlugin
+         return $value;
+     }
+ 
+-    public function afterGetValue(VatIdRepository $repository, mixed $value): mixed
++    public function afterGetValue(VatIdRepository $repository, $value)
+     {
+         if (empty($value)) {
+             return $value;
+@@ -45,7 +45,7 @@ class EnhanceVatIdRepositoryPlugin
+         return $value;
+     }
+ 
+-    public function afterSaveValue(VatIdRepository $repository, mixed $rt, mixed $value): void
++    public function afterSaveValue(VatIdRepository $repository, $rt, $value): void
+     {
+         if (empty($value)) {
+             return;
+diff --git a/Plugin/EnhanceVatIdViewModelPlugin.php b/Plugin/EnhanceVatIdViewModelPlugin.php
+index 8cbf297..5630c82 100644
+--- a/Plugin/EnhanceVatIdViewModelPlugin.php
++++ b/Plugin/EnhanceVatIdViewModelPlugin.php
+@@ -18,7 +18,7 @@ class EnhanceVatIdViewModelPlugin
+     ) {
+     }
+ 
+-    public function afterGetValue(VatIdViewModel $vatIdViewModel, mixed $value): mixed
++    public function afterGetValue(VatIdViewModel $vatIdViewModel, $value)
+     {
+         if (empty($value)) {
+             return $value;
+diff --git a/Validator/VatIdOnlineValidator.php b/Validator/VatIdOnlineValidator.php
+index 01683b9..1e65457 100644
+--- a/Validator/VatIdOnlineValidator.php
++++ b/Validator/VatIdOnlineValidator.php
+@@ -18,7 +18,7 @@ class VatIdOnlineValidator implements ValidatorInterface
+         private VatModel $vatModel
+     ) {
+     }
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         $addressState = $this->addressStateProvider->getAddressState($component->getName());
+         $countryId = (string)$addressState->get('country_id');
+@@ -41,7 +41,7 @@ class VatIdOnlineValidator implements ValidatorInterface
+         return $this->validateOnline($component, $vatCountryId, $vatIdWithoutPrefix);
+     }
+ 
+-    private function validateOnline(ComponentInterface $component, string $vatCountryId, string $vatId): bool|array
++    private function validateOnline(ComponentInterface $component, string $vatCountryId, string $vatId)
+     {
+         $merchantCountryCode = $this->vatModel->getMerchantCountryCode();
+         $merchantVatNumber = $this->vatModel->getMerchantVatNumber();
+diff --git a/Validator/VatIdValidator.php b/Validator/VatIdValidator.php
+index 7881e2c..58cf0b7 100644
+--- a/Validator/VatIdValidator.php
++++ b/Validator/VatIdValidator.php
+@@ -17,7 +17,7 @@ class VatIdValidator implements ValidatorInterface
+     ) {
+     }
+ 
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         $vatId = strtoupper(trim((string)$value));
+         if (empty($vatId)) {

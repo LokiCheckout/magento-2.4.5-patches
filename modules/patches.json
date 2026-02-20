@@ -63,6 +63,9 @@
             },
             "loki-checkout/magento2-empty-shipment": {
                 "Magento 2.4.5 patch": "patches/loki-checkout_magento2-empty-shipment-2.4.5.diff"
+            },
+            "loki-checkout/magento2-eu-vat": {
+                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-eu-vat-2.4.5.diff"
             }
         }
     }
