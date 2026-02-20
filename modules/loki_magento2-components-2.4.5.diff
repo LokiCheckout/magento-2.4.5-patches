@@ -1,0 +1,508 @@
+diff --git a/Component/ComponentRepository.php b/Component/ComponentRepository.php
+index 913a6fa..4c6d145 100644
+--- a/Component/ComponentRepository.php
++++ b/Component/ComponentRepository.php
+@@ -41,14 +41,14 @@ abstract class ComponentRepository implements ComponentRepositoryInterface
+         return $this->component->getLocalMessageRegistry();
+     }
+ 
+-    abstract public function getValue(): mixed;
++    abstract public function getValue();
+ 
+-    public function getDefaultValue(): mixed
++    public function getDefaultValue()
+     {
+         return null;
+     }
+ 
+-    abstract public function saveValue(mixed $value): void;
++    abstract public function saveValue($value): void;
+ 
+     protected function getContext(): ComponentContextInterface
+     {
+diff --git a/Component/ComponentRepositoryInterface.php b/Component/ComponentRepositoryInterface.php
+index 9060320..35872aa 100644
+--- a/Component/ComponentRepositoryInterface.php
++++ b/Component/ComponentRepositoryInterface.php
+@@ -7,10 +7,10 @@ interface ComponentRepositoryInterface
+ {
+     public function setComponent(ComponentInterface $component): void;
+ 
+-    public function saveValue(mixed $value): void;
++    public function saveValue($value): void;
+ 
+-    public function getValue(): mixed;
+-    public function getDefaultValue(): mixed;
++    public function getValue();
++    public function getDefaultValue();
+     public function getPriority(): int;
+ 
+ }
+diff --git a/Component/ComponentViewModel.php b/Component/ComponentViewModel.php
+index c7aeb71..32c5ddf 100644
+--- a/Component/ComponentViewModel.php
++++ b/Component/ComponentViewModel.php
+@@ -52,7 +52,7 @@ class ComponentViewModel implements ComponentViewModelInterface
+         return ObjectManager::getInstance()->get(GetElementId::class)->execute($this->block);
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         if (false === $this->getComponent()->hasRepository()) {
+             return null;
+diff --git a/Component/ComponentViewModelInterface.php b/Component/ComponentViewModelInterface.php
+index 798fe99..aed370c 100644
+--- a/Component/ComponentViewModelInterface.php
++++ b/Component/ComponentViewModelInterface.php
+@@ -24,7 +24,7 @@ interface ComponentViewModelInterface extends ArgumentInterface
+ 
+     public function hasBlock(): bool;
+ 
+-    public function getValue(): mixed;
++    public function getValue();
+ 
+     public function getValidators(): array;
+ 
+diff --git a/Controller/Adminhtml/Index/Html.php b/Controller/Adminhtml/Index/Html.php
+index 4b5585a..b09f94b 100644
+--- a/Controller/Adminhtml/Index/Html.php
++++ b/Controller/Adminhtml/Index/Html.php
+@@ -49,7 +49,7 @@ class Html extends Action
+         parent::__construct($context);
+     }
+ 
+-    public function execute(): ResultInterface|ResponseInterface
++    public function execute()
+     {
+         $data = $this->requestDataLoader->load();
+         $this->requestDataLoader->mergeRequestParams();
+diff --git a/Controller/Index/Html.php b/Controller/Index/Html.php
+index d196538..37a5f80 100644
+--- a/Controller/Index/Html.php
++++ b/Controller/Index/Html.php
+@@ -47,7 +47,7 @@ class Html implements HttpPostActionInterface, HttpGetActionInterface
+     ) {
+     }
+ 
+-    public function execute(): ResultInterface|ResponseInterface
++    public function execute()
+     {
+         $data = $this->requestDataLoader->load();
+         $this->requestDataLoader->mergeRequestParams();
+diff --git a/Factory/ViewModelFactory.php b/Factory/ViewModelFactory.php
+index 60ac3f2..4b623c3 100644
+--- a/Factory/ViewModelFactory.php
++++ b/Factory/ViewModelFactory.php
+@@ -27,7 +27,7 @@ class ViewModelFactory
+         return $viewModel;
+     }
+ 
+-    private function validateViewModel(mixed $viewModel, string $viewModelClass): void
++    private function validateViewModel($viewModel, string $viewModelClass): void
+     {
+         if (empty($viewModel)) {
+             throw new RuntimeException('ViewModel "' . $viewModelClass . '" could not be instantiated');
+diff --git a/Filter/Capitalize.php b/Filter/Capitalize.php
+index 4dec725..81ae987 100644
+--- a/Filter/Capitalize.php
++++ b/Filter/Capitalize.php
+@@ -4,7 +4,7 @@ namespace Loki\Components\Filter;
+ 
+ class Capitalize implements FilterInterface
+ {
+-    public function filter(mixed $value, FilterScope $scope): mixed
++    public function filter($value, FilterScope $scope)
+     {
+         return ucfirst((string)$value);
+     }
+diff --git a/Filter/Filter.php b/Filter/Filter.php
+index fcdf413..d464c23 100644
+--- a/Filter/Filter.php
++++ b/Filter/Filter.php
+@@ -14,9 +14,9 @@ class Filter
+ 
+     public function filter(
+         ComponentInterface $component,
+-        mixed $data = null,
+-        mixed $propertyName = null
+-    ): mixed {
++        $data = null,
++        $propertyName = null
++    ) {
+         $filters = $this->filterRegistry->getApplicableFilters(
+             $component->getFilters()
+         );
+diff --git a/Filter/FilterInterface.php b/Filter/FilterInterface.php
+index 0d0d3e5..81a2a51 100644
+--- a/Filter/FilterInterface.php
++++ b/Filter/FilterInterface.php
+@@ -5,5 +5,5 @@ namespace Loki\Components\Filter;
+ 
+ interface FilterInterface
+ {
+-    public function filter(mixed $value, FilterScope $scope): mixed;
++    public function filter($value, FilterScope $scope);
+ }
+diff --git a/Filter/FilterScope.php b/Filter/FilterScope.php
+index 9fe8854..3bf5a7c 100644
+--- a/Filter/FilterScope.php
++++ b/Filter/FilterScope.php
+@@ -6,8 +6,8 @@ use Loki\Components\Component\ComponentInterface;
+ 
+ class FilterScope
+ {
+-    private ComponentInterface|null $component = null;
+-    private mixed $property = null;
++    private $component = null;
++    private $property = null;
+ 
+     public function getComponent(): ?ComponentInterface
+     {
+@@ -19,12 +19,12 @@ class FilterScope
+         $this->component = $component;
+     }
+ 
+-    public function getProperty(): mixed
++    public function getProperty()
+     {
+         return $this->property;
+     }
+ 
+-    public function setProperty(mixed $property): void
++    public function setProperty($property): void
+     {
+         $this->property = $property;
+     }
+diff --git a/Filter/Lowercase.php b/Filter/Lowercase.php
+index 733cd1c..edc6a34 100644
+--- a/Filter/Lowercase.php
++++ b/Filter/Lowercase.php
+@@ -4,7 +4,7 @@ namespace Loki\Components\Filter;
+ 
+ class Lowercase implements FilterInterface
+ {
+-    public function filter(mixed $value, FilterScope $scope): mixed
++    public function filter($value, FilterScope $scope)
+     {
+         return strtolower((string)$value);
+     }
+diff --git a/Filter/Number.php b/Filter/Number.php
+index 79872a3..4f49d0c 100644
+--- a/Filter/Number.php
++++ b/Filter/Number.php
+@@ -4,7 +4,7 @@ namespace Loki\Components\Filter;
+ 
+ class Number implements FilterInterface
+ {
+-    public function filter(mixed $value, FilterScope $scope): mixed
++    public function filter($value, FilterScope $scope)
+     {
+         return (int)$value;
+     }
+diff --git a/Filter/PositiveNumber.php b/Filter/PositiveNumber.php
+index 833e0c2..ac4ee5c 100644
+--- a/Filter/PositiveNumber.php
++++ b/Filter/PositiveNumber.php
+@@ -4,7 +4,7 @@ namespace Loki\Components\Filter;
+ 
+ class PositiveNumber implements FilterInterface
+ {
+-    public function filter(mixed $value, FilterScope $scope): mixed
++    public function filter($value, FilterScope $scope)
+     {
+         if ($value > 0) {
+             return $value;
+diff --git a/Filter/Security.php b/Filter/Security.php
+index 98b2f97..4373604 100644
+--- a/Filter/Security.php
++++ b/Filter/Security.php
+@@ -4,7 +4,7 @@ namespace Loki\Components\Filter;
+ 
+ class Security implements FilterInterface
+ {
+-    public function filter(mixed $value, FilterScope $scope): mixed
++    public function filter($value, FilterScope $scope)
+     {
+        if (is_object($value)) {
+             return $value;
+diff --git a/Filter/Trim.php b/Filter/Trim.php
+index ca791fb..a6df238 100644
+--- a/Filter/Trim.php
++++ b/Filter/Trim.php
+@@ -4,7 +4,7 @@ namespace Loki\Components\Filter;
+ 
+ class Trim implements FilterInterface
+ {
+-    public function filter(mixed $value, FilterScope $scope): mixed
++    public function filter($value, FilterScope $scope)
+     {
+         return trim((string)$value);
+     }
+diff --git a/Filter/Uppercase.php b/Filter/Uppercase.php
+index 2c5179f..88ff87e 100644
+--- a/Filter/Uppercase.php
++++ b/Filter/Uppercase.php
+@@ -6,7 +6,7 @@ use Loki\Components\Component\ComponentInterface;
+ 
+ class Uppercase implements FilterInterface
+ {
+-    public function filter(mixed $value, FilterScope $scope): mixed
++    public function filter($value, FilterScope $scope)
+     {
+         return strtoupper((string)$value);
+     }
+diff --git a/Messages/LocalMessage.php b/Messages/LocalMessage.php
+index 8180e71..68ade61 100644
+--- a/Messages/LocalMessage.php
++++ b/Messages/LocalMessage.php
+@@ -36,7 +36,7 @@ class LocalMessage implements JsonSerializable
+         ];
+     }
+ 
+-    public function jsonSerialize(): mixed
++    public function jsonSerialize()
+     {
+         return $this->toArray();
+     }
+diff --git a/Router/LokiRouter.php b/Router/LokiRouter.php
+index f0ab9a1..b409e57 100644
+--- a/Router/LokiRouter.php
++++ b/Router/LokiRouter.php
+@@ -16,7 +16,7 @@ class LokiRouter implements RouterInterface
+     ) {
+     }
+ 
+-    public function match(RequestInterface $request): ActionInterface|null
++    public function match(RequestInterface $request)
+     {
+         /** @var HttpRequest $request */
+         $identifier = trim($request->getPathInfo(), '/');
+diff --git a/Setup/ModuleDependencies.php b/Setup/ModuleDependencies.php
+index 6d4137e..7172d8f 100644
+--- a/Setup/ModuleDependencies.php
++++ b/Setup/ModuleDependencies.php
+@@ -16,7 +16,7 @@ class ModuleDependencies
+     ) {
+     }
+ 
+-    public function getMissingDependencies(string $moduleName): bool|array
++    public function getMissingDependencies(string $moduleName)
+     {
+         $modulePath = $this->componentRegistrar->getPath(ComponentRegistrar::MODULE, $moduleName);
+         $moduleXmlPath = $modulePath.'/etc/module.xml';
+diff --git a/Test/Integration/Dummy/LengthViewModelDummy.php b/Test/Integration/Dummy/LengthViewModelDummy.php
+index e248e30..493f46a 100644
+--- a/Test/Integration/Dummy/LengthViewModelDummy.php
++++ b/Test/Integration/Dummy/LengthViewModelDummy.php
+@@ -39,7 +39,7 @@ class LengthViewModelDummy implements ComponentViewModelInterface
+         return ObjectManager::getInstance()->create(AbstractBlock::class);
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return null;
+     }
+diff --git a/Test/Integration/LokiComponentsTestCase.php b/Test/Integration/LokiComponentsTestCase.php
+index cf1c305..8750808 100644
+--- a/Test/Integration/LokiComponentsTestCase.php
++++ b/Test/Integration/LokiComponentsTestCase.php
+@@ -149,7 +149,7 @@ class LokiComponentsTestCase extends AbstractController
+         bool $expectedResult,
+         array $expectedErrors,
+         ComponentInterface $component,
+-        mixed $value,
++        $value,
+     ) {
+         $this->setAsAjaxRequest();
+         $result = $this->getValidator()->validate($component, $value);
+diff --git a/Test/Integration/Validator/EmailValidatorTest.php b/Test/Integration/Validator/EmailValidatorTest.php
+index defce88..90eadee 100644
+--- a/Test/Integration/Validator/EmailValidatorTest.php
++++ b/Test/Integration/Validator/EmailValidatorTest.php
+@@ -25,7 +25,7 @@ class EmailValidatorTest extends TestCase
+      * @dataProvider getValues
+      */
+     #[Config('loki_components/validators/enable_mx_validation_for_email', true)]
+-    public function testWithVariousValues(string $email, true|string $expectedResult): void
++    public function testWithVariousValues(string $email, $expectedResult): void
+     {
+         $validator = ObjectManager::getInstance()->get(EmailValidator::class);
+         $actualResult = $validator->validate($email);
+diff --git a/Test/Unit/Validator/PastDateValidatorTest.php b/Test/Unit/Validator/PastDateValidatorTest.php
+index 5778508..46ece8c 100644
+--- a/Test/Unit/Validator/PastDateValidatorTest.php
++++ b/Test/Unit/Validator/PastDateValidatorTest.php
+@@ -10,7 +10,7 @@ class PastDateValidatorTest extends TestCase
+     /**
+      * @dataProvider getTestData
+      */
+-    public function testWithNoSimpleValues(string $value, bool|array $expectedResult): void
++    public function testWithNoSimpleValues(string $value, $expectedResult): void
+     {
+         $validator = new PastDateValidator();
+         $result = $validator->validate($value);
+diff --git a/Util/Controller/ComponentUpdate.php b/Util/Controller/ComponentUpdate.php
+index 6f6cb5b..8f06480 100644
+--- a/Util/Controller/ComponentUpdate.php
++++ b/Util/Controller/ComponentUpdate.php
+@@ -10,7 +10,7 @@ class ComponentUpdate
+     public function __construct(
+         private readonly AbstractBlock $block,
+         private readonly Component $component,
+-        private readonly mixed $componentData = null
++        private readonly $componentData = null
+     ) {
+     }
+ 
+@@ -24,7 +24,7 @@ class ComponentUpdate
+         return $this->component;
+     }
+ 
+-    public function getComponentData(): mixed
++    public function getComponentData()
+     {
+         return $this->componentData;
+     }
+diff --git a/Util/Controller/RepositoryDispatcher.php b/Util/Controller/RepositoryDispatcher.php
+index 6495e38..1de3908 100644
+--- a/Util/Controller/RepositoryDispatcher.php
++++ b/Util/Controller/RepositoryDispatcher.php
+@@ -18,7 +18,7 @@ class RepositoryDispatcher
+     ) {
+     }
+ 
+-    public function dispatch(ComponentInterface $component, mixed $componentData): void
++    public function dispatch(ComponentInterface $component, $componentData): void
+     {
+         $this->eventManager->dispatch('loki_components_repository_dispatch', ['component' => $component]);
+ 
+diff --git a/Util/IsEmpty.php b/Util/IsEmpty.php
+index 5116514..4c19c44 100644
+--- a/Util/IsEmpty.php
++++ b/Util/IsEmpty.php
+@@ -7,7 +7,7 @@ use Loki\Components\Component\ComponentInterface;
+ 
+ class IsEmpty
+ {
+-    public function execute(ComponentInterface $component, mixed $value): bool
++    public function execute(ComponentInterface $component, $value): bool
+     {
+         if ($this->shouldBeNumber($component) && is_numeric($value)) {
+             return false;
+diff --git a/Validator/DateValidator.php b/Validator/DateValidator.php
+index 73d3ee9..f224586 100644
+--- a/Validator/DateValidator.php
++++ b/Validator/DateValidator.php
+@@ -6,7 +6,7 @@ use Loki\Components\Component\ComponentInterface;
+ 
+ class DateValidator implements ValidatorInterface
+ {
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         $date = trim((string)$value);
+         if ($date === '' || $date === '0') {
+diff --git a/Validator/EmailValidator.php b/Validator/EmailValidator.php
+index 2193057..4e3f345 100644
+--- a/Validator/EmailValidator.php
++++ b/Validator/EmailValidator.php
+@@ -6,7 +6,7 @@ use Loki\Components\Component\ComponentInterface;
+ 
+ class EmailValidator implements ValidatorInterface
+ {
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         $email = trim((string)$value);
+ 
+diff --git a/Validator/LengthValidator.php b/Validator/LengthValidator.php
+index 3b444e9..6c5b782 100644
+--- a/Validator/LengthValidator.php
++++ b/Validator/LengthValidator.php
+@@ -7,7 +7,7 @@ use Loki\Components\Component\ComponentViewModelInterface;
+ 
+ class LengthValidator implements ValidatorInterface
+ {
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         if (false === is_string($value)) {
+             return true;
+diff --git a/Validator/NumberValidator.php b/Validator/NumberValidator.php
+index f2224e1..3943540 100644
+--- a/Validator/NumberValidator.php
++++ b/Validator/NumberValidator.php
+@@ -6,7 +6,7 @@ use Loki\Components\Component\ComponentInterface;
+ 
+ class NumberValidator implements ValidatorInterface
+ {
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         if (false === is_numeric($value)) {
+             return [(string)__('Value must contain numbers only')];
+diff --git a/Validator/PastDateValidator.php b/Validator/PastDateValidator.php
+index 9a3d3f9..a1e62e5 100644
+--- a/Validator/PastDateValidator.php
++++ b/Validator/PastDateValidator.php
+@@ -6,7 +6,7 @@ use Loki\Components\Component\ComponentInterface;
+ 
+ class PastDateValidator implements ValidatorInterface
+ {
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         $date = trim((string)$value);
+         if ($date === '' || $date === '0') {
+diff --git a/Validator/PositiveNumberValidator.php b/Validator/PositiveNumberValidator.php
+index 22d1027..c95e6bd 100644
+--- a/Validator/PositiveNumberValidator.php
++++ b/Validator/PositiveNumberValidator.php
+@@ -6,7 +6,7 @@ use Loki\Components\Component\ComponentInterface;
+ 
+ class PositiveNumberValidator implements ValidatorInterface
+ {
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         if (false === is_numeric($value)) {
+             return [(string)__('Value must contain numbers only')];
+diff --git a/Validator/RequiredValidator.php b/Validator/RequiredValidator.php
+index 0e35109..e349dc3 100644
+--- a/Validator/RequiredValidator.php
++++ b/Validator/RequiredValidator.php
+@@ -16,7 +16,7 @@ class RequiredValidator implements ValidatorInterface
+     ) {
+     }
+ 
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         if (false === $this->ajax->isAjax()) {
+             return true;
+diff --git a/Validator/Validator.php b/Validator/Validator.php
+index 957bbf0..3c64e47 100644
+--- a/Validator/Validator.php
++++ b/Validator/Validator.php
+@@ -15,7 +15,7 @@ class Validator
+ 
+     public function validate(
+         ComponentInterface $component,
+-        mixed $data = null,
++        $data = null,
+         string $scope = ''
+     ): bool {
+         if (is_array($data)) {
+diff --git a/Validator/ValidatorInterface.php b/Validator/ValidatorInterface.php
+index dffabfb..8967280 100644
+--- a/Validator/ValidatorInterface.php
++++ b/Validator/ValidatorInterface.php
+@@ -6,5 +6,5 @@ use Loki\Components\Component\ComponentInterface;
+ 
+ interface ValidatorInterface
+ {
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array;
++    public function validate($value, ?ComponentInterface $component = null);
+ }

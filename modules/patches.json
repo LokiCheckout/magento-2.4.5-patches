@@ -123,6 +123,9 @@
             },
             "loki-checkout/magento2-test": {
                 "Magento 2.4.5 patch": "patches/loki-checkout_magento2-test-2.4.5.diff"
+            },
+            "loki/magento2-components": {
+                "Magento 2.4.5 patch": "patches/loki_magento2-components-2.4.5.diff"
             }
         }
     }
