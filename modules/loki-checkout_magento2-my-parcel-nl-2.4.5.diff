@@ -1,8 +1,32 @@
+diff --git a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsContext.php b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsContext.php
+index cd2aaf6..ccc5a27 100644
+--- a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsContext.php
++++ b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsContext.php
+@@ -37,10 +37,10 @@ class DeliveryOptionsContext implements ComponentContextInterface
+         private AttributeProvider $attributeProvider,
+         private GlobalMessageRegistry $globalMessageRegistry,
+         private CoreMessageManager $coreMessageManager,
+-        private readonly CustomerSession $customerSession,
+-        private readonly StoreManagerInterface $storeManager,
+-        private readonly UrlFactory $urlFactory,
+-        private readonly LocaleResolver $localeResolver,
++        private CustomerSession $customerSession,
++        private StoreManagerInterface $storeManager,
++        private UrlFactory $urlFactory,
++        private LocaleResolver $localeResolver,
+     ) {
+     }
+ 
 diff --git a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
-index 674f8f6..2671b21 100644
+index 674f8f6..293c718 100644
 --- a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
 +++ b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
-@@ -18,7 +18,7 @@ class DeliveryOptionsRepository extends FieldRepository
+@@ -14,11 +14,11 @@ use RuntimeException;
+ class DeliveryOptionsRepository extends FieldRepository
+ {
+     public function __construct(
+-        private readonly Config $config,
++        private Config $config,
      ) {
      }
  
@@ -20,6 +44,38 @@ index 674f8f6..2671b21 100644
      {
          if (!is_array($value)) {
              return;
+diff --git a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsViewModel.php b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsViewModel.php
+index 7573e64..d7d7487 100644
+--- a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsViewModel.php
++++ b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsViewModel.php
+@@ -16,10 +16,10 @@ use MyParcelNL\Magento\Model\Quote\Checkout;
+ class DeliveryOptionsViewModel extends CheckoutViewModel
+ {
+     public function __construct(
+-        private readonly ParamsProvider $paramsProvider,
+-        private readonly Checkout $checkoutConfiguration,
+-        private readonly AddressProvider $addressProvider,
+-        private readonly Config $config
++        private ParamsProvider $paramsProvider,
++        private Checkout $checkoutConfiguration,
++        private AddressProvider $addressProvider,
++        private Config $config
+     ) {
+     }
+ 
+diff --git a/Plugin/HideMyParcelNlShippingMethodsPlugin.php b/Plugin/HideMyParcelNlShippingMethodsPlugin.php
+index 72e5f04..13cda06 100644
+--- a/Plugin/HideMyParcelNlShippingMethodsPlugin.php
++++ b/Plugin/HideMyParcelNlShippingMethodsPlugin.php
+@@ -9,7 +9,7 @@ use LokiCheckout\Core\Component\Checkout\Shipping\ShippingMethods\ShippingMethod
+ class HideMyParcelNlShippingMethodsPlugin
+ {
+     public function __construct(
+-        private readonly Config $config
++        private Config $config
+     ) {
+     }
+ 
 diff --git a/Plugin/RemoveMyParcelNlDetailsPlugin.php b/Plugin/RemoveMyParcelNlDetailsPlugin.php
 index c014b18..b91ee6e 100644
 --- a/Plugin/RemoveMyParcelNlDetailsPlugin.php
