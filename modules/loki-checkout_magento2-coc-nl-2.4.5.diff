@@ -1,0 +1,26 @@
+diff --git a/Validator/CocNlOnlineValidator.php b/Validator/CocNlOnlineValidator.php
+index 671e13d..d84a452 100644
+--- a/Validator/CocNlOnlineValidator.php
++++ b/Validator/CocNlOnlineValidator.php
+@@ -8,7 +8,7 @@ use Loki\Components\Validator\ValidatorInterface;
+ class CocNlOnlineValidator implements ValidatorInterface
+ {
+ 
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         return true;
+     }
+diff --git a/Validator/CocNlValidator.php b/Validator/CocNlValidator.php
+index b2dd7ac..e894e02 100644
+--- a/Validator/CocNlValidator.php
++++ b/Validator/CocNlValidator.php
+@@ -11,7 +11,7 @@ class CocNlValidator implements ValidatorInterface
+     ) {
+     }
+ 
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         // @todo: Check if country is Dutch
+ 
