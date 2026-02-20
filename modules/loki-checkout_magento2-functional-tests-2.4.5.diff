@@ -1,0 +1,13 @@
+diff --git a/Service/StoreConfigurationManager.php b/Service/StoreConfigurationManager.php
+index f460e94..3f2f500 100644
+--- a/Service/StoreConfigurationManager.php
++++ b/Service/StoreConfigurationManager.php
+@@ -34,7 +34,7 @@ class StoreConfigurationManager
+         return $result;
+     }
+ 
+-    public function save(string $path, mixed $value): bool
++    public function save(string $path, $value): bool
+     {
+         $currentValue = $this->scopeConfig->getValue($path);
+         if ($currentValue == $value) {
