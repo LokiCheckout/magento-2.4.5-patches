@@ -17,11 +17,39 @@ index 15af89a..dd65558 100644
      {
          if (!is_array($value)) {
              return;
+diff --git a/Component/Checkout/Payment/Method/Billink/BillinkViewModel.php b/Component/Checkout/Payment/Method/Billink/BillinkViewModel.php
+index 6af775c..bb38ae0 100644
+--- a/Component/Checkout/Payment/Method/Billink/BillinkViewModel.php
++++ b/Component/Checkout/Payment/Method/Billink/BillinkViewModel.php
+@@ -17,11 +17,11 @@ use Magento\Store\Model\StoreManagerInterface;
+ class BillinkViewModel extends CheckoutViewModel
+ {
+     public function __construct(
+-        protected readonly MidpageConfig $midpageConfig,
+-        protected readonly StoreManagerInterface $storeManager,
+-        protected readonly ResolverInterface $localeResolver,
+-        protected readonly UrlFactory $urlFactory,
+-        protected readonly ConfigProvider $configProvider,
++        protected MidpageConfig $midpageConfig,
++        protected StoreManagerInterface $storeManager,
++        protected ResolverInterface $localeResolver,
++        protected UrlFactory $urlFactory,
++        protected ConfigProvider $configProvider,
+     ) {
+     }
+ 
 diff --git a/Payment/Icon/IconResolver.php b/Payment/Icon/IconResolver.php
-index d74d6d1..bfa3cb4 100644
+index d74d6d1..095878a 100644
 --- a/Payment/Icon/IconResolver.php
 +++ b/Payment/Icon/IconResolver.php
-@@ -18,7 +18,7 @@ class IconResolver implements IconResolverInterface
+@@ -13,12 +13,12 @@ class IconResolver implements IconResolverInterface
+     private const XML_PATH_LOGO = 'payment/%s/logo';
+ 
+     public function __construct(
+-        private readonly ModuleManager $moduleManager,
+-        private readonly ScopeConfigInterface $scopeConfig,
++        private ModuleManager $moduleManager,
++        private ScopeConfigInterface $scopeConfig,
      ) {
      }
  
