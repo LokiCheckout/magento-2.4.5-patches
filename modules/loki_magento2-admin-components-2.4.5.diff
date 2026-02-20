@@ -1,0 +1,376 @@
+diff --git a/Component/Form/FormRepository.php b/Component/Form/FormRepository.php
+index c4d0002..4bf5aa3 100644
+--- a/Component/Form/FormRepository.php
++++ b/Component/Form/FormRepository.php
+@@ -26,7 +26,7 @@ class FormRepository extends ComponentRepository
+     }
+ 
+     // @todo: Remove the need for this
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return $this->getItem();
+     }
+@@ -67,7 +67,7 @@ class FormRepository extends ComponentRepository
+         return $item;
+     }
+ 
+-    private function getDefaultValueFromDataType(string $dataType): mixed
++    private function getDefaultValueFromDataType(string $dataType)
+     {
+         if (in_array($dataType, ['int', 'tinyint'])) {
+             return 0;
+@@ -85,7 +85,7 @@ class FormRepository extends ComponentRepository
+     }
+ 
+     // @todo: Rename saveValue to handleValue
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (!is_array($value) || !isset($value['actions']) || !is_array($value['actions'])) {
+             return;
+diff --git a/Component/Grid/GridRepository.php b/Component/Grid/GridRepository.php
+index 2e8a126..5e9c7b9 100644
+--- a/Component/Grid/GridRepository.php
++++ b/Component/Grid/GridRepository.php
+@@ -32,7 +32,7 @@ class GridRepository extends ComponentRepository
+     }
+ 
+     // @todo: Remove the requirement for this
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return $this->getItems();
+     }
+@@ -87,7 +87,7 @@ class GridRepository extends ComponentRepository
+         throw new RuntimeException('Empty grid provider for block "'.$this->getBlock()->getNameInLayout().'"');
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (!is_array($value)) {
+             return;
+diff --git a/Component/Grid/GridViewModel.php b/Component/Grid/GridViewModel.php
+index dc2619d..808c066 100644
+--- a/Component/Grid/GridViewModel.php
++++ b/Component/Grid/GridViewModel.php
+@@ -93,7 +93,7 @@ class GridViewModel extends ComponentViewModel
+     }
+ 
+     // @todo: Move this to child-class EntitySelectViewModel
+-    public function getCurrentItem(int|string $currentId)
++    public function getCurrentItem($currentId)
+     {
+         return $this->getRepository()->getProviderHandler()->getItem($this->getRepository()->getProvider(), $currentId);
+     }
+@@ -126,7 +126,7 @@ class GridViewModel extends ComponentViewModel
+         $this->getState()->setFilters($filters);
+     }
+ 
+-    public function getValueFromItem(DataObject $item, mixed $propertyName): mixed
++    public function getValueFromItem(DataObject $item, $propertyName)
+     {
+         $propertyMethod = 'get'.ucfirst($this->camelCaseConvertor->toCamelCase($propertyName));
+ 
+diff --git a/Filter/Security.php b/Filter/Security.php
+index 4e244a4..c7d8f5e 100644
+--- a/Filter/Security.php
++++ b/Filter/Security.php
+@@ -11,7 +11,7 @@ use Loki\Components\Filter\FilterScope;
+ 
+ class Security implements FilterInterface
+ {
+-    public function filter(mixed $value, FilterScope $scope): mixed
++    public function filter($value, FilterScope $scope)
+     {
+        if (is_object($value)) {
+             return $value;
+diff --git a/Form/FieldResolver.php b/Form/FieldResolver.php
+index 060c667..5c7bf24 100644
+--- a/Form/FieldResolver.php
++++ b/Form/FieldResolver.php
+@@ -140,7 +140,7 @@ class FieldResolver
+     private function resolveFieldType(
+         FormRepository $formRepository,
+         array $tableColumn
+-    ): false|string {
++    ) {
+         if ($tableColumn['COLUMN_NAME'] === $formRepository->getPrimaryKey()) {
+             return 'view';
+         }
+diff --git a/Grid/Column/Column.php b/Grid/Column/Column.php
+index 1a25c97..bbc1c4b 100644
+--- a/Grid/Column/Column.php
++++ b/Grid/Column/Column.php
+@@ -52,7 +52,7 @@ class Column extends DataObject implements JsonSerializable
+         return $this->getCode();
+     }
+ 
+-    public function jsonSerialize(): mixed
++    public function jsonSerialize()
+     {
+         return [
+             'code' => $this->getCode(),
+diff --git a/Grid/Filter/Filter.php b/Grid/Filter/Filter.php
+index 291685c..0d33475 100644
+--- a/Grid/Filter/Filter.php
++++ b/Grid/Filter/Filter.php
+@@ -76,7 +76,7 @@ class Filter implements FilterInterface
+         return 'input';
+     }
+ 
+-    public function getDefaultValue(): mixed
++    public function getDefaultValue()
+     {
+         if ($this->getConditionType() === 'from_to') {
+             return [
+@@ -88,7 +88,7 @@ class Filter implements FilterInterface
+         return null;
+     }
+ 
+-    public function isEmpty(mixed $value): bool
++    public function isEmpty($value): bool
+     {
+         if ($this->getConditionType() === 'from_to'
+             && is_array($value)
+diff --git a/Grid/Filter/FilterInterface.php b/Grid/Filter/FilterInterface.php
+index 8b0c4b5..228a47a 100644
+--- a/Grid/Filter/FilterInterface.php
++++ b/Grid/Filter/FilterInterface.php
+@@ -13,7 +13,7 @@ interface FilterInterface extends ArgumentInterface
+     public function getConditionType(): string;
+     public function render(): string;
+ 
+-    public function getDefaultValue(): mixed;
++    public function getDefaultValue();
+ 
+-    public function isEmpty(mixed $value): mixed;
++    public function isEmpty($value);
+ }
+diff --git a/Grid/Filter/StaticFilterInterface.php b/Grid/Filter/StaticFilterInterface.php
+index 1a27253..616c45d 100644
+--- a/Grid/Filter/StaticFilterInterface.php
++++ b/Grid/Filter/StaticFilterInterface.php
+@@ -7,7 +7,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ 
+ interface StaticFilterInterface extends ArgumentInterface
+ {
+-    public function getValue(): mixed;
++    public function getValue();
+     public function getCode(): string;
+     public function getConditionType(): string;
+ }
+diff --git a/Grid/State.php b/Grid/State.php
+index 34451d9..41c171c 100644
+--- a/Grid/State.php
++++ b/Grid/State.php
+@@ -169,7 +169,7 @@ class State
+         return null;
+     }
+ 
+-    public function setFilter(string $name, mixed $value, ?string $conditionType = 'like'): void
++    public function setFilter(string $name, $value, ?string $conditionType = 'like'): void
+     {
+         $filters = $this->getFilters();
+ 
+@@ -214,12 +214,12 @@ class State
+         ];
+     }
+ 
+-    public function get(string $name): mixed
++    public function get(string $name)
+     {
+         return $this->session->getData($this->namespace.'.'.$name);
+     }
+ 
+-    public function save(string $name, mixed $value): void
++    public function save(string $name, $value): void
+     {
+         $this->session->setData($this->namespace.'.'.$name, $value);
+     }
+diff --git a/Grid/State/FilterState.php b/Grid/State/FilterState.php
+index 90c3a60..892b40a 100644
+--- a/Grid/State/FilterState.php
++++ b/Grid/State/FilterState.php
+@@ -7,7 +7,7 @@ class FilterState implements \JsonSerializable
+ {
+     public function __construct(
+         private string $field,
+-        private string|array|null $value,
++        private $value,
+         private string $conditionType,
+     ) {
+     }
+@@ -17,7 +17,7 @@ class FilterState implements \JsonSerializable
+         return $this->field;
+     }
+ 
+-    public function getValue(): string|array|null
++    public function getValue()
+     {
+         return $this->value;
+     }
+@@ -45,7 +45,7 @@ class FilterState implements \JsonSerializable
+         return $this->value;
+     }
+ 
+-    public function jsonSerialize(): mixed
++    public function jsonSerialize()
+     {
+         return [
+             'field' => $this->field,
+diff --git a/Grid/State/FilterStateFactory.php b/Grid/State/FilterStateFactory.php
+index dae4193..c0ed8f4 100644
+--- a/Grid/State/FilterStateFactory.php
++++ b/Grid/State/FilterStateFactory.php
+@@ -13,7 +13,7 @@ class FilterStateFactory
+ 
+     public function create(
+         string $field,
+-        mixed $value,
++        $value,
+         string $conditionType = '',
+     ): FilterState {
+         return $this->objectManager->create(FilterState::class, [
+diff --git a/ProviderHandler/ArrayHandler.php b/ProviderHandler/ArrayHandler.php
+index e9976ed..02177ee 100644
+--- a/ProviderHandler/ArrayHandler.php
++++ b/ProviderHandler/ArrayHandler.php
+@@ -23,7 +23,7 @@ class ArrayHandler implements ProviderHandlerInterface
+         return $provider instanceof ArrayProviderInterface;
+     }
+ 
+-    public function getItem(object $provider, int|string $identifier): DataObject
++    public function getItem(object $provider, $identifier): DataObject
+     {
+         /** @var ArrayProviderInterface $provider */
+         $rows = $provider->getData();
+@@ -39,7 +39,7 @@ class ArrayHandler implements ProviderHandlerInterface
+         throw new RuntimeException('Unable to retrieve item from array');
+     }
+ 
+-    public function createItem(object $provider, object|null $factory): DataObject
++    public function createItem(object $provider, $factory): DataObject
+     {
+         throw new RuntimeException('Unable to retrieve item from array');
+     }
+@@ -158,12 +158,12 @@ class ArrayHandler implements ProviderHandlerInterface
+         return $provider->getColumns();
+     }
+ 
+-    public function getModelClass(object $provider): bool|string
++    public function getModelClass(object $provider)
+     {
+         return false;
+     }
+ 
+-    public function getResourceModelClass(object $provider): bool|string
++    public function getResourceModelClass(object $provider)
+     {
+         return false;
+     }
+diff --git a/ProviderHandler/CollectionHandler.php b/ProviderHandler/CollectionHandler.php
+index e5491af..d77c136 100644
+--- a/ProviderHandler/CollectionHandler.php
++++ b/ProviderHandler/CollectionHandler.php
+@@ -27,7 +27,7 @@ class CollectionHandler implements ProviderHandlerInterface
+         return $provider instanceof AbstractDb;
+     }
+ 
+-    public function getItem(object $provider, int|string $identifier): DataObject
++    public function getItem(object $provider, $identifier): DataObject
+     {
+         if (false === $provider instanceof AbstractDb) {
+             throw new RuntimeException('Provider is not an instance of '.AbstractDb::class);
+@@ -41,7 +41,7 @@ class CollectionHandler implements ProviderHandlerInterface
+         return $provider->getFirstItem();
+     }
+ 
+-    public function createItem(object $provider, object|null $factory): DataObject
++    public function createItem(object $provider, $factory): DataObject
+     {
+         if (false === $provider instanceof AbstractDb) {
+             throw new RuntimeException('Provider is not an instance of '.AbstractDb::class);
+@@ -138,13 +138,13 @@ class CollectionHandler implements ProviderHandlerInterface
+         return [];
+     }
+ 
+-    public function getModelClass(object $provider): bool|string
++    public function getModelClass(object $provider)
+     {
+         /** @var AbstractDb $provider */
+         return $provider->getItemObjectClass();
+     }
+ 
+-    public function getResourceModelClass(object $provider): bool|string
++    public function getResourceModelClass(object $provider)
+     {
+         /** @var AbstractDb $provider */
+         return get_class($provider->getResource());
+diff --git a/ProviderHandler/ProviderHandlerInterface.php b/ProviderHandler/ProviderHandlerInterface.php
+index 35ab842..e588575 100644
+--- a/ProviderHandler/ProviderHandlerInterface.php
++++ b/ProviderHandler/ProviderHandlerInterface.php
+@@ -11,9 +11,9 @@ interface ProviderHandlerInterface
+ {
+     public function match(object $provider): bool;
+ 
+-    public function getItem(object $provider, string|int $identifier): DataObject;
++    public function getItem(object $provider, $identifier): DataObject;
+ 
+-    public function createItem(object $provider, object|null $factory): DataObject;
++    public function createItem(object $provider, $factory): DataObject;
+ 
+     public function getItems(object $provider, GridState $gridState): array;
+ 
+@@ -28,7 +28,7 @@ interface ProviderHandlerInterface
+      */
+     public function getColumns(object $provider): array;
+ 
+-    public function getModelClass(object $provider): bool|string;
++    public function getModelClass(object $provider);
+ 
+-    public function getResourceModelClass(object $provider): bool|string;
++    public function getResourceModelClass(object $provider);
+ }
+diff --git a/ProviderHandler/RepositoryHandler.php b/ProviderHandler/RepositoryHandler.php
+index e508a65..1c98759 100644
+--- a/ProviderHandler/RepositoryHandler.php
++++ b/ProviderHandler/RepositoryHandler.php
+@@ -59,7 +59,7 @@ class RepositoryHandler implements ProviderHandlerInterface
+         return $searchResults->getItems();
+     }
+ 
+-    public function getItem(object $provider, int|string $identifier): DataObject
++    public function getItem(object $provider, $identifier): DataObject
+     {
+         if (empty($identifier)) {
+             throw new RuntimeException('Empty identifier');
+@@ -76,7 +76,7 @@ class RepositoryHandler implements ProviderHandlerInterface
+         throw new RuntimeException('Repository has no load-method we know of.');
+     }
+ 
+-    public function createItem(object $provider, object|null $factory): DataObject
++    public function createItem(object $provider, $factory): DataObject
+     {
+         if (method_exists($provider, 'create')) {
+             return call_user_func([$provider, 'create']);
+@@ -222,7 +222,7 @@ class RepositoryHandler implements ProviderHandlerInterface
+         return $this->filterGroupBuilder->setFilters($filters)->create();
+     }
+ 
+-    public function getModelClass(object $provider): bool|string
++    public function getModelClass(object $provider)
+     {
+         $providerReflection = new ReflectionClass($provider);
+         $methodReflection = $providerReflection->getMethod('save');
+@@ -237,7 +237,7 @@ class RepositoryHandler implements ProviderHandlerInterface
+         return $parameter->getType()->getName();
+     }
+ 
+-    public function getResourceModelClass(object $provider): bool|string
++    public function getResourceModelClass(object $provider)
+     {
+         return false;
+     }
