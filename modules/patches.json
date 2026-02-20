@@ -78,6 +78,9 @@
             },
             "loki-checkout/magento2-mollie": {
                 "Magento 2.4.5 patch": "patches/loki-checkout_magento2-mollie-2.4.5.diff"
+            },
+            "loki-checkout/magento2-multi-safepay": {
+                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-multi-safepay-2.4.5.diff"
             }
         }
     }

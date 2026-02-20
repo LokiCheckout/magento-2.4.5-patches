@@ -1,0 +1,58 @@
+diff --git a/Component/PaymentComponent/PaymentComponentContext.php b/Component/PaymentComponent/PaymentComponentContext.php
+index 7e1e9bc..a280496 100644
+--- a/Component/PaymentComponent/PaymentComponentContext.php
++++ b/Component/PaymentComponent/PaymentComponentContext.php
+@@ -63,7 +63,7 @@ class PaymentComponentContext implements  ComponentContextInterface
+         return $this->stepProvider;
+     }
+ 
+-    public function getConfigValue(string $path): mixed
++    public function getConfigValue(string $path)
+     {
+         return $this->scopeConfig->getValue($path);
+     }
+diff --git a/Component/PaymentComponent/PaymentComponentRepository.php b/Component/PaymentComponent/PaymentComponentRepository.php
+index aa2814a..839fd79 100644
+--- a/Component/PaymentComponent/PaymentComponentRepository.php
++++ b/Component/PaymentComponent/PaymentComponentRepository.php
+@@ -9,12 +9,12 @@ use Loki\Components\Component\ComponentRepository;
+  */
+ class PaymentComponentRepository extends ComponentRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return null;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (!is_array($value)) {
+             return;
+diff --git a/Payment/Icon/IconResolver.php b/Payment/Icon/IconResolver.php
+index f025563..8abda33 100644
+--- a/Payment/Icon/IconResolver.php
++++ b/Payment/Icon/IconResolver.php
+@@ -15,7 +15,7 @@ class IconResolver implements IconResolverInterface
+     ) {
+     }
+ 
+-    public function resolve(IconResolverContext $iconResolverContext): false|string
++    public function resolve(IconResolverContext $iconResolverContext)
+     {
+         $paymentMethodCode = $iconResolverContext->getPaymentMethodCode();
+         if (false === $this->moduleManager->isEnabled('MultiSafepay_ConnectCore')) {
+diff --git a/Payment/Redirect/RedirectResolver.php b/Payment/Redirect/RedirectResolver.php
+index 328b95a..be7c966 100644
+--- a/Payment/Redirect/RedirectResolver.php
++++ b/Payment/Redirect/RedirectResolver.php
+@@ -14,7 +14,7 @@ class RedirectResolver implements RedirectResolverInterface
+     ) {
+     }
+ 
+-    public function resolve(RedirectContext $redirectContext): false|string
++    public function resolve(RedirectContext $redirectContext)
+     {
+         $paymentMethod = $redirectContext->getPaymentMethod();
+         if (false === $paymentMethod) {
