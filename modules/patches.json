@@ -63,6 +63,9 @@
             },
             "loki-checkout/magento2-csp": {
                 "Magento 2.4.5 patch": "patches/loki-checkout_magento2-csp-2.4.5.diff"
+            },
+            "loki-checkout/magento2-customer-note": {
+                "Magento 2.4.5 patch": "patches/loki-checkout_magento2-customer-note-2.4.5.diff"
             }
         }
     }

@@ -1,0 +1,19 @@
+diff --git a/Component/Checkout/Sidebar/CustomerNoteRepository.php b/Component/Checkout/Sidebar/CustomerNoteRepository.php
+index a74b135..d3d198b 100644
+--- a/Component/Checkout/Sidebar/CustomerNoteRepository.php
++++ b/Component/Checkout/Sidebar/CustomerNoteRepository.php
+@@ -10,12 +10,12 @@ use LokiCheckout\Core\Component\Base\Generic\CheckoutContext;
+  */
+ class CustomerNoteRepository extends FieldRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return (string)$this->getContext()->getCheckoutState()->getQuote()->getData('customer_note');
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $quote = $this->getContext()->getCheckoutState()->getQuote();
+         $quote->setData('customer_note', (string)$value);
