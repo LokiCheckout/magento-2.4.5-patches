@@ -1,0 +1,85 @@
+diff --git a/Component/Base/Map/MapRepository.php b/Component/Base/Map/MapRepository.php
+index 6755d34..5f72faa 100644
+--- a/Component/Base/Map/MapRepository.php
++++ b/Component/Base/Map/MapRepository.php
+@@ -10,12 +10,12 @@ use Loki\Map\Session\MapSession;
+  */
+ class MapRepository extends ComponentRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return $this->getSession()->getAll($this->getComponentName());
+     }
+ 
+-    public function getPropertyValue(string $name): mixed
++    public function getPropertyValue(string $name)
+     {
+         return $this->getSession()->get($this->getComponentName(), $name);
+     }
+@@ -40,7 +40,7 @@ class MapRepository extends ComponentRepository
+         return $this->getSession()->getLongitude($this->getComponentName());
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (false === is_array($value)) {
+             return;
+diff --git a/Component/Base/Map/MapViewModel.php b/Component/Base/Map/MapViewModel.php
+index 506e8f3..11a8817 100644
+--- a/Component/Base/Map/MapViewModel.php
++++ b/Component/Base/Map/MapViewModel.php
+@@ -11,7 +11,7 @@ use Loki\Map\Map\Marker;
+  */
+ class MapViewModel extends ComponentViewModel
+ {
+-    protected Marker|null|false $currentMarker = null;
++    protected $currentMarker = null;
+ 
+     public function getJsComponentName(): ?string
+     {
+@@ -107,7 +107,7 @@ class MapViewModel extends ComponentViewModel
+         return [];
+     }
+ 
+-    public function getCurrentMarker(): Marker|null|false
++    public function getCurrentMarker()
+     {
+         if ($this->currentMarker !== null) {
+             return $this->currentMarker;
+diff --git a/Map/Marker.php b/Map/Marker.php
+index 0292104..669562a 100644
+--- a/Map/Marker.php
++++ b/Map/Marker.php
+@@ -116,7 +116,7 @@ class Marker extends DataObject implements JsonSerializable
+         return $attributes;
+     }
+ 
+-    public function jsonSerialize(): mixed
++    public function jsonSerialize()
+     {
+         return $this->getAttributes();
+     }
+diff --git a/Session/MapSession.php b/Session/MapSession.php
+index a7814c5..606bace 100644
+--- a/Session/MapSession.php
++++ b/Session/MapSession.php
+@@ -21,7 +21,7 @@ class MapSession
+         return [];
+     }
+ 
+-    public function get(string $prefix, string $key): mixed
++    public function get(string $prefix, string $key)
+     {
+         return $this->getAll($prefix)[$key] ?? null;
+     }
+@@ -46,7 +46,7 @@ class MapSession
+         return (float)$this->get($prefix, 'latitude');
+     }
+ 
+-    public function set(string $prefix, string $key, mixed $value): void
++    public function set(string $prefix, string $key, $value): void
+     {
+         $lokiMaps = (array)$this->customerSession->getLokiMaps();
+         $lokiMaps[$prefix][$key] = $value;
