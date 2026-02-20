@@ -1,0 +1,13 @@
+diff --git a/Test/Generator/UnitTest/ComponentRepositoryTestGenerator.php b/Test/Generator/UnitTest/ComponentRepositoryTestGenerator.php
+index 205f9f5..f009e8d 100644
+--- a/Test/Generator/UnitTest/ComponentRepositoryTestGenerator.php
++++ b/Test/Generator/UnitTest/ComponentRepositoryTestGenerator.php
+@@ -17,7 +17,7 @@ class ComponentRepositoryTestGenerator extends AbstractSourceTestGenerator
+         return $classStub->getInstance() instanceof ComponentRepository;
+     }
+ 
+-    public function generate(ClassStub $classStub, ClassStub $testClassStub): string|PhpGenerator
++    public function generate(ClassStub $classStub, ClassStub $testClassStub)
+     {
+         $phpGenerator = parent::generate($classStub, $testClassStub);
+         $phpGenerator->addUse($classStub->getFullQualifiedClassName());
