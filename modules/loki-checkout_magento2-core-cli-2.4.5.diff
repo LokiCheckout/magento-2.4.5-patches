@@ -1,5 +1,5 @@
 diff --git a/Console/Command/DumpModulesCommand.php b/Console/Command/DumpModulesCommand.php
-index 2d23a49..5194c67 100644
+index b0cf065..c829ddf 100644
 --- a/Console/Command/DumpModulesCommand.php
 +++ b/Console/Command/DumpModulesCommand.php
 @@ -14,11 +14,11 @@ use LokiCheckout\Core\Config\LokiCheckoutModules;
