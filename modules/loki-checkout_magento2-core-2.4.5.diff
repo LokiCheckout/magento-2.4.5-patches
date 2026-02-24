@@ -1194,6 +1194,19 @@ index 94b2eac4..a6d0a888 100644
      {
          if (!$this->getCustomerSession()->isLoggedIn()) {
              return true;
+diff --git a/CustomerData/Checkout.php b/CustomerData/Checkout.php
+index b058a7d3..acbec5f5 100644
+--- a/CustomerData/Checkout.php
++++ b/CustomerData/Checkout.php
+@@ -13,7 +13,7 @@ use Magento\Customer\CustomerData\SectionSourceInterface;
+ class Checkout implements SectionSourceInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
++        private CheckoutState $checkoutState,
+         private QuoteDataCollector $quoteDataCollector,
+         private CustomerDataCollector $customerDataCollector,
+         private ShippingAddressDataCollector $shippingAddressDataCollector,
 diff --git a/Filter/CountryId.php b/Filter/CountryId.php
 index 80bc596d..49cc9de1 100644
 --- a/Filter/CountryId.php
@@ -1905,7 +1918,7 @@ index 8f464dc8..9763896c 100644
          $layout = $this->createMock(LayoutInterface::class);
          $context = $this->createMock(Context::class);
 diff --git a/Test/Unit/Util/Html/PushHtmlAttributesTest.php b/Test/Unit/Util/Html/PushHtmlAttributesTest.php
-index e0a8cc87..7f390904 100644
+index 6d2113e6..0a7d6c91 100644
 --- a/Test/Unit/Util/Html/PushHtmlAttributesTest.php
 +++ b/Test/Unit/Util/Html/PushHtmlAttributesTest.php
 @@ -11,7 +11,7 @@ class PushHtmlAttributesTest extends TestCase
@@ -1918,7 +1931,7 @@ index e0a8cc87..7f390904 100644
          $pushHtmlAttributes = new PushHtmlAttributes();
          $this->assertEquals($expectedHtml, $pushHtmlAttributes->execute($html, $attributes));
 diff --git a/Test/Unit/Validator/Component/IbanValidatorTest.php b/Test/Unit/Validator/Component/IbanValidatorTest.php
-index 1bdf6ccf..044be84a 100644
+index a5d869f5..3f8cb549 100644
 --- a/Test/Unit/Validator/Component/IbanValidatorTest.php
 +++ b/Test/Unit/Validator/Component/IbanValidatorTest.php
 @@ -14,7 +14,7 @@ class IbanValidatorTest extends TestCase
