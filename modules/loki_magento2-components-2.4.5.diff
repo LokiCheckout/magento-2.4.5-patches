@@ -466,10 +466,10 @@ index d814321..dcd56ed 100644
      ) {
          parent::__construct($data);
 diff --git a/Location/AddressFactory.php b/Location/AddressFactory.php
-index e94cff2..f7d870f 100644
+index ae5c250..2ed26ca 100644
 --- a/Location/AddressFactory.php
 +++ b/Location/AddressFactory.php
-@@ -8,8 +8,8 @@ use Magento\Quote\Api\Data\AddressInterface;
+@@ -8,8 +8,8 @@ use Magento\Quote\Model\Quote\Address as QuoteAddress;
  class AddressFactory
  {
      public function __construct(
@@ -1055,7 +1055,7 @@ index 22d1027..c95e6bd 100644
          if (false === is_numeric($value)) {
              return [(string)__('Value must contain numbers only')];
 diff --git a/Validator/RequiredValidator.php b/Validator/RequiredValidator.php
-index 0e35109..cbb7289 100644
+index c8d7d04..c5a1a55 100644
 --- a/Validator/RequiredValidator.php
 +++ b/Validator/RequiredValidator.php
 @@ -10,13 +10,13 @@ use Magento\Framework\App\RequestInterface;
