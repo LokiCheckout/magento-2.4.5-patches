@@ -206,6 +206,19 @@ index 15d90c86..cb596ed3 100644
      {
          if (is_numeric($value)) {
              $this->getAddressState()->set('region_id', $value);
+diff --git a/Component/Checkout/Address/SaveInAddressBook/SaveInAddressBookRepository.php b/Component/Checkout/Address/SaveInAddressBook/SaveInAddressBookRepository.php
+index 80934f2d..fdbe82e2 100644
+--- a/Component/Checkout/Address/SaveInAddressBook/SaveInAddressBookRepository.php
++++ b/Component/Checkout/Address/SaveInAddressBook/SaveInAddressBookRepository.php
+@@ -6,7 +6,7 @@ use LokiCheckout\Core\Component\Base\AddressField\AddressFieldRepository;
+ 
+ class SaveInAddressBookRepository extends AddressFieldRepository
+ {
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         parent::saveValue((int)$value);
+     }
 diff --git a/Component/Checkout/Address/SaveInAddressBook/SaveInAddressBookViewModel.php b/Component/Checkout/Address/SaveInAddressBook/SaveInAddressBookViewModel.php
 index 7afbfbc7..b6fae393 100644
 --- a/Component/Checkout/Address/SaveInAddressBook/SaveInAddressBookViewModel.php
@@ -894,7 +907,7 @@ index a90d14cf..8770437e 100644
          try {
              $this->getStepNavigator()->setPreviousStep();
 diff --git a/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php b/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php
-index 10f4af85..7b8b837d 100644
+index 6d5c369b..aaeb1e82 100644
 --- a/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php
 +++ b/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php
 @@ -12,7 +12,7 @@ use Loki\Components\Component\ComponentRepository;
@@ -916,25 +929,17 @@ index 10f4af85..7b8b837d 100644
          try {
              $this->getStepNavigator()->setNextStep();
 diff --git a/Component/Customer/LoginForm/LoginFormRepository.php b/Component/Customer/LoginForm/LoginFormRepository.php
-index 4236a722..9be3cc9d 100644
+index b83b2409..91ba96c2 100644
 --- a/Component/Customer/LoginForm/LoginFormRepository.php
 +++ b/Component/Customer/LoginForm/LoginFormRepository.php
-@@ -21,21 +21,21 @@ use Magento\Framework\Stdlib\Cookie\PhpCookieManager;
+@@ -14,17 +14,17 @@ use Magento\Customer\Model\Session as CustomerSession;
  class LoginFormRepository extends ComponentRepository
  {
      public function __construct(
 -        private readonly CheckoutState $checkoutState,
--        private readonly AccountManagementInterface $accountManagement,
--        private readonly PhpCookieManager $cookieManager,
--        private readonly CookieMetadataFactory $cookieMetadataFactory,
--        private readonly Manager $messageManager,
--        private readonly CustomerUrl $customerUrl,
+-        private readonly LoginCustomer $loginCustomer,
 +        private CheckoutState $checkoutState,
-+        private AccountManagementInterface $accountManagement,
-+        private PhpCookieManager $cookieManager,
-+        private CookieMetadataFactory $cookieMetadataFactory,
-+        private Manager $messageManager,
-+        private CustomerUrl $customerUrl,
++        private LoginCustomer $loginCustomer,
      ) {
      }
  
@@ -1667,10 +1672,10 @@ index 0e491c50..b29ec03c 100644
      }
  
 diff --git a/Step/FinalStep.php b/Step/FinalStep.php
-index a6f3ff6e..f5e95364 100644
+index 8c045a6c..03bcd9f9 100644
 --- a/Step/FinalStep.php
 +++ b/Step/FinalStep.php
-@@ -24,14 +24,14 @@ use Loki\Components\Exception\RedirectException;
+@@ -25,15 +25,15 @@ use Loki\Components\Exception\RedirectException;
  class FinalStep
  {
      public function __construct(
@@ -1681,7 +1686,8 @@ index a6f3ff6e..f5e95364 100644
 -        private readonly CartManagementInterface $cartManagement,
 -        private readonly OrderRepositoryInterface $orderRepository,
 -        private readonly OrderSender $orderSender,
--        private readonly CartRepositoryInterface $cartRepository
+-        private readonly CartRepositoryInterface $cartRepository,
+-        private readonly TaskListing $taskListing,
 +        private QuoteValidator $quoteValidator,
 +        private CheckoutState $checkoutState,
 +        private Redirect $redirect,
@@ -1689,11 +1695,12 @@ index a6f3ff6e..f5e95364 100644
 +        private CartManagementInterface $cartManagement,
 +        private OrderRepositoryInterface $orderRepository,
 +        private OrderSender $orderSender,
-+        private CartRepositoryInterface $cartRepository
++        private CartRepositoryInterface $cartRepository,
++        private TaskListing $taskListing,
      ) {
      }
  
-@@ -40,7 +40,7 @@ class FinalStep
+@@ -42,7 +42,7 @@ class FinalStep
       * @throws NoSuchEntityException
       * @throws Exception
       */
@@ -1750,6 +1757,21 @@ index 2b7b84bd..845b10a9 100644
      {
          $lastOrderId = $this->checkoutState->getCheckoutSession()->getLastOrderId();
          if (empty($lastOrderId)) {
+diff --git a/Step/FinalStep/Task/SaveInAddressBookTask.php b/Step/FinalStep/Task/SaveInAddressBookTask.php
+index 66101a72..1f2e028b 100644
+--- a/Step/FinalStep/Task/SaveInAddressBookTask.php
++++ b/Step/FinalStep/Task/SaveInAddressBookTask.php
+@@ -12,8 +12,8 @@ use Magento\Quote\Model\Quote\Address;
+ class SaveInAddressBookTask implements TaskInterface
+ {
+     public function __construct(
+-        private readonly Session $customerSession,
+-        private readonly AddressRepositoryInterface $addressRepository,
++        private Session $customerSession,
++        private AddressRepositoryInterface $addressRepository,
+     ) {
+     }
+ 
 diff --git a/Step/StepNavigator.php b/Step/StepNavigator.php
 index b2a21863..41fc8e47 100644
 --- a/Step/StepNavigator.php
@@ -2166,6 +2188,29 @@ index bff7833f..378a7c3b 100644
          private MessageManager $messageManager,
          private CustomerAddressValidator $customerAddressValidator,
          private UrlFactory $urlFactory
+diff --git a/Util/LoginCustomer.php b/Util/LoginCustomer.php
+index 995b4e6a..082a2adf 100644
+--- a/Util/LoginCustomer.php
++++ b/Util/LoginCustomer.php
+@@ -16,12 +16,12 @@ use Magento\Framework\Stdlib\Cookie\PhpCookieManager;
+ class LoginCustomer
+ {
+     public function __construct(
+-        private readonly AccountManagementInterface $accountManagement,
+-        private readonly PhpCookieManager $cookieManager,
+-        private readonly CookieMetadataFactory $cookieMetadataFactory,
+-        private readonly MessageManager $messageManager,
+-        private readonly CustomerUrl $customerUrl,
+-        private readonly CustomerSession $customerSession,
++        private AccountManagementInterface $accountManagement,
++        private PhpCookieManager $cookieManager,
++        private CookieMetadataFactory $cookieMetadataFactory,
++        private MessageManager $messageManager,
++        private CustomerUrl $customerUrl,
++        private CustomerSession $customerSession,
+     ) {
+     }
+ 
 diff --git a/Util/RegionProvider.php b/Util/RegionProvider.php
 index 0736779d..415b7085 100644
 --- a/Util/RegionProvider.php
