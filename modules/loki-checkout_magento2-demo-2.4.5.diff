@@ -1,22 +1,3 @@
-diff --git a/Component/GridLayout/GridLayoutContext.php b/Component/GridLayout/GridLayoutContext.php
-index 2e9112b..e1fcde9 100644
---- a/Component/GridLayout/GridLayoutContext.php
-+++ b/Component/GridLayout/GridLayoutContext.php
-@@ -11,10 +11,10 @@ use Loki\Components\Component\ComponentContextInterface;
- class GridLayoutContext implements ComponentContextInterface
- {
-     public function __construct(
--        private readonly CheckoutSession $checkoutSession,
--        private readonly XmlConfig $xmlConfig,
--        private readonly ResponseFactory $responseFactory,
--        private readonly UrlFactory $urlFactory,
-+        private CheckoutSession $checkoutSession,
-+        private XmlConfig $xmlConfig,
-+        private ResponseFactory $responseFactory,
-+        private UrlFactory $urlFactory,
-     ) {
-     }
- 
 diff --git a/Component/GridLayout/GridLayoutRepository.php b/Component/GridLayout/GridLayoutRepository.php
 index 4cde5bc..460f443 100644
 --- a/Component/GridLayout/GridLayoutRepository.php
