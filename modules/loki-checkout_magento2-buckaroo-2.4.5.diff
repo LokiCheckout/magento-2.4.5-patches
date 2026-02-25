@@ -21,12 +21,12 @@ index 9b972d2..3e2cff3 100644
          if ($this->getPropertyName() === 'termsCondition') {
              $value = (int)$value > 0 ? 1 : 0;
 diff --git a/Component/Creditcard/CreditcardViewModel.php b/Component/Creditcard/CreditcardViewModel.php
-index fa3144f..a67923a 100644
+index 919783b..ea84438 100644
 --- a/Component/Creditcard/CreditcardViewModel.php
 +++ b/Component/Creditcard/CreditcardViewModel.php
-@@ -12,7 +12,7 @@ use LokiCheckout\Core\Component\Checkout\Billing\PaymentMethod\PaymentMethodView
- class CreditcardViewModel extends PaymentMethodViewModel
- {
+@@ -14,7 +14,7 @@ class CreditcardViewModel extends PaymentMethodViewModel
+     protected bool $isRequiredByDefault = true;
+ 
      public function __construct(
 -        private readonly CreditcardConfigProvider $creditcardConfigProvider
 +        private CreditcardConfigProvider $creditcardConfigProvider
