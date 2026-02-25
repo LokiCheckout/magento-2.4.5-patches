@@ -41,3 +41,22 @@ index 205f9f5..f009e8d 100644
      {
          $phpGenerator = parent::generate($classStub, $testClassStub);
          $phpGenerator->addUse($classStub->getFullQualifiedClassName());
+diff --git a/ViewModel/QuoteDetails.php b/ViewModel/QuoteDetails.php
+index a08f99e..7160a4a 100644
+--- a/ViewModel/QuoteDetails.php
++++ b/ViewModel/QuoteDetails.php
+@@ -13,10 +13,10 @@ use ReflectionClass;
+ class QuoteDetails implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly PaymentMethodListInterface $paymentMethodList,
+-        private readonly StoreManagerInterface $storeManager,
+-        private readonly CheckoutState $checkoutState,
+-        private readonly InstanceFactory $paymentMethodInstanceFactory,
++        private PaymentMethodListInterface $paymentMethodList,
++        private StoreManagerInterface $storeManager,
++        private CheckoutState $checkoutState,
++        private InstanceFactory $paymentMethodInstanceFactory,
+     ) {
+     }
+ 
