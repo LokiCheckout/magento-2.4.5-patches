@@ -125,10 +125,10 @@ index cd1d425..816f262 100644
      }
  
 diff --git a/Service/AutocompletionState.php b/Service/AutocompletionState.php
-index b216be0..41c595f 100644
+index 93acb89..f1b794d 100644
 --- a/Service/AutocompletionState.php
 +++ b/Service/AutocompletionState.php
-@@ -86,7 +86,7 @@ class AutocompletionState
+@@ -88,7 +88,7 @@ class AutocompletionState
          return (string)$this->load('raw_data');
      }
  
@@ -137,7 +137,7 @@ index b216be0..41c595f 100644
      {
          $this->save('raw_data', json_encode($rawData));
      }
-@@ -107,7 +107,7 @@ class AutocompletionState
+@@ -109,7 +109,7 @@ class AutocompletionState
          $this->setErrors([]);
      }
  
