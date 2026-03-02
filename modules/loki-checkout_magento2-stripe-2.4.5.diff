@@ -1,8 +1,8 @@
 diff --git a/Controller/Payment/ClientSecret.php b/Controller/Payment/ClientSecret.php
-index 173936b..4fac3ef 100644
+index b2e45a6..983f121 100644
 --- a/Controller/Payment/ClientSecret.php
 +++ b/Controller/Payment/ClientSecret.php
-@@ -12,9 +12,9 @@ use Magento\Framework\Exception\LocalizedException;
+@@ -13,9 +13,9 @@ use Magento\Framework\Exception\LocalizedException;
  class ClientSecret implements ActionInterface
  {
      public function __construct(
@@ -16,7 +16,7 @@ index 173936b..4fac3ef 100644
      }
  
 diff --git a/Controller/Payment/PaymentData.php b/Controller/Payment/PaymentData.php
-index c22c9c4..2dfccf8 100644
+index c0bac1a..7de0a06 100644
 --- a/Controller/Payment/PaymentData.php
 +++ b/Controller/Payment/PaymentData.php
 @@ -13,10 +13,10 @@ use Throwable;
@@ -78,10 +78,10 @@ index 3b5371b..54efb32 100644
          $paymentMethodCode = $iconResolverContext->getPaymentMethodCode();
          if (false === $this->moduleManager->isEnabled('StripeIntegration_Payments')) {
 diff --git a/Payment/Redirect/RedirectResolver.php b/Payment/Redirect/RedirectResolver.php
-index 85cf34a..3256ac6 100644
+index 1565ef2..066e311 100644
 --- a/Payment/Redirect/RedirectResolver.php
 +++ b/Payment/Redirect/RedirectResolver.php
-@@ -18,7 +18,7 @@ class RedirectResolver implements RedirectResolverInterface
+@@ -21,7 +21,7 @@ class RedirectResolver implements RedirectResolverInterface
      ) {
      }
  
@@ -89,4 +89,4 @@ index 85cf34a..3256ac6 100644
 +    public function resolve(RedirectContext $redirectContext)
      {
          $paymentMethod = $redirectContext->getPaymentMethod();
-         if ($paymentMethod->getCode() !== 'stripe_payments_checkout') {
+         if ($paymentMethod->getCode() === 'stripe_payments') {
