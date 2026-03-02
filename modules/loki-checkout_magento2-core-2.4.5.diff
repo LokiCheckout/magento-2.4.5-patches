@@ -1140,10 +1140,10 @@ index 023ae052..1d781b07 100644
      }
  
 diff --git a/Controller/Index/Finalize.php b/Controller/Index/Finalize.php
-index 65a9dae8..18f7c8be 100644
+index 7096e64c..3c391be7 100644
 --- a/Controller/Index/Finalize.php
 +++ b/Controller/Index/Finalize.php
-@@ -14,11 +14,11 @@ use RuntimeException;
+@@ -15,10 +15,10 @@ use RuntimeException;
  class Finalize implements HttpGetActionInterface
  {
      public function __construct(
@@ -1151,12 +1151,10 @@ index 65a9dae8..18f7c8be 100644
 -        private readonly RedirectResultFactory $resultRedirectFactory,
 -        private readonly FinalStep $finalStep,
 -        private readonly FormKeyValidator $formKeyValidator,
--        private readonly HandlerListing $handlerListing
 +        private RequestInterface $request,
 +        private RedirectResultFactory $resultRedirectFactory,
 +        private FinalStep $finalStep,
 +        private FormKeyValidator $formKeyValidator,
-+        private HandlerListing $handlerListing
      ) {
      }
  
@@ -1685,10 +1683,10 @@ index 0e491c50..b29ec03c 100644
      }
  
 diff --git a/Step/FinalStep.php b/Step/FinalStep.php
-index 8c045a6c..03bcd9f9 100644
+index 85a4d9a5..c290bcc5 100644
 --- a/Step/FinalStep.php
 +++ b/Step/FinalStep.php
-@@ -25,15 +25,15 @@ use Loki\Components\Exception\RedirectException;
+@@ -26,15 +26,15 @@ use Loki\Components\Exception\RedirectException;
  class FinalStep
  {
      public function __construct(
@@ -1713,7 +1711,7 @@ index 8c045a6c..03bcd9f9 100644
      ) {
      }
  
-@@ -42,7 +42,7 @@ class FinalStep
+@@ -43,7 +43,7 @@ class FinalStep
       * @throws NoSuchEntityException
       * @throws Exception
       */
@@ -2363,7 +2361,7 @@ index f4663a10..bde0866a 100644
          $gender = trim((string)$value);
  
 diff --git a/Validator/Component/IbanValidator.php b/Validator/Component/IbanValidator.php
-index 5888dd50..e5860672 100644
+index 29a0a153..20a92749 100644
 --- a/Validator/Component/IbanValidator.php
 +++ b/Validator/Component/IbanValidator.php
 @@ -7,7 +7,7 @@ use Loki\Components\Validator\ValidatorInterface;
@@ -2373,7 +2371,7 @@ index 5888dd50..e5860672 100644
 -    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
 +    public function validate($value, ?ComponentInterface $component = null)
      {
-         if (false === is_string($value)) {
+         if (false === is_string($value) || empty($value)) {
              return true;
 diff --git a/Validator/Component/OptionsValidator.php b/Validator/Component/OptionsValidator.php
 index 61aa52c2..74869489 100644
