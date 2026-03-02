@@ -1,8 +1,8 @@
 diff --git a/Component/Checkout/Sidebar/Items/EditItemRepository.php b/Component/Checkout/Sidebar/Items/EditItemRepository.php
-index 9ed258a..38e1e5b 100644
+index 39a0630..b526f79 100644
 --- a/Component/Checkout/Sidebar/Items/EditItemRepository.php
 +++ b/Component/Checkout/Sidebar/Items/EditItemRepository.php
-@@ -22,7 +22,7 @@ class EditItemRepository extends ComponentRepository
+@@ -24,7 +24,7 @@ class EditItemRepository extends ComponentRepository
      ) {
      }
  
@@ -11,8 +11,8 @@ index 9ed258a..38e1e5b 100644
      {
          if (!isset($value['task'])) {
              return;
-@@ -91,7 +91,7 @@ class EditItemRepository extends ComponentRepository
-         $this->component->getGlobalMessageRegistry()->addNotice((string)$message);
+@@ -106,7 +106,7 @@ class EditItemRepository extends ComponentRepository
+         $this->getContext()->getMessageManager()->addNoticeMessage((string)$message);
      }
  
 -    public function getValue(): mixed
