@@ -68,7 +68,7 @@ index 297ff4a..a3c9483 100644
      }
  
 diff --git a/Service/StoreConfigurationManager.php b/Service/StoreConfigurationManager.php
-index f460e94..9d2c0fb 100644
+index 8c33941..957dcc6 100644
 --- a/Service/StoreConfigurationManager.php
 +++ b/Service/StoreConfigurationManager.php
 @@ -9,10 +9,10 @@ use Magento\Framework\App\ResourceConnection;
