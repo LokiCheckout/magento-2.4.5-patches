@@ -1055,7 +1055,7 @@ index 22d1027..c95e6bd 100644
          if (false === is_numeric($value)) {
              return [(string)__('Value must contain numbers only')];
 diff --git a/Validator/RequiredValidator.php b/Validator/RequiredValidator.php
-index c8d7d04..c5a1a55 100644
+index 9285bff..aee0ba2 100644
 --- a/Validator/RequiredValidator.php
 +++ b/Validator/RequiredValidator.php
 @@ -10,13 +10,13 @@ use Magento\Framework\App\RequestInterface;
