@@ -1,0 +1,28 @@
+diff --git a/Plugin/AppendGtmEventsToLokiCheckoutSectionPlugin.php b/Plugin/AppendGtmEventsToLokiCheckoutSectionPlugin.php
+index 421d273..0280043 100644
+--- a/Plugin/AppendGtmEventsToLokiCheckoutSectionPlugin.php
++++ b/Plugin/AppendGtmEventsToLokiCheckoutSectionPlugin.php
+@@ -44,12 +44,12 @@ class AppendGtmEventsToLokiCheckoutSectionPlugin
+         return $events;
+     }
+ 
+-    private function getBeginCheckoutInfo(): false|array
++    private function getBeginCheckoutInfo()
+     {
+         return $this->beginCheckout->get();
+     }
+ 
+-    private function getShippingInfo(): false|array
++    private function getShippingInfo()
+     {
+         $shippingInfo = $this->addShippingInfo->get();
+         if (empty($shippingInfo)) {
+@@ -63,7 +63,7 @@ class AppendGtmEventsToLokiCheckoutSectionPlugin
+         return $shippingInfo;
+     }
+ 
+-    private function getPaymentInfo(): false|array
++    private function getPaymentInfo()
+     {
+         $this->addPaymentInfo->setCartId((int)$this->checkoutSession->getQuote()->getId());
+         $this->addPaymentInfo->setPaymentMethod((string)$this->checkoutSession->getQuote()->getPayment()->getMethod());
