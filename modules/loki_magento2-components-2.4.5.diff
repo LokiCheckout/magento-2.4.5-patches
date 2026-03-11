@@ -69,10 +69,10 @@ index 9060320..35872aa 100644
  
  }
 diff --git a/Component/ComponentViewModel.php b/Component/ComponentViewModel.php
-index c7aeb71..32c5ddf 100644
+index 02a0507..a01afb2 100644
 --- a/Component/ComponentViewModel.php
 +++ b/Component/ComponentViewModel.php
-@@ -52,7 +52,7 @@ class ComponentViewModel implements ComponentViewModelInterface
+@@ -54,7 +54,7 @@ class ComponentViewModel implements ComponentViewModelInterface
          return ObjectManager::getInstance()->get(GetElementId::class)->execute($this->block);
      }
  
@@ -95,7 +95,7 @@ index 798fe99..aed370c 100644
      public function getValidators(): array;
  
 diff --git a/Config/Config.php b/Config/Config.php
-index f1d81a0..112e328 100644
+index e3c0b8f..c1547fd 100644
 --- a/Config/Config.php
 +++ b/Config/Config.php
 @@ -9,7 +9,7 @@ use Magento\Store\Model\ScopeInterface;
@@ -201,7 +201,7 @@ index 4b5585a..d26cbd6 100644
          $data = $this->requestDataLoader->load();
          $this->requestDataLoader->mergeRequestParams();
 diff --git a/Controller/Index/Html.php b/Controller/Index/Html.php
-index d196538..32dee40 100644
+index 1ee280d..b277e3d 100644
 --- a/Controller/Index/Html.php
 +++ b/Controller/Index/Html.php
 @@ -32,22 +32,22 @@ use Magento\Framework\Message\ManagerInterface as MessageManager;
@@ -240,6 +240,26 @@ index d196538..32dee40 100644
      {
          $data = $this->requestDataLoader->load();
          $this->requestDataLoader->mergeRequestParams();
+diff --git a/Controller/Index/Polling.php b/Controller/Index/Polling.php
+index 524d84f..ce56984 100644
+--- a/Controller/Index/Polling.php
++++ b/Controller/Index/Polling.php
+@@ -13,12 +13,12 @@ use Magento\Framework\Controller\ResultInterface;
+ class Polling implements HttpGetActionInterface
+ {
+     public function __construct(
+-        private readonly JsonResultFactory $jsonResultFactory,
+-        private readonly PollingHandlerListing $pollingHandlerListing,
++        private JsonResultFactory $jsonResultFactory,
++        private PollingHandlerListing $pollingHandlerListing,
+     ) {
+     }
+ 
+-    public function execute(): ResultInterface|ResponseInterface
++    public function execute()
+     {
+         $data = [];
+         foreach ($this->pollingHandlerListing->getHandlers() as $handler) {
 diff --git a/Factory/ViewModelFactory.php b/Factory/ViewModelFactory.php
 index 60ac3f2..b7da840 100644
 --- a/Factory/ViewModelFactory.php
@@ -648,6 +668,19 @@ index 948e338..14b7e7a 100644
      ) {
      }
  
+diff --git a/Polling/PollingHandlerListing.php b/Polling/PollingHandlerListing.php
+index b7dabc5..364702b 100644
+--- a/Polling/PollingHandlerListing.php
++++ b/Polling/PollingHandlerListing.php
+@@ -6,7 +6,7 @@ namespace Loki\Components\Polling;
+ class PollingHandlerListing
+ {
+     public function __construct(
+-        private readonly array $handlers,
++        private array $handlers,
+     ) {
+     }
+ 
 diff --git a/Router/LokiRouter.php b/Router/LokiRouter.php
 index f0ab9a1..ccd7c87 100644
 --- a/Router/LokiRouter.php
@@ -693,7 +726,7 @@ index e248e30..493f46a 100644
          return null;
      }
 diff --git a/Test/Integration/LokiComponentsTestCase.php b/Test/Integration/LokiComponentsTestCase.php
-index cf1c305..8750808 100644
+index 1eb1f70..769fef1 100644
 --- a/Test/Integration/LokiComponentsTestCase.php
 +++ b/Test/Integration/LokiComponentsTestCase.php
 @@ -149,7 +149,7 @@ class LokiComponentsTestCase extends AbstractController
@@ -794,18 +827,16 @@ index f5a5211..7fd3e6b 100644
          $this->fileDriver = $filesystem->getDirectoryRead(DirectoryList::ROOT);
      }
 diff --git a/Util/Component/JsDataProvider.php b/Util/Component/JsDataProvider.php
-index 0bccf88..2fb751a 100644
+index 4c1f235..140dc2d 100644
 --- a/Util/Component/JsDataProvider.php
 +++ b/Util/Component/JsDataProvider.php
-@@ -12,10 +12,10 @@ use Loki\Components\Util\IdConvertor;
+@@ -11,9 +11,9 @@ use Loki\Components\Util\IdConvertor;
  class JsDataProvider implements ArgumentInterface
  {
      public function __construct(
--        private readonly ComponentUtil $componentUtil,
 -        private readonly GetElementId $getElementId,
 -        private readonly IdConvertor $idConvertor,
 -        private readonly CamelCaseConvertor $camelCaseConvertor,
-+        private ComponentUtil $componentUtil,
 +        private GetElementId $getElementId,
 +        private IdConvertor $idConvertor,
 +        private CamelCaseConvertor $camelCaseConvertor,
@@ -813,7 +844,7 @@ index 0bccf88..2fb751a 100644
      }
  
 diff --git a/Util/ComponentUtil.php b/Util/ComponentUtil.php
-index ec2b184..a8721a0 100644
+index 92a6f6c..a0c7f42 100644
 --- a/Util/ComponentUtil.php
 +++ b/Util/ComponentUtil.php
 @@ -12,10 +12,10 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
@@ -990,7 +1021,7 @@ index 73d3ee9..f224586 100644
          $date = trim((string)$value);
          if ($date === '' || $date === '0') {
 diff --git a/Validator/EmailValidator.php b/Validator/EmailValidator.php
-index 2193057..4e3f345 100644
+index 048e752..fddaedf 100644
 --- a/Validator/EmailValidator.php
 +++ b/Validator/EmailValidator.php
 @@ -6,7 +6,7 @@ use Loki\Components\Component\ComponentInterface;
