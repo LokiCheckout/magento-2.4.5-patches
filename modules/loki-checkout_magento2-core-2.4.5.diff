@@ -627,7 +627,7 @@ index b9700c97..017da936 100644
          $shippingMethodCode = (string)$value;
          $shippingMethodCode = $this->sanitizeShippingMethod($shippingMethodCode);
 diff --git a/Component/Checkout/Sidebar/CouponCode/CouponCodeRepository.php b/Component/Checkout/Sidebar/CouponCode/CouponCodeRepository.php
-index 77fea1f5..ac14ba6f 100644
+index b429e247..72ea0ace 100644
 --- a/Component/Checkout/Sidebar/CouponCode/CouponCodeRepository.php
 +++ b/Component/Checkout/Sidebar/CouponCode/CouponCodeRepository.php
 @@ -15,12 +15,12 @@ class CouponCodeRepository extends FieldRepository
