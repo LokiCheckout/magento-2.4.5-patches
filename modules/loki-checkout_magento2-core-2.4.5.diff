@@ -1855,10 +1855,10 @@ index 28e63691..d2b200e7 100644
      }
  
 diff --git a/Test/Integration/LokiCheckoutTestCase.php b/Test/Integration/LokiCheckoutTestCase.php
-index 5c778585..71bb4a4c 100644
+index 6b13461a..b4f68f88 100644
 --- a/Test/Integration/LokiCheckoutTestCase.php
 +++ b/Test/Integration/LokiCheckoutTestCase.php
-@@ -106,7 +106,7 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
+@@ -102,7 +102,7 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
      }
  
      // @todo: Move into trait
@@ -1867,7 +1867,7 @@ index 5c778585..71bb4a4c 100644
      {
          $repository = $component->getRepository();
          $this->assertInstanceOf(ComponentRepositoryInterface::class, $repository);
-@@ -117,10 +117,10 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
+@@ -113,10 +113,10 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
  
      // @todo: Move into trait
      protected function assertConfigValue(
@@ -1880,7 +1880,7 @@ index 5c778585..71bb4a4c 100644
      ): void {
          $scopeConfig = $this->getObjectManager()->get(ScopeConfigInterface::class);
          $value = $scopeConfig->getValue($path, $scopeType, $scopeValue);
-@@ -132,7 +132,7 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
+@@ -128,7 +128,7 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
          bool $expectedValue,
          string $path,
          string $scopeType = 'default',
