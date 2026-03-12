@@ -410,7 +410,7 @@ index e9984f87..3d28a544 100644
          $billingAsShipping = (bool)$value;
          $quote = $this->getContext()->getCheckoutState()->getQuote();
 diff --git a/Component/Checkout/GridLayout/GridLayoutViewModel.php b/Component/Checkout/GridLayout/GridLayoutViewModel.php
-index 0707b92c..982875af 100644
+index 53c5d900..94f0fbf1 100644
 --- a/Component/Checkout/GridLayout/GridLayoutViewModel.php
 +++ b/Component/Checkout/GridLayout/GridLayoutViewModel.php
 @@ -11,7 +11,7 @@ class GridLayoutViewModel extends ComponentViewModel
@@ -627,7 +627,7 @@ index b9700c97..017da936 100644
          $shippingMethodCode = (string)$value;
          $shippingMethodCode = $this->sanitizeShippingMethod($shippingMethodCode);
 diff --git a/Component/Checkout/Sidebar/CouponCode/CouponCodeRepository.php b/Component/Checkout/Sidebar/CouponCode/CouponCodeRepository.php
-index 207a3521..a35d4471 100644
+index 77fea1f5..ac14ba6f 100644
 --- a/Component/Checkout/Sidebar/CouponCode/CouponCodeRepository.php
 +++ b/Component/Checkout/Sidebar/CouponCode/CouponCodeRepository.php
 @@ -15,12 +15,12 @@ class CouponCodeRepository extends FieldRepository
@@ -860,10 +860,10 @@ index 82e26fa0..d855ca7f 100644
      }
  
 diff --git a/Component/Checkout/Step/ShippingStep/ShippingStepViewModel.php b/Component/Checkout/Step/ShippingStep/ShippingStepViewModel.php
-index 27ee9c8d..63f6c3c6 100644
+index 205de481..b7121c6a 100644
 --- a/Component/Checkout/Step/ShippingStep/ShippingStepViewModel.php
 +++ b/Component/Checkout/Step/ShippingStep/ShippingStepViewModel.php
-@@ -34,7 +34,7 @@ class ShippingStepViewModel extends AbstractStepViewModel
+@@ -39,7 +39,7 @@ class ShippingStepViewModel extends AbstractStepViewModel
          return !(bool)$this->getContext()->getCheckoutState()->getQuote()->isVirtual();
      }
  
@@ -955,10 +955,10 @@ index b83b2409..91ba96c2 100644
          if (false === is_array($value)) {
              return;
 diff --git a/Config/Config.php b/Config/Config.php
-index ba1eff45..22c682f4 100644
+index 1aeb239a..c2542288 100644
 --- a/Config/Config.php
 +++ b/Config/Config.php
-@@ -14,10 +14,10 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
+@@ -15,10 +15,10 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
  class Config implements ArgumentInterface
  {
      public function __construct(
@@ -1159,7 +1159,7 @@ index 7096e64c..3c391be7 100644
      }
  
 diff --git a/Controller/Index/Index.php b/Controller/Index/Index.php
-index 94b2eac4..a6d0a888 100644
+index d871eeed..d3c40ce8 100644
 --- a/Controller/Index/Index.php
 +++ b/Controller/Index/Index.php
 @@ -17,13 +17,13 @@ use Magento\Framework\Controller\Result\Redirect as RedirectResult;
@@ -1322,7 +1322,7 @@ index ac012879..f8ae342e 100644
      }
  
 diff --git a/Observer/SetSortOrder.php b/Observer/SetSortOrder.php
-index aa349d75..0a867404 100644
+index 43a2487c..7d1cbbdd 100644
 --- a/Observer/SetSortOrder.php
 +++ b/Observer/SetSortOrder.php
 @@ -11,7 +11,7 @@ use Magento\Framework\View\LayoutInterface;
@@ -1784,7 +1784,7 @@ index 66101a72..1f2e028b 100644
      }
  
 diff --git a/Step/StepNavigator.php b/Step/StepNavigator.php
-index b2a21863..41fc8e47 100644
+index 213ffc4c..daacb1bf 100644
 --- a/Step/StepNavigator.php
 +++ b/Step/StepNavigator.php
 @@ -16,19 +16,19 @@ use Loki\Components\Component\ComponentRegistry;
@@ -1855,10 +1855,10 @@ index 28e63691..d2b200e7 100644
      }
  
 diff --git a/Test/Integration/LokiCheckoutTestCase.php b/Test/Integration/LokiCheckoutTestCase.php
-index 0ed29923..8f77086a 100644
+index 5c778585..71bb4a4c 100644
 --- a/Test/Integration/LokiCheckoutTestCase.php
 +++ b/Test/Integration/LokiCheckoutTestCase.php
-@@ -102,7 +102,7 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
+@@ -106,7 +106,7 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
      }
  
      // @todo: Move into trait
@@ -1867,7 +1867,7 @@ index 0ed29923..8f77086a 100644
      {
          $repository = $component->getRepository();
          $this->assertInstanceOf(ComponentRepositoryInterface::class, $repository);
-@@ -113,10 +113,10 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
+@@ -117,10 +117,10 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
  
      // @todo: Move into trait
      protected function assertConfigValue(
@@ -1880,7 +1880,7 @@ index 0ed29923..8f77086a 100644
      ): void {
          $scopeConfig = $this->getObjectManager()->get(ScopeConfigInterface::class);
          $value = $scopeConfig->getValue($path, $scopeType, $scopeValue);
-@@ -128,7 +128,7 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
+@@ -132,7 +132,7 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
          bool $expectedValue,
          string $path,
          string $scopeType = 'default',
@@ -1957,7 +1957,7 @@ index c6d20ea0..960a9b38 100644
      }
  
 diff --git a/Util/Block/CssStyleParser/GridStyleParser.php b/Util/Block/CssStyleParser/GridStyleParser.php
-index f652e007..933981f0 100644
+index b08906b9..fe151b4c 100644
 --- a/Util/Block/CssStyleParser/GridStyleParser.php
 +++ b/Util/Block/CssStyleParser/GridStyleParser.php
 @@ -11,7 +11,7 @@ use Loki\CssUtils\Util\CssStyleParser\CssStyleParserInterface;
@@ -1976,8 +1976,8 @@ index f652e007..933981f0 100644
 -    private function getBlockDefinitionByBlock(AbstractBlock $block): false|Block
 +    private function getBlockDefinitionByBlock(AbstractBlock $block)
      {
-         $grid = $this->config->getGrid();
-         $blockAlias = (string)$block->getLayout()->getElementAlias($block->getNameInLayout());
+         $parentBlock = $block->getParentBlock();
+         if (false === $parentBlock instanceof AbstractBlock) {
 diff --git a/Util/Block/SortedBlocks.php b/Util/Block/SortedBlocks.php
 index 449be7e4..201a2067 100644
 --- a/Util/Block/SortedBlocks.php
@@ -2200,7 +2200,7 @@ index bff7833f..378a7c3b 100644
          private CustomerAddressValidator $customerAddressValidator,
          private UrlFactory $urlFactory
 diff --git a/Util/LoginCustomer.php b/Util/LoginCustomer.php
-index 995b4e6a..082a2adf 100644
+index 3772a8e9..c61ac0c0 100644
 --- a/Util/LoginCustomer.php
 +++ b/Util/LoginCustomer.php
 @@ -16,12 +16,12 @@ use Magento\Framework\Stdlib\Cookie\PhpCookieManager;
@@ -2765,7 +2765,7 @@ index acfed019..3945fed2 100644
      public function set(string $attributeCode, string $value): void;
  
 diff --git a/ViewModel/State/BillingAddressState.php b/ViewModel/State/BillingAddressState.php
-index 2393e19a..e17a0720 100644
+index d9a03cf8..542dfef1 100644
 --- a/ViewModel/State/BillingAddressState.php
 +++ b/ViewModel/State/BillingAddressState.php
 @@ -10,9 +10,9 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
@@ -2797,7 +2797,7 @@ index 2393e19a..e17a0720 100644
          return $this->getAddress()->getData($attributeCode);
      }
 diff --git a/ViewModel/State/ShippingAddressState.php b/ViewModel/State/ShippingAddressState.php
-index 7fbe378a..06a6c7c2 100644
+index 961d524a..114ac258 100644
 --- a/ViewModel/State/ShippingAddressState.php
 +++ b/ViewModel/State/ShippingAddressState.php
 @@ -10,9 +10,9 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
