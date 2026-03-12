@@ -12,10 +12,10 @@ index 04ff829..8b42bd2 100644
          $defaultValue = $this->getComponent()->getBlock()->getDefaultValue();
  
 diff --git a/Component/Base/Field/FieldViewModel.php b/Component/Base/Field/FieldViewModel.php
-index b9e7172..c94edb9 100644
+index 427d26b..85cb6e8 100644
 --- a/Component/Base/Field/FieldViewModel.php
 +++ b/Component/Base/Field/FieldViewModel.php
-@@ -129,7 +129,7 @@ class FieldViewModel extends ComponentViewModel implements FieldViewModelInterfa
+@@ -141,7 +141,7 @@ class FieldViewModel extends ComponentViewModel implements FieldViewModelInterfa
          ];
      }
  
