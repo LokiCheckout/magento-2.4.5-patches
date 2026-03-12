@@ -1,0 +1,33 @@
+diff --git a/Plugin/HandleLoginPlugin.php b/Plugin/HandleLoginPlugin.php
+index 464415f..329e2e9 100644
+--- a/Plugin/HandleLoginPlugin.php
++++ b/Plugin/HandleLoginPlugin.php
+@@ -10,11 +10,11 @@ use LokiCheckout\Core\Util\LoginCustomer;
+ class HandleLoginPlugin
+ {
+     public function __construct(
+-        private readonly LoginCustomer $loginCustomer,
++        private LoginCustomer $loginCustomer,
+     ) {
+     }
+ 
+-    public function aroundSaveValue(EmailRepository $subject, Closure $proceed, mixed $value): void
++    public function aroundSaveValue(EmailRepository $subject, Closure $proceed, $value): void
+     {
+         print_r($value);
+         echo 'test0';
+diff --git a/Plugin/SwitchEmailTemplatePlugin.php b/Plugin/SwitchEmailTemplatePlugin.php
+index e5d5d94..14a6b36 100644
+--- a/Plugin/SwitchEmailTemplatePlugin.php
++++ b/Plugin/SwitchEmailTemplatePlugin.php
+@@ -10,8 +10,8 @@ use Magento\Customer\Model\Session as CustomerSession;
+ class SwitchEmailTemplatePlugin
+ {
+     public function __construct(
+-        private readonly CustomerSession $customerSession,
+-        private readonly AccountManagementInterface $accountManagement,
++        private CustomerSession $customerSession,
++        private AccountManagementInterface $accountManagement,
+     ) {
+     }
+ 

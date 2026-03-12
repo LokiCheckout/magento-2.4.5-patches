@@ -165,6 +165,9 @@
             },
             "yireo-training/magento2-example-loki-map-components": {
                 "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/yireo-training_magento2-example-loki-map-components-2.4.5.diff"
+            },
+            "loki-checkout/magento2-advanced-email-field": {
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-advanced-email-field-2.4.5.diff"
             }
         }
     }
