@@ -1,5 +1,5 @@
 diff --git a/Component/Base/Map/MapRepository.php b/Component/Base/Map/MapRepository.php
-index 6755d34..5f72faa 100644
+index 0ea9084..3c15aa4 100644
 --- a/Component/Base/Map/MapRepository.php
 +++ b/Component/Base/Map/MapRepository.php
 @@ -10,12 +10,12 @@ use Loki\Map\Session\MapSession;
@@ -27,32 +27,53 @@ index 6755d34..5f72faa 100644
          if (false === is_array($value)) {
              return;
 diff --git a/Component/Base/Map/MapViewModel.php b/Component/Base/Map/MapViewModel.php
-index 506e8f3..11a8817 100644
+index feb9c70..f078f80 100644
 --- a/Component/Base/Map/MapViewModel.php
 +++ b/Component/Base/Map/MapViewModel.php
-@@ -11,7 +11,7 @@ use Loki\Map\Map\Marker;
+@@ -11,7 +11,7 @@ use Loki\Map\MapLocation\MapLocation;
   */
  class MapViewModel extends ComponentViewModel
  {
--    protected Marker|null|false $currentMarker = null;
-+    protected $currentMarker = null;
+-    protected MapLocation|null|false $currentMapLocation = null;
++    protected $currentMapLocation = null;
  
      public function getJsComponentName(): ?string
      {
-@@ -107,7 +107,7 @@ class MapViewModel extends ComponentViewModel
-         return [];
+@@ -118,7 +118,7 @@ class MapViewModel extends ComponentViewModel
+         return '';
      }
  
--    public function getCurrentMarker(): Marker|null|false
-+    public function getCurrentMarker()
+-    public function getCurrentMapLocation(): MapLocation|null|false
++    public function getCurrentMapLocation()
      {
-         if ($this->currentMarker !== null) {
-             return $this->currentMarker;
-diff --git a/Map/Marker.php b/Map/Marker.php
-index d7de255..93695f5 100644
---- a/Map/Marker.php
-+++ b/Map/Marker.php
-@@ -117,7 +117,7 @@ class Marker extends DataObject implements JsonSerializable
+         if ($this->currentMapLocation !== null) {
+             return $this->currentMapLocation;
+diff --git a/MapLocation/MapLocation.php b/MapLocation/MapLocation.php
+index a943936..cef3a75 100644
+--- a/MapLocation/MapLocation.php
++++ b/MapLocation/MapLocation.php
+@@ -14,13 +14,13 @@ use Magento\Framework\View\LayoutInterface;
+ class MapLocation extends DataObject implements JsonSerializable
+ {
+     public function __construct(
+-        private readonly ImageRenderer $imageRenderer,
+-        private readonly Location $location,
+-        private readonly LayoutInterface $layout,
+-        private readonly int $zoom = 14,
+-        private readonly string $image = '',
+-        private readonly bool $visible = true,
+-        private readonly bool $locked = false,
++        private ImageRenderer $imageRenderer,
++        private Location $location,
++        private LayoutInterface $layout,
++        private int $zoom = 14,
++        private string $image = '',
++        private bool $visible = true,
++        private bool $locked = false,
+         private bool $selectable = true,
+         array $data = [],
+     ) {
+@@ -111,7 +111,7 @@ class MapLocation extends DataObject implements JsonSerializable
      }
  
      #[\ReturnTypeWillChange]
@@ -62,7 +83,7 @@ index d7de255..93695f5 100644
          return $this->getAttributes();
      }
 diff --git a/Session/MapSession.php b/Session/MapSession.php
-index a7814c5..606bace 100644
+index f8675d2..b1bd96f 100644
 --- a/Session/MapSession.php
 +++ b/Session/MapSession.php
 @@ -21,7 +21,7 @@ class MapSession
