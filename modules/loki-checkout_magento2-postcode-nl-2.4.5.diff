@@ -33,7 +33,7 @@ index 5fd0427..bc47d13 100644
      }
  
 diff --git a/Component/Checkout/Address/Toggle/ToggleRepository.php b/Component/Checkout/Address/Toggle/ToggleRepository.php
-index f332133..1b46cf3 100644
+index 42d76e6..5223789 100644
 --- a/Component/Checkout/Address/Toggle/ToggleRepository.php
 +++ b/Component/Checkout/Address/Toggle/ToggleRepository.php
 @@ -10,7 +10,7 @@ use LokiCheckout\PostcodeNl\Component\Checkout\Address\PostcodeNlContext;
@@ -147,7 +147,7 @@ index 93acb89..f1b794d 100644
          if (empty($this->addressType)) {
              throw new RuntimeException('No address type set');
 diff --git a/Service/PostcodeInfo.php b/Service/PostcodeInfo.php
-index a310323..b4076b9 100644
+index e1e258c..6e7e262 100644
 --- a/Service/PostcodeInfo.php
 +++ b/Service/PostcodeInfo.php
 @@ -15,14 +15,14 @@ use LokiCheckout\PostcodeNl\Util\SupportedCountries;
