@@ -1,0 +1,104 @@
+diff --git a/Component/Comments/CommentsRepository.php b/Component/Comments/CommentsRepository.php
+index 8291039..eec4055 100644
+--- a/Component/Comments/CommentsRepository.php
++++ b/Component/Comments/CommentsRepository.php
+@@ -11,7 +11,7 @@ use Loki\Components\Component\ComponentRepository;
+  */
+ class CommentsRepository extends ComponentRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return (array)$this->getContext()->getCustomerSession()->getComments();
+     }
+diff --git a/Component/ExceptionTest/ExceptionTestRepository.php b/Component/ExceptionTest/ExceptionTestRepository.php
+index b15478e..f80b8d2 100644
+--- a/Component/ExceptionTest/ExceptionTestRepository.php
++++ b/Component/ExceptionTest/ExceptionTestRepository.php
+@@ -7,7 +7,7 @@ use Loki\Components\Component\ComponentRepository;
+ 
+ class ExceptionTestRepository extends ComponentRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return '';
+     }
+diff --git a/Component/Like/LikeRepository.php b/Component/Like/LikeRepository.php
+index 8906d50..40ec160 100644
+--- a/Component/Like/LikeRepository.php
++++ b/Component/Like/LikeRepository.php
+@@ -10,12 +10,12 @@ use Loki\Components\Component\ComponentRepository;
+  */
+ class LikeRepository extends ComponentRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return (int)$this->getContext()->getCustomerSession()->getLike();
+     }
+ 
+-    public function saveValue(mixed $data): void
++    public function saveValue($data): void
+     {
+         $value = (bool)$data;
+         $this->getContext()->getCustomerSession()->setLike($value);
+diff --git a/Component/Notification/NotificationRepository.php b/Component/Notification/NotificationRepository.php
+index 9fb96da..aeb3ec2 100644
+--- a/Component/Notification/NotificationRepository.php
++++ b/Component/Notification/NotificationRepository.php
+@@ -18,7 +18,7 @@ class NotificationRepository extends ComponentRepository
+     ) {
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         if (false === $this->ajax->isAjax()) {
+             $this->messageManager->addNoticeMessage('Hit the global buttons');
+@@ -28,7 +28,7 @@ class NotificationRepository extends ComponentRepository
+         return null;
+     }
+ 
+-    public function saveValue(mixed $data): void
++    public function saveValue($data): void
+     {
+         $data = (array)$data;
+         if (!isset($data['area']) || !isset($data['type']) || !isset($data['text'])) {
+diff --git a/Component/Switcher/SwitcherRepository.php b/Component/Switcher/SwitcherRepository.php
+index 869698c..fb2b40f 100644
+--- a/Component/Switcher/SwitcherRepository.php
++++ b/Component/Switcher/SwitcherRepository.php
+@@ -10,12 +10,12 @@ use Loki\Components\Component\ComponentRepository;
+  */
+ class SwitcherRepository extends ComponentRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return (int)$this->getContext()->getCustomerSession()->getTemplateSwitch();
+     }
+ 
+-    public function saveValue(mixed $data): void
++    public function saveValue($data): void
+     {
+         $value = (bool)$data;
+         $this->getContext()->getCustomerSession()->setTemplateSwitch($value);
+diff --git a/Controller/Example/Index.php b/Controller/Example/Index.php
+index 3227bd6..4aa261d 100644
+--- a/Controller/Example/Index.php
++++ b/Controller/Example/Index.php
+@@ -11,11 +11,11 @@ use Magento\Framework\View\Result\PageFactory;
+ class Index implements HttpGetActionInterface
+ {
+     public function __construct(
+-        private readonly PageFactory $pageFactory
++        private PageFactory $pageFactory
+     ) {
+     }
+ 
+-    public function execute(): ResultInterface|ResponseInterface
++    public function execute()
+     {
+         return $this->pageFactory->create();
+     }
