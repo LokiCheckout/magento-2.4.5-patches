@@ -1,0 +1,79 @@
+diff --git a/Component/ExampleField/ExampleFieldRepository.php b/Component/ExampleField/ExampleFieldRepository.php
+index dcd275e..6bf60cb 100644
+--- a/Component/ExampleField/ExampleFieldRepository.php
++++ b/Component/ExampleField/ExampleFieldRepository.php
+@@ -8,7 +8,7 @@ use Magento\Customer\Model\Session as CustomerSession;
+ class ExampleFieldRepository extends FieldRepository
+ {
+     public function __construct(
+-        private readonly CustomerSession $customerSession,
++        private CustomerSession $customerSession,
+     ) {
+     }
+ 
+@@ -17,7 +17,7 @@ class ExampleFieldRepository extends FieldRepository
+         return $this->customerSession;
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $value = (string)$this->getCustomerSession()->getData($this->getComponentName());
+         if (str_starts_with((string)$value, '["')) {
+@@ -27,7 +27,7 @@ class ExampleFieldRepository extends FieldRepository
+         return $value;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (is_array($value)) {
+             $value = json_encode($value);
+diff --git a/Controller/Example/Index.php b/Controller/Example/Index.php
+index f862412..9ac4f32 100644
+--- a/Controller/Example/Index.php
++++ b/Controller/Example/Index.php
+@@ -11,11 +11,11 @@ use Magento\Framework\View\Result\PageFactory;
+ class Index implements HttpGetActionInterface
+ {
+     public function __construct(
+-        private readonly PageFactory $pageFactory
++        private PageFactory $pageFactory
+     ) {
+     }
+ 
+-    public function execute(): ResultInterface|ResponseInterface
++    public function execute()
+     {
+         return $this->pageFactory->create();
+     }
+diff --git a/ValueObject/Field.php b/ValueObject/Field.php
+index c6adaaa..072da33 100644
+--- a/ValueObject/Field.php
++++ b/ValueObject/Field.php
+@@ -5,9 +5,9 @@ namespace YireoTraining\ExampleLokiFieldComponents\ValueObject;
+ class Field
+ {
+     public function __construct(
+-        private readonly string $id,
+-        private readonly string $label,
+-        private readonly string $type = 'text'
++        private string $id,
++        private string $label,
++        private string $type = 'text'
+     ) {
+     }
+ 
+diff --git a/ViewModel/ExampleData.php b/ViewModel/ExampleData.php
+index 616d97a..ac1af34 100644
+--- a/ViewModel/ExampleData.php
++++ b/ViewModel/ExampleData.php
+@@ -13,7 +13,7 @@ class ExampleData implements ArgumentInterface
+     ) {
+     }
+ 
+-    public function getComponentValue(string $componentName): mixed
++    public function getComponentValue(string $componentName)
+     {
+         return $this->customerSession->getData($componentName);
+     }
