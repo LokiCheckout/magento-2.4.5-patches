@@ -1,0 +1,31 @@
+diff --git a/Controller/Example/Index.php b/Controller/Example/Index.php
+index c413f0d..c1afa55 100644
+--- a/Controller/Example/Index.php
++++ b/Controller/Example/Index.php
+@@ -11,11 +11,11 @@ use Magento\Framework\View\Result\PageFactory;
+ class Index implements HttpGetActionInterface
+ {
+     public function __construct(
+-        private readonly PageFactory $pageFactory
++        private PageFactory $pageFactory
+     ) {
+     }
+ 
+-    public function execute(): ResultInterface|ResponseInterface
++    public function execute()
+     {
+         return $this->pageFactory->create();
+     }
+diff --git a/ViewModel/ExampleData.php b/ViewModel/ExampleData.php
+index e870bf5..ec9d01e 100644
+--- a/ViewModel/ExampleData.php
++++ b/ViewModel/ExampleData.php
+@@ -20,7 +20,7 @@ class ExampleData implements ArgumentInterface
+     ) {
+     }
+ 
+-    public function getComponentValue(string $componentName): mixed
++    public function getComponentValue(string $componentName)
+     {
+         return $this->customerSession->getData($componentName);
+     }
