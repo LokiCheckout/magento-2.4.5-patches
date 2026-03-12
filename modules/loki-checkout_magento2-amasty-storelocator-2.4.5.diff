@@ -21,7 +21,7 @@ index b4a5db7..0c73ddd 100644
          if (false === is_array($value)) {
              return;
 diff --git a/Component/Shipment/LocationSelect/LocationSelectViewModel.php b/Component/Shipment/LocationSelect/LocationSelectViewModel.php
-index 494a117..ea3785b 100644
+index 19fff6e..8cc4d1c 100644
 --- a/Component/Shipment/LocationSelect/LocationSelectViewModel.php
 +++ b/Component/Shipment/LocationSelect/LocationSelectViewModel.php
 @@ -27,16 +27,16 @@ use Magento\Store\Model\StoreManagerInterface;
