@@ -1,5 +1,5 @@
 diff --git a/Component/Shipment/LocationSelect/LocationSelectRepository.php b/Component/Shipment/LocationSelect/LocationSelectRepository.php
-index b1ff45c..d2ac8f9 100644
+index b4a5db7..0c73ddd 100644
 --- a/Component/Shipment/LocationSelect/LocationSelectRepository.php
 +++ b/Component/Shipment/LocationSelect/LocationSelectRepository.php
 @@ -23,7 +23,7 @@ class LocationSelectRepository extends MapRepository
@@ -21,11 +21,11 @@ index b1ff45c..d2ac8f9 100644
          if (false === is_array($value)) {
              return;
 diff --git a/Component/Shipment/LocationSelect/LocationSelectViewModel.php b/Component/Shipment/LocationSelect/LocationSelectViewModel.php
-index 11abbf4..c89f7b7 100644
+index 494a117..ea3785b 100644
 --- a/Component/Shipment/LocationSelect/LocationSelectViewModel.php
 +++ b/Component/Shipment/LocationSelect/LocationSelectViewModel.php
-@@ -28,15 +28,15 @@ use Magento\Store\Model\StoreManagerInterface;
- class LocationSelectViewModel extends MapViewModel
+@@ -27,16 +27,16 @@ use Magento\Store\Model\StoreManagerInterface;
+ class LocationSelectViewModel extends StoreSelectViewModel
  {
      public function __construct(
 -        private readonly CollectionFactory $locationCollectionFactory,
@@ -37,6 +37,7 @@ index 11abbf4..c89f7b7 100644
 -        private readonly RegionCollectionFactory $regionCollectionFactory,
 -        private readonly LocationProductFilterApplier $locationProductFilterApplier,
 -        private readonly Filter $templateFilter,
+-        private readonly StreetlinesFactory $streetlinesFactory,
 +        private CollectionFactory $locationCollectionFactory,
 +        private ScheduleProvider $scheduleProvider,
 +        private TimeHandler $timeHandler,
@@ -46,9 +47,10 @@ index 11abbf4..c89f7b7 100644
 +        private RegionCollectionFactory $regionCollectionFactory,
 +        private LocationProductFilterApplier $locationProductFilterApplier,
 +        private Filter $templateFilter,
-         private MarkerFactory $markerFactory,
-         private LocationFactory $locationFactory,
-         private AddressFactory $addressFactory,
++        private StreetlinesFactory $streetlinesFactory,
+     ) {
+     }
+ 
 diff --git a/Shipment/Icon/IconResolver.php b/Shipment/Icon/IconResolver.php
 index 05a6bb8..6e36e33 100644
 --- a/Shipment/Icon/IconResolver.php
