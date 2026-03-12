@@ -1,0 +1,21 @@
+diff --git a/Polling/CartAvailableCheckPolling.php b/Polling/CartAvailableCheckPolling.php
+index 3ef318d..3eeec19 100644
+--- a/Polling/CartAvailableCheckPolling.php
++++ b/Polling/CartAvailableCheckPolling.php
+@@ -14,11 +14,11 @@ use Magento\InventorySalesApi\Api\StockResolverInterface;
+ class CartAvailableCheckPolling extends AbstractPollingHandler
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly StockResolverInterface $stockResolver,
+-        private readonly RequestFactory $requestFactory,
+-        private readonly AreProductsSalableForRequestedQtyInterface $areProductsSalableForRequestedQty,
+-        private readonly UrlFactory $urlFactory,
++        private CheckoutState $checkoutState,
++        private StockResolverInterface $stockResolver,
++        private RequestFactory $requestFactory,
++        private AreProductsSalableForRequestedQtyInterface $areProductsSalableForRequestedQty,
++        private UrlFactory $urlFactory,
+     ) {
+     }
+ 
