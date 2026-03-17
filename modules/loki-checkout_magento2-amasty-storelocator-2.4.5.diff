@@ -21,7 +21,7 @@ index b4a5db7..0c73ddd 100644
          if (false === is_array($value)) {
              return;
 diff --git a/Component/Shipment/LocationSelect/LocationSelectViewModel.php b/Component/Shipment/LocationSelect/LocationSelectViewModel.php
-index 19fff6e..8cc4d1c 100644
+index 14decb7..660173f 100644
 --- a/Component/Shipment/LocationSelect/LocationSelectViewModel.php
 +++ b/Component/Shipment/LocationSelect/LocationSelectViewModel.php
 @@ -27,16 +27,16 @@ use Magento\Store\Model\StoreManagerInterface;
@@ -37,7 +37,7 @@ index 19fff6e..8cc4d1c 100644
 -        private readonly RegionCollectionFactory $regionCollectionFactory,
 -        private readonly LocationProductFilterApplier $locationProductFilterApplier,
 -        private readonly Filter $templateFilter,
--        private readonly StreetlinesFactory $streetlinesFactory,
+-        private readonly StreetLinesFactory $streetLinesFactory,
 +        private CollectionFactory $locationCollectionFactory,
 +        private ScheduleProvider $scheduleProvider,
 +        private TimeHandler $timeHandler,
@@ -47,10 +47,23 @@ index 19fff6e..8cc4d1c 100644
 +        private RegionCollectionFactory $regionCollectionFactory,
 +        private LocationProductFilterApplier $locationProductFilterApplier,
 +        private Filter $templateFilter,
-+        private StreetlinesFactory $streetlinesFactory,
++        private StreetLinesFactory $streetLinesFactory,
      ) {
      }
  
+diff --git a/MODULE.json b/MODULE.json
+index 5cf404c..147165e 100644
+--- a/MODULE.json
++++ b/MODULE.json
+@@ -41,5 +41,6 @@
+         "loki-checkout.shipping.methods.amstorepickup_amstorepickup.form.map"
+     ],
+     "config": [],
+-    "tests": []
++    "tests": [],
++    "phpcs_severity": "7"
+ }
+\ No newline at end of file
 diff --git a/Shipment/Icon/IconResolver.php b/Shipment/Icon/IconResolver.php
 index 05a6bb8..6e36e33 100644
 --- a/Shipment/Icon/IconResolver.php
