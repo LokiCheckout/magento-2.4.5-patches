@@ -27,10 +27,10 @@ index 0ea9084..3c15aa4 100644
          if (false === is_array($value)) {
              return;
 diff --git a/Component/Base/Map/MapViewModel.php b/Component/Base/Map/MapViewModel.php
-index feb9c70..f078f80 100644
+index e67f56a..3282c3f 100644
 --- a/Component/Base/Map/MapViewModel.php
 +++ b/Component/Base/Map/MapViewModel.php
-@@ -11,7 +11,7 @@ use Loki\Map\MapLocation\MapLocation;
+@@ -12,7 +12,7 @@ use Loki\Map\MapLocation\MapLocation;
   */
  class MapViewModel extends ComponentViewModel
  {
@@ -39,7 +39,7 @@ index feb9c70..f078f80 100644
  
      public function getJsComponentName(): ?string
      {
-@@ -118,7 +118,7 @@ class MapViewModel extends ComponentViewModel
+@@ -117,7 +117,7 @@ class MapViewModel extends ComponentViewModel
          return '';
      }
  
@@ -48,6 +48,19 @@ index feb9c70..f078f80 100644
      {
          if ($this->currentMapLocation !== null) {
              return $this->currentMapLocation;
+diff --git a/Config/Config.php b/Config/Config.php
+index e2ea1fd..898092d 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -11,7 +11,7 @@ use Magento\Store\Model\ScopeInterface;
+ class Config implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig
++        private ScopeConfigInterface $scopeConfig
+     ) {
+     }
+ 
 diff --git a/MapLocation/MapLocation.php b/MapLocation/MapLocation.php
 index a943936..cef3a75 100644
 --- a/MapLocation/MapLocation.php
