@@ -1425,17 +1425,15 @@ index 06826593..cd291352 100644
          $redirectUrl = (string)$this->checkoutState->getCheckoutSession()->getRedirectUrl();
          if ($redirectUrl !== '' && $redirectUrl !== '0') {
 diff --git a/Payment/Vault/NormalizedPaymentToken.php b/Payment/Vault/NormalizedPaymentToken.php
-index 3d560bdd..512c1804 100644
+index 52569b21..66b0a6be 100644
 --- a/Payment/Vault/NormalizedPaymentToken.php
 +++ b/Payment/Vault/NormalizedPaymentToken.php
-@@ -8,8 +8,8 @@ use Magento\Vault\Api\Data\PaymentTokenInterface;
+@@ -7,7 +7,7 @@ use Magento\Vault\Api\Data\PaymentTokenInterface;
  class NormalizedPaymentToken
  {
      public function __construct(
 -        private readonly PaymentTokenInterface $paymentToken,
--        private readonly SerializerInterface $serializer,
 +        private PaymentTokenInterface $paymentToken,
-+        private SerializerInterface $serializer,
      ) {
      }
  
@@ -2041,7 +2039,7 @@ index bc0bd080..a8778952 100644
      }
  
 diff --git a/Util/Checkout/SaveCart.php b/Util/Checkout/SaveCart.php
-index 5cf641ad..956d663d 100644
+index 4dd4ab36..bbc8694c 100644
 --- a/Util/Checkout/SaveCart.php
 +++ b/Util/Checkout/SaveCart.php
 @@ -11,8 +11,8 @@ use Magento\Quote\Model\ResourceModel\Quote\Address as QuoteAddressResourceModel
@@ -2325,15 +2323,17 @@ index 119ca4ac..5f78870b 100644
          if (false === is_string($value) || empty($value)) {
              return true;
 diff --git a/Validator/Component/EmailAvailableValidator.php b/Validator/Component/EmailAvailableValidator.php
-index 32becccf..28e68332 100644
+index 6c377819..6252cc44 100644
 --- a/Validator/Component/EmailAvailableValidator.php
 +++ b/Validator/Component/EmailAvailableValidator.php
-@@ -9,11 +9,11 @@ use Loki\Components\Validator\ValidatorInterface;
+@@ -9,12 +9,12 @@ use Loki\Components\Validator\ValidatorInterface;
  class EmailAvailableValidator implements ValidatorInterface
  {
      public function __construct(
 -        private readonly AccountManagementInterface $accountManagement,
+-        private readonly bool $showEmailInMessage = false
 +        private AccountManagementInterface $accountManagement,
++        private bool $showEmailInMessage = false
      ) {
      }
  
@@ -2492,7 +2492,7 @@ index 39cbd0f8..767b473e 100644
 +    public function validate();
  }
 diff --git a/ViewModel/CheckoutState.php b/ViewModel/CheckoutState.php
-index 8b2f6315..48a074da 100644
+index d6c6bf34..9e6f2882 100644
 --- a/ViewModel/CheckoutState.php
 +++ b/ViewModel/CheckoutState.php
 @@ -22,14 +22,14 @@ class CheckoutState implements ArgumentInterface
