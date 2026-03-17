@@ -125,10 +125,10 @@ index cd1d425..816f262 100644
      }
  
 diff --git a/Service/AutocompletionState.php b/Service/AutocompletionState.php
-index 93acb89..f1b794d 100644
+index 1629ca3..2e3e23d 100644
 --- a/Service/AutocompletionState.php
 +++ b/Service/AutocompletionState.php
-@@ -88,7 +88,7 @@ class AutocompletionState
+@@ -91,7 +91,7 @@ class AutocompletionState
          return (string)$this->load('raw_data');
      }
  
@@ -137,7 +137,7 @@ index 93acb89..f1b794d 100644
      {
          $this->save('raw_data', json_encode($rawData));
      }
-@@ -109,7 +109,7 @@ class AutocompletionState
+@@ -132,7 +132,7 @@ class AutocompletionState
          $this->setErrors([]);
      }
  
@@ -147,7 +147,7 @@ index 93acb89..f1b794d 100644
          if (empty($this->addressType)) {
              throw new RuntimeException('No address type set');
 diff --git a/Service/PostcodeInfo.php b/Service/PostcodeInfo.php
-index e1e258c..6e7e262 100644
+index 992b7e2..8ba7ff8 100644
 --- a/Service/PostcodeInfo.php
 +++ b/Service/PostcodeInfo.php
 @@ -15,14 +15,14 @@ use LokiCheckout\PostcodeNl\Util\SupportedCountries;
