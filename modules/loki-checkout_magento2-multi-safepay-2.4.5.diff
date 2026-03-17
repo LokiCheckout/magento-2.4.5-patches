@@ -31,10 +31,10 @@ index aa2814a..839fd79 100644
          if (!is_array($value)) {
              return;
 diff --git a/Payment/Icon/IconResolver.php b/Payment/Icon/IconResolver.php
-index f025563..8abda33 100644
+index 9c632d9..41b6c91 100644
 --- a/Payment/Icon/IconResolver.php
 +++ b/Payment/Icon/IconResolver.php
-@@ -15,7 +15,7 @@ class IconResolver implements IconResolverInterface
+@@ -16,7 +16,7 @@ class IconResolver implements IconResolverInterface
      ) {
      }
  
