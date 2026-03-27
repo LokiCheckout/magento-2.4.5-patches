@@ -1546,18 +1546,20 @@ index bc4b44d3..58647dde 100644
          /** @var HttpRequest $request */
          $identifier = trim($request->getPathInfo(), '/');
 diff --git a/Shipment/DeliveryDate.php b/Shipment/DeliveryDate.php
-index 9cc14e4c..6e20ac17 100644
+index 3ff47c53..9c7d6fa0 100644
 --- a/Shipment/DeliveryDate.php
 +++ b/Shipment/DeliveryDate.php
-@@ -10,11 +10,11 @@ use LokiCheckout\Core\Shipment\DeliveryDate\Timeframe;
- class DeliveryDate
+@@ -11,12 +11,12 @@ use LokiCheckout\Core\Shipment\DeliveryDate\Timeframe;
+ class DeliveryDate implements JsonSerializable
  {
      public function __construct(
 -        private readonly LocaleResolver $localeResolver,
 -        private readonly Timezone $timezone,
+-        private readonly string $id,
 -        private readonly int $timestamp,
 +        private LocaleResolver $localeResolver,
 +        private Timezone $timezone,
++        private string $id,
 +        private int $timestamp,
          private array $timeframes = [],
 -        private readonly string $datePattern = 'EEEE, MMMM dd', // @doc
@@ -1565,35 +1567,59 @@ index 9cc14e4c..6e20ac17 100644
      ) {
      }
  
+@@ -65,7 +65,7 @@ class DeliveryDate implements JsonSerializable
+         );
+     }
+ 
+-    public function jsonSerialize(): mixed
++    public function jsonSerialize()
+     {
+         return [
+             'id' => $this->getId(),
 diff --git a/Shipment/DeliveryDate/Timeframe.php b/Shipment/DeliveryDate/Timeframe.php
-index 34ddce2f..797a5324 100644
+index ae23cf71..511cb260 100644
 --- a/Shipment/DeliveryDate/Timeframe.php
 +++ b/Shipment/DeliveryDate/Timeframe.php
-@@ -9,14 +9,14 @@ use Magento\Framework\Stdlib\DateTime\Timezone;
- class Timeframe
+@@ -11,17 +11,17 @@ use Magento\Framework\Stdlib\DateTime\Timezone;
+ class Timeframe implements JsonSerializable
  {
      public function __construct(
 -        private readonly LocaleResolver $localeResolver,
 -        private readonly Timezone $timezone,
--        private readonly string $code,
 -        private readonly string $id,
+-        private readonly array $value,
 -        private readonly string $label,
 -        private readonly int $fromTimestamp,
 -        private readonly int $toTimestamp,
--        private readonly float $price = 0
+-        private readonly float $price = 0,
+-        private readonly bool $disabled = false,
+-        private readonly string $carrier = '',
+-        private readonly string $carrierImage = '',
 +        private LocaleResolver $localeResolver,
 +        private Timezone $timezone,
-+        private string $code,
 +        private string $id,
++        private array $value,
 +        private string $label,
 +        private int $fromTimestamp,
 +        private int $toTimestamp,
-+        private float $price = 0
++        private float $price = 0,
++        private bool $disabled = false,
++        private string $carrier = '',
++        private string $carrierImage = '',
      ) {
      }
  
+@@ -103,7 +103,7 @@ class Timeframe implements JsonSerializable
+         );
+     }
+ 
+-    public function jsonSerialize(): mixed
++    public function jsonSerialize()
+     {
+         return [
+             'id' => $this->getId(),
 diff --git a/Shipment/DeliveryDate/TimeframeFactory.php b/Shipment/DeliveryDate/TimeframeFactory.php
-index e0c7af11..a2a2f003 100644
+index f5b4f4c5..5cc9b3da 100644
 --- a/Shipment/DeliveryDate/TimeframeFactory.php
 +++ b/Shipment/DeliveryDate/TimeframeFactory.php
 @@ -7,7 +7,7 @@ use Magento\Framework\ObjectManagerInterface;
@@ -1606,7 +1632,7 @@ index e0c7af11..a2a2f003 100644
      }
  
 diff --git a/Shipment/DeliveryDateFactory.php b/Shipment/DeliveryDateFactory.php
-index a64ba85e..3c51b83b 100644
+index d18ae5c2..963e6d5f 100644
 --- a/Shipment/DeliveryDateFactory.php
 +++ b/Shipment/DeliveryDateFactory.php
 @@ -7,7 +7,7 @@ use Magento\Framework\ObjectManagerInterface;
@@ -1986,23 +2012,6 @@ index 449be7e4..201a2067 100644
      public function __construct(
 -        private readonly Config $config,
 +        private Config $config,
-     ) {
-     }
- 
-diff --git a/Util/Cart/CartTotals.php b/Util/Cart/CartTotals.php
-index c824a30f..daca226e 100644
---- a/Util/Cart/CartTotals.php
-+++ b/Util/Cart/CartTotals.php
-@@ -11,9 +11,9 @@ use Magento\Quote\Api\Data\TotalsInterface;
- class CartTotals implements ArgumentInterface
- {
-     public function __construct(
--        private readonly CheckoutState $checkoutState,
--        private readonly TotalsInformationManagementInterface $totalsInformationManagement,
--        private readonly TotalsInformationInterfaceFactory $totalsInformationFactory,
-+        private CheckoutState $checkoutState,
-+        private TotalsInformationManagementInterface $totalsInformationManagement,
-+        private TotalsInformationInterfaceFactory $totalsInformationFactory,
      ) {
      }
  
@@ -2492,10 +2501,10 @@ index 39cbd0f8..767b473e 100644
 +    public function validate();
  }
 diff --git a/ViewModel/CheckoutState.php b/ViewModel/CheckoutState.php
-index d6c6bf34..9e6f2882 100644
+index cf7d0e65..de859aa8 100644
 --- a/ViewModel/CheckoutState.php
 +++ b/ViewModel/CheckoutState.php
-@@ -22,14 +22,14 @@ class CheckoutState implements ArgumentInterface
+@@ -25,16 +25,16 @@ class CheckoutState implements ArgumentInterface
      private array $quotes = [];
  
      public function __construct(
@@ -2506,7 +2515,9 @@ index d6c6bf34..9e6f2882 100644
 -        private readonly UrlFactory $urlFactory,
 -        private readonly ResponseFactory $responseFactory,
 -        private readonly Ajax $ajax,
--        private readonly SaveCart $saveCart
+-        private readonly SaveCart $saveCart,
+-        private readonly TotalsInformationManagementInterface $totalsInformationManagement,
+-        private readonly TotalsInformationInterfaceFactory $totalsInformationFactory,
 +        private CheckoutSession $checkoutSession,
 +        private CustomerSession $customerSession,
 +        private CartRepositoryInterface $cartRepository,
@@ -2514,7 +2525,9 @@ index d6c6bf34..9e6f2882 100644
 +        private UrlFactory $urlFactory,
 +        private ResponseFactory $responseFactory,
 +        private Ajax $ajax,
-+        private SaveCart $saveCart
++        private SaveCart $saveCart,
++        private TotalsInformationManagementInterface $totalsInformationManagement,
++        private TotalsInformationInterfaceFactory $totalsInformationFactory,
      ) {
      }
  
