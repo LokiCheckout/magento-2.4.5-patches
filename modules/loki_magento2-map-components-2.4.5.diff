@@ -62,23 +62,21 @@ index e2ea1fd..898092d 100644
      }
  
 diff --git a/MapLocation/MapLocation.php b/MapLocation/MapLocation.php
-index a943936..cef3a75 100644
+index 180618b..0644159 100644
 --- a/MapLocation/MapLocation.php
 +++ b/MapLocation/MapLocation.php
-@@ -14,13 +14,13 @@ use Magento\Framework\View\LayoutInterface;
+@@ -12,12 +12,12 @@ use Magento\Framework\DataObject;
  class MapLocation extends DataObject implements JsonSerializable
  {
      public function __construct(
 -        private readonly ImageRenderer $imageRenderer,
 -        private readonly Location $location,
--        private readonly LayoutInterface $layout,
 -        private readonly int $zoom = 14,
 -        private readonly string $image = '',
 -        private readonly bool $visible = true,
 -        private readonly bool $locked = false,
 +        private ImageRenderer $imageRenderer,
 +        private Location $location,
-+        private LayoutInterface $layout,
 +        private int $zoom = 14,
 +        private string $image = '',
 +        private bool $visible = true,
@@ -86,7 +84,7 @@ index a943936..cef3a75 100644
          private bool $selectable = true,
          array $data = [],
      ) {
-@@ -111,7 +111,7 @@ class MapLocation extends DataObject implements JsonSerializable
+@@ -80,7 +80,7 @@ class MapLocation extends DataObject implements JsonSerializable
      }
  
      #[\ReturnTypeWillChange]
