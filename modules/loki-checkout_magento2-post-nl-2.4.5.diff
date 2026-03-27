@@ -1,44 +1,25 @@
-diff --git a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsContext.php b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsContext.php
-index 8c32798..4e8e660 100644
---- a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsContext.php
-+++ b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsContext.php
-@@ -36,10 +36,10 @@ class DeliveryOptionsContext implements ComponentContextInterface
-         private AttributeProvider $attributeProvider,
-         private GlobalMessageRegistry $globalMessageRegistry,
-         private CoreMessageManager $coreMessageManager,
--        private readonly CustomerSession $customerSession,
--        private readonly StoreManagerInterface $storeManager,
--        private readonly UrlFactory $urlFactory,
--        private readonly LocaleResolver $localeResolver,
-+        private CustomerSession $customerSession,
-+        private StoreManagerInterface $storeManager,
-+        private UrlFactory $urlFactory,
-+        private LocaleResolver $localeResolver,
-     ) {
-     }
- 
 diff --git a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
-index f1c8086..db6f656 100644
+index a1049bd..d60aaa1 100644
 --- a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
 +++ b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
-@@ -35,7 +35,7 @@ class DeliveryOptionsRepository extends FieldRepository
-         return $this->deliveryDateProvider->getAll();
-     }
- 
+@@ -67,7 +67,7 @@ class DeliveryOptionsRepository extends MapRepository
+      * @throws LocalizedException
+      * @throws WebapiException
+      */
 -    public function getValue(): mixed
 +    public function getValue()
      {
          $postnlOrder = $this->getPostNLOrderByQuote();
-         $type = strtolower((string)$postnlOrder->getType());
-@@ -54,7 +54,7 @@ class DeliveryOptionsRepository extends FieldRepository
-         return $type.'|'.$date;
+         if ($postnlOrder->getType() === 'PG') {
+@@ -115,7 +115,7 @@ class DeliveryOptionsRepository extends MapRepository
+         throw new Exception('Delivery date not found');
      }
  
 -    public function saveValue(mixed $value): void
 +    public function saveValue($value): void
      {
-         $parts = explode('|', (string)$value);
-         if ($parts[0] === 'pg') {
+         if (!is_array($value)) {
+             return;
 diff --git a/Shipment/Icon/IconResolver.php b/Shipment/Icon/IconResolver.php
 index b5cccac..4631289 100644
 --- a/Shipment/Icon/IconResolver.php
@@ -52,3 +33,22 @@ index b5cccac..4631289 100644
      {
          if (false === $this->moduleManager->isEnabled('TIG_PostNL')) {
              return false;
+diff --git a/ViewModel/DeliveryDateView.php b/ViewModel/DeliveryDateView.php
+index cdda07d..0aaa14b 100644
+--- a/ViewModel/DeliveryDateView.php
++++ b/ViewModel/DeliveryDateView.php
+@@ -14,10 +14,10 @@ use Magento\Framework\Stdlib\DateTime\Timezone;
+ class DeliveryDateView implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly OrderRepository $orderRepository,
+-        private readonly LocaleResolver $localeResolver,
+-        private readonly Timezone $timezone,
++        private CheckoutState $checkoutState,
++        private OrderRepository $orderRepository,
++        private LocaleResolver $localeResolver,
++        private Timezone $timezone,
+         private string $timeFormat = 'H:i',
+         private string $dayFormat = 'd F',
+     ) {
