@@ -441,7 +441,7 @@ index 2c5179f..88ff87e 100644
          return strtoupper((string)$value);
      }
 diff --git a/Location/Address.php b/Location/Address.php
-index a86e205..1910243 100644
+index 2aa7494..5e8115b 100644
 --- a/Location/Address.php
 +++ b/Location/Address.php
 @@ -7,7 +7,7 @@ use Magento\Framework\DataObject;
@@ -453,38 +453,127 @@ index a86e205..1910243 100644
          private string $street = '',
          private string $houseNumber = '',
          private string $houseNumberAddition = '',
-diff --git a/Location/Address/BusinessHourSegment.php b/Location/Address/BusinessHourSegment.php
-index 1c1b5f9..bb86825 100644
---- a/Location/Address/BusinessHourSegment.php
-+++ b/Location/Address/BusinessHourSegment.php
-@@ -7,10 +7,10 @@ use Magento\Framework\DataObject;
- class BusinessHourSegment extends DataObject
+@@ -271,7 +271,7 @@ class Address extends DataObject
+     }
+ 
+     #[\ReturnTypeWillChange]
+-    public function jsonSerialize(): mixed
++    public function jsonSerialize()
+     {
+         return $this->getAttributes();
+     }
+diff --git a/Location/Address/BusinessHour/Day.php b/Location/Address/BusinessHour/Day.php
+index 824ee20..b7013dd 100644
+--- a/Location/Address/BusinessHour/Day.php
++++ b/Location/Address/BusinessHour/Day.php
+@@ -8,10 +8,10 @@ use Magento\Framework\DataObject;
+ class Day extends DataObject implements JsonSerializable
  {
      public function __construct(
--        private readonly string $day,
--        private readonly string $openingHour,
--        private readonly string $closingHour,
+-        private readonly DayPartFactory $dayPartFactory,
+-        private readonly string $label,
++        private DayPartFactory $dayPartFactory,
++        private string $label,
+         private array $dayParts = [],
 -        private readonly string $comment = '',
-+        private string $day,
-+        private string $openingHour,
-+        private string $closingHour,
 +        private string $comment = '',
          array $data = [],
      ) {
          parent::__construct($data);
-diff --git a/Location/Address/BusinessHours.php b/Location/Address/BusinessHours.php
-index d814321..dcd56ed 100644
---- a/Location/Address/BusinessHours.php
-+++ b/Location/Address/BusinessHours.php
-@@ -9,7 +9,7 @@ class BusinessHours extends DataObject
-     private array $businessHourSegments = [];
+@@ -45,7 +45,7 @@ class Day extends DataObject implements JsonSerializable
+         return (string)__($this->comment);
+     }
  
+-    public function jsonSerialize(): mixed
++    public function jsonSerialize()
+     {
+         return [
+             'id' => $this->getId(),
+diff --git a/Location/Address/BusinessHour/DayFactory.php b/Location/Address/BusinessHour/DayFactory.php
+index a4c9934..11c644f 100644
+--- a/Location/Address/BusinessHour/DayFactory.php
++++ b/Location/Address/BusinessHour/DayFactory.php
+@@ -8,7 +8,7 @@ use Magento\Framework\ObjectManagerInterface;
+ class DayFactory
+ {
      public function __construct(
--        private readonly BusinessHourSegmentFactory $businessHourSegmentFactory,
-+        private BusinessHourSegmentFactory $businessHourSegmentFactory,
+-        private readonly ObjectManagerInterface $objectManager
++        private ObjectManagerInterface $objectManager
+     ) {
+     }
+ 
+diff --git a/Location/Address/BusinessHour/DayPart.php b/Location/Address/BusinessHour/DayPart.php
+index 31bb55a..f1e0b72 100644
+--- a/Location/Address/BusinessHour/DayPart.php
++++ b/Location/Address/BusinessHour/DayPart.php
+@@ -7,8 +7,8 @@ use Magento\Framework\DataObject;
+ class DayPart extends DataObject implements \JsonSerializable
+ {
+     public function __construct(
+-        private readonly string $openingHour,
+-        private readonly string $closingHour,
++        private string $openingHour,
++        private string $closingHour,
          array $data = [],
      ) {
          parent::__construct($data);
+@@ -29,7 +29,7 @@ class DayPart extends DataObject implements \JsonSerializable
+         return $this->closingHour;
+     }
+ 
+-    public function jsonSerialize(): mixed
++    public function jsonSerialize()
+     {
+         return [
+             'id' => $this->getId(),
+diff --git a/Location/Address/BusinessHour/DayPartFactory.php b/Location/Address/BusinessHour/DayPartFactory.php
+index 5ed2c26..bbd193d 100644
+--- a/Location/Address/BusinessHour/DayPartFactory.php
++++ b/Location/Address/BusinessHour/DayPartFactory.php
+@@ -8,7 +8,7 @@ use Magento\Framework\ObjectManagerInterface;
+ class DayPartFactory
+ {
+     public function __construct(
+-        private readonly ObjectManagerInterface $objectManager
++        private ObjectManagerInterface $objectManager
+     ) {
+     }
+ 
+diff --git a/Location/Address/BusinessHours.php b/Location/Address/BusinessHours.php
+index f11d90a..8fc1309 100644
+--- a/Location/Address/BusinessHours.php
++++ b/Location/Address/BusinessHours.php
+@@ -12,7 +12,7 @@ class BusinessHours extends DataObject implements JsonSerializable
+     private array $days = [];
+ 
+     public function __construct(
+-        private readonly DayFactory $dayFactory,
++        private DayFactory $dayFactory,
+         array $data = [],
+     ) {
+         parent::__construct($data);
+@@ -40,7 +40,7 @@ class BusinessHours extends DataObject implements JsonSerializable
+         return $this->days;
+     }
+ 
+-    public function jsonSerialize(): mixed
++    public function jsonSerialize()
+     {
+         return [
+             'days' => $this->getDays(),
+diff --git a/Location/Address/BusinessHoursFactory.php b/Location/Address/BusinessHoursFactory.php
+index ebe80d8..57f5a9a 100644
+--- a/Location/Address/BusinessHoursFactory.php
++++ b/Location/Address/BusinessHoursFactory.php
+@@ -8,7 +8,7 @@ use Magento\Framework\ObjectManagerInterface;
+ class BusinessHoursFactory
+ {
+     public function __construct(
+-        private readonly ObjectManagerInterface $objectManager
++        private ObjectManagerInterface $objectManager
+     ) {
+     }
+ 
 diff --git a/Location/AddressFactory.php b/Location/AddressFactory.php
 index ae5c250..2ed26ca 100644
 --- a/Location/AddressFactory.php
@@ -514,34 +603,43 @@ index 7852eb3..0ac19e5 100644
      }
  
 diff --git a/Location/Location.php b/Location/Location.php
-index 6dfa7c2..fa2ebd3 100644
+index a541bc3..5896b64 100644
 --- a/Location/Location.php
 +++ b/Location/Location.php
-@@ -8,14 +8,14 @@ use Magento\Framework\DataObject;
- class Location extends DataObject
+@@ -9,14 +9,14 @@ use Magento\Framework\DataObject;
+ class Location extends DataObject implements JsonSerializable
  {
      public function __construct(
 -        private readonly Address $address,
 -        private readonly ?BusinessHours $businessHours = null,
 -        private readonly string $id = '',
--        private readonly string $code = '',
 -        private readonly string $label = '',
--        private readonly int $distance = 0,
+-        private readonly array $value = [],
+-        private readonly string $distance = '',
 -        private readonly ?string $pickupFrom = null,
 -        private readonly ?int $price = null,
 +        private Address $address,
 +        private ?BusinessHours $businessHours = null,
 +        private string $id = '',
-+        private string $code = '',
 +        private string $label = '',
-+        private int $distance = 0,
++        private array $value = [],
++        private string $distance = '',
 +        private ?string $pickupFrom = null,
 +        private ?int $price = null,
          array $data = []
      ) {
          parent::__construct($data);
+@@ -79,7 +79,7 @@ class Location extends DataObject implements JsonSerializable
+     }
+ 
+     #[\ReturnTypeWillChange]
+-    public function jsonSerialize(): mixed
++    public function jsonSerialize()
+     {
+         return $this->getAttributes();
+     }
 diff --git a/Location/LocationFactory.php b/Location/LocationFactory.php
-index 6312a32..f78c7ab 100644
+index 0bc58ff..2bdc332 100644
 --- a/Location/LocationFactory.php
 +++ b/Location/LocationFactory.php
 @@ -8,7 +8,7 @@ use Loki\Components\Location\Address\BusinessHours;
