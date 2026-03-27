@@ -18,7 +18,7 @@ index cd2aaf6..ccc5a27 100644
      }
  
 diff --git a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
-index 674f8f6..293c718 100644
+index 7726c0e..ed44eec 100644
 --- a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
 +++ b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
 @@ -14,11 +14,11 @@ use RuntimeException;
@@ -45,7 +45,7 @@ index 674f8f6..293c718 100644
          if (!is_array($value)) {
              return;
 diff --git a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsViewModel.php b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsViewModel.php
-index 7573e64..d7d7487 100644
+index c97d80d..a5c6032 100644
 --- a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsViewModel.php
 +++ b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsViewModel.php
 @@ -16,10 +16,10 @@ use MyParcelNL\Magento\Model\Quote\Checkout;
