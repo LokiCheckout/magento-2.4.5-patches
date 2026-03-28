@@ -1546,7 +1546,7 @@ index bc4b44d3..58647dde 100644
          /** @var HttpRequest $request */
          $identifier = trim($request->getPathInfo(), '/');
 diff --git a/Shipment/DeliveryDate.php b/Shipment/DeliveryDate.php
-index 3ff47c53..9c7d6fa0 100644
+index ed21072e..bfa6c6ba 100644
 --- a/Shipment/DeliveryDate.php
 +++ b/Shipment/DeliveryDate.php
 @@ -11,12 +11,12 @@ use LokiCheckout\Core\Shipment\DeliveryDate\Timeframe;
@@ -1567,17 +1567,17 @@ index 3ff47c53..9c7d6fa0 100644
      ) {
      }
  
-@@ -65,7 +65,7 @@ class DeliveryDate implements JsonSerializable
-         );
+@@ -66,7 +66,7 @@ class DeliveryDate implements JsonSerializable
      }
  
+     #[\ReturnTypeWillChange]
 -    public function jsonSerialize(): mixed
 +    public function jsonSerialize()
      {
          return [
              'id' => $this->getId(),
 diff --git a/Shipment/DeliveryDate/Timeframe.php b/Shipment/DeliveryDate/Timeframe.php
-index ae23cf71..511cb260 100644
+index b77580b1..33e67ce5 100644
 --- a/Shipment/DeliveryDate/Timeframe.php
 +++ b/Shipment/DeliveryDate/Timeframe.php
 @@ -11,17 +11,17 @@ use Magento\Framework\Stdlib\DateTime\Timezone;
@@ -1609,10 +1609,10 @@ index ae23cf71..511cb260 100644
      ) {
      }
  
-@@ -103,7 +103,7 @@ class Timeframe implements JsonSerializable
-         );
+@@ -104,7 +104,7 @@ class Timeframe implements JsonSerializable
      }
  
+     #[\ReturnTypeWillChange]
 -    public function jsonSerialize(): mixed
 +    public function jsonSerialize()
      {
