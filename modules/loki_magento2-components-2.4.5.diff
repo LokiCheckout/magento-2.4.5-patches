@@ -463,7 +463,7 @@ index 2aa7494..5e8115b 100644
          return $this->getAttributes();
      }
 diff --git a/Location/Address/BusinessHour/Day.php b/Location/Address/BusinessHour/Day.php
-index 824ee20..b7013dd 100644
+index 95cd9b9..8231d82 100644
 --- a/Location/Address/BusinessHour/Day.php
 +++ b/Location/Address/BusinessHour/Day.php
 @@ -8,10 +8,10 @@ use Magento\Framework\DataObject;
@@ -480,10 +480,10 @@ index 824ee20..b7013dd 100644
          array $data = [],
      ) {
          parent::__construct($data);
-@@ -45,7 +45,7 @@ class Day extends DataObject implements JsonSerializable
-         return (string)__($this->comment);
+@@ -46,7 +46,7 @@ class Day extends DataObject implements JsonSerializable
      }
  
+     #[\ReturnTypeWillChange]
 -    public function jsonSerialize(): mixed
 +    public function jsonSerialize()
      {
@@ -503,7 +503,7 @@ index a4c9934..11c644f 100644
      }
  
 diff --git a/Location/Address/BusinessHour/DayPart.php b/Location/Address/BusinessHour/DayPart.php
-index 31bb55a..f1e0b72 100644
+index e8f4b80..35fdcae 100644
 --- a/Location/Address/BusinessHour/DayPart.php
 +++ b/Location/Address/BusinessHour/DayPart.php
 @@ -7,8 +7,8 @@ use Magento\Framework\DataObject;
@@ -517,10 +517,10 @@ index 31bb55a..f1e0b72 100644
          array $data = [],
      ) {
          parent::__construct($data);
-@@ -29,7 +29,7 @@ class DayPart extends DataObject implements \JsonSerializable
-         return $this->closingHour;
+@@ -30,7 +30,7 @@ class DayPart extends DataObject implements \JsonSerializable
      }
  
+     #[\ReturnTypeWillChange]
 -    public function jsonSerialize(): mixed
 +    public function jsonSerialize()
      {
@@ -540,7 +540,7 @@ index 5ed2c26..bbd193d 100644
      }
  
 diff --git a/Location/Address/BusinessHours.php b/Location/Address/BusinessHours.php
-index f11d90a..8fc1309 100644
+index fa7c9ad..46053d5 100644
 --- a/Location/Address/BusinessHours.php
 +++ b/Location/Address/BusinessHours.php
 @@ -12,7 +12,7 @@ class BusinessHours extends DataObject implements JsonSerializable
@@ -552,10 +552,10 @@ index f11d90a..8fc1309 100644
          array $data = [],
      ) {
          parent::__construct($data);
-@@ -40,7 +40,7 @@ class BusinessHours extends DataObject implements JsonSerializable
-         return $this->days;
+@@ -41,7 +41,7 @@ class BusinessHours extends DataObject implements JsonSerializable
      }
  
+     #[\ReturnTypeWillChange]
 -    public function jsonSerialize(): mixed
 +    public function jsonSerialize()
      {
