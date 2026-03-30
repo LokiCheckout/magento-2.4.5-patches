@@ -18,15 +18,10 @@ index cd2aaf6..ccc5a27 100644
      }
  
 diff --git a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
-index 7726c0e..ed44eec 100644
+index 74ebd18..e2bcd5e 100644
 --- a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
 +++ b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
-@@ -14,11 +14,11 @@ use RuntimeException;
- class DeliveryOptionsRepository extends FieldRepository
- {
-     public function __construct(
--        private readonly Config $config,
-+        private Config $config,
+@@ -26,7 +26,7 @@ class DeliveryOptionsRepository extends FieldRepository
      ) {
      }
  
@@ -35,7 +30,7 @@ index 7726c0e..ed44eec 100644
      {
          $quote = $this->getContext()->getCheckoutState()->getQuote();
  
-@@ -32,7 +32,7 @@ class DeliveryOptionsRepository extends FieldRepository
+@@ -40,7 +40,7 @@ class DeliveryOptionsRepository extends FieldRepository
          return json_decode((string)$quote->getMyparcelDeliveryOptions(), true);
      }
  
@@ -45,7 +40,7 @@ index 7726c0e..ed44eec 100644
          if (!is_array($value)) {
              return;
 diff --git a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsViewModel.php b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsViewModel.php
-index c97d80d..a5c6032 100644
+index c5f2b47..93b0a7f 100644
 --- a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsViewModel.php
 +++ b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsViewModel.php
 @@ -16,10 +16,10 @@ use MyParcelNL\Magento\Model\Quote\Checkout;
