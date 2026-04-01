@@ -1,0 +1,248 @@
+diff --git a/Component/Checkout/Address/Debug/DebugViewModel.php b/Component/Checkout/Address/Debug/DebugViewModel.php
+index 71e9aad..67f4fef 100644
+--- a/Component/Checkout/Address/Debug/DebugViewModel.php
++++ b/Component/Checkout/Address/Debug/DebugViewModel.php
+@@ -37,7 +37,7 @@ class DebugViewModel extends AddressFieldViewModel
+         return '-';
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return null;
+     }
+diff --git a/Component/Checkout/Address/Toggle/ToggleRepository.php b/Component/Checkout/Address/Toggle/ToggleRepository.php
+index c32e8ed..3741e4f 100644
+--- a/Component/Checkout/Address/Toggle/ToggleRepository.php
++++ b/Component/Checkout/Address/Toggle/ToggleRepository.php
+@@ -10,7 +10,7 @@ use LokiCheckout\AddressAutocomplete\Component\Checkout\Address\AddressAutocompl
+  */
+ class ToggleRepository extends FieldRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $streetLines = (int)$this->getContext()->getScopeConfig()->getValue('customer/address/street_lines');
+         if ($streetLines < 3) {
+@@ -24,7 +24,7 @@ class ToggleRepository extends FieldRepository
+         return $this->getContext()->getAutocompletionState()->isActive();
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $active = (bool)$value;
+ 
+diff --git a/Config/Config.php b/Config/Config.php
+index 93b90f3..7d829f2 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -9,7 +9,7 @@ use Magento\Store\Model\ScopeInterface;
+ class Config implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
++        private ScopeConfigInterface $scopeConfig,
+     ) {
+     }
+ 
+diff --git a/Console/Command/CheckPostcodeCommand.php b/Console/Command/CheckPostcodeCommand.php
+index 1d0c4e4..f2cf499 100644
+--- a/Console/Command/CheckPostcodeCommand.php
++++ b/Console/Command/CheckPostcodeCommand.php
+@@ -16,11 +16,11 @@ use Symfony\Component\Console\Output\OutputInterface;
+ class CheckPostcodeCommand extends Command
+ {
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly AddressFactory $addressFactory,
+-        private readonly ProviderListing $providerListing,
+-        private readonly StreetLinesFactory $streetLinesFactory,
+-        private readonly AutocompletionState $autocompletionState,
++        private Config $config,
++        private AddressFactory $addressFactory,
++        private ProviderListing $providerListing,
++        private StreetLinesFactory $streetLinesFactory,
++        private AutocompletionState $autocompletionState,
+         $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Controller/Adminhtml/Config/Apicheck.php b/Controller/Adminhtml/Config/Apicheck.php
+index e182c38..ea47dc0 100644
+--- a/Controller/Adminhtml/Config/Apicheck.php
++++ b/Controller/Adminhtml/Config/Apicheck.php
+@@ -13,9 +13,9 @@ use Magento\Framework\Controller\ResultInterface;
+ class Apicheck implements HttpGetActionInterface
+ {
+     public function __construct(
+-        private readonly RequestInterface $request,
+-        private readonly ResultJsonFactory $resultJsonFactory,
+-        private readonly ProviderListing $providerListing
++        private RequestInterface $request,
++        private ResultJsonFactory $resultJsonFactory,
++        private ProviderListing $providerListing
+     ) {
+     }
+ 
+diff --git a/Plugin/AddMessagesToViewModelPlugin.php b/Plugin/AddMessagesToViewModelPlugin.php
+index 2d628f3..4fa5b60 100644
+--- a/Plugin/AddMessagesToViewModelPlugin.php
++++ b/Plugin/AddMessagesToViewModelPlugin.php
+@@ -10,8 +10,8 @@ use Loki\Components\Messages\LocalMessage;
+ class AddMessagesToViewModelPlugin
+ {
+     public function __construct(
+-        private readonly AutocompletionState $autocompletionState,
+-        private readonly Config $config
++        private AutocompletionState $autocompletionState,
++        private Config $config
+     ) {
+     }
+ 
+diff --git a/Plugin/AutocompleteAddressPlugin.php b/Plugin/AutocompleteAddressPlugin.php
+index 5081601..9c2c230 100644
+--- a/Plugin/AutocompleteAddressPlugin.php
++++ b/Plugin/AutocompleteAddressPlugin.php
+@@ -14,11 +14,11 @@ use Magento\Quote\Api\Data\AddressInterface;
+ class AutocompleteAddressPlugin
+ {
+     public function __construct(
+-        private readonly AddressStateProvider $addressStateProvider,
+-        private readonly AutocompletionState $autocompletionState,
+-        private readonly ProviderListing $providerListing,
+-        private readonly Config $config,
+-        private readonly StreetLinesFactory $streetLinesFactory,
++        private AddressStateProvider $addressStateProvider,
++        private AutocompletionState $autocompletionState,
++        private ProviderListing $providerListing,
++        private Config $config,
++        private StreetLinesFactory $streetLinesFactory,
+     ) {
+     }
+ 
+diff --git a/Plugin/DisableFieldPlugin.php b/Plugin/DisableFieldPlugin.php
+index 3f86b0a..cfe0877 100644
+--- a/Plugin/DisableFieldPlugin.php
++++ b/Plugin/DisableFieldPlugin.php
+@@ -11,10 +11,10 @@ use LokiCheckout\AddressAutocomplete\Service\AutocompletionState;
+ class DisableFieldPlugin
+ {
+     public function __construct(
+-        private readonly AutocompletionState $autocompletionState,
+-        private readonly AddressStateProvider $addressStateProvider,
+-        private readonly ProviderListing $providerListing,
+-        private readonly Config $config,
++        private AutocompletionState $autocompletionState,
++        private AddressStateProvider $addressStateProvider,
++        private ProviderListing $providerListing,
++        private Config $config,
+     ) {
+     }
+ 
+diff --git a/Plugin/DisableStreet2Plugin.php b/Plugin/DisableStreet2Plugin.php
+index 605b143..a9cca0f 100644
+--- a/Plugin/DisableStreet2Plugin.php
++++ b/Plugin/DisableStreet2Plugin.php
+@@ -11,10 +11,10 @@ use LokiCheckout\AddressAutocomplete\Service\AutocompletionState;
+ class DisableStreet2Plugin
+ {
+     public function __construct(
+-        private readonly AddressStateProvider $addressStateProvider,
+-        private readonly AutocompletionState $autocompletionState,
+-        private readonly ProviderListing $providerListing,
+-        private readonly Config $config
++        private AddressStateProvider $addressStateProvider,
++        private AutocompletionState $autocompletionState,
++        private ProviderListing $providerListing,
++        private Config $config
+     ) {
+     }
+ 
+diff --git a/Plugin/ModifyStreet1ValidatorsPlugin.php b/Plugin/ModifyStreet1ValidatorsPlugin.php
+index dbfdaf3..c6d3d4d 100644
+--- a/Plugin/ModifyStreet1ValidatorsPlugin.php
++++ b/Plugin/ModifyStreet1ValidatorsPlugin.php
+@@ -10,9 +10,9 @@ use LokiCheckout\AddressAutocomplete\Config\Config;
+ class ModifyStreet1ValidatorsPlugin
+ {
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly AddressStateProvider $addressStateProvider,
+-        private readonly ProviderListing $providerListing,
++        private Config $config,
++        private AddressStateProvider $addressStateProvider,
++        private ProviderListing $providerListing,
+     ) {
+     }
+ 
+diff --git a/Provider/ProviderListing.php b/Provider/ProviderListing.php
+index 206a1ce..bede943 100644
+--- a/Provider/ProviderListing.php
++++ b/Provider/ProviderListing.php
+@@ -8,7 +8,7 @@ use LokiCheckout\AddressAutocomplete\Exception\ProviderNotFoundException;
+ class ProviderListing
+ {
+     public function __construct(
+-        private readonly array $providers = []
++        private array $providers = []
+     ) {
+     }
+ 
+diff --git a/Service/AddressAutocompletion.php b/Service/AddressAutocompletion.php
+index 13e61bd..f4ffdd6 100644
+--- a/Service/AddressAutocompletion.php
++++ b/Service/AddressAutocompletion.php
+@@ -11,10 +11,10 @@ use Magento\Quote\Api\Data\AddressInterface;
+ class AddressAutocompletion
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly AutocompletionState $autocompletionState,
+-        private readonly Config $config,
+-        private readonly ProviderListing $providerListing
++        private CheckoutState $checkoutState,
++        private AutocompletionState $autocompletionState,
++        private Config $config,
++        private ProviderListing $providerListing
+     ) {
+     }
+ 
+diff --git a/Service/AutocompletionState.php b/Service/AutocompletionState.php
+index 2dfa663..5ae3cb7 100644
+--- a/Service/AutocompletionState.php
++++ b/Service/AutocompletionState.php
+@@ -17,11 +17,11 @@ class AutocompletionState
+     private string $addressType = 'shipping';
+ 
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly CheckoutSession $checkoutSession,
+-        private readonly BillingAddressState $billingAddressState,
+-        private readonly ShippingAddressState $shippingAddressState,
+-        private readonly OptionFactory $optionFactory,
++        private Config $config,
++        private CheckoutSession $checkoutSession,
++        private BillingAddressState $billingAddressState,
++        private ShippingAddressState $shippingAddressState,
++        private OptionFactory $optionFactory,
+     ) {
+     }
+ 
+@@ -80,7 +80,7 @@ class AutocompletionState
+         return (string)$this->load('raw_data');
+     }
+ 
+-    public function setRawData(mixed $rawData): void
++    public function setRawData($rawData): void
+     {
+         $this->save('raw_data', json_encode($rawData));
+     }
+@@ -121,7 +121,7 @@ class AutocompletionState
+         $this->setErrors([]);
+     }
+ 
+-    private function load(string $name): mixed
++    private function load(string $name)
+     {
+         if (empty($this->addressType)) {
+             throw new RuntimeException('No address type set');
