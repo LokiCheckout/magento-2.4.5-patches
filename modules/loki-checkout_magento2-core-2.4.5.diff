@@ -1808,7 +1808,7 @@ index 66101a72..1f2e028b 100644
      }
  
 diff --git a/Step/StepNavigator.php b/Step/StepNavigator.php
-index 213ffc4c..daacb1bf 100644
+index c5e7b3d0..c7802e32 100644
 --- a/Step/StepNavigator.php
 +++ b/Step/StepNavigator.php
 @@ -16,19 +16,19 @@ use Loki\Components\Component\ComponentRegistry;
@@ -2275,10 +2275,10 @@ index 33054fa0..3b4dae6f 100644
      }
  
 diff --git a/Util/StreetLinesFactory.php b/Util/StreetLinesFactory.php
-index 5f20e776..02be6aaf 100644
+index 2b0d5b30..ad119080 100644
 --- a/Util/StreetLinesFactory.php
 +++ b/Util/StreetLinesFactory.php
-@@ -9,9 +9,9 @@ use Magento\Framework\ObjectManagerInterface;
+@@ -10,9 +10,9 @@ use Magento\Quote\Api\Data\AddressInterface;
  class StreetLinesFactory
  {
      public function __construct(
