@@ -21,7 +21,7 @@ index b4a5db7..0c73ddd 100644
          if (false === is_array($value)) {
              return;
 diff --git a/Component/Shipment/LocationSelect/LocationSelectViewModel.php b/Component/Shipment/LocationSelect/LocationSelectViewModel.php
-index 14decb7..660173f 100644
+index 2dc86cc..989d5c7 100644
 --- a/Component/Shipment/LocationSelect/LocationSelectViewModel.php
 +++ b/Component/Shipment/LocationSelect/LocationSelectViewModel.php
 @@ -27,16 +27,16 @@ use Magento\Store\Model\StoreManagerInterface;
@@ -51,19 +51,6 @@ index 14decb7..660173f 100644
      ) {
      }
  
-diff --git a/MODULE.json b/MODULE.json
-index 5cf404c..147165e 100644
---- a/MODULE.json
-+++ b/MODULE.json
-@@ -41,5 +41,6 @@
-         "loki-checkout.shipping.methods.amstorepickup_amstorepickup.form.map"
-     ],
-     "config": [],
--    "tests": []
-+    "tests": [],
-+    "phpcs_severity": "7"
- }
-\ No newline at end of file
 diff --git a/Shipment/Icon/IconResolver.php b/Shipment/Icon/IconResolver.php
 index 05a6bb8..6e36e33 100644
 --- a/Shipment/Icon/IconResolver.php
