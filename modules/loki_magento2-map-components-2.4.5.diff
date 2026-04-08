@@ -62,7 +62,7 @@ index e2ea1fd..898092d 100644
      }
  
 diff --git a/MapLocation/MapLocation.php b/MapLocation/MapLocation.php
-index 180618b..0644159 100644
+index 04b4c47..41b59e1 100644
 --- a/MapLocation/MapLocation.php
 +++ b/MapLocation/MapLocation.php
 @@ -12,12 +12,12 @@ use Magento\Framework\DataObject;
