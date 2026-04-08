@@ -34,7 +34,7 @@ index 919783b..ea84438 100644
      }
  
 diff --git a/Component/HostedFields/HostedFieldsRepository.php b/Component/HostedFields/HostedFieldsRepository.php
-index 13b1ec8..349fd91 100644
+index 56c864b..b57d50e 100644
 --- a/Component/HostedFields/HostedFieldsRepository.php
 +++ b/Component/HostedFields/HostedFieldsRepository.php
 @@ -9,12 +9,12 @@ use Loki\Components\Component\ComponentRepository;
@@ -103,10 +103,17 @@ index a8c49ba..5b671d1 100644
          if (false === $this->moduleManager->isEnabled('Buckaroo_Magento2')) {
              return false;
 diff --git a/Payment/Redirect/RedirectResolver.php b/Payment/Redirect/RedirectResolver.php
-index 83373ad..117fff1 100644
+index d2c0561..6b6181b 100644
 --- a/Payment/Redirect/RedirectResolver.php
 +++ b/Payment/Redirect/RedirectResolver.php
-@@ -15,7 +15,7 @@ class RedirectResolver implements RedirectResolverInterface
+@@ -12,12 +12,12 @@ class RedirectResolver implements RedirectResolverInterface
+ {
+ 
+     public function __construct(
+-        private readonly Registry $registry,
+-        private readonly BuckarooResponseDataInterface $buckarooResponseData,
++        private Registry $registry,
++        private BuckarooResponseDataInterface $buckarooResponseData,
      ) {
      }
  
@@ -114,7 +121,7 @@ index 83373ad..117fff1 100644
 +    public function resolve(RedirectContext $redirectContext)
      {
          $paymentMethod = $redirectContext->getPaymentMethod();
-         if (false === $paymentMethod instanceof AbstractMethod) {
+ 
 diff --git a/ViewModel/AdditionalPaymentDetails.php b/ViewModel/AdditionalPaymentDetails.php
 index bec8f44..e3c95de 100644
 --- a/ViewModel/AdditionalPaymentDetails.php
