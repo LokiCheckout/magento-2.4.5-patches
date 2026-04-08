@@ -441,7 +441,7 @@ index 2c5179f..88ff87e 100644
          return strtoupper((string)$value);
      }
 diff --git a/Location/Address.php b/Location/Address.php
-index 2aa7494..5e8115b 100644
+index 2303651..254b12d 100644
 --- a/Location/Address.php
 +++ b/Location/Address.php
 @@ -7,7 +7,7 @@ use Magento\Framework\DataObject;
@@ -453,7 +453,7 @@ index 2aa7494..5e8115b 100644
          private string $street = '',
          private string $houseNumber = '',
          private string $houseNumberAddition = '',
-@@ -271,7 +271,7 @@ class Address extends DataObject
+@@ -269,7 +269,7 @@ class Address extends DataObject
      }
  
      #[\ReturnTypeWillChange]
@@ -603,7 +603,7 @@ index 7852eb3..0ac19e5 100644
      }
  
 diff --git a/Location/Location.php b/Location/Location.php
-index a541bc3..5896b64 100644
+index aabbffd..ad8806c 100644
 --- a/Location/Location.php
 +++ b/Location/Location.php
 @@ -9,14 +9,14 @@ use Magento\Framework\DataObject;
