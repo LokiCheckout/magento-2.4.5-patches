@@ -1,0 +1,34 @@
+diff --git a/Console/Command/AddAddressCommand.php b/Console/Command/AddAddressCommand.php
+index b3417bf..0a538ff 100644
+--- a/Console/Command/AddAddressCommand.php
++++ b/Console/Command/AddAddressCommand.php
+@@ -16,11 +16,11 @@ use Magento\Directory\Model\ResourceModel\Region\CollectionFactory as RegionColl
+ class AddAddressCommand extends Command
+ {
+     public function __construct(
+-        private readonly CustomerRepositoryInterface $customerRepository,
+-        private readonly AddressRepositoryInterface $addressRepository,
+-        private readonly AddressInterfaceFactory $addressFactory,
+-        private readonly RegionCollectionFactory $regionCollectionFactory,
+-        private readonly State $state,
++        private CustomerRepositoryInterface $customerRepository,
++        private AddressRepositoryInterface $addressRepository,
++        private AddressInterfaceFactory $addressFactory,
++        private RegionCollectionFactory $regionCollectionFactory,
++        private State $state,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Console/Command/RemoveAllAddressesCommand.php b/Console/Command/RemoveAllAddressesCommand.php
+index b81e028..70bea37 100644
+--- a/Console/Command/RemoveAllAddressesCommand.php
++++ b/Console/Command/RemoveAllAddressesCommand.php
+@@ -18,7 +18,7 @@ class RemoveAllAddressesCommand extends Command
+         private CustomerRepositoryInterface $customerRepository,
+         private AddressRepositoryInterface $addressRepository,
+         private SearchCriteriaBuilder $searchCriteriaBuilder,
+-        private readonly State $state,
++        private State $state,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
