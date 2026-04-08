@@ -678,7 +678,7 @@ index be4b2b24..c7262531 100644
      }
  
 diff --git a/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php b/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php
-index 5891847e..89aa13ad 100644
+index aa2574cd..44d705c5 100644
 --- a/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php
 +++ b/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php
 @@ -19,12 +19,12 @@ class ShippingDetailsViewModel extends CheckoutViewModel
