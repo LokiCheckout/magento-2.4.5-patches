@@ -366,7 +366,7 @@ index 3c5dc6fc..386bd5ec 100644
      }
  
 diff --git a/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php b/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
-index 170f43d3..83f86f24 100644
+index d34df7c0..ec8cba4d 100644
 --- a/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
 +++ b/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
 @@ -46,7 +46,7 @@ class PaymentMethodsRepository extends ComponentRepository
@@ -376,9 +376,9 @@ index 170f43d3..83f86f24 100644
 -    public function getValue(): mixed
 +    public function getValue()
      {
-         static $paymentMethod = false;
-         if (is_string($paymentMethod)) {
-@@ -65,7 +65,7 @@ class PaymentMethodsRepository extends ComponentRepository
+         $quote = $this->getQuote();
+         $currentPaymentMethod = (string)$quote->getPayment()->getMethod();
+@@ -59,7 +59,7 @@ class PaymentMethodsRepository extends ComponentRepository
          return $sanitizedPaymentMethod;
      }
  
@@ -2501,7 +2501,7 @@ index 39cbd0f8..767b473e 100644
 +    public function validate();
  }
 diff --git a/ViewModel/CheckoutState.php b/ViewModel/CheckoutState.php
-index cf7d0e65..de859aa8 100644
+index acd096a2..a468194b 100644
 --- a/ViewModel/CheckoutState.php
 +++ b/ViewModel/CheckoutState.php
 @@ -25,16 +25,16 @@ class CheckoutState implements ArgumentInterface
