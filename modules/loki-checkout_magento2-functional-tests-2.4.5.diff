@@ -45,7 +45,7 @@ index fad44a1..6eedea2 100644
      ) {
      }
 diff --git a/Service/ModuleStatusManager.php b/Service/ModuleStatusManager.php
-index 297ff4a..a3c9483 100644
+index 2085244..809912f 100644
 --- a/Service/ModuleStatusManager.php
 +++ b/Service/ModuleStatusManager.php
 @@ -11,12 +11,12 @@ use LokiCheckout\FunctionalTests\Util\ModuleXmlDependencies;
