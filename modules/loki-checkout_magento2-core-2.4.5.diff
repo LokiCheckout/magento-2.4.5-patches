@@ -1309,14 +1309,16 @@ index a69d50a9..55638ba1 100644
      }
  
 diff --git a/Observer/SaveAfterRepositoryDispatch.php b/Observer/SaveAfterRepositoryDispatch.php
-index ac012879..f8ae342e 100644
+index e038c74c..e12f5258 100644
 --- a/Observer/SaveAfterRepositoryDispatch.php
 +++ b/Observer/SaveAfterRepositoryDispatch.php
-@@ -12,7 +12,7 @@ class SaveAfterRepositoryDispatch implements ObserverInterface
+@@ -11,8 +11,8 @@ use Magento\Framework\View\LayoutInterface;
+ class SaveAfterRepositoryDispatch implements ObserverInterface
  {
      public function __construct(
-         protected SameAddressService $sameAddressService,
+-        private readonly SameAddressService $sameAddressService,
 -        private readonly CheckoutState $checkoutState,
++        private SameAddressService $sameAddressService,
 +        private CheckoutState $checkoutState,
      ) {
      }
@@ -1485,7 +1487,7 @@ index d976e8e9..886cd2c9 100644
      }
  
 diff --git a/Plugin/RedirectEmptyQuoteAfterRepositoryDispatchPlugin.php b/Plugin/RedirectEmptyQuoteAfterRepositoryDispatchPlugin.php
-index 9ef910ed..87c24422 100644
+index 9c6afdac..a3586cf1 100644
 --- a/Plugin/RedirectEmptyQuoteAfterRepositoryDispatchPlugin.php
 +++ b/Plugin/RedirectEmptyQuoteAfterRepositoryDispatchPlugin.php
 @@ -13,9 +13,9 @@ use Loki\Components\Util\Controller\RepositoryDispatcher;
@@ -1707,7 +1709,7 @@ index 0e491c50..b29ec03c 100644
      }
  
 diff --git a/Step/FinalStep.php b/Step/FinalStep.php
-index 85a4d9a5..c290bcc5 100644
+index f79b84b2..6f19a6ab 100644
 --- a/Step/FinalStep.php
 +++ b/Step/FinalStep.php
 @@ -26,15 +26,15 @@ use Loki\Components\Exception\RedirectException;
@@ -1840,7 +1842,7 @@ index c5e7b3d0..c7802e32 100644
      }
  
 diff --git a/Test/Fixture/CustomerAddressFixture.php b/Test/Fixture/CustomerAddressFixture.php
-index 302c1834..afd69164 100644
+index 3cf5abad..f9585838 100644
 --- a/Test/Fixture/CustomerAddressFixture.php
 +++ b/Test/Fixture/CustomerAddressFixture.php
 @@ -24,7 +24,7 @@ class CustomerAddressFixture implements RevertibleDataFixtureInterface
@@ -1879,10 +1881,10 @@ index 28e63691..d2b200e7 100644
      }
  
 diff --git a/Test/Integration/LokiCheckoutTestCase.php b/Test/Integration/LokiCheckoutTestCase.php
-index 6b13461a..b4f68f88 100644
+index 032b8fe1..1789dece 100644
 --- a/Test/Integration/LokiCheckoutTestCase.php
 +++ b/Test/Integration/LokiCheckoutTestCase.php
-@@ -102,7 +102,7 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
+@@ -103,7 +103,7 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
      }
  
      // @todo: Move into trait
@@ -1891,7 +1893,7 @@ index 6b13461a..b4f68f88 100644
      {
          $repository = $component->getRepository();
          $this->assertInstanceOf(ComponentRepositoryInterface::class, $repository);
-@@ -113,10 +113,10 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
+@@ -114,10 +114,10 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
  
      // @todo: Move into trait
      protected function assertConfigValue(
@@ -1904,7 +1906,7 @@ index 6b13461a..b4f68f88 100644
      ): void {
          $scopeConfig = $this->getObjectManager()->get(ScopeConfigInterface::class);
          $value = $scopeConfig->getValue($path, $scopeType, $scopeValue);
-@@ -128,7 +128,7 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
+@@ -129,7 +129,7 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
          bool $expectedValue,
          string $path,
          string $scopeType = 'default',
@@ -2016,19 +2018,21 @@ index 449be7e4..201a2067 100644
      }
  
 diff --git a/Util/Checkout/AddLayoutHandles.php b/Util/Checkout/AddLayoutHandles.php
-index 6d403dbd..467b3761 100644
+index ea857266..383e8d34 100644
 --- a/Util/Checkout/AddLayoutHandles.php
 +++ b/Util/Checkout/AddLayoutHandles.php
-@@ -9,9 +9,9 @@ use Magento\Framework\View\LayoutInterface;
+@@ -10,10 +10,10 @@ use Magento\Framework\View\LayoutInterface;
  class AddLayoutHandles
  {
      public function __construct(
 -        private readonly Config $config,
 -        private readonly LayoutInterface $layout,
--        private readonly CurrentTheme $currentTheme
+-        private readonly CurrentTheme $currentTheme,
+-        private readonly CheckoutState $checkoutState,
 +        private Config $config,
 +        private LayoutInterface $layout,
-+        private CurrentTheme $currentTheme
++        private CurrentTheme $currentTheme,
++        private CheckoutState $checkoutState,
      ) {
      }
  
@@ -2207,10 +2211,10 @@ index bff7833f..378a7c3b 100644
          private CustomerAddressValidator $customerAddressValidator,
          private UrlFactory $urlFactory
 diff --git a/Util/LoginCustomer.php b/Util/LoginCustomer.php
-index 3772a8e9..c61ac0c0 100644
+index c1dace06..352e549b 100644
 --- a/Util/LoginCustomer.php
 +++ b/Util/LoginCustomer.php
-@@ -16,12 +16,12 @@ use Magento\Framework\Stdlib\Cookie\PhpCookieManager;
+@@ -18,14 +18,14 @@ use Magento\Framework\Stdlib\Cookie\PhpCookieManager;
  class LoginCustomer
  {
      public function __construct(
@@ -2220,12 +2224,16 @@ index 3772a8e9..c61ac0c0 100644
 -        private readonly MessageManager $messageManager,
 -        private readonly CustomerUrl $customerUrl,
 -        private readonly CustomerSession $customerSession,
+-        private readonly CheckoutSession $checkoutSession,
+-        private readonly CheckoutState $checkoutState
 +        private AccountManagementInterface $accountManagement,
 +        private PhpCookieManager $cookieManager,
 +        private CookieMetadataFactory $cookieMetadataFactory,
 +        private MessageManager $messageManager,
 +        private CustomerUrl $customerUrl,
 +        private CustomerSession $customerSession,
++        private CheckoutSession $checkoutSession,
++        private CheckoutState $checkoutState
      ) {
      }
  
@@ -2501,7 +2509,7 @@ index 39cbd0f8..767b473e 100644
 +    public function validate();
  }
 diff --git a/ViewModel/CheckoutState.php b/ViewModel/CheckoutState.php
-index acd096a2..a468194b 100644
+index 2d645c9a..036b9058 100644
 --- a/ViewModel/CheckoutState.php
 +++ b/ViewModel/CheckoutState.php
 @@ -25,16 +25,16 @@ class CheckoutState implements ArgumentInterface
@@ -2692,14 +2700,16 @@ index fd0e1e52..86f7dc43 100644
      }
  
 diff --git a/ViewModel/PriceFormatter.php b/ViewModel/PriceFormatter.php
-index 09142b00..f5c62157 100644
+index faff3235..d9af7ddb 100644
 --- a/ViewModel/PriceFormatter.php
 +++ b/ViewModel/PriceFormatter.php
-@@ -8,7 +8,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+@@ -9,8 +9,8 @@ use Magento\Tax\Model\Config as TaxConfig;
  class PriceFormatter implements ArgumentInterface
  {
      public function __construct(
+-        private readonly TaxConfig $taxConfig,
 -        private readonly PriceCurrencyInterface $priceCurrency
++        private TaxConfig $taxConfig,
 +        private PriceCurrencyInterface $priceCurrency
      ) {
      }
