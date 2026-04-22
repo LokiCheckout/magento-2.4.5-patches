@@ -69,7 +69,7 @@ index 9060320..35872aa 100644
  
  }
 diff --git a/Component/ComponentViewModel.php b/Component/ComponentViewModel.php
-index 02a0507..a01afb2 100644
+index d9560aa..ddabaf6 100644
 --- a/Component/ComponentViewModel.php
 +++ b/Component/ComponentViewModel.php
 @@ -54,7 +54,7 @@ class ComponentViewModel implements ComponentViewModelInterface
@@ -161,10 +161,10 @@ index c1d77d8..7a336a1 100644
      }
  
 diff --git a/Controller/Adminhtml/Index/Html.php b/Controller/Adminhtml/Index/Html.php
-index 4b5585a..d26cbd6 100644
+index 1ee46cf..c933fc9 100644
 --- a/Controller/Adminhtml/Index/Html.php
 +++ b/Controller/Adminhtml/Index/Html.php
-@@ -33,23 +33,23 @@ class Html extends Action
+@@ -32,22 +32,22 @@ class Html extends Action
      const ADMIN_RESOURCE = 'Loki_Components::index';
  
      public function __construct(
@@ -174,7 +174,6 @@ index 4b5585a..d26cbd6 100644
 -        private readonly TargetRenderer $targetRenderer,
 -        private readonly HtmlResultFactory $htmlResultFactory,
 -        private readonly JsonResultFactory $jsonResultFactory,
--        private readonly GlobalMessageRegistry $globalMessageRegistry,
 -        private readonly Config $config,
 -        private readonly AppState $appState,
 -        private readonly LoggerInterface $logger,
@@ -185,7 +184,6 @@ index 4b5585a..d26cbd6 100644
 +        private TargetRenderer $targetRenderer,
 +        private HtmlResultFactory $htmlResultFactory,
 +        private JsonResultFactory $jsonResultFactory,
-+        private GlobalMessageRegistry $globalMessageRegistry,
 +        private Config $config,
 +        private AppState $appState,
 +        private LoggerInterface $logger,
@@ -201,7 +199,7 @@ index 4b5585a..d26cbd6 100644
          $data = $this->requestDataLoader->load();
          $this->requestDataLoader->mergeRequestParams();
 diff --git a/Controller/Index/Html.php b/Controller/Index/Html.php
-index 1ee280d..b277e3d 100644
+index c9c4d3f..4f215d2 100644
 --- a/Controller/Index/Html.php
 +++ b/Controller/Index/Html.php
 @@ -32,22 +32,22 @@ use Magento\Framework\Message\ManagerInterface as MessageManager;
@@ -902,7 +900,7 @@ index f56ed6b..af2309c 100644
      }
  
 diff --git a/Util/Block/ImageRenderer.php b/Util/Block/ImageRenderer.php
-index f5a5211..7fd3e6b 100644
+index f21f146..d7bb41e 100644
 --- a/Util/Block/ImageRenderer.php
 +++ b/Util/Block/ImageRenderer.php
 @@ -21,12 +21,12 @@ class ImageRenderer implements ArgumentInterface
@@ -1132,10 +1130,10 @@ index 048e752..fddaedf 100644
          $email = trim((string)$value);
  
 diff --git a/Validator/LengthValidator.php b/Validator/LengthValidator.php
-index 3b444e9..6c5b782 100644
+index ee50e8f..d70b104 100644
 --- a/Validator/LengthValidator.php
 +++ b/Validator/LengthValidator.php
-@@ -7,7 +7,7 @@ use Loki\Components\Component\ComponentViewModelInterface;
+@@ -8,7 +8,7 @@ use Magento\Framework\View\Element\AbstractBlock;
  
  class LengthValidator implements ValidatorInterface
  {
