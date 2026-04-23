@@ -2509,10 +2509,10 @@ index 39cbd0f8..767b473e 100644
 +    public function validate();
  }
 diff --git a/ViewModel/CheckoutState.php b/ViewModel/CheckoutState.php
-index 2d645c9a..036b9058 100644
+index bfd6e1cb..742b88a4 100644
 --- a/ViewModel/CheckoutState.php
 +++ b/ViewModel/CheckoutState.php
-@@ -25,16 +25,16 @@ class CheckoutState implements ArgumentInterface
+@@ -26,17 +26,17 @@ class CheckoutState implements ArgumentInterface
      private array $quotes = [];
  
      public function __construct(
@@ -2526,6 +2526,7 @@ index 2d645c9a..036b9058 100644
 -        private readonly SaveCart $saveCart,
 -        private readonly TotalsInformationManagementInterface $totalsInformationManagement,
 -        private readonly TotalsInformationInterfaceFactory $totalsInformationFactory,
+-        private readonly ScopeConfigInterface $scopeConfig
 +        private CheckoutSession $checkoutSession,
 +        private CustomerSession $customerSession,
 +        private CartRepositoryInterface $cartRepository,
@@ -2536,6 +2537,7 @@ index 2d645c9a..036b9058 100644
 +        private SaveCart $saveCart,
 +        private TotalsInformationManagementInterface $totalsInformationManagement,
 +        private TotalsInformationInterfaceFactory $totalsInformationFactory,
++        private ScopeConfigInterface $scopeConfig
      ) {
      }
  
