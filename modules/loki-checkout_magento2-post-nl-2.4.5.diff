@@ -21,10 +21,17 @@ index a1049bd..d60aaa1 100644
          if (!is_array($value)) {
              return;
 diff --git a/Shipment/Icon/IconResolver.php b/Shipment/Icon/IconResolver.php
-index b5cccac..4631289 100644
+index a41497d..4b791ff 100644
 --- a/Shipment/Icon/IconResolver.php
 +++ b/Shipment/Icon/IconResolver.php
-@@ -14,7 +14,7 @@ class IconResolver implements IconResolverInterface
+@@ -9,12 +9,12 @@ use Magento\Framework\Module\Manager as ModuleManager;
+ class IconResolver implements IconResolverInterface
+ {
+     public function __construct(
+-        private readonly ModuleManager $moduleManager,
+-        private readonly string $imageId = 'TIG_PostNL::images/postnl_logo.png', // @todo: Doc on how to change this
++        private ModuleManager $moduleManager,
++        private string $imageId = 'TIG_PostNL::images/postnl_logo.png', // @todo: Doc on how to change this
      ) {
      }
  
