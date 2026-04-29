@@ -1647,10 +1647,10 @@ index d18ae5c2..963e6d5f 100644
      }
  
 diff --git a/Shipment/Icon/IconResolverContext.php b/Shipment/Icon/IconResolverContext.php
-index 01f40421..95dc0349 100644
+index b3922a27..b1329ca0 100644
 --- a/Shipment/Icon/IconResolverContext.php
 +++ b/Shipment/Icon/IconResolverContext.php
-@@ -14,11 +14,11 @@ class IconResolverContext
+@@ -15,12 +15,12 @@ class IconResolverContext
      private ?DriverInterface $fileDriver = null;
  
      public function __construct(
@@ -1660,13 +1660,15 @@ index 01f40421..95dc0349 100644
 +        private ImageRenderer $imageRenderer,
          Filesystem $filesystem,
 -        private readonly AssetRepository $assetRepository,
--        private readonly string $shipmentMethodCode
+-        private readonly string $shipmentMethodCode,
+-        private readonly array $attributes = [],
 +        private AssetRepository $assetRepository,
-+        private string $shipmentMethodCode
++        private string $shipmentMethodCode,
++        private array $attributes = [],
      ) {
          $this->fileDriver = $filesystem->getDirectoryWrite(DirectoryList::PUB)->getDriver();
      }
-@@ -28,7 +28,7 @@ class IconResolverContext
+@@ -30,7 +30,7 @@ class IconResolverContext
          return $this->shipmentMethodCode;
      }
  
@@ -1675,7 +1677,7 @@ index 01f40421..95dc0349 100644
      {
          $modulePath = $this->componentRegistrar->getPath(ComponentRegistrar::MODULE, $moduleName);
          $iconPath = $modulePath . DIRECTORY_SEPARATOR . $path;
-@@ -39,7 +39,7 @@ class IconResolverContext
+@@ -43,7 +43,7 @@ class IconResolverContext
          return false;
      }
  
@@ -2672,7 +2674,7 @@ index 83318f1c..e1aef16d 100644
      }
  
 diff --git a/ViewModel/PaymentMethodIcon.php b/ViewModel/PaymentMethodIcon.php
-index a0a99dbf..386c60d4 100644
+index 28889de2..c74e9929 100644
 --- a/ViewModel/PaymentMethodIcon.php
 +++ b/ViewModel/PaymentMethodIcon.php
 @@ -13,8 +13,8 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
@@ -2749,7 +2751,7 @@ index 9f185833..fa82922d 100644
      }
  
 diff --git a/ViewModel/ShipmentMethodIcon.php b/ViewModel/ShipmentMethodIcon.php
-index 04172df5..a2253933 100644
+index efbbe91f..b9918be7 100644
 --- a/ViewModel/ShipmentMethodIcon.php
 +++ b/ViewModel/ShipmentMethodIcon.php
 @@ -13,8 +13,8 @@ use LokiCheckout\Core\Shipment\Icon\IconResolverListing;
