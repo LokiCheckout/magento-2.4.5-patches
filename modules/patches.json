@@ -180,6 +180,9 @@
             },
             "yireo/magento2-customer-commands": {
                 "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/yireo_magento2-customer-commands-2.4.5.diff"
+            },
+            "loki-checkout/magento2-simple-shipping-sample-data-eu": {
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-simple-shipping-sample-data-eu-2.4.5.diff"
             }
         }
     }
