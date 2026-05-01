@@ -1,0 +1,30 @@
+diff --git a/Console/Command/InstallSampleDataCommand.php b/Console/Command/InstallSampleDataCommand.php
+index e1bf514..97d9b32 100644
+--- a/Console/Command/InstallSampleDataCommand.php
++++ b/Console/Command/InstallSampleDataCommand.php
+@@ -15,7 +15,7 @@ class InstallSampleDataCommand extends Command
+     private const OPTION_FORCE = 'force';
+ 
+     public function __construct(
+-        private readonly AddUsCitiesLocations $dataPatch,
++        private AddUsCitiesLocations $dataPatch,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Setup/Patch/Data/AddUsCitiesLocations.php b/Setup/Patch/Data/AddUsCitiesLocations.php
+index 9fea344..45c6266 100644
+--- a/Setup/Patch/Data/AddUsCitiesLocations.php
++++ b/Setup/Patch/Data/AddUsCitiesLocations.php
+@@ -140,9 +140,9 @@ class AddUsCitiesLocations implements DataPatchInterface
+     ];
+ 
+     public function __construct(
+-        private readonly LocationFactory $locationFactory,
+-        private readonly LocationRepository $locationRepository,
+-        private readonly LoggerInterface $logger
++        private LocationFactory $locationFactory,
++        private LocationRepository $locationRepository,
++        private LoggerInterface $logger
+     ) {
+     }
+ 
