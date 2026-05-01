@@ -1,5 +1,187 @@
+diff --git a/Component/Shipment/LocationSelect/LocationSelectRepository.php b/Component/Shipment/LocationSelect/LocationSelectRepository.php
+index 01d3900..41d3da7 100644
+--- a/Component/Shipment/LocationSelect/LocationSelectRepository.php
++++ b/Component/Shipment/LocationSelect/LocationSelectRepository.php
+@@ -22,12 +22,12 @@ class LocationSelectRepository extends MapRepository
+         return (string)$this->checkoutState->getQuote()->getExtensionAttributes()->getSimpleShippingLocationId();
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return $this->getMapLocationId();
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (false === is_array($value)) {
+             return;
+diff --git a/Component/Shipment/LocationSelect/LocationSelectViewModel.php b/Component/Shipment/LocationSelect/LocationSelectViewModel.php
+index 52073d1..d8ab84c 100644
+--- a/Component/Shipment/LocationSelect/LocationSelectViewModel.php
++++ b/Component/Shipment/LocationSelect/LocationSelectViewModel.php
+@@ -17,10 +17,10 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
+ class LocationSelectViewModel extends StoreSelectViewModel
+ {
+     public function __construct(
+-        private readonly LocationRepository $locationRepository,
+-        private readonly SearchCriteriaBuilder $searchCriteriaBuilder,
+-        private readonly RegionCollectionFactory $regionCollectionFactory,
+-        private readonly StreetLinesFactory $streetLinesFactory,
++        private LocationRepository $locationRepository,
++        private SearchCriteriaBuilder $searchCriteriaBuilder,
++        private RegionCollectionFactory $regionCollectionFactory,
++        private StreetLinesFactory $streetLinesFactory,
+     ) {
+     }
+ 
+diff --git a/Console/Command/Location/CreateCommand.php b/Console/Command/Location/CreateCommand.php
+index 7c6e018..31a590c 100644
+--- a/Console/Command/Location/CreateCommand.php
++++ b/Console/Command/Location/CreateCommand.php
+@@ -32,8 +32,8 @@ class CreateCommand extends Command
+     private const OPTION_NON_INTERACTIVE = 'non-interactive';
+ 
+     public function __construct(
+-        private readonly LocationRepository $locationRepository,
+-        private readonly LocationFactory $locationFactory,
++        private LocationRepository $locationRepository,
++        private LocationFactory $locationFactory,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Console/Command/Location/DeleteCommand.php b/Console/Command/Location/DeleteCommand.php
+index bb07a89..ee46392 100644
+--- a/Console/Command/Location/DeleteCommand.php
++++ b/Console/Command/Location/DeleteCommand.php
+@@ -19,7 +19,7 @@ class DeleteCommand extends Command
+     private const OPTION_FORCE = 'force';
+ 
+     public function __construct(
+-        private readonly LocationRepository $locationRepository,
++        private LocationRepository $locationRepository,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Console/Command/Location/EditCommand.php b/Console/Command/Location/EditCommand.php
+index f85db3d..470f40b 100644
+--- a/Console/Command/Location/EditCommand.php
++++ b/Console/Command/Location/EditCommand.php
+@@ -30,7 +30,7 @@ class EditCommand extends Command
+     private const OPTION_STORE_IDS = 'store-ids';
+ 
+     public function __construct(
+-        private readonly LocationRepository $locationRepository,
++        private LocationRepository $locationRepository,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Console/Command/Location/ListCommand.php b/Console/Command/Location/ListCommand.php
+index 72a1cc9..2f0a556 100644
+--- a/Console/Command/Location/ListCommand.php
++++ b/Console/Command/Location/ListCommand.php
+@@ -18,8 +18,8 @@ class ListCommand extends Command
+     private const OPTION_DETAILED = 'detailed';
+ 
+     public function __construct(
+-        private readonly LocationRepository $locationRepository,
+-        private readonly SearchCriteriaBuilder $searchCriteriaBuilder,
++        private LocationRepository $locationRepository,
++        private SearchCriteriaBuilder $searchCriteriaBuilder,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Controller/Adminhtml/Location/Delete.php b/Controller/Adminhtml/Location/Delete.php
+index 2e36882..b971bb3 100644
+--- a/Controller/Adminhtml/Location/Delete.php
++++ b/Controller/Adminhtml/Location/Delete.php
+@@ -14,7 +14,7 @@ class Delete extends Action
+ 
+     public function __construct(
+         Context $context,
+-        private readonly LocationRepository $locationRepository
++        private LocationRepository $locationRepository
+     ) {
+         parent::__construct($context);
+     }
+diff --git a/Controller/Adminhtml/Location/Form.php b/Controller/Adminhtml/Location/Form.php
+index b9d63bf..9a08c4e 100644
+--- a/Controller/Adminhtml/Location/Form.php
++++ b/Controller/Adminhtml/Location/Form.php
+@@ -14,7 +14,7 @@ class Form extends Action
+ 
+     public function __construct(
+         Context $context,
+-        private readonly PageFactory $resultPageFactory
++        private PageFactory $resultPageFactory
+     ) {
+         parent::__construct($context);
+     }
+diff --git a/Controller/Adminhtml/Location/Grid.php b/Controller/Adminhtml/Location/Grid.php
+index ec28d5a..6a980cb 100644
+--- a/Controller/Adminhtml/Location/Grid.php
++++ b/Controller/Adminhtml/Location/Grid.php
+@@ -14,7 +14,7 @@ class Grid extends Action
+ 
+     public function __construct(
+         Context $context,
+-        private readonly PageFactory $resultPageFactory
++        private PageFactory $resultPageFactory
+     ) {
+         parent::__construct($context);
+     }
+diff --git a/Controller/Adminhtml/Location/MassDelete.php b/Controller/Adminhtml/Location/MassDelete.php
+index 64614de..40e8cc9 100644
+--- a/Controller/Adminhtml/Location/MassDelete.php
++++ b/Controller/Adminhtml/Location/MassDelete.php
+@@ -14,7 +14,7 @@ class MassDelete extends Action
+ 
+     public function __construct(
+         Context $context,
+-        private readonly LocationRepository $locationRepository
++        private LocationRepository $locationRepository
+     ) {
+         parent::__construct($context);
+     }
+diff --git a/Controller/Adminhtml/Location/Save.php b/Controller/Adminhtml/Location/Save.php
+index 8727a1f..e6db443 100644
+--- a/Controller/Adminhtml/Location/Save.php
++++ b/Controller/Adminhtml/Location/Save.php
+@@ -15,8 +15,8 @@ class Save extends Action
+ 
+     public function __construct(
+         Context $context,
+-        private readonly LocationRepository $locationRepository,
+-        private readonly LocationFactory $locationFactory
++        private LocationRepository $locationRepository,
++        private LocationFactory $locationFactory
+     ) {
+         parent::__construct($context);
+     }
+diff --git a/Repository/LocationRepository.php b/Repository/LocationRepository.php
+index 0e88266..90e405d 100644
+--- a/Repository/LocationRepository.php
++++ b/Repository/LocationRepository.php
+@@ -19,11 +19,11 @@ use Magento\Framework\Exception\NoSuchEntityException;
+ class LocationRepository
+ {
+     public function __construct(
+-        private readonly LocationResource $resource,
+-        private readonly LocationFactory $locationFactory,
+-        private readonly CollectionFactory $collectionFactory,
+-        private readonly SearchResultsFactory $searchResultsFactory,
+-        private readonly CollectionProcessorInterface $collectionProcessor,
++        private LocationResource $resource,
++        private LocationFactory $locationFactory,
++        private CollectionFactory $collectionFactory,
++        private SearchResultsFactory $searchResultsFactory,
++        private CollectionProcessorInterface $collectionProcessor,
+     ) {
+     }
+ 
 diff --git a/Shipment/Icon/IconResolver.php b/Shipment/Icon/IconResolver.php
-index d4a6b5f..31f1cfa 100644
+index e9d0fd9..f21b560 100644
 --- a/Shipment/Icon/IconResolver.php
 +++ b/Shipment/Icon/IconResolver.php
 @@ -13,7 +13,7 @@ class IconResolver implements IconResolverInterface
@@ -9,5 +191,5 @@ index d4a6b5f..31f1cfa 100644
 -    public function resolve(IconResolverContext $iconResolverContext): false|string
 +    public function resolve(IconResolverContext $iconResolverContext)
      {
-         if (false === $this->moduleManager->isEnabled('@todo')) {
+         if (false === $this->moduleManager->isEnabled('LokiCheckout_SimpleShipping')) {
              return false;
