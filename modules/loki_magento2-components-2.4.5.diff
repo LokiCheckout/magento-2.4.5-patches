@@ -900,7 +900,7 @@ index f56ed6b..af2309c 100644
      }
  
 diff --git a/Util/Block/ImageRenderer.php b/Util/Block/ImageRenderer.php
-index f21f146..d7bb41e 100644
+index 60e8d82..baf8c35 100644
 --- a/Util/Block/ImageRenderer.php
 +++ b/Util/Block/ImageRenderer.php
 @@ -21,12 +21,12 @@ class ImageRenderer implements ArgumentInterface
