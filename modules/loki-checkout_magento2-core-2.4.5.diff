@@ -645,6 +645,19 @@ index b429e247..72ea0ace 100644
      {
          if (empty($value['task']) || !isset($value['code'])) {
              return;
+diff --git a/Component/Checkout/Sidebar/CouponCode/CouponCodeViewModel.php b/Component/Checkout/Sidebar/CouponCode/CouponCodeViewModel.php
+index d6489fd5..b647d73a 100644
+--- a/Component/Checkout/Sidebar/CouponCode/CouponCodeViewModel.php
++++ b/Component/Checkout/Sidebar/CouponCode/CouponCodeViewModel.php
+@@ -14,7 +14,7 @@ use Magento\SalesRule\Model\Rule;
+ class CouponCodeViewModel extends CheckoutViewModel
+ {
+     public function __construct(
+-        private readonly CollectionFactory $ruleCollectionFactory
++        private CollectionFactory $ruleCollectionFactory
+     ) {
+     }
+ 
 diff --git a/Component/Checkout/Sidebar/Preview/BillingAddress/BillingAddressViewModel.php b/Component/Checkout/Sidebar/Preview/BillingAddress/BillingAddressViewModel.php
 index b97df9a0..4903d0d9 100644
 --- a/Component/Checkout/Sidebar/Preview/BillingAddress/BillingAddressViewModel.php
@@ -1106,19 +1119,21 @@ index 718aceea..0104f9ba 100644
      }
  
 diff --git a/Config/XmlConfig/Value/Theme.php b/Config/XmlConfig/Value/Theme.php
-index 078932b2..2a2f62f0 100644
+index 5aa65c93..3871a844 100644
 --- a/Config/XmlConfig/Value/Theme.php
 +++ b/Config/XmlConfig/Value/Theme.php
-@@ -9,9 +9,9 @@ use LokiCheckout\Core\Exception\UnknownStepException;
+@@ -9,10 +9,10 @@ use LokiCheckout\Core\Exception\UnknownStepException;
  class Theme
  {
      public function __construct(
 -        private readonly string $name,
 -        private readonly string $label,
--        private readonly array $steps = []
+-        private readonly array $steps = [],
+-        private readonly string $parent = ''
 +        private string $name,
 +        private string $label,
-+        private array $steps = []
++        private array $steps = [],
++        private string $parent = ''
      ) {
      }
  
@@ -1698,18 +1713,33 @@ index 56a3f27c..ce74f60a 100644
 +    public function resolve(IconResolverContext $iconResolverContext);
  }
 diff --git a/Shipment/Icon/IconResolverListing.php b/Shipment/Icon/IconResolverListing.php
-index 0e491c50..b29ec03c 100644
+index f1003d74..00e038c2 100644
 --- a/Shipment/Icon/IconResolverListing.php
 +++ b/Shipment/Icon/IconResolverListing.php
-@@ -6,7 +6,7 @@ namespace LokiCheckout\Core\Shipment\Icon;
+@@ -6,8 +6,8 @@ namespace LokiCheckout\Core\Shipment\Icon;
  class IconResolverListing
  {
      public function __construct(
--        private readonly array $iconResolvers = []
-+        private array $iconResolvers = []
+-        private readonly LayoutIconResolver $layoutIconResolver,
+-        private readonly array $iconResolvers = [],
++        private LayoutIconResolver $layoutIconResolver,
++        private array $iconResolvers = [],
      ) {
      }
  
+diff --git a/Shipment/Icon/LayoutIconResolver.php b/Shipment/Icon/LayoutIconResolver.php
+index 5a92ca90..32a1ab10 100644
+--- a/Shipment/Icon/LayoutIconResolver.php
++++ b/Shipment/Icon/LayoutIconResolver.php
+@@ -15,7 +15,7 @@ class LayoutIconResolver implements IconResolverInterface
+     ) {
+     }
+ 
+-    public function resolve(IconResolverContext $iconResolverContext): false|string
++    public function resolve(IconResolverContext $iconResolverContext)
+     {
+         $shipmentMethodCode = $iconResolverContext->getShipmentMethodCode();
+         $blockName = 'loki-checkout.shipping.methods.'.$shipmentMethodCode;
 diff --git a/Step/FinalStep.php b/Step/FinalStep.php
 index f79b84b2..6f19a6ab 100644
 --- a/Step/FinalStep.php
@@ -2751,7 +2781,7 @@ index 9f185833..fa82922d 100644
      }
  
 diff --git a/ViewModel/ShipmentMethodIcon.php b/ViewModel/ShipmentMethodIcon.php
-index efbbe91f..b9918be7 100644
+index 3f0b4b2f..a77e9686 100644
 --- a/ViewModel/ShipmentMethodIcon.php
 +++ b/ViewModel/ShipmentMethodIcon.php
 @@ -13,8 +13,8 @@ use LokiCheckout\Core\Shipment\Icon\IconResolverListing;
