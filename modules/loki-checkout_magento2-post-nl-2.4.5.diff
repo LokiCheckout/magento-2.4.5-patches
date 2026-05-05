@@ -21,25 +21,23 @@ index a1049bd..d60aaa1 100644
          if (!is_array($value)) {
              return;
 diff --git a/Shipment/Icon/IconResolver.php b/Shipment/Icon/IconResolver.php
-index a41497d..4b791ff 100644
+index 9cadcb4..7dc79c7 100644
 --- a/Shipment/Icon/IconResolver.php
 +++ b/Shipment/Icon/IconResolver.php
-@@ -9,12 +9,12 @@ use Magento\Framework\Module\Manager as ModuleManager;
- class IconResolver implements IconResolverInterface
+@@ -10,11 +10,11 @@ class IconResolver implements IconResolverInterface
  {
      public function __construct(
--        private readonly ModuleManager $moduleManager,
--        private readonly string $imageId = 'TIG_PostNL::images/postnl_logo.png', // @todo: Doc on how to change this
-+        private ModuleManager $moduleManager,
-+        private string $imageId = 'TIG_PostNL::images/postnl_logo.png', // @todo: Doc on how to change this
+         private ImageRenderer $imageRenderer,
+-        private readonly string $imageId = 'LokiCheckout_PostNl::images/postnl.svg', // @todo: Doc on how to change this
++        private string $imageId = 'LokiCheckout_PostNl::images/postnl.svg', // @todo: Doc on how to change this
      ) {
      }
  
 -    public function resolve(IconResolverContext $iconResolverContext): false|string
 +    public function resolve(IconResolverContext $iconResolverContext)
      {
-         if (false === $this->moduleManager->isEnabled('TIG_PostNL')) {
-             return false;
+         $shipmentMethodCode = $iconResolverContext->getShipmentMethodCode();
+ 
 diff --git a/ViewModel/DeliveryDateView.php b/ViewModel/DeliveryDateView.php
 index cdda07d..0aaa14b 100644
 --- a/ViewModel/DeliveryDateView.php
