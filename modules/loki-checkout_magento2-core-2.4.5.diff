@@ -410,10 +410,10 @@ index e9984f87..3d28a544 100644
          $billingAsShipping = (bool)$value;
          $quote = $this->getContext()->getCheckoutState()->getQuote();
 diff --git a/Component/Checkout/GridLayout/GridLayoutViewModel.php b/Component/Checkout/GridLayout/GridLayoutViewModel.php
-index 53c5d900..94f0fbf1 100644
+index 8b44e8b6..0b34796f 100644
 --- a/Component/Checkout/GridLayout/GridLayoutViewModel.php
 +++ b/Component/Checkout/GridLayout/GridLayoutViewModel.php
-@@ -11,7 +11,7 @@ class GridLayoutViewModel extends ComponentViewModel
+@@ -13,7 +13,7 @@ class GridLayoutViewModel extends ComponentViewModel
      protected bool $skipValidation = true;
  
      public function __construct(
@@ -1081,20 +1081,26 @@ index fd84be7d..e48ca8c2 100644
      }
  
 diff --git a/Config/XmlConfig/Value/GridLayout/Grid.php b/Config/XmlConfig/Value/GridLayout/Grid.php
-index efefbc9d..67be2c44 100644
+index f7368b98..de17a301 100644
 --- a/Config/XmlConfig/Value/GridLayout/Grid.php
 +++ b/Config/XmlConfig/Value/GridLayout/Grid.php
-@@ -8,10 +8,10 @@ use LokiCheckout\Core\Exception\BlockNotFoundException;
+@@ -8,13 +8,13 @@ use LokiCheckout\Core\Exception\BlockNotFoundException;
  class Grid
  {
      public function __construct(
 -        private readonly string $name,
 -        private readonly string $countryId,
 -        private readonly string $parent,
+-        private readonly int $defaultSortOrder,
+-        private readonly int $defaultColSpan,
+-        private readonly int $defaultMdColSpan,
 -        private readonly array $blocks = []
 +        private string $name,
 +        private string $countryId,
 +        private string $parent,
++        private int $defaultSortOrder,
++        private int $defaultColSpan,
++        private int $defaultMdColSpan,
 +        private array $blocks = []
      ) {
      }
@@ -2015,7 +2021,7 @@ index c6d20ea0..960a9b38 100644
      }
  
 diff --git a/Util/Block/CssStyleParser/GridStyleParser.php b/Util/Block/CssStyleParser/GridStyleParser.php
-index b08906b9..fe151b4c 100644
+index 566c9ec7..81480700 100644
 --- a/Util/Block/CssStyleParser/GridStyleParser.php
 +++ b/Util/Block/CssStyleParser/GridStyleParser.php
 @@ -11,7 +11,7 @@ use Loki\CssUtils\Util\CssStyleParser\CssStyleParserInterface;
@@ -2027,7 +2033,7 @@ index b08906b9..fe151b4c 100644
      ) {
      }
  
-@@ -66,7 +66,7 @@ class GridStyleParser implements CssStyleParserInterface
+@@ -74,7 +74,7 @@ class GridStyleParser implements CssStyleParserInterface
          return $cssStyles;
      }
  
