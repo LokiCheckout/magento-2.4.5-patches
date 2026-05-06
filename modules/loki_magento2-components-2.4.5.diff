@@ -399,6 +399,19 @@ index 833e0c2..ac4ee5c 100644
      {
          if ($value > 0) {
              return $value;
+diff --git a/Filter/RemoveSpaces.php b/Filter/RemoveSpaces.php
+index 71efc2e..f8f400c 100644
+--- a/Filter/RemoveSpaces.php
++++ b/Filter/RemoveSpaces.php
+@@ -4,7 +4,7 @@ namespace Loki\Components\Filter;
+ 
+ class RemoveSpaces implements FilterInterface
+ {
+-    public function filter(mixed $value, FilterScope $scope): mixed
++    public function filter($value, FilterScope $scope)
+     {
+         return preg_replace('/\s+/', '', (string)$value);
+     }
 diff --git a/Filter/Security.php b/Filter/Security.php
 index 98b2f97..4373604 100644
 --- a/Filter/Security.php
