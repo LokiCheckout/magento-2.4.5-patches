@@ -147,7 +147,7 @@ index 1629ca3..2e3e23d 100644
          if (empty($this->addressType)) {
              throw new RuntimeException('No address type set');
 diff --git a/Service/PostcodeInfo.php b/Service/PostcodeInfo.php
-index 992b7e2..8ba7ff8 100644
+index e169407..4a0217a 100644
 --- a/Service/PostcodeInfo.php
 +++ b/Service/PostcodeInfo.php
 @@ -15,14 +15,14 @@ use LokiCheckout\PostcodeNl\Util\SupportedCountries;
