@@ -57,17 +57,21 @@ index feccd3e..6a1dd40 100644
          $passwordComplexity = new PasswordComplexity();
          $validator = new PasswordComplexityValidator($passwordComplexity);
 diff --git a/Util/Option.php b/Util/Option.php
-index 9c41aa9..2ab50c4 100644
+index 0aab399..26cb79b 100644
 --- a/Util/Option.php
 +++ b/Util/Option.php
-@@ -5,13 +5,13 @@ namespace Loki\Field\Util;
+@@ -5,14 +5,14 @@ namespace Loki\Field\Util;
  class Option implements OptionInterface
  {
      public function __construct(
--        private mixed $value,
+-        private readonly mixed $value,
+-        private readonly string $label,
+-        private readonly bool $disabled = false,
+-        private readonly bool $selected = false
 +        private $value,
-         private string $label,
-         private bool $disabled = false
++        private string $label,
++        private bool $disabled = false,
++        private bool $selected = false
      ) {
      }
  
@@ -77,20 +81,37 @@ index 9c41aa9..2ab50c4 100644
          return $this->value;
      }
 diff --git a/Util/OptionFactory.php b/Util/OptionFactory.php
-index 61d4fdf..c17dea8 100644
+index 0fe2db5..81ff7f5 100644
 --- a/Util/OptionFactory.php
 +++ b/Util/OptionFactory.php
-@@ -11,7 +11,7 @@ class OptionFactory
+@@ -12,7 +12,7 @@ class OptionFactory
+     }
+ 
+     public function create(
+-        mixed $value,
++        $value,
+         string $label,
+         bool $disabled = false,
+         bool $selected = false
+diff --git a/Util/OptionGroup.php b/Util/OptionGroup.php
+index 3ce5ef9..9803e15 100644
+--- a/Util/OptionGroup.php
++++ b/Util/OptionGroup.php
+@@ -5,9 +5,9 @@ namespace Loki\Field\Util;
+ class OptionGroup implements OptionGroupInterface
+ {
+     public function __construct(
+-        private readonly string $label,
+-        private readonly array $options = [],
+-        private readonly bool $disabled = false,
++        private string $label,
++        private array $options = [],
++        private bool $disabled = false,
      ) {
      }
  
--    public function create(mixed $value, string $label, bool $disabled = false): Option
-+    public function create($value, string $label, bool $disabled = false): Option
-     {
-         return $this->objectManager->create(Option::class, [
-             'value' => $value,
 diff --git a/Util/OptionInterface.php b/Util/OptionInterface.php
-index a87b27f..acb8345 100644
+index f6db5cc..02f5830 100644
 --- a/Util/OptionInterface.php
 +++ b/Util/OptionInterface.php
 @@ -5,7 +5,7 @@ namespace Loki\Field\Util;
