@@ -2606,15 +2606,19 @@ index c970e3ef..3f5154f2 100644
      }
  
 diff --git a/ViewModel/OptionModel/CountryOptionModel.php b/ViewModel/OptionModel/CountryOptionModel.php
-index 74b89c83..f361a858 100644
+index 8a045d36..ecf307ce 100644
 --- a/ViewModel/OptionModel/CountryOptionModel.php
 +++ b/ViewModel/OptionModel/CountryOptionModel.php
-@@ -10,7 +10,7 @@ use Loki\Field\Util\OptionModelInterface;
- class CountryOptionModel implements ArgumentInterface, OptionModelInterface
+@@ -13,10 +13,10 @@ use Loki\Components\Component\ComponentViewModelInterface;
+ class CountryOptionModel implements ArgumentInterface, OptionGroupModelInterface
  {
      public function __construct(
 -        private readonly DirectoryHelper $directoryHelper,
 +        private DirectoryHelper $directoryHelper,
+         private OptionGroupFactory $optionGroupFactory,
+         private OptionFactory $optionFactory,
+-        private readonly array $skipCountries = []
++        private array $skipCountries = []
      ) {
      }
  
