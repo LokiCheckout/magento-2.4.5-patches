@@ -1,0 +1,26 @@
+diff --git a/Config/Config.php b/Config/Config.php
+index 75ecef8..cba7aba 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -10,7 +10,7 @@ class Config
+     private const XML_PATH_ADD_EMOJI = 'loki_checkout/advanced_country_field/add_emoji';
+ 
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
++        private ScopeConfigInterface $scopeConfig,
+     ) {
+     }
+ 
+diff --git a/Plugin/AddEmojiFlagsPlugin.php b/Plugin/AddEmojiFlagsPlugin.php
+index 1c2c9b9..257594e 100644
+--- a/Plugin/AddEmojiFlagsPlugin.php
++++ b/Plugin/AddEmojiFlagsPlugin.php
+@@ -13,7 +13,7 @@ use LokiCheckout\AdvancedCountryField\Config\Config;
+ class AddEmojiFlagsPlugin
+ {
+     public function __construct(
+-        private readonly Config $config,
++        private Config $config,
+         private OptionFactory $optionFactory,
+         private OptionGroupFactory $optionGroupFactory,
+     ) {
