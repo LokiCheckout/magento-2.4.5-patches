@@ -65,10 +65,16 @@ index d2af283..b2c9895 100644
          $customerId = (int)$this->customerSession->getCustomer()->getStripeId();
          if ($customerId > 0) {
 diff --git a/Payment/Icon/IconResolver.php b/Payment/Icon/IconResolver.php
-index 3b5371b..54efb32 100644
+index 0f034ab..5240e17 100644
 --- a/Payment/Icon/IconResolver.php
 +++ b/Payment/Icon/IconResolver.php
-@@ -13,7 +13,7 @@ class IconResolver implements IconResolverInterface
+@@ -12,12 +12,12 @@ class IconResolver implements IconResolverInterface
+     public function __construct(
+         private ModuleManager $moduleManager,
+         private ImageRenderer $imageRenderer,
+-        private readonly string $imageId = 'LokiCheckout_Stripe::images/stripe.png', // @todo: Doc on how to change this
++        private string $imageId = 'LokiCheckout_Stripe::images/stripe.png', // @todo: Doc on how to change this
+ 
      ) {
      }
  
