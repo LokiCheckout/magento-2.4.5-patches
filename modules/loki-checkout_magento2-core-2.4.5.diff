@@ -366,10 +366,10 @@ index 3c5dc6fc..386bd5ec 100644
      }
  
 diff --git a/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php b/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
-index d34df7c0..ec8cba4d 100644
+index 026af595..fb055449 100644
 --- a/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
 +++ b/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
-@@ -46,7 +46,7 @@ class PaymentMethodsRepository extends ComponentRepository
+@@ -51,7 +51,7 @@ class PaymentMethodsRepository extends ComponentRepository
          return $defaultPayment;
      }
  
@@ -378,15 +378,15 @@ index d34df7c0..ec8cba4d 100644
      {
          $quote = $this->getQuote();
          $currentPaymentMethod = (string)$quote->getPayment()->getMethod();
-@@ -59,7 +59,7 @@ class PaymentMethodsRepository extends ComponentRepository
+@@ -64,7 +64,7 @@ class PaymentMethodsRepository extends ComponentRepository
          return $sanitizedPaymentMethod;
      }
  
 -    public function saveValue(mixed $value): void
 +    public function saveValue($value): void
      {
-         $value = $this->sanitizePaymentMethod((string)$value);
-         $quote = $this->getQuote();
+         if ($this->paymentRateLimiter instanceof PaymentProcessingRateLimiterInterface) {
+             try {
 diff --git a/Component/Checkout/Billing/ShippingAsBilling/ShippingAsBillingRepository.php b/Component/Checkout/Billing/ShippingAsBilling/ShippingAsBillingRepository.php
 index e9984f87..3d28a544 100644
 --- a/Component/Checkout/Billing/ShippingAsBilling/ShippingAsBillingRepository.php
@@ -596,7 +596,7 @@ index 521dea01..7fb5e736 100644
      }
  
 diff --git a/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php b/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php
-index b9700c97..017da936 100644
+index db0870e1..5e50bf9e 100644
 --- a/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php
 +++ b/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php
 @@ -17,7 +17,7 @@ class ShippingMethodsRepository extends ComponentRepository
@@ -1161,7 +1161,7 @@ index 023ae052..1d781b07 100644
      }
  
 diff --git a/Controller/Index/Finalize.php b/Controller/Index/Finalize.php
-index 7096e64c..3c391be7 100644
+index c7b0724d..5e0f7c56 100644
 --- a/Controller/Index/Finalize.php
 +++ b/Controller/Index/Finalize.php
 @@ -15,10 +15,10 @@ use RuntimeException;
