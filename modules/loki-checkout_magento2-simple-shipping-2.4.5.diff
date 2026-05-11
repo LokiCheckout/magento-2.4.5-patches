@@ -159,6 +159,19 @@ index 8727a1f..e6db443 100644
      ) {
          parent::__construct($context);
      }
+diff --git a/Observer/CopySimpleShippingLocationToOrder.php b/Observer/CopySimpleShippingLocationToOrder.php
+index de49089..708b224 100644
+--- a/Observer/CopySimpleShippingLocationToOrder.php
++++ b/Observer/CopySimpleShippingLocationToOrder.php
+@@ -11,7 +11,7 @@ use Magento\Sales\Api\OrderRepositoryInterface;
+ class CopySimpleShippingLocationToOrder implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly OrderRepositoryInterface $orderRepository
++        private OrderRepositoryInterface $orderRepository
+     ) {
+     }
+ 
 diff --git a/Repository/LocationRepository.php b/Repository/LocationRepository.php
 index 0e88266..90e405d 100644
 --- a/Repository/LocationRepository.php
