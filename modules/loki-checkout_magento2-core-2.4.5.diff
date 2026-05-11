@@ -366,7 +366,7 @@ index 3c5dc6fc..386bd5ec 100644
      }
  
 diff --git a/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php b/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
-index 026af595..fb055449 100644
+index 789b9478..8653a40b 100644
 --- a/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
 +++ b/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
 @@ -51,7 +51,7 @@ class PaymentMethodsRepository extends ComponentRepository
@@ -1747,7 +1747,7 @@ index 5a92ca90..32a1ab10 100644
          $shipmentMethodCode = $iconResolverContext->getShipmentMethodCode();
          $blockName = 'loki-checkout.shipping.methods.'.$shipmentMethodCode;
 diff --git a/Step/FinalStep.php b/Step/FinalStep.php
-index f79b84b2..6f19a6ab 100644
+index 2f3f3903..19a9ad21 100644
 --- a/Step/FinalStep.php
 +++ b/Step/FinalStep.php
 @@ -26,15 +26,15 @@ use Loki\Components\Exception\RedirectException;
