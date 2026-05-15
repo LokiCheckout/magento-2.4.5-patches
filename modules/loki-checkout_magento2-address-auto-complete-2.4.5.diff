@@ -47,7 +47,7 @@ index 93b90f3..7d829f2 100644
      }
  
 diff --git a/Console/Command/CheckPostcodeCommand.php b/Console/Command/CheckPostcodeCommand.php
-index 1d0c4e4..f2cf499 100644
+index b622c77..873279a 100644
 --- a/Console/Command/CheckPostcodeCommand.php
 +++ b/Console/Command/CheckPostcodeCommand.php
 @@ -16,11 +16,11 @@ use Symfony\Component\Console\Output\OutputInterface;
