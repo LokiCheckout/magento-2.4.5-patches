@@ -1,5 +1,5 @@
 diff --git a/Console/Command/DumpModulesCommand.php b/Console/Command/DumpModulesCommand.php
-index b0cf065..c829ddf 100644
+index 911fb3e..2674ca3 100644
 --- a/Console/Command/DumpModulesCommand.php
 +++ b/Console/Command/DumpModulesCommand.php
 @@ -14,11 +14,11 @@ use LokiCheckout\Core\Config\LokiCheckoutModules;
@@ -20,7 +20,7 @@ index b0cf065..c829ddf 100644
      ) {
          parent::__construct($name);
 diff --git a/Console/Command/ListModulesCommand.php b/Console/Command/ListModulesCommand.php
-index 096738d..eca27eb 100644
+index 25914eb..a6cf3ec 100644
 --- a/Console/Command/ListModulesCommand.php
 +++ b/Console/Command/ListModulesCommand.php
 @@ -14,9 +14,9 @@ use LokiCheckout\Core\Config\LokiCheckoutModules;
