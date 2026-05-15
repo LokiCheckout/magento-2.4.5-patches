@@ -1143,7 +1143,7 @@ index 048e752..fddaedf 100644
          $email = trim((string)$value);
  
 diff --git a/Validator/LengthValidator.php b/Validator/LengthValidator.php
-index ee50e8f..d70b104 100644
+index 0041600..2cc9e02 100644
 --- a/Validator/LengthValidator.php
 +++ b/Validator/LengthValidator.php
 @@ -8,7 +8,7 @@ use Magento\Framework\View\Element\AbstractBlock;
