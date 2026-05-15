@@ -2056,10 +2056,10 @@ index 449be7e4..201a2067 100644
      }
  
 diff --git a/Util/Checkout/AddLayoutHandles.php b/Util/Checkout/AddLayoutHandles.php
-index ea857266..383e8d34 100644
+index c14729a1..8d3cb1da 100644
 --- a/Util/Checkout/AddLayoutHandles.php
 +++ b/Util/Checkout/AddLayoutHandles.php
-@@ -10,10 +10,10 @@ use Magento\Framework\View\LayoutInterface;
+@@ -11,11 +11,11 @@ use Magento\Framework\View\LayoutInterface;
  class AddLayoutHandles
  {
      public function __construct(
@@ -2067,10 +2067,12 @@ index ea857266..383e8d34 100644
 -        private readonly LayoutInterface $layout,
 -        private readonly CurrentTheme $currentTheme,
 -        private readonly CheckoutState $checkoutState,
+-        private readonly ManagerInterface $eventManager,
 +        private Config $config,
 +        private LayoutInterface $layout,
 +        private CurrentTheme $currentTheme,
 +        private CheckoutState $checkoutState,
++        private ManagerInterface $eventManager,
      ) {
      }
  
