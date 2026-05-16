@@ -15,16 +15,19 @@ index bd3506f..7ed6168 100644
          array $data = []
      ) {
          parent::__construct($context, $data);
-diff --git a/Component/Checkout/Shipping/DeliveryDate/DeliveryDateRepository.php b/Component/Checkout/Shipping/DeliveryDate/DeliveryDateRepository.php
-index b36aa96..7aabf21 100644
---- a/Component/Checkout/Shipping/DeliveryDate/DeliveryDateRepository.php
-+++ b/Component/Checkout/Shipping/DeliveryDate/DeliveryDateRepository.php
-@@ -15,11 +15,11 @@ use LokiCheckout\DeliveryDate\Repository\DeliveryDateRepository as ModelReposito
- class DeliveryDateRepository extends FieldRepository
+diff --git a/Component/Checkout/Shipping/DeliveryDate/DateField/DateFieldRepository.php b/Component/Checkout/Shipping/DeliveryDate/DateField/DateFieldRepository.php
+index 853afef..748c713 100644
+--- a/Component/Checkout/Shipping/DeliveryDate/DateField/DateFieldRepository.php
++++ b/Component/Checkout/Shipping/DeliveryDate/DateField/DateFieldRepository.php
+@@ -18,13 +18,13 @@ use LokiCheckout\DeliveryDate\Service\ExclusionService;
+ class DateFieldRepository extends FieldRepository
  {
      public function __construct(
 -        private readonly ModelRepository $modelRepository,
+-        private readonly ExclusionService $exclusionService,
 +        private ModelRepository $modelRepository,
++        private ExclusionService $exclusionService,
+         private Config $config
      ) {
      }
  
@@ -33,20 +36,44 @@ index b36aa96..7aabf21 100644
      {
          $quote = $this->getContext()->getCheckoutState()->getQuote();
  
-@@ -35,7 +35,7 @@ class DeliveryDateRepository extends FieldRepository
+@@ -43,7 +43,7 @@ class DateFieldRepository extends FieldRepository
          }
      }
  
 -    public function saveValue(mixed $value): void
 +    public function saveValue($value): void
      {
-         if (!is_array($value)) {
-             return;
+         $excludes = $this->exclusionService->getExclusions();
+         if (in_array($value, $excludes)) {
+@@ -66,7 +66,7 @@ class DateFieldRepository extends FieldRepository
+         $this->modelRepository->save($deliveryDate);
+     }
+ 
+-    public function getDefaultValue(): mixed
++    public function getDefaultValue()
+     {
+         return date('Y-m-d');
+     }
+diff --git a/Component/Checkout/Shipping/DeliveryDate/DateField/DateFieldViewModel.php b/Component/Checkout/Shipping/DeliveryDate/DateField/DateFieldViewModel.php
+index eebcde2..6f9a4f4 100644
+--- a/Component/Checkout/Shipping/DeliveryDate/DateField/DateFieldViewModel.php
++++ b/Component/Checkout/Shipping/DeliveryDate/DateField/DateFieldViewModel.php
+@@ -14,8 +14,8 @@ use LokiCheckout\DeliveryDate\Service\ExclusionService;
+ class DateFieldViewModel extends CheckoutViewModel
+ {
+     public function __construct(
+-        private readonly ExclusionService $exclusionService,
+-        private readonly Config $config,
++        private ExclusionService $exclusionService,
++        private Config $config,
+     ) {
+     }
+ 
 diff --git a/Component/Checkout/Shipping/DeliveryDate/DeliveryDateViewModel.php b/Component/Checkout/Shipping/DeliveryDate/DeliveryDateViewModel.php
-index ea73559..c6ad3a8 100644
+index 530766c..ff85c39 100644
 --- a/Component/Checkout/Shipping/DeliveryDate/DeliveryDateViewModel.php
 +++ b/Component/Checkout/Shipping/DeliveryDate/DeliveryDateViewModel.php
-@@ -17,10 +17,10 @@ use LokiCheckout\DeliveryDate\Repository\TimeslotRepository;
+@@ -18,10 +18,10 @@ use LokiCheckout\DeliveryDate\Repository\TimeslotRepository;
  class DeliveryDateViewModel extends CheckoutViewModel
  {
      public function __construct(
@@ -61,12 +88,54 @@ index ea73559..c6ad3a8 100644
      ) {
      }
  
+diff --git a/Component/Checkout/Shipping/DeliveryDate/TimeslotField/TimeslotFieldRepository.php b/Component/Checkout/Shipping/DeliveryDate/TimeslotField/TimeslotFieldRepository.php
+index 4af5f96..cd30df6 100644
+--- a/Component/Checkout/Shipping/DeliveryDate/TimeslotField/TimeslotFieldRepository.php
++++ b/Component/Checkout/Shipping/DeliveryDate/TimeslotField/TimeslotFieldRepository.php
+@@ -16,12 +16,12 @@ use LokiCheckout\DeliveryDate\Service\TimeslotService;
+ class TimeslotFieldRepository extends FieldRepository
+ {
+     public function __construct(
+-        private readonly TimeslotService $timeslotService,
+-        private readonly ModelRepository $modelRepository,
++        private TimeslotService $timeslotService,
++        private ModelRepository $modelRepository,
+     ) {
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $quote = $this->getContext()->getCheckoutState()->getQuote();
+ 
+@@ -39,7 +39,7 @@ class TimeslotFieldRepository extends FieldRepository
+         return $value;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (false === $this->timeslotService->isAvailableTimeslot($value)) {
+             $this->getContext()->getMessageManager()->addWarningMessage(__('This timeslot is not available.'));
+diff --git a/Component/Checkout/Shipping/DeliveryDate/TimeslotField/TimeslotFieldViewModel.php b/Component/Checkout/Shipping/DeliveryDate/TimeslotField/TimeslotFieldViewModel.php
+index 4b6dae5..ac23c98 100644
+--- a/Component/Checkout/Shipping/DeliveryDate/TimeslotField/TimeslotFieldViewModel.php
++++ b/Component/Checkout/Shipping/DeliveryDate/TimeslotField/TimeslotFieldViewModel.php
+@@ -13,7 +13,7 @@ use LokiCheckout\DeliveryDate\Config\Config;
+ class TimeslotFieldViewModel extends CheckoutViewModel
+ {
+     public function __construct(
+-        private readonly Config $config,
++        private Config $config,
+     ) {
+     }
+ 
 diff --git a/Config/Config.php b/Config/Config.php
-index 0354dab..581ca2a 100644
+index ce9d381..e1ce3e4 100644
 --- a/Config/Config.php
 +++ b/Config/Config.php
-@@ -20,7 +20,7 @@ class Config implements ArgumentInterface
-     private const XML_PATH_TIMESPAN_OPTIONS = 'loki_checkout_delivery_date/timeslot/options';
+@@ -22,7 +22,7 @@ class Config implements ArgumentInterface
+     private const XML_PATH_HOLIDAY_API_KEY = 'loki_checkout_delivery_date/holiday/api_key';
  
      public function __construct(
 -        private readonly ScopeConfigInterface $scopeConfig
@@ -131,7 +200,7 @@ index ef0c572..58f00f0 100644
      ) {
          parent::__construct($name);
 diff --git a/Console/Command/Exclusion/CreateCommand.php b/Console/Command/Exclusion/CreateCommand.php
-index 67c3aac..4b17cc3 100644
+index 4cd0ed5..2352c70 100644
 --- a/Console/Command/Exclusion/CreateCommand.php
 +++ b/Console/Command/Exclusion/CreateCommand.php
 @@ -37,8 +37,8 @@ class CreateCommand extends Command
@@ -186,8 +255,23 @@ index 2c548df..4c311b1 100644
          ?string $name = null
      ) {
          parent::__construct($name);
+diff --git a/Console/Command/ImportHolidaysCommand.php b/Console/Command/ImportHolidaysCommand.php
+index 4e8e89b..21b1709 100644
+--- a/Console/Command/ImportHolidaysCommand.php
++++ b/Console/Command/ImportHolidaysCommand.php
+@@ -21,8 +21,8 @@ class ImportHolidaysCommand extends Command
+     private const OPTION_PROVIDER = 'provider';
+ 
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly DateProviderListing $dateProviderListing
++        private Config $config,
++        private DateProviderListing $dateProviderListing
+     ) {
+         parent::__construct();
+     }
 diff --git a/Console/Command/Timeslot/CreateCommand.php b/Console/Command/Timeslot/CreateCommand.php
-index 7bbc4b9..b5de528 100644
+index 6eefe2d..a0299d5 100644
 --- a/Console/Command/Timeslot/CreateCommand.php
 +++ b/Console/Command/Timeslot/CreateCommand.php
 @@ -37,8 +37,8 @@ class CreateCommand extends Command
@@ -294,6 +378,34 @@ index 6bff101..472ff99 100644
      ) {
          parent::__construct($context);
      }
+diff --git a/Controller/Adminhtml/Holiday/Import.php b/Controller/Adminhtml/Holiday/Import.php
+index be14463..827e1c5 100644
+--- a/Controller/Adminhtml/Holiday/Import.php
++++ b/Controller/Adminhtml/Holiday/Import.php
+@@ -17,8 +17,8 @@ class Import implements HttpPostActionInterface
+     public const ADMIN_RESOURCE = 'LokiCheckout_DeliveryDate::holiday_import';
+ 
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly DateProviderListing $dateProviderListing,
++        private Config $config,
++        private DateProviderListing $dateProviderListing,
+         private RedirectFactory $resultRedirectFactory,
+         private RequestInterface $request,
+         private Manager $messageManager
+diff --git a/Controller/Adminhtml/Holiday/Index.php b/Controller/Adminhtml/Holiday/Index.php
+index 5069526..d1c0931 100644
+--- a/Controller/Adminhtml/Holiday/Index.php
++++ b/Controller/Adminhtml/Holiday/Index.php
+@@ -15,7 +15,7 @@ class Index implements HttpGetActionInterface
+     public const ADMIN_RESOURCE = 'LokiCheckout_DeliveryDate::holiday_import';
+ 
+     public function __construct(
+-        private readonly PageFactory $resultPageFactory
++        private PageFactory $resultPageFactory
+     ) {
+     }
+ 
 diff --git a/Controller/Adminhtml/Timeslot/Delete.php b/Controller/Adminhtml/Timeslot/Delete.php
 index ca894d0..5963b3a 100644
 --- a/Controller/Adminhtml/Timeslot/Delete.php
@@ -346,6 +458,46 @@ index 495c9f9..837b0b2 100644
      ) {
      }
  
+diff --git a/DateProvider/HolidayApiProvider.php b/DateProvider/HolidayApiProvider.php
+index eb6c3be..de0b279 100644
+--- a/DateProvider/HolidayApiProvider.php
++++ b/DateProvider/HolidayApiProvider.php
+@@ -16,11 +16,11 @@ class HolidayApiProvider implements DateProviderInterface
+     private const API_URL = 'https://holidayapi.com/v1/holidays';
+ 
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly ExclusionFactory $exclusionFactory,
+-        private readonly ExclusionRepository $exclusionRepository,
+-        private readonly Curl $curl,
+-        private readonly LoggerInterface $logger
++        private Config $config,
++        private ExclusionFactory $exclusionFactory,
++        private ExclusionRepository $exclusionRepository,
++        private Curl $curl,
++        private LoggerInterface $logger
+     ) {
+     }
+ 
+diff --git a/DateProvider/OpenHolidaysApiProvider.php b/DateProvider/OpenHolidaysApiProvider.php
+index 8a00779..79a1950 100644
+--- a/DateProvider/OpenHolidaysApiProvider.php
++++ b/DateProvider/OpenHolidaysApiProvider.php
+@@ -15,10 +15,10 @@ class OpenHolidaysApiProvider implements DateProviderInterface
+     private const API_URL = 'https://openholidaysapi.org/PublicHolidays';
+ 
+     public function __construct(
+-        private readonly ExclusionFactory $exclusionFactory,
+-        private readonly ExclusionRepository $exclusionRepository,
+-        private readonly Curl $curl,
+-        private readonly LoggerInterface $logger
++        private ExclusionFactory $exclusionFactory,
++        private ExclusionRepository $exclusionRepository,
++        private Curl $curl,
++        private LoggerInterface $logger
+     ) {
+     }
+ 
 diff --git a/Observer/QuoteSubmitBeforeObserver.php b/Observer/QuoteSubmitBeforeObserver.php
 index ceed578..e4b616d 100644
 --- a/Observer/QuoteSubmitBeforeObserver.php
@@ -392,19 +544,19 @@ index f1e396c..dd15aab 100644
      }
  
 diff --git a/Repository/DeliveryDateRepository.php b/Repository/DeliveryDateRepository.php
-index e205570..16204d7 100644
+index ebc6db0..2ea59d6 100644
 --- a/Repository/DeliveryDateRepository.php
 +++ b/Repository/DeliveryDateRepository.php
 @@ -19,11 +19,11 @@ use Magento\Framework\Exception\NoSuchEntityException;
  class DeliveryDateRepository
  {
      public function __construct(
--        private readonly Resource $resource,
+-        private readonly ResourceModel $resource,
 -        private readonly ModelFactory $modelFactory,
 -        private readonly CollectionFactory $collectionFactory,
 -        private readonly SearchResultsFactory $searchResultsFactory,
 -        private readonly CollectionProcessorInterface $collectionProcessor
-+        private Resource $resource,
++        private ResourceModel $resource,
 +        private ModelFactory $modelFactory,
 +        private CollectionFactory $collectionFactory,
 +        private SearchResultsFactory $searchResultsFactory,
@@ -413,10 +565,10 @@ index e205570..16204d7 100644
      }
  
 diff --git a/Repository/ExclusionRepository.php b/Repository/ExclusionRepository.php
-index 2cc24c7..c96af1e 100644
+index ab7dd26..d135d85 100644
 --- a/Repository/ExclusionRepository.php
 +++ b/Repository/ExclusionRepository.php
-@@ -19,11 +19,11 @@ use Magento\Framework\Api\SearchResults;
+@@ -24,11 +24,11 @@ use Magento\Framework\Api\SearchResults;
  class ExclusionRepository
  {
      public function __construct(
@@ -424,20 +576,20 @@ index 2cc24c7..c96af1e 100644
 -        private readonly ExclusionFactory $exclusionFactory,
 -        private readonly CollectionFactory $collectionFactory,
 -        private readonly SearchResultsFactory $searchResultsFactory,
--        private readonly CollectionProcessorInterface $collectionProcessor
+-        private readonly CollectionProcessorInterface $collectionProcessor,
 +        private ExclusionResource $resource,
 +        private ExclusionFactory $exclusionFactory,
 +        private CollectionFactory $collectionFactory,
 +        private SearchResultsFactory $searchResultsFactory,
-+        private CollectionProcessorInterface $collectionProcessor
++        private CollectionProcessorInterface $collectionProcessor,
      ) {
      }
  
 diff --git a/Repository/TimeslotRepository.php b/Repository/TimeslotRepository.php
-index fe1bdee..257b439 100644
+index 2d814b7..b1cc5a7 100644
 --- a/Repository/TimeslotRepository.php
 +++ b/Repository/TimeslotRepository.php
-@@ -19,11 +19,11 @@ use Magento\Framework\Exception\NoSuchEntityException;
+@@ -20,11 +20,11 @@ use Magento\Framework\Exception\NoSuchEntityException;
  class TimeslotRepository
  {
      public function __construct(
