@@ -1,0 +1,30 @@
+diff --git a/Config/Config.php b/Config/Config.php
+index 4ddeab5..47b55e4 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -13,7 +13,7 @@ class Config
+     private const XML_PATH_ALGORITHM = 'loki_checkout/ab_testing/algorithm';
+ 
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig
++        private ScopeConfigInterface $scopeConfig
+     ) {
+     }
+ 
+diff --git a/Plugin/ConfigThemePlugin.php b/Plugin/ConfigThemePlugin.php
+index 5cbd286..fd415fa 100644
+--- a/Plugin/ConfigThemePlugin.php
++++ b/Plugin/ConfigThemePlugin.php
+@@ -16,9 +16,9 @@ class ConfigThemePlugin
+     private const SESSION_KEY_THEME_INDEX = 'loki_ab_testing_theme_index';
+ 
+     public function __construct(
+-        private readonly AbTestingConfig $abTestingConfig,
+-        private readonly XmlConfig $xmlConfig,
+-        private readonly CheckoutSession $checkoutSession
++        private AbTestingConfig $abTestingConfig,
++        private XmlConfig $xmlConfig,
++        private CheckoutSession $checkoutSession
+     ) {
+     }
+ 
