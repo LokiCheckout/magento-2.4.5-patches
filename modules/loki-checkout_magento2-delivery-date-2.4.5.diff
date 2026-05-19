@@ -55,7 +55,7 @@ index 853afef..748c713 100644
          return date('Y-m-d');
      }
 diff --git a/Component/Checkout/Shipping/DeliveryDate/DateField/DateFieldViewModel.php b/Component/Checkout/Shipping/DeliveryDate/DateField/DateFieldViewModel.php
-index eebcde2..6f9a4f4 100644
+index ba491d2..4b7f520 100644
 --- a/Component/Checkout/Shipping/DeliveryDate/DateField/DateFieldViewModel.php
 +++ b/Component/Checkout/Shipping/DeliveryDate/DateField/DateFieldViewModel.php
 @@ -14,8 +14,8 @@ use LokiCheckout\DeliveryDate\Service\ExclusionService;
@@ -89,7 +89,7 @@ index 530766c..ff85c39 100644
      }
  
 diff --git a/Component/Checkout/Shipping/DeliveryDate/TimeslotField/TimeslotFieldRepository.php b/Component/Checkout/Shipping/DeliveryDate/TimeslotField/TimeslotFieldRepository.php
-index 4af5f96..cd30df6 100644
+index 853457e..91cf931 100644
 --- a/Component/Checkout/Shipping/DeliveryDate/TimeslotField/TimeslotFieldRepository.php
 +++ b/Component/Checkout/Shipping/DeliveryDate/TimeslotField/TimeslotFieldRepository.php
 @@ -16,12 +16,12 @@ use LokiCheckout\DeliveryDate\Service\TimeslotService;
@@ -115,7 +115,7 @@ index 4af5f96..cd30df6 100644
 -    public function saveValue(mixed $value): void
 +    public function saveValue($value): void
      {
-         if (false === $this->timeslotService->isAvailableTimeslot($value)) {
+         if (false === $this->timeslotService->isAvailableTimeslot((string)$value)) {
              $this->getContext()->getMessageManager()->addWarningMessage(__('This timeslot is not available.'));
 diff --git a/Component/Checkout/Shipping/DeliveryDate/TimeslotField/TimeslotFieldViewModel.php b/Component/Checkout/Shipping/DeliveryDate/TimeslotField/TimeslotFieldViewModel.php
 index 4b6dae5..ac23c98 100644
