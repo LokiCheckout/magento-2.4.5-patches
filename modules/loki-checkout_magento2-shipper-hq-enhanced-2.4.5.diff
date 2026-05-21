@@ -1,16 +1,15 @@
 diff --git a/Component/ShipperHQ/ShipperHQRepository.php b/Component/ShipperHQ/ShipperHQRepository.php
-index 1f5dd65f..3e8f0cfc 100644
+index b1ee800b..b184aa8a 100644
 --- a/Component/ShipperHQ/ShipperHQRepository.php
 +++ b/Component/ShipperHQ/ShipperHQRepository.php
-@@ -21,13 +21,13 @@ class ShipperHQRepository extends ComponentRepository
+@@ -21,12 +21,12 @@ class ShipperHQRepository extends ComponentRepository
      ) {
      }
  
 -    public function getValue(): mixed
 +    public function getValue()
      {
-         return (string)$this->checkoutState->getCheckoutSession()
-             ->getShqTransactionId();
+         return (string)$this->checkoutState->getCheckoutSession()->getShqTransactionId();
      }
  
 -    public function saveValue(mixed $value): void
