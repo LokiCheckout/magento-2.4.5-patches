@@ -596,7 +596,7 @@ index 521dea01..7fb5e736 100644
      }
  
 diff --git a/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php b/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php
-index db0870e1..5e50bf9e 100644
+index f2ede9d6..3453a2f6 100644
 --- a/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php
 +++ b/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php
 @@ -17,7 +17,7 @@ class ShippingMethodsRepository extends ComponentRepository
@@ -1358,7 +1358,7 @@ index 43a2487c..7d1cbbdd 100644
      ) {
      }
 diff --git a/Payment/Icon/IconResolverContext.php b/Payment/Icon/IconResolverContext.php
-index 9352ce89..5798fce7 100644
+index e1e12527..56648dca 100644
 --- a/Payment/Icon/IconResolverContext.php
 +++ b/Payment/Icon/IconResolverContext.php
 @@ -16,12 +16,12 @@ class IconResolverContext
@@ -1402,8 +1402,8 @@ index 9352ce89..5798fce7 100644
          return false;
      }
  
--    public function getIconOutput(false|string $iconPath, string $iconType = ''): string
-+    public function getIconOutput($iconPath, string $iconType = ''): string
+-    public function getIconOutput(false|string $iconPath, string $iconType = '', array $htmlAttributes = []): string
++    public function getIconOutput($iconPath, string $iconType = '', array $htmlAttributes = []): string
      {
          if (false === $iconPath) {
              return '';
