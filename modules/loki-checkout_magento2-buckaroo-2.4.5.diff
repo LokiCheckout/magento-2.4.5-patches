@@ -90,7 +90,7 @@ index ea90816..3feddd2 100644
          $this->applyVoucher->apply($value);
      }
 diff --git a/Payment/Icon/IconResolver.php b/Payment/Icon/IconResolver.php
-index a8c49ba..5b671d1 100644
+index ebf8428..517224f 100644
 --- a/Payment/Icon/IconResolver.php
 +++ b/Payment/Icon/IconResolver.php
 @@ -15,7 +15,7 @@ class IconResolver implements IconResolverInterface
