@@ -1,8 +1,8 @@
 diff --git a/Component/ShipperHQ/ShipperHQRepository.php b/Component/ShipperHQ/ShipperHQRepository.php
-index b1ee800b..b184aa8a 100644
+index a005f7e7..e703e564 100644
 --- a/Component/ShipperHQ/ShipperHQRepository.php
 +++ b/Component/ShipperHQ/ShipperHQRepository.php
-@@ -21,12 +21,12 @@ class ShipperHQRepository extends ComponentRepository
+@@ -23,12 +23,12 @@ class ShipperHQRepository extends ComponentRepository
      ) {
      }
  
