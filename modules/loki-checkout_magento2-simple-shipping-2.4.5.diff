@@ -159,6 +159,21 @@ index 8727a1f..e6db443 100644
      ) {
          parent::__construct($context);
      }
+diff --git a/Observer/CleanupQuote.php b/Observer/CleanupQuote.php
+index 18c291f..8d659bf 100644
+--- a/Observer/CleanupQuote.php
++++ b/Observer/CleanupQuote.php
+@@ -10,8 +10,8 @@ use Magento\Framework\Event\ObserverInterface;
+ class CleanupQuote implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly QuoteSimpleShipping $quoteSimpleShipping,
++        private CheckoutState $checkoutState,
++        private QuoteSimpleShipping $quoteSimpleShipping,
+     ) {
+     }
+ 
 diff --git a/Observer/CopySimpleShippingLocationToOrder.php b/Observer/CopySimpleShippingLocationToOrder.php
 index de49089..708b224 100644
 --- a/Observer/CopySimpleShippingLocationToOrder.php
