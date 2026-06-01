@@ -12,7 +12,7 @@ index dfd4871..e0df5ef 100644
      }
  
 diff --git a/Component/ComponentRegistry.php b/Component/ComponentRegistry.php
-index 901e95a..ee9b583 100644
+index 4b28446..58fbd57 100644
 --- a/Component/ComponentRegistry.php
 +++ b/Component/ComponentRegistry.php
 @@ -12,9 +12,9 @@ class ComponentRegistry
@@ -69,7 +69,7 @@ index 9060320..35872aa 100644
  
  }
 diff --git a/Component/ComponentViewModel.php b/Component/ComponentViewModel.php
-index d9560aa..ddabaf6 100644
+index 6088619..7933c8f 100644
 --- a/Component/ComponentViewModel.php
 +++ b/Component/ComponentViewModel.php
 @@ -54,7 +54,7 @@ class ComponentViewModel implements ComponentViewModelInterface
@@ -82,7 +82,7 @@ index d9560aa..ddabaf6 100644
          if (false === $this->getComponent()->hasRepository()) {
              return null;
 diff --git a/Component/ComponentViewModelInterface.php b/Component/ComponentViewModelInterface.php
-index 798fe99..aed370c 100644
+index d079910..92db6c9 100644
 --- a/Component/ComponentViewModelInterface.php
 +++ b/Component/ComponentViewModelInterface.php
 @@ -24,7 +24,7 @@ interface ComponentViewModelInterface extends ArgumentInterface
@@ -199,7 +199,7 @@ index 1ee46cf..c933fc9 100644
          $data = $this->requestDataLoader->load();
          $this->requestDataLoader->mergeRequestParams();
 diff --git a/Controller/Index/Html.php b/Controller/Index/Html.php
-index c9c4d3f..4f215d2 100644
+index d74c317..8904b62 100644
 --- a/Controller/Index/Html.php
 +++ b/Controller/Index/Html.php
 @@ -32,22 +32,22 @@ use Magento\Framework\Message\ManagerInterface as MessageManager;
@@ -451,6 +451,21 @@ index 2c5179f..88ff87e 100644
      {
          return strtoupper((string)$value);
      }
+diff --git a/Layout/LayoutHandlerComposite.php b/Layout/LayoutHandlerComposite.php
+index 22cbfa7..eb285b6 100644
+--- a/Layout/LayoutHandlerComposite.php
++++ b/Layout/LayoutHandlerComposite.php
+@@ -7,8 +7,8 @@ use Magento\Framework\View\LayoutInterface;
+ class LayoutHandlerComposite
+ {
+     public function __construct(
+-        private readonly LayoutInterface $layout,
+-        private readonly array $layoutHandlers = []
++        private LayoutInterface $layout,
++        private array $layoutHandlers = []
+     ) {
+     }
+ 
 diff --git a/Location/Address.php b/Location/Address.php
 index 2303651..254b12d 100644
 --- a/Location/Address.php
@@ -848,7 +863,7 @@ index 1eb1f70..769fef1 100644
          $this->setAsAjaxRequest();
          $result = $this->getValidator()->validate($component, $value);
 diff --git a/Test/Integration/Validator/EmailValidatorTest.php b/Test/Integration/Validator/EmailValidatorTest.php
-index defce88..90eadee 100644
+index d33ab77..a8f23f7 100644
 --- a/Test/Integration/Validator/EmailValidatorTest.php
 +++ b/Test/Integration/Validator/EmailValidatorTest.php
 @@ -25,7 +25,7 @@ class EmailValidatorTest extends TestCase
@@ -972,10 +987,10 @@ index 92a6f6c..a0c7f42 100644
      }
  
 diff --git a/Util/Controller/ComponentUpdate.php b/Util/Controller/ComponentUpdate.php
-index 6f6cb5b..41db31f 100644
+index 66fbe22..1f0c49a 100644
 --- a/Util/Controller/ComponentUpdate.php
 +++ b/Util/Controller/ComponentUpdate.php
-@@ -8,9 +8,9 @@ use Magento\Framework\View\Element\AbstractBlock;
+@@ -7,9 +7,9 @@ use Magento\Framework\View\Element\AbstractBlock;
  class ComponentUpdate
  {
      public function __construct(
@@ -988,7 +1003,7 @@ index 6f6cb5b..41db31f 100644
      ) {
      }
  
-@@ -24,7 +24,7 @@ class ComponentUpdate
+@@ -23,7 +23,7 @@ class ComponentUpdate
          return $this->component;
      }
  
@@ -1011,15 +1026,29 @@ index 7cddb20..525130d 100644
      }
  
 diff --git a/Util/Controller/LayoutLoader.php b/Util/Controller/LayoutLoader.php
-index 399df6e..2530b7f 100644
+index 8e3cc9b..536b132 100644
 --- a/Util/Controller/LayoutLoader.php
 +++ b/Util/Controller/LayoutLoader.php
-@@ -8,7 +8,7 @@ use Magento\Framework\View\Result\PageFactory as ResultPageFactory;
+@@ -16,14 +16,14 @@ use Magento\Framework\View\Page\Layout\Reader as PageLayoutReader;
  class LayoutLoader
  {
      public function __construct(
--        private readonly ResultPageFactory $resultPageFactory,
-+        private ResultPageFactory $resultPageFactory,
+-        private readonly LayoutInterface $layout,
+-        private readonly LayoutFactory $layoutFactory,
+-        private readonly LayoutHandlerComposite $layoutHandlerComposite,
+-        private readonly BuilderFactory $layoutBuilderFactory,
+-        private readonly GeneratorPool $generatorPool,
+-        private readonly RequestInterface $request,
+-        private readonly PageConfig $pageConfig,
+-        private readonly PageLayoutReader $pageLayoutReader,
++        private LayoutInterface $layout,
++        private LayoutFactory $layoutFactory,
++        private LayoutHandlerComposite $layoutHandlerComposite,
++        private BuilderFactory $layoutBuilderFactory,
++        private GeneratorPool $generatorPool,
++        private RequestInterface $request,
++        private PageConfig $pageConfig,
++        private PageLayoutReader $pageLayoutReader,
      ) {
      }
  
@@ -1061,19 +1090,21 @@ index fbd4355..2dd34cc 100644
      }
  
 diff --git a/Util/Controller/TargetRenderer.php b/Util/Controller/TargetRenderer.php
-index 656863b..4f2e75a 100644
+index 12f2d6a..53f18e0 100644
 --- a/Util/Controller/TargetRenderer.php
 +++ b/Util/Controller/TargetRenderer.php
-@@ -10,9 +10,9 @@ use Magento\Framework\View\LayoutInterface;
+@@ -11,10 +11,10 @@ use Magento\Framework\View\LayoutInterface;
  class TargetRenderer
  {
      public function __construct(
 -        private readonly EventManager $eventManager,
--        private readonly LayoutInterface $layout,
 -        private readonly IdConvertor $idConvertor,
+-        private readonly LayoutHandlerComposite $layoutHandlerComposite,
+-        private readonly LayoutLoader $layoutLoader
 +        private EventManager $eventManager,
-+        private LayoutInterface $layout,
 +        private IdConvertor $idConvertor,
++        private LayoutHandlerComposite $layoutHandlerComposite,
++        private LayoutLoader $layoutLoader
      ) {
      }
  
