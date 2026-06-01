@@ -1,8 +1,8 @@
 diff --git a/Config/Config.php b/Config/Config.php
-index 4ddeab5..47b55e4 100644
+index 3c832a7..6a262bb 100644
 --- a/Config/Config.php
 +++ b/Config/Config.php
-@@ -13,7 +13,7 @@ class Config
+@@ -14,7 +14,7 @@ class Config
      private const XML_PATH_ALGORITHM = 'loki_checkout/ab_testing/algorithm';
  
      public function __construct(
@@ -11,12 +11,12 @@ index 4ddeab5..47b55e4 100644
      ) {
      }
  
-diff --git a/Plugin/ConfigThemePlugin.php b/Plugin/ConfigThemePlugin.php
-index 5cbd286..fd415fa 100644
---- a/Plugin/ConfigThemePlugin.php
-+++ b/Plugin/ConfigThemePlugin.php
-@@ -16,9 +16,9 @@ class ConfigThemePlugin
-     private const SESSION_KEY_THEME_INDEX = 'loki_ab_testing_theme_index';
+diff --git a/Plugin/ConfigSkinPlugin.php b/Plugin/ConfigSkinPlugin.php
+index f15904b..c43e833 100644
+--- a/Plugin/ConfigSkinPlugin.php
++++ b/Plugin/ConfigSkinPlugin.php
+@@ -16,9 +16,9 @@ class ConfigSkinPlugin
+     private const SESSION_KEY_SKIN_INDEX = 'loki_ab_testing_skin_index';
  
      public function __construct(
 -        private readonly AbTestingConfig $abTestingConfig,
