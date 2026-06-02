@@ -31,7 +31,7 @@ index aa2814a..839fd79 100644
          if (!is_array($value)) {
              return;
 diff --git a/Payment/Icon/IconResolver.php b/Payment/Icon/IconResolver.php
-index 47a375d..c5111ea 100644
+index a74bf01..cc7f7fb 100644
 --- a/Payment/Icon/IconResolver.php
 +++ b/Payment/Icon/IconResolver.php
 @@ -17,7 +17,7 @@ class IconResolver implements IconResolverInterface
@@ -56,3 +56,16 @@ index 328b95a..be7c966 100644
      {
          $paymentMethod = $redirectContext->getPaymentMethod();
          if (false === $paymentMethod) {
+diff --git a/Plugin/PaymentMethodsRepositoryPlugin.php b/Plugin/PaymentMethodsRepositoryPlugin.php
+index aceadf1..3b92981 100644
+--- a/Plugin/PaymentMethodsRepositoryPlugin.php
++++ b/Plugin/PaymentMethodsRepositoryPlugin.php
+@@ -8,7 +8,7 @@ use MultiSafepay\ConnectCore\Config\Config;
+ class PaymentMethodsRepositoryPlugin
+ {
+     public function __construct(
+-        private readonly Config $config
++        private Config $config
+     ) {
+     }
+ 
