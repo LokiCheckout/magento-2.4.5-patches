@@ -1,8 +1,8 @@
 diff --git a/Component/ShipperHQ/ShipperHQRepository.php b/Component/ShipperHQ/ShipperHQRepository.php
-index a005f7e7..e703e564 100644
+index 883396d3..55036b38 100644
 --- a/Component/ShipperHQ/ShipperHQRepository.php
 +++ b/Component/ShipperHQ/ShipperHQRepository.php
-@@ -23,12 +23,12 @@ class ShipperHQRepository extends ComponentRepository
+@@ -24,12 +24,12 @@ class ShipperHQRepository extends ComponentRepository
      ) {
      }
  
@@ -17,3 +17,18 @@ index a005f7e7..e703e564 100644
      {
          if (false === is_array($value)) {
              return;
+diff --git a/Observer/ResetShipperHQOnShippingMethodChange.php b/Observer/ResetShipperHQOnShippingMethodChange.php
+index 747a08e3..a9c942d7 100644
+--- a/Observer/ResetShipperHQOnShippingMethodChange.php
++++ b/Observer/ResetShipperHQOnShippingMethodChange.php
+@@ -13,8 +13,8 @@ use Magento\Framework\View\LayoutInterface;
+ class ResetShipperHQOnShippingMethodChange implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly IsShipperHQMethod $isShipperHQMethod,
+-        private readonly ResetShipperHQQuoteDataService $resetShipperHQQuoteDataService,
++        private IsShipperHQMethod $isShipperHQMethod,
++        private ResetShipperHQQuoteDataService $resetShipperHQQuoteDataService,
+     ) {
+     }
+ 
