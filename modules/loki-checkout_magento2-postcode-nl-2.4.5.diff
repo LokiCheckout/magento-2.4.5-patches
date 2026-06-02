@@ -54,6 +54,42 @@ index 42d76e6..5223789 100644
      {
          $active = (bool)$value;
  
+diff --git a/Layout/LayoutHandler.php b/Layout/LayoutHandler.php
+index aceec87..eeb0462 100644
+--- a/Layout/LayoutHandler.php
++++ b/Layout/LayoutHandler.php
+@@ -11,9 +11,9 @@ use LokiCheckout\PostcodeNl\Util\SupportedCountries;
+ class LayoutHandler implements LayoutHandlerInterface
+ {
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly CheckoutState $checkoutState,
+-        private readonly SupportedCountries $supportedCountries
++        private Config $config,
++        private CheckoutState $checkoutState,
++        private SupportedCountries $supportedCountries
+     ) {
+     }
+ 
+diff --git a/Plugin/AbstractDisableFieldPlugin.php b/Plugin/AbstractDisableFieldPlugin.php
+index 809b083..f68c39b 100644
+--- a/Plugin/AbstractDisableFieldPlugin.php
++++ b/Plugin/AbstractDisableFieldPlugin.php
+@@ -11,10 +11,10 @@ use LokiCheckout\PostcodeNl\Util\SupportedCountries;
+ abstract class AbstractDisableFieldPlugin
+ {
+     public function __construct(
+-        protected readonly AutocompletionState $autocompletionState,
+-        protected readonly AddressStateProvider $addressStateProvider,
+-        protected readonly SupportedCountries $supportedCountries,
+-        protected readonly Config $config
++        protected AutocompletionState $autocompletionState,
++        protected AddressStateProvider $addressStateProvider,
++        protected SupportedCountries $supportedCountries,
++        protected Config $config
+     ) {
+     }
+ 
 diff --git a/Plugin/AddMessagesToViewModelPlugin.php b/Plugin/AddMessagesToViewModelPlugin.php
 index f77d7a6..4920f18 100644
 --- a/Plugin/AddMessagesToViewModelPlugin.php
@@ -65,44 +101,6 @@ index f77d7a6..4920f18 100644
 -        private readonly AutocompletionState $autocompletionState,
 -        private readonly Config $config
 +        private AutocompletionState $autocompletionState,
-+        private Config $config
-     ) {
-     }
- 
-diff --git a/Plugin/DisableFieldPlugin.php b/Plugin/DisableFieldPlugin.php
-index 23d0ace..b8ee52c 100644
---- a/Plugin/DisableFieldPlugin.php
-+++ b/Plugin/DisableFieldPlugin.php
-@@ -11,10 +11,10 @@ use LokiCheckout\PostcodeNl\Util\SupportedCountries;
- class DisableFieldPlugin
- {
-     public function __construct(
--        private readonly AutocompletionState $autocompletionState,
--        private readonly AddressStateProvider $addressStateProvider,
--        private readonly SupportedCountries $supportedCountries,
--        private readonly Config $config
-+        private AutocompletionState $autocompletionState,
-+        private AddressStateProvider $addressStateProvider,
-+        private SupportedCountries $supportedCountries,
-+        private Config $config
-     ) {
-     }
- 
-diff --git a/Plugin/DisableStreet2Plugin.php b/Plugin/DisableStreet2Plugin.php
-index e39ce39..bd79957 100644
---- a/Plugin/DisableStreet2Plugin.php
-+++ b/Plugin/DisableStreet2Plugin.php
-@@ -11,10 +11,10 @@ use LokiCheckout\PostcodeNl\Util\SupportedCountries;
- class DisableStreet2Plugin
- {
-     public function __construct(
--        private readonly AddressStateProvider $addressStateProvider,
--        private readonly AutocompletionState $autocompletionState,
--        private readonly SupportedCountries $supportedCountries,
--        private readonly Config $config
-+        private AddressStateProvider $addressStateProvider,
-+        private AutocompletionState $autocompletionState,
-+        private SupportedCountries $supportedCountries,
 +        private Config $config
      ) {
      }
