@@ -1,8 +1,8 @@
 diff --git a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
-index 97ca854..2edbf40 100644
+index 768aaef..f6e3302 100644
 --- a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
 +++ b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
-@@ -68,7 +68,7 @@ class DeliveryOptionsRepository extends MapRepository
+@@ -82,7 +82,7 @@ class DeliveryOptionsRepository extends MapRepository
       * @throws LocalizedException
       * @throws WebapiException
       */
@@ -11,8 +11,8 @@ index 97ca854..2edbf40 100644
      {
          $postnlOrder = $this->getPostNLOrderByQuote();
          if ($postnlOrder->getType() === 'PG') {
-@@ -117,7 +117,7 @@ class DeliveryOptionsRepository extends MapRepository
-         throw new Exception('Delivery date not found');
+@@ -140,7 +140,7 @@ class DeliveryOptionsRepository extends MapRepository
+         $this->orderRepository->delete($postnlOrder);
      }
  
 -    public function saveValue(mixed $value): void
