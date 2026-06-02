@@ -366,11 +366,20 @@ index 3c5dc6fc..386bd5ec 100644
      }
  
 diff --git a/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php b/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
-index 789b9478..8653a40b 100644
+index 9a182b41..a4cc3d07 100644
 --- a/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
 +++ b/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
-@@ -51,7 +51,7 @@ class PaymentMethodsRepository extends ComponentRepository
-         return $defaultPayment;
+@@ -21,7 +21,7 @@ class PaymentMethodsRepository extends ComponentRepository
+     public function __construct(
+         private PaymentMethodManagementInterface $paymentMethodManagement,
+         private PaymentInterfaceFactory $paymentFactory,
+-        private readonly ManagerInterface $eventManager,
++        private ManagerInterface $eventManager,
+         private ?PaymentProcessingRateLimiterInterface $paymentRateLimiter = null,
+     ) {
+     }
+@@ -54,7 +54,7 @@ class PaymentMethodsRepository extends ComponentRepository
+         return $this->defaultPaymentMethod;
      }
  
 -    public function getValue(): mixed
@@ -378,7 +387,7 @@ index 789b9478..8653a40b 100644
      {
          $quote = $this->getQuote();
          $currentPaymentMethod = (string)$quote->getPayment()->getMethod();
-@@ -64,7 +64,7 @@ class PaymentMethodsRepository extends ComponentRepository
+@@ -67,7 +67,7 @@ class PaymentMethodsRepository extends ComponentRepository
          return $sanitizedPaymentMethod;
      }
  
@@ -388,7 +397,7 @@ index 789b9478..8653a40b 100644
          if ($this->paymentRateLimiter instanceof PaymentProcessingRateLimiterInterface) {
              try {
 diff --git a/Component/Checkout/Billing/ShippingAsBilling/ShippingAsBillingRepository.php b/Component/Checkout/Billing/ShippingAsBilling/ShippingAsBillingRepository.php
-index e9984f87..3d28a544 100644
+index 0799d3d8..79187add 100644
 --- a/Component/Checkout/Billing/ShippingAsBilling/ShippingAsBillingRepository.php
 +++ b/Component/Checkout/Billing/ShippingAsBilling/ShippingAsBillingRepository.php
 @@ -10,7 +10,7 @@ use Loki\Components\Component\ComponentRepository;
@@ -410,15 +419,15 @@ index e9984f87..3d28a544 100644
          $billingAsShipping = (bool)$value;
          $quote = $this->getContext()->getCheckoutState()->getQuote();
 diff --git a/Component/Checkout/GridLayout/GridLayoutViewModel.php b/Component/Checkout/GridLayout/GridLayoutViewModel.php
-index 8b44e8b6..0b34796f 100644
+index 1743f58e..0045466c 100644
 --- a/Component/Checkout/GridLayout/GridLayoutViewModel.php
 +++ b/Component/Checkout/GridLayout/GridLayoutViewModel.php
-@@ -13,7 +13,7 @@ class GridLayoutViewModel extends ComponentViewModel
+@@ -12,7 +12,7 @@ class GridLayoutViewModel extends ComponentViewModel
      protected bool $skipValidation = true;
  
      public function __construct(
--        private readonly Config $config,
-+        private Config $config,
+-        private readonly GridStyleParser $gridStyleParser,
++        private GridStyleParser $gridStyleParser,
      ) {
      }
  
@@ -596,19 +605,21 @@ index 521dea01..7fb5e736 100644
      }
  
 diff --git a/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php b/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php
-index f2ede9d6..3453a2f6 100644
+index 9a0007be..33a4e6c1 100644
 --- a/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php
 +++ b/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php
-@@ -17,7 +17,7 @@ class ShippingMethodsRepository extends ComponentRepository
+@@ -18,8 +18,8 @@ class ShippingMethodsRepository extends ComponentRepository
      private array $shippingMethods = [];
  
      public function __construct(
 -        private readonly UpdateShippingMethod $updateShippingMethod,
+-        private readonly ManagerInterface $eventManager,
 +        private UpdateShippingMethod $updateShippingMethod,
++        private ManagerInterface $eventManager,
      ) {
      }
  
-@@ -58,7 +58,7 @@ class ShippingMethodsRepository extends ComponentRepository
+@@ -60,7 +60,7 @@ class ShippingMethodsRepository extends ComponentRepository
          return $this->shippingMethods;
      }
  
@@ -617,7 +628,7 @@ index f2ede9d6..3453a2f6 100644
      {
          if (strlen($this->currentShippingMethod) > 0) {
              return $this->currentShippingMethod;
-@@ -76,7 +76,7 @@ class ShippingMethodsRepository extends ComponentRepository
+@@ -78,7 +78,7 @@ class ShippingMethodsRepository extends ComponentRepository
          return $sanitizedShippingMethod;
      }
  
@@ -773,7 +784,7 @@ index 9aa71a26..cd7aef7a 100644
      }
      public function getStepValidator(): ValidatorInterface
 diff --git a/Component/Checkout/Step/BillingStep/BillingStepViewModel.php b/Component/Checkout/Step/BillingStep/BillingStepViewModel.php
-index c98208f6..429e58e8 100644
+index 737a9cfc..7b854d41 100644
 --- a/Component/Checkout/Step/BillingStep/BillingStepViewModel.php
 +++ b/Component/Checkout/Step/BillingStep/BillingStepViewModel.php
 @@ -43,7 +43,7 @@ class BillingStepViewModel extends AbstractStepViewModel
@@ -873,7 +884,7 @@ index 82e26fa0..d855ca7f 100644
      }
  
 diff --git a/Component/Checkout/Step/ShippingStep/ShippingStepViewModel.php b/Component/Checkout/Step/ShippingStep/ShippingStepViewModel.php
-index 205de481..b7121c6a 100644
+index 869dea3a..cbc74003 100644
 --- a/Component/Checkout/Step/ShippingStep/ShippingStepViewModel.php
 +++ b/Component/Checkout/Step/ShippingStep/ShippingStepViewModel.php
 @@ -39,7 +39,7 @@ class ShippingStepViewModel extends AbstractStepViewModel
@@ -920,7 +931,7 @@ index a90d14cf..8770437e 100644
          try {
              $this->getStepNavigator()->setPreviousStep();
 diff --git a/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php b/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php
-index 6d5c369b..aaeb1e82 100644
+index 3796b0c5..20f2bffa 100644
 --- a/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php
 +++ b/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php
 @@ -12,7 +12,7 @@ use Loki\Components\Component\ComponentRepository;
@@ -967,8 +978,21 @@ index b83b2409..91ba96c2 100644
      {
          if (false === is_array($value)) {
              return;
+diff --git a/Component/PostDispatchHandler/SameAddressCopy.php b/Component/PostDispatchHandler/SameAddressCopy.php
+index 8cfaed94..ec68ca95 100644
+--- a/Component/PostDispatchHandler/SameAddressCopy.php
++++ b/Component/PostDispatchHandler/SameAddressCopy.php
+@@ -7,7 +7,7 @@ use LokiCheckout\Core\Util\SameAddressService;
+ class SameAddressCopy implements PostDispatchHandlerInterface
+ {
+     public function __construct(
+-        private readonly SameAddressService $sameAddressService
++        private SameAddressService $sameAddressService
+     )
+     {
+     }
 diff --git a/Config/Config.php b/Config/Config.php
-index 1aeb239a..c2542288 100644
+index b092a076..47c2eab3 100644
 --- a/Config/Config.php
 +++ b/Config/Config.php
 @@ -15,10 +15,10 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
@@ -1014,12 +1038,12 @@ index 68e3c33d..1386df9f 100644
      ) {
      }
  
-diff --git a/Config/Source/ThemeOptions.php b/Config/Source/ThemeOptions.php
-index f29d3a7b..133fcfeb 100644
---- a/Config/Source/ThemeOptions.php
-+++ b/Config/Source/ThemeOptions.php
+diff --git a/Config/Source/SkinOptions.php b/Config/Source/SkinOptions.php
+index a0e8b0e7..89e6fea5 100644
+--- a/Config/Source/SkinOptions.php
++++ b/Config/Source/SkinOptions.php
 @@ -9,7 +9,7 @@ use LokiCheckout\Core\Config\XmlConfig;
- class ThemeOptions implements OptionSourceInterface
+ class SkinOptions implements OptionSourceInterface
  {
      public function __construct(
 -        private readonly XmlConfig $xmlConfig,
@@ -1124,12 +1148,12 @@ index 718aceea..0104f9ba 100644
      ) {
      }
  
-diff --git a/Config/XmlConfig/Value/Theme.php b/Config/XmlConfig/Value/Theme.php
-index 5aa65c93..3871a844 100644
---- a/Config/XmlConfig/Value/Theme.php
-+++ b/Config/XmlConfig/Value/Theme.php
+diff --git a/Config/XmlConfig/Value/Skin.php b/Config/XmlConfig/Value/Skin.php
+index 85f6d1be..52ec6ed2 100644
+--- a/Config/XmlConfig/Value/Skin.php
++++ b/Config/XmlConfig/Value/Skin.php
 @@ -9,10 +9,10 @@ use LokiCheckout\Core\Exception\UnknownStepException;
- class Theme
+ class Skin
  {
      public function __construct(
 -        private readonly string $name,
@@ -1143,11 +1167,11 @@ index 5aa65c93..3871a844 100644
      ) {
      }
  
-diff --git a/Config/XmlConfig/Value/Theme/Step.php b/Config/XmlConfig/Value/Theme/Step.php
-index 023ae052..1d781b07 100644
---- a/Config/XmlConfig/Value/Theme/Step.php
-+++ b/Config/XmlConfig/Value/Theme/Step.php
-@@ -5,9 +5,9 @@ namespace LokiCheckout\Core\Config\XmlConfig\Value\Theme;
+diff --git a/Config/XmlConfig/Value/Skin/Step.php b/Config/XmlConfig/Value/Skin/Step.php
+index 36bad339..6e16ffe6 100644
+--- a/Config/XmlConfig/Value/Skin/Step.php
++++ b/Config/XmlConfig/Value/Skin/Step.php
+@@ -5,9 +5,9 @@ namespace LokiCheckout\Core\Config\XmlConfig\Value\Skin;
  class Step
  {
      public function __construct(
@@ -1252,6 +1276,34 @@ index f2dec99b..ee98e6db 100644
      {
          $value = strtoupper((string)$value);
          return preg_replace('/([^A-Z0-9]+)/', '', $value);
+diff --git a/Layout/CountrySpecificLayoutHandler.php b/Layout/CountrySpecificLayoutHandler.php
+index 8be47674..d3e91bd6 100644
+--- a/Layout/CountrySpecificLayoutHandler.php
++++ b/Layout/CountrySpecificLayoutHandler.php
+@@ -9,7 +9,7 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
+ class CountrySpecificLayoutHandler implements LayoutHandlerInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState
++        private CheckoutState $checkoutState
+     ) {
+     }
+ 
+diff --git a/Layout/LayoutHandler.php b/Layout/LayoutHandler.php
+index 5737f6ab..9e224978 100644
+--- a/Layout/LayoutHandler.php
++++ b/Layout/LayoutHandler.php
+@@ -11,8 +11,8 @@ use LokiCheckout\Core\Util\CurrentTheme;
+ class LayoutHandler implements LayoutHandlerInterface
+ {
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly CurrentTheme $currentTheme,
++        private Config $config,
++        private CurrentTheme $currentTheme,
+     ) {
+     }
+ 
 diff --git a/Observer/AddDebuggingInfo.php b/Observer/AddDebuggingInfo.php
 index c96d8de2..f9224cf5 100644
 --- a/Observer/AddDebuggingInfo.php
@@ -1298,7 +1350,7 @@ index 0b237dab..3853d95d 100644
      }
  
 diff --git a/Observer/EnableCheckout.php b/Observer/EnableCheckout.php
-index 3679870a..1bcdad96 100644
+index 25b5457c..c524f8e6 100644
 --- a/Observer/EnableCheckout.php
 +++ b/Observer/EnableCheckout.php
 @@ -12,8 +12,8 @@ use Magento\Framework\View\LayoutInterface;
@@ -1306,9 +1358,9 @@ index 3679870a..1bcdad96 100644
  {
      public function __construct(
 -        private readonly AllowCheckoutAccess $allowCheckoutAccess,
--        private readonly AddLayoutHandles $addLayoutHandles,
+-        private readonly LayoutHandlerComposite $layoutHandlerComposite,
 +        private AllowCheckoutAccess $allowCheckoutAccess,
-+        private AddLayoutHandles $addLayoutHandles,
++        private LayoutHandlerComposite $layoutHandlerComposite,
      ) {
      }
  
@@ -1330,17 +1382,17 @@ index a69d50a9..55638ba1 100644
      }
  
 diff --git a/Observer/SaveAfterRepositoryDispatch.php b/Observer/SaveAfterRepositoryDispatch.php
-index e038c74c..e12f5258 100644
+index 70436095..cc92cb24 100644
 --- a/Observer/SaveAfterRepositoryDispatch.php
 +++ b/Observer/SaveAfterRepositoryDispatch.php
 @@ -11,8 +11,8 @@ use Magento\Framework\View\LayoutInterface;
  class SaveAfterRepositoryDispatch implements ObserverInterface
  {
      public function __construct(
--        private readonly SameAddressService $sameAddressService,
 -        private readonly CheckoutState $checkoutState,
-+        private SameAddressService $sameAddressService,
+-        private readonly array $postDispatchHandlers = []
 +        private CheckoutState $checkoutState,
++        private array $postDispatchHandlers = []
      ) {
      }
  
@@ -1504,6 +1556,19 @@ index d976e8e9..886cd2c9 100644
 -        private readonly CheckoutState $checkoutState
 +        private ScopeConfigInterface $scopeConfig,
 +        private CheckoutState $checkoutState
+     ) {
+     }
+ 
+diff --git a/Plugin/ModifyAddressTemplateVariablesPlugin.php b/Plugin/ModifyAddressTemplateVariablesPlugin.php
+index e67a94a1..a2efd61c 100644
+--- a/Plugin/ModifyAddressTemplateVariablesPlugin.php
++++ b/Plugin/ModifyAddressTemplateVariablesPlugin.php
+@@ -9,7 +9,7 @@ use Magento\Framework\Filter\Template;
+ class ModifyAddressTemplateVariablesPlugin
+ {
+     public function __construct(
+-        private readonly Config $config,
++        private Config $config,
      ) {
      }
  
@@ -1848,10 +1913,10 @@ index 66101a72..1f2e028b 100644
      }
  
 diff --git a/Step/StepNavigator.php b/Step/StepNavigator.php
-index c5e7b3d0..c7802e32 100644
+index 0c18b7f3..08e4f417 100644
 --- a/Step/StepNavigator.php
 +++ b/Step/StepNavigator.php
-@@ -16,19 +16,19 @@ use Loki\Components\Component\ComponentRegistry;
+@@ -17,19 +17,19 @@ use Loki\Components\Component\ComponentRegistry;
  
  class StepNavigator implements ArgumentInterface
  {
@@ -1876,6 +1941,21 @@ index c5e7b3d0..c7802e32 100644
 +        private MessageManager $messageManager,
 +        private ComponentRegistry $componentRegistry,
 +        private RequestInterface $request,
+     ) {
+     }
+ 
+diff --git a/Test/Fixture/CheckoutStateFixture.php b/Test/Fixture/CheckoutStateFixture.php
+index fdcac8e7..8d2872d5 100644
+--- a/Test/Fixture/CheckoutStateFixture.php
++++ b/Test/Fixture/CheckoutStateFixture.php
+@@ -11,8 +11,8 @@ use Magento\TestFramework\Fixture\DataFixtureInterface;
+ class CheckoutStateFixture implements DataFixtureInterface
+ {
+     public function __construct(
+-        private readonly CartRepositoryInterface $cartRepository,
+-        private readonly CheckoutState $checkoutState,
++        private CartRepositoryInterface $cartRepository,
++        private CheckoutState $checkoutState,
      ) {
      }
  
@@ -1919,7 +1999,7 @@ index 28e63691..d2b200e7 100644
      }
  
 diff --git a/Test/Integration/LokiCheckoutTestCase.php b/Test/Integration/LokiCheckoutTestCase.php
-index 032b8fe1..1789dece 100644
+index c0930cbb..2f46e93c 100644
 --- a/Test/Integration/LokiCheckoutTestCase.php
 +++ b/Test/Integration/LokiCheckoutTestCase.php
 @@ -103,7 +103,7 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
@@ -2006,7 +2086,7 @@ index a5d869f5..3f8cb549 100644
          $ibanValidator = new IbanValidator();
          $actualResult = $ibanValidator->validate($ibanNumber);
 diff --git a/Util/AddressRenderer.php b/Util/AddressRenderer.php
-index c6d20ea0..960a9b38 100644
+index 91ee6828..d0d7de0e 100644
 --- a/Util/AddressRenderer.php
 +++ b/Util/AddressRenderer.php
 @@ -10,8 +10,8 @@ use Magento\Quote\Model\Quote\Address;
@@ -2020,8 +2100,21 @@ index c6d20ea0..960a9b38 100644
      ) {
      }
  
+diff --git a/Util/Block/CssClassParser/AdditionalClassParser.php b/Util/Block/CssClassParser/AdditionalClassParser.php
+index 263c3546..e6f25550 100644
+--- a/Util/Block/CssClassParser/AdditionalClassParser.php
++++ b/Util/Block/CssClassParser/AdditionalClassParser.php
+@@ -9,7 +9,7 @@ use Magento\Framework\View\Element\AbstractBlock;
+ class AdditionalClassParser implements CssClassParserInterface
+ {
+     public function __construct(
+-        private readonly Config $config,
++        private Config $config,
+     ) {
+     }
+ 
 diff --git a/Util/Block/CssStyleParser/GridStyleParser.php b/Util/Block/CssStyleParser/GridStyleParser.php
-index 566c9ec7..81480700 100644
+index 9c66085c..2ad9e09a 100644
 --- a/Util/Block/CssStyleParser/GridStyleParser.php
 +++ b/Util/Block/CssStyleParser/GridStyleParser.php
 @@ -11,7 +11,7 @@ use Loki\CssUtils\Util\CssStyleParser\CssStyleParserInterface;
@@ -2052,27 +2145,6 @@ index 449be7e4..201a2067 100644
      public function __construct(
 -        private readonly Config $config,
 +        private Config $config,
-     ) {
-     }
- 
-diff --git a/Util/Checkout/AddLayoutHandles.php b/Util/Checkout/AddLayoutHandles.php
-index c14729a1..8d3cb1da 100644
---- a/Util/Checkout/AddLayoutHandles.php
-+++ b/Util/Checkout/AddLayoutHandles.php
-@@ -11,11 +11,11 @@ use Magento\Framework\View\LayoutInterface;
- class AddLayoutHandles
- {
-     public function __construct(
--        private readonly Config $config,
--        private readonly LayoutInterface $layout,
--        private readonly CurrentTheme $currentTheme,
--        private readonly CheckoutState $checkoutState,
--        private readonly ManagerInterface $eventManager,
-+        private Config $config,
-+        private LayoutInterface $layout,
-+        private CurrentTheme $currentTheme,
-+        private CheckoutState $checkoutState,
-+        private ManagerInterface $eventManager,
      ) {
      }
  
