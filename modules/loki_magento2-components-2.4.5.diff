@@ -199,7 +199,7 @@ index 1ee46cf..c933fc9 100644
          $data = $this->requestDataLoader->load();
          $this->requestDataLoader->mergeRequestParams();
 diff --git a/Controller/Index/Html.php b/Controller/Index/Html.php
-index d74c317..8904b62 100644
+index 1e104bf..1ff5018 100644
 --- a/Controller/Index/Html.php
 +++ b/Controller/Index/Html.php
 @@ -32,22 +32,22 @@ use Magento\Framework\Message\ManagerInterface as MessageManager;
@@ -1026,10 +1026,10 @@ index 7cddb20..525130d 100644
      }
  
 diff --git a/Util/Controller/LayoutLoader.php b/Util/Controller/LayoutLoader.php
-index 8e3cc9b..536b132 100644
+index f0769ee..9edd005 100644
 --- a/Util/Controller/LayoutLoader.php
 +++ b/Util/Controller/LayoutLoader.php
-@@ -16,14 +16,14 @@ use Magento\Framework\View\Page\Layout\Reader as PageLayoutReader;
+@@ -12,12 +12,12 @@ use Magento\Framework\View\Page\Layout\Reader as PageLayoutReader;
  class LayoutLoader
  {
      public function __construct(
@@ -1037,16 +1037,12 @@ index 8e3cc9b..536b132 100644
 -        private readonly LayoutFactory $layoutFactory,
 -        private readonly LayoutHandlerComposite $layoutHandlerComposite,
 -        private readonly BuilderFactory $layoutBuilderFactory,
--        private readonly GeneratorPool $generatorPool,
--        private readonly RequestInterface $request,
 -        private readonly PageConfig $pageConfig,
 -        private readonly PageLayoutReader $pageLayoutReader,
 +        private LayoutInterface $layout,
 +        private LayoutFactory $layoutFactory,
 +        private LayoutHandlerComposite $layoutHandlerComposite,
 +        private BuilderFactory $layoutBuilderFactory,
-+        private GeneratorPool $generatorPool,
-+        private RequestInterface $request,
 +        private PageConfig $pageConfig,
 +        private PageLayoutReader $pageLayoutReader,
      ) {
