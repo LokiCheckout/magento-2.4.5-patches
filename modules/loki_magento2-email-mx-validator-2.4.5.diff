@@ -38,13 +38,13 @@ index 883c11c..6338baa 100644
          $parts = explode('@', $email);
          if (count($parts) < 2) {
 diff --git a/Test/Integration/Validator/EmailValidatorTest.php b/Test/Integration/Validator/EmailValidatorTest.php
-index 4f21e86..259f165 100644
+index 4c930a8..fc55a76 100644
 --- a/Test/Integration/Validator/EmailValidatorTest.php
 +++ b/Test/Integration/Validator/EmailValidatorTest.php
 @@ -25,7 +25,7 @@ class EmailValidatorTest extends TestCase
       * @dataProvider getValues
       */
-     #[Config('loki_components/validators/enable_mx_validation_for_email', true)]
+     #[Config('loki_components/validators/enable_mx_validation_for_email', true, 'store', 'default')]
 -    public function testWithVariousValues(string $email, true|string $expectedResult): void
 +    public function testWithVariousValues(string $email, $expectedResult): void
      {
