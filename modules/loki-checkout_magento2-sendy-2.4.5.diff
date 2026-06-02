@@ -1,0 +1,35 @@
+diff --git a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
+index 8eea25d..61c4a73 100644
+--- a/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
++++ b/Component/Checkout/Shipping/DeliveryOptions/DeliveryOptionsRepository.php
+@@ -50,7 +50,7 @@ class DeliveryOptionsRepository extends MapRepository
+      * @throws LocalizedException
+      * @throws WebapiException
+      */
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $savedLocationId = $this->getSavedLocationId();
+         if (empty($savedLocationId)) {
+@@ -66,7 +66,7 @@ class DeliveryOptionsRepository extends MapRepository
+         return [];
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (!is_array($value)) {
+             return;
+diff --git a/Shipment/Icon/IconResolver.php b/Shipment/Icon/IconResolver.php
+index 937198a..81dcbe4 100644
+--- a/Shipment/Icon/IconResolver.php
++++ b/Shipment/Icon/IconResolver.php
+@@ -13,7 +13,7 @@ class IconResolver implements IconResolverInterface
+     ) {
+     }
+ 
+-    public function resolve(IconResolverContext $iconResolverContext): false|string
++    public function resolve(IconResolverContext $iconResolverContext)
+     {
+         if (false === $this->moduleManager->isEnabled('@todo')) {
+             return false;
