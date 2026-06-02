@@ -27,12 +27,12 @@ index 111304d..090d860 100644
      {
          if (empty($value)) {
              return;
-diff --git a/Component/Theme/ThemeContext.php b/Component/Theme/ThemeContext.php
-index f5aad56..f2bdf57 100644
---- a/Component/Theme/ThemeContext.php
-+++ b/Component/Theme/ThemeContext.php
+diff --git a/Component/Skin/SkinContext.php b/Component/Skin/SkinContext.php
+index 6fc2f66..f2f71ec 100644
+--- a/Component/Skin/SkinContext.php
++++ b/Component/Skin/SkinContext.php
 @@ -11,10 +11,10 @@ use Loki\Components\Component\ComponentContextInterface;
- class ThemeContext implements ComponentContextInterface
+ class SkinContext implements ComponentContextInterface
  {
      public function __construct(
 -        private readonly CheckoutSession $checkoutSession,
@@ -46,12 +46,12 @@ index f5aad56..f2bdf57 100644
      ) {
      }
  
-diff --git a/Component/Theme/ThemeRepository.php b/Component/Theme/ThemeRepository.php
-index ba3569f..7bfa567 100644
---- a/Component/Theme/ThemeRepository.php
-+++ b/Component/Theme/ThemeRepository.php
+diff --git a/Component/Skin/SkinRepository.php b/Component/Skin/SkinRepository.php
+index 4421ba0..ac5e14b 100644
+--- a/Component/Skin/SkinRepository.php
++++ b/Component/Skin/SkinRepository.php
 @@ -13,12 +13,12 @@ use Loki\Components\Exception\RedirectException;
- class ThemeRepository extends ComponentRepository
+ class SkinRepository extends ComponentRepository
  {
      public function __construct(
 -        private readonly MessageManager $messageManager,
@@ -64,10 +64,10 @@ index ba3569f..7bfa567 100644
 -    public function getValue(): mixed
 +    public function getValue()
      {
-         $currentTheme = (string)$this->getContext()->getCheckoutSession()->getCurrentTheme();
-         if (!empty($currentTheme)) {
-@@ -28,7 +28,7 @@ class ThemeRepository extends ComponentRepository
-         return $this->config->getTheme();
+         $currentSkin = (string)$this->getContext()->getCheckoutSession()->getCurrentSkin();
+         if (!empty($currentSkin)) {
+@@ -28,7 +28,7 @@ class SkinRepository extends ComponentRepository
+         return $this->config->getSkin();
      }
  
 -    public function saveValue(mixed $value): void
@@ -76,7 +76,7 @@ index ba3569f..7bfa567 100644
          if (empty($value)) {
              return;
 diff --git a/Plugin/OverrideConfigFromSessionPlugin.php b/Plugin/OverrideConfigFromSessionPlugin.php
-index 9b5863f..4e4e738 100644
+index 1238943..948ea3e 100644
 --- a/Plugin/OverrideConfigFromSessionPlugin.php
 +++ b/Plugin/OverrideConfigFromSessionPlugin.php
 @@ -8,7 +8,7 @@ use LokiCheckout\Core\Config\Config;
