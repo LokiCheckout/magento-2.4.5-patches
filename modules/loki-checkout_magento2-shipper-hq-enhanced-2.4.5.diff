@@ -1,5 +1,5 @@
 diff --git a/Component/ShipperHQ/ShipperHQRepository.php b/Component/ShipperHQ/ShipperHQRepository.php
-index 883396d3..55036b38 100644
+index 0858a45a..b3b048e0 100644
 --- a/Component/ShipperHQ/ShipperHQRepository.php
 +++ b/Component/ShipperHQ/ShipperHQRepository.php
 @@ -24,12 +24,12 @@ class ShipperHQRepository extends ComponentRepository
@@ -18,17 +18,34 @@ index 883396d3..55036b38 100644
          if (false === is_array($value)) {
              return;
 diff --git a/Observer/ResetShipperHQOnShippingMethodChange.php b/Observer/ResetShipperHQOnShippingMethodChange.php
-index 747a08e3..a9c942d7 100644
+index a757a39b..1a614d6e 100644
 --- a/Observer/ResetShipperHQOnShippingMethodChange.php
 +++ b/Observer/ResetShipperHQOnShippingMethodChange.php
-@@ -13,8 +13,8 @@ use Magento\Framework\View\LayoutInterface;
+@@ -12,10 +12,10 @@ use Magento\Framework\Event\ObserverInterface;
  class ResetShipperHQOnShippingMethodChange implements ObserverInterface
  {
      public function __construct(
 -        private readonly IsShipperHQMethod $isShipperHQMethod,
 -        private readonly ResetShipperHQQuoteDataService $resetShipperHQQuoteDataService,
+-        private readonly CheckoutState $checkoutState,
+-        private readonly SelectedOptionsRepository $selectedOptionsRepository,
 +        private IsShipperHQMethod $isShipperHQMethod,
 +        private ResetShipperHQQuoteDataService $resetShipperHQQuoteDataService,
++        private CheckoutState $checkoutState,
++        private SelectedOptionsRepository $selectedOptionsRepository,
+     ) {
+     }
+ 
+diff --git a/Plugin/HideShqShippingMethodsPlugin.php b/Plugin/HideShqShippingMethodsPlugin.php
+index 8ce714d8..0eb68b0b 100644
+--- a/Plugin/HideShqShippingMethodsPlugin.php
++++ b/Plugin/HideShqShippingMethodsPlugin.php
+@@ -9,7 +9,7 @@ use LokiCheckout\Core\Component\Checkout\Shipping\ShippingMethods\ShippingMethod
+ class HideShqShippingMethodsPlugin
+ {
+     public function __construct(
+-        private readonly IsShipperHQMethod $isShipperHQMethod
++        private IsShipperHQMethod $isShipperHQMethod
      ) {
      }
  
