@@ -199,7 +199,7 @@ index 1ee46cf..c933fc9 100644
          $data = $this->requestDataLoader->load();
          $this->requestDataLoader->mergeRequestParams();
 diff --git a/Controller/Index/Html.php b/Controller/Index/Html.php
-index 1e104bf..1ff5018 100644
+index 63d9b63..3644b7c 100644
 --- a/Controller/Index/Html.php
 +++ b/Controller/Index/Html.php
 @@ -32,22 +32,22 @@ use Magento\Framework\Message\ManagerInterface as MessageManager;
@@ -601,7 +601,7 @@ index ebe80d8..57f5a9a 100644
      }
  
 diff --git a/Location/AddressFactory.php b/Location/AddressFactory.php
-index ae5c250..2ed26ca 100644
+index f4e42c3..3464bc5 100644
 --- a/Location/AddressFactory.php
 +++ b/Location/AddressFactory.php
 @@ -8,8 +8,8 @@ use Magento\Quote\Model\Quote\Address as QuoteAddress;
@@ -876,7 +876,7 @@ index d33ab77..a8f23f7 100644
          $validator = ObjectManager::getInstance()->get(EmailValidator::class);
          $actualResult = $validator->validate($email);
 diff --git a/Test/Unit/Validator/PastDateValidatorTest.php b/Test/Unit/Validator/PastDateValidatorTest.php
-index 5778508..46ece8c 100644
+index d0bbbde..80e32ae 100644
 --- a/Test/Unit/Validator/PastDateValidatorTest.php
 +++ b/Test/Unit/Validator/PastDateValidatorTest.php
 @@ -10,7 +10,7 @@ class PastDateValidatorTest extends TestCase
@@ -1026,10 +1026,10 @@ index 7cddb20..525130d 100644
      }
  
 diff --git a/Util/Controller/LayoutLoader.php b/Util/Controller/LayoutLoader.php
-index f0769ee..9edd005 100644
+index 7f2cac9..769959b 100644
 --- a/Util/Controller/LayoutLoader.php
 +++ b/Util/Controller/LayoutLoader.php
-@@ -12,12 +12,12 @@ use Magento\Framework\View\Page\Layout\Reader as PageLayoutReader;
+@@ -15,14 +15,14 @@ use Magento\Framework\View\Page\Layout\Reader as PageLayoutReader;
  class LayoutLoader
  {
      public function __construct(
@@ -1038,13 +1038,17 @@ index f0769ee..9edd005 100644
 -        private readonly LayoutHandlerComposite $layoutHandlerComposite,
 -        private readonly BuilderFactory $layoutBuilderFactory,
 -        private readonly PageConfig $pageConfig,
+-        private readonly PageConfigFactory $pageConfigFactory,
 -        private readonly PageLayoutReader $pageLayoutReader,
+-        private readonly PageLayoutConfigBuilder $pageLayoutConfigBuilder,
 +        private LayoutInterface $layout,
 +        private LayoutFactory $layoutFactory,
 +        private LayoutHandlerComposite $layoutHandlerComposite,
 +        private BuilderFactory $layoutBuilderFactory,
 +        private PageConfig $pageConfig,
++        private PageConfigFactory $pageConfigFactory,
 +        private PageLayoutReader $pageLayoutReader,
++        private PageLayoutConfigBuilder $pageLayoutConfigBuilder,
      ) {
      }
  
@@ -1086,21 +1090,23 @@ index fbd4355..2dd34cc 100644
      }
  
 diff --git a/Util/Controller/TargetRenderer.php b/Util/Controller/TargetRenderer.php
-index 12f2d6a..53f18e0 100644
+index 129c72a..cb45856 100644
 --- a/Util/Controller/TargetRenderer.php
 +++ b/Util/Controller/TargetRenderer.php
-@@ -11,10 +11,10 @@ use Magento\Framework\View\LayoutInterface;
+@@ -12,11 +12,11 @@ use Magento\Framework\View\Model\PageLayout\Config\BuilderInterface as PageLayou
  class TargetRenderer
  {
      public function __construct(
 -        private readonly EventManager $eventManager,
 -        private readonly IdConvertor $idConvertor,
 -        private readonly LayoutHandlerComposite $layoutHandlerComposite,
--        private readonly LayoutLoader $layoutLoader
+-        private readonly LayoutLoader $layoutLoader,
+-        private readonly PageLayoutConfigBuilder $pageLayoutConfigBuilder,
 +        private EventManager $eventManager,
 +        private IdConvertor $idConvertor,
 +        private LayoutHandlerComposite $layoutHandlerComposite,
-+        private LayoutLoader $layoutLoader
++        private LayoutLoader $layoutLoader,
++        private PageLayoutConfigBuilder $pageLayoutConfigBuilder,
      ) {
      }
  
