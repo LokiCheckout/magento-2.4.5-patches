@@ -1,0 +1,13 @@
+diff --git a/Console/Command/ModuleEnableSequenceCommand.php b/Console/Command/ModuleEnableSequenceCommand.php
+index 2f03a80..4aec86c 100644
+--- a/Console/Command/ModuleEnableSequenceCommand.php
++++ b/Console/Command/ModuleEnableSequenceCommand.php
+@@ -14,7 +14,7 @@ use Symfony\Component\Console\Input\ArrayInput;
+ class ModuleEnableSequenceCommand extends Command
+ {
+     public function __construct(
+-        private readonly ComponentRegistrar $componentRegistrar,
++        private ComponentRegistrar $componentRegistrar,
+         ?string $name = null)  {
+         parent::__construct($name);
+     }
