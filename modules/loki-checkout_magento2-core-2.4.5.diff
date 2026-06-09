@@ -931,7 +931,7 @@ index a90d14cf..8770437e 100644
          try {
              $this->getStepNavigator()->setPreviousStep();
 diff --git a/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php b/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php
-index 3796b0c5..20f2bffa 100644
+index c7ecfca7..84d0568a 100644
 --- a/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php
 +++ b/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php
 @@ -12,7 +12,7 @@ use Loki\Components\Component\ComponentRepository;
