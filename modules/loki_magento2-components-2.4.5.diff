@@ -199,11 +199,11 @@ index 1ee46cf..c933fc9 100644
          $data = $this->requestDataLoader->load();
          $this->requestDataLoader->mergeRequestParams();
 diff --git a/Controller/Index/Html.php b/Controller/Index/Html.php
-index 63d9b63..3644b7c 100644
+index c2c1a58..f3d09a9 100644
 --- a/Controller/Index/Html.php
 +++ b/Controller/Index/Html.php
-@@ -32,22 +32,22 @@ use Magento\Framework\Message\ManagerInterface as MessageManager;
- class Html implements HttpPostActionInterface, HttpGetActionInterface
+@@ -35,23 +35,23 @@ use Magento\Framework\Message\ManagerInterface as MessageManager;
+ class Html implements HttpPostActionInterface, CsrfAwareActionInterface
  {
      public function __construct(
 -        private readonly LayoutLoader $layoutLoader,
@@ -218,6 +218,7 @@ index 63d9b63..3644b7c 100644
 -        private readonly LoggerInterface $logger,
 -        private readonly ComponentRegistry $componentRegistry,
 -        private readonly ComponentUpdateFactory $componentUpdateFactory,
+-        private readonly Validator $formKeyValidator,
 +        private LayoutLoader $layoutLoader,
 +        private RequestDataLoader $requestDataLoader,
 +        private RepositoryDispatcher $repositoryDispatcher,
@@ -230,6 +231,7 @@ index 63d9b63..3644b7c 100644
 +        private LoggerInterface $logger,
 +        private ComponentRegistry $componentRegistry,
 +        private ComponentUpdateFactory $componentUpdateFactory,
++        private Validator $formKeyValidator,
      ) {
      }
  
@@ -294,31 +296,34 @@ index 4dec725..81ae987 100644
          return ucfirst((string)$value);
      }
 diff --git a/Filter/Filter.php b/Filter/Filter.php
-index fcdf413..df0be97 100644
+index 5a2d74a..1c332ef 100644
 --- a/Filter/Filter.php
 +++ b/Filter/Filter.php
-@@ -7,16 +7,16 @@ use Loki\Components\Component\ComponentInterface;
+@@ -8,18 +8,18 @@ use Loki\Components\Exception\RecursionException;
  class Filter
  {
      public function __construct(
 -        private readonly FilterRegistry $filterRegistry,
 -        private readonly FilterScopeFactory $filterScopeFactory,
+-        private readonly int $recursionDepth = 10
 +        private FilterRegistry $filterRegistry,
 +        private FilterScopeFactory $filterScopeFactory,
++        private int $recursionDepth = 10
      ) {
      }
  
      public function filter(
          ComponentInterface $component,
 -        mixed $data = null,
--        mixed $propertyName = null
--    ): mixed {
+-        mixed $propertyName = null,
 +        $data = null,
-+        $propertyName = null
++        $propertyName = null,
+         int $depth = 0
+-    ): mixed {
 +    ) {
-         $filters = $this->filterRegistry->getApplicableFilters(
-             $component->getFilters()
-         );
+         if ($depth >= $this->recursionDepth) {
+             throw new RecursionException('Too many array levels');
+         }
 diff --git a/Filter/FilterInterface.php b/Filter/FilterInterface.php
 index 0d0d3e5..81a2a51 100644
 --- a/Filter/FilterInterface.php
@@ -387,7 +392,7 @@ index 79872a3..4f49d0c 100644
          return (int)$value;
      }
 diff --git a/Filter/PositiveNumber.php b/Filter/PositiveNumber.php
-index 833e0c2..ac4ee5c 100644
+index c0d0d07..1e4b7ac 100644
 --- a/Filter/PositiveNumber.php
 +++ b/Filter/PositiveNumber.php
 @@ -4,7 +4,7 @@ namespace Loki\Components\Filter;
@@ -398,7 +403,7 @@ index 833e0c2..ac4ee5c 100644
 +    public function filter($value, FilterScope $scope)
      {
          if ($value > 0) {
-             return $value;
+             return (int)$value;
 diff --git a/Filter/RemoveSpaces.php b/Filter/RemoveSpaces.php
 index 71efc2e..f8f400c 100644
 --- a/Filter/RemoveSpaces.php
@@ -413,7 +418,7 @@ index 71efc2e..f8f400c 100644
          return preg_replace('/\s+/', '', (string)$value);
      }
 diff --git a/Filter/Security.php b/Filter/Security.php
-index 98b2f97..4373604 100644
+index 99359f7..d5cb894 100644
 --- a/Filter/Security.php
 +++ b/Filter/Security.php
 @@ -4,7 +4,7 @@ namespace Loki\Components\Filter;
@@ -968,21 +973,23 @@ index 4c1f235..140dc2d 100644
      }
  
 diff --git a/Util/ComponentUtil.php b/Util/ComponentUtil.php
-index 92a6f6c..a0c7f42 100644
+index 6a59627..8f5ca2f 100644
 --- a/Util/ComponentUtil.php
 +++ b/Util/ComponentUtil.php
-@@ -12,10 +12,10 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+@@ -13,11 +13,11 @@ use Loki\Components\Util\Security\AjaxSignature;
  class ComponentUtil implements ArgumentInterface
  {
      public function __construct(
 -        private readonly UrlFactory $urlFactory,
 -        private readonly RequestInterface $request,
 -        private readonly FormKeyModel $formKey,
--        private readonly IdConvertor $idConvertor
+-        private readonly IdConvertor $idConvertor,
+-        private readonly AjaxSignature $ajaxSignature
 +        private UrlFactory $urlFactory,
 +        private RequestInterface $request,
 +        private FormKeyModel $formKey,
-+        private IdConvertor $idConvertor
++        private IdConvertor $idConvertor,
++        private AjaxSignature $ajaxSignature
      ) {
      }
  
@@ -1075,25 +1082,27 @@ index 6495e38..8157200 100644
          $this->eventManager->dispatch('loki_components_repository_dispatch', ['component' => $component]);
  
 diff --git a/Util/Controller/RequestDataLoader.php b/Util/Controller/RequestDataLoader.php
-index fbd4355..2dd34cc 100644
+index 86554cd..66e89a9 100644
 --- a/Util/Controller/RequestDataLoader.php
 +++ b/Util/Controller/RequestDataLoader.php
-@@ -12,8 +12,8 @@ use Loki\Components\Util\Ajax;
+@@ -13,9 +13,9 @@ use Loki\Components\Util\Security\AjaxSignature;
  class RequestDataLoader
  {
      public function __construct(
 -        private readonly RequestInterface $request,
--        private readonly Ajax $ajax
+-        private readonly Ajax $ajax,
+-        private readonly AjaxSignature $ajaxSignature
 +        private RequestInterface $request,
-+        private Ajax $ajax
++        private Ajax $ajax,
++        private AjaxSignature $ajaxSignature
      ) {
      }
  
 diff --git a/Util/Controller/TargetRenderer.php b/Util/Controller/TargetRenderer.php
-index 129c72a..cb45856 100644
+index 5fb9825..11c33f7 100644
 --- a/Util/Controller/TargetRenderer.php
 +++ b/Util/Controller/TargetRenderer.php
-@@ -12,11 +12,11 @@ use Magento\Framework\View\Model\PageLayout\Config\BuilderInterface as PageLayou
+@@ -12,12 +12,12 @@ use Magento\Framework\View\Model\PageLayout\Config\BuilderInterface as PageLayou
  class TargetRenderer
  {
      public function __construct(
@@ -1102,11 +1111,13 @@ index 129c72a..cb45856 100644
 -        private readonly LayoutHandlerComposite $layoutHandlerComposite,
 -        private readonly LayoutLoader $layoutLoader,
 -        private readonly PageLayoutConfigBuilder $pageLayoutConfigBuilder,
+-        private readonly int $maximumTargets = 100
 +        private EventManager $eventManager,
 +        private IdConvertor $idConvertor,
 +        private LayoutHandlerComposite $layoutHandlerComposite,
 +        private LayoutLoader $layoutLoader,
 +        private PageLayoutConfigBuilder $pageLayoutConfigBuilder,
++        private int $maximumTargets = 100
      ) {
      }
  
@@ -1146,6 +1157,19 @@ index fb25502..13b1043 100644
      public function __construct(
 -        private readonly ProductMetadataInterface $productMetadata,
 +        private ProductMetadataInterface $productMetadata,
+     ) {
+     }
+ 
+diff --git a/Util/Security/AjaxSignature.php b/Util/Security/AjaxSignature.php
+index 6afbbfc..7f983e8 100644
+--- a/Util/Security/AjaxSignature.php
++++ b/Util/Security/AjaxSignature.php
+@@ -7,7 +7,7 @@ use Magento\Framework\App\DeploymentConfig;
+ class AjaxSignature
+ {
+     public function __construct(
+-        private readonly DeploymentConfig $deploymentConfig
++        private DeploymentConfig $deploymentConfig
      ) {
      }
  
@@ -1228,19 +1252,19 @@ index 22d1027..c95e6bd 100644
          if (false === is_numeric($value)) {
              return [(string)__('Value must contain numbers only')];
 diff --git a/Validator/RequiredValidator.php b/Validator/RequiredValidator.php
-index 9285bff..aee0ba2 100644
+index 7ed2c54..5b4fb8c 100644
 --- a/Validator/RequiredValidator.php
 +++ b/Validator/RequiredValidator.php
-@@ -10,13 +10,13 @@ use Magento\Framework\App\RequestInterface;
+@@ -10,13 +10,13 @@ use Loki\Components\Util\SkipValidation;
  class RequiredValidator implements ValidatorInterface
  {
      public function __construct(
 -        private readonly IsEmpty $isEmpty,
--        private readonly RequestInterface $request,
 -        private readonly Ajax $ajax,
+-        private readonly SkipValidation $skipValidation
 +        private IsEmpty $isEmpty,
-+        private RequestInterface $request,
 +        private Ajax $ajax,
++        private SkipValidation $skipValidation
      ) {
      }
  
@@ -1250,15 +1274,17 @@ index 9285bff..aee0ba2 100644
          if (false === $this->ajax->isAjax()) {
              return true;
 diff --git a/Validator/Validator.php b/Validator/Validator.php
-index 957bbf0..59fbc71 100644
+index ec29dc3..7c5d724 100644
 --- a/Validator/Validator.php
 +++ b/Validator/Validator.php
-@@ -9,13 +9,13 @@ use Loki\Components\Messages\LocalMessage;
+@@ -10,14 +10,14 @@ use Loki\Components\Messages\LocalMessage;
  class Validator
  {
      public function __construct(
 -        private readonly ValidatorRegistry $validatorRegistry,
+-        private readonly int $recursionDepth = 10
 +        private ValidatorRegistry $validatorRegistry,
++        private int $recursionDepth = 10
      ) {
      }
  
@@ -1266,9 +1292,9 @@ index 957bbf0..59fbc71 100644
          ComponentInterface $component,
 -        mixed $data = null,
 +        $data = null,
-         string $scope = ''
+         string $scope = '',
+         int $depth = 0
      ): bool {
-         if (is_array($data)) {
 diff --git a/Validator/ValidatorInterface.php b/Validator/ValidatorInterface.php
 index dffabfb..8967280 100644
 --- a/Validator/ValidatorInterface.php
