@@ -69,7 +69,7 @@ index 9060320..35872aa 100644
  
  }
 diff --git a/Component/ComponentViewModel.php b/Component/ComponentViewModel.php
-index 6088619..7933c8f 100644
+index edd7bba..91bba08 100644
 --- a/Component/ComponentViewModel.php
 +++ b/Component/ComponentViewModel.php
 @@ -54,7 +54,7 @@ class ComponentViewModel implements ComponentViewModelInterface
@@ -771,7 +771,7 @@ index dbf09b3..8011279 100644
      }
  
 diff --git a/Observer/AssignAdditionalBlockVariables.php b/Observer/AssignAdditionalBlockVariables.php
-index 948e338..14b7e7a 100644
+index 5deecd2..15f98f8 100644
 --- a/Observer/AssignAdditionalBlockVariables.php
 +++ b/Observer/AssignAdditionalBlockVariables.php
 @@ -20,14 +20,14 @@ use Loki\Components\Util\Block\TemplateRenderer;
