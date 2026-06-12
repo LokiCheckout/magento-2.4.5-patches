@@ -12,10 +12,10 @@ index f708c63..499d38a 100644
          if (empty($countryId)) {
              return $countryId;
 diff --git a/Plugin/EnhanceVatIdRepositoryPlugin.php b/Plugin/EnhanceVatIdRepositoryPlugin.php
-index 1964df3..ab564df 100644
+index b3d514d..75cd9e0 100644
 --- a/Plugin/EnhanceVatIdRepositoryPlugin.php
 +++ b/Plugin/EnhanceVatIdRepositoryPlugin.php
-@@ -19,7 +19,7 @@ class EnhanceVatIdRepositoryPlugin
+@@ -20,7 +20,7 @@ class EnhanceVatIdRepositoryPlugin
      ) {
      }
  
@@ -24,7 +24,7 @@ index 1964df3..ab564df 100644
      {
          if (strlen($value) < 4 && preg_match('/^([A-Z]+)$/', $value)) {
              $value = '';
-@@ -28,7 +28,7 @@ class EnhanceVatIdRepositoryPlugin
+@@ -31,7 +31,7 @@ class EnhanceVatIdRepositoryPlugin
          return $value;
      }
  
@@ -33,12 +33,12 @@ index 1964df3..ab564df 100644
      {
          if (empty($value)) {
              return $value;
-@@ -45,7 +45,7 @@ class EnhanceVatIdRepositoryPlugin
+@@ -43,7 +43,7 @@ class EnhanceVatIdRepositoryPlugin
          return $value;
      }
  
--    public function afterSaveValue(VatIdRepository $repository, mixed $rt, mixed $value): void
-+    public function afterSaveValue(VatIdRepository $repository, $rt, $value): void
+-    public function afterSaveValue(VatIdRepository $repository, $return, mixed $value): void
++    public function afterSaveValue(VatIdRepository $repository, $return, $value): void
      {
          if (empty($value)) {
              return;
