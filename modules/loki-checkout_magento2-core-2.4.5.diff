@@ -501,27 +501,27 @@ index 1dd28537..22189b97 100644
      }
  
 diff --git a/Component/Checkout/Other/Newsletter/NewsletterRepository.php b/Component/Checkout/Other/Newsletter/NewsletterRepository.php
-index a6d69a3d..8d893998 100644
+index e4df4879..eb49a021 100644
 --- a/Component/Checkout/Other/Newsletter/NewsletterRepository.php
 +++ b/Component/Checkout/Other/Newsletter/NewsletterRepository.php
-@@ -10,7 +10,7 @@ use Loki\Field\Component\Base\Field\FieldRepository;
+@@ -9,7 +9,7 @@ use Loki\Field\Component\Base\Field\FieldRepository;
   */
  class NewsletterRepository extends FieldRepository
  {
 -    public function getValue(): mixed
 +    public function getValue()
      {
-         $email = (string)$this->getContext()->getCheckoutState()->getQuote()->getCustomerEmail();
+         $email = $this->getCustomerEmail();
          if (strlen($email) < 1) {
-@@ -35,7 +35,7 @@ class NewsletterRepository extends FieldRepository
-         return false;
+@@ -38,7 +38,7 @@ class NewsletterRepository extends FieldRepository
+         return $this->getContext()->getModuleConfig()->isNewsletterCheckedByDefault();
      }
  
 -    public function saveValue(mixed $value): void
 +    public function saveValue($value): void
      {
-         $email = (string)$this->getContext()->getCheckoutState()->getQuote()->getCustomerEmail();
-         if ((bool)$value) {
+         $value = (bool)$value;
+         $isSubscribed = $this->isSubscribed();
 diff --git a/Component/Checkout/ProgressBar/ProgressBarRepository.php b/Component/Checkout/ProgressBar/ProgressBarRepository.php
 index 818e40f7..d6711d00 100644
 --- a/Component/Checkout/ProgressBar/ProgressBarRepository.php
