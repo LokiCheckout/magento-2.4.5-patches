@@ -198,8 +198,21 @@ index 1ee46cf..c933fc9 100644
      {
          $data = $this->requestDataLoader->load();
          $this->requestDataLoader->mergeRequestParams();
+diff --git a/Controller/HtmlResult.php b/Controller/HtmlResult.php
+index f428fd2..f312622 100644
+--- a/Controller/HtmlResult.php
++++ b/Controller/HtmlResult.php
+@@ -9,7 +9,7 @@ use Magento\Framework\Data\Form\FormKey;
+ class HtmlResult extends Raw
+ {
+     public function __construct(
+-        private readonly FormKey $formKey
++        private FormKey $formKey
+     ) {
+     }
+ 
 diff --git a/Controller/Index/Html.php b/Controller/Index/Html.php
-index c2c1a58..f3d09a9 100644
+index b0fdc8d..da7a6ff 100644
 --- a/Controller/Index/Html.php
 +++ b/Controller/Index/Html.php
 @@ -35,23 +35,23 @@ use Magento\Framework\Message\ManagerInterface as MessageManager;
