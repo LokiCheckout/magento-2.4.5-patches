@@ -42,10 +42,10 @@ index 205f9f5..f009e8d 100644
          $phpGenerator = parent::generate($classStub, $testClassStub);
          $phpGenerator->addUse($classStub->getFullQualifiedClassName());
 diff --git a/ViewModel/QuoteDetails.php b/ViewModel/QuoteDetails.php
-index a08f99e..7160a4a 100644
+index aa365ec..c89f456 100644
 --- a/ViewModel/QuoteDetails.php
 +++ b/ViewModel/QuoteDetails.php
-@@ -13,10 +13,10 @@ use ReflectionClass;
+@@ -14,10 +14,10 @@ use ReflectionClass;
  class QuoteDetails implements ArgumentInterface
  {
      public function __construct(
