@@ -67,6 +67,34 @@ index 2085244..809912f 100644
      ) {
      }
  
+diff --git a/Service/SecureConfigurationManager.php b/Service/SecureConfigurationManager.php
+index 999470e..db04929 100644
+--- a/Service/SecureConfigurationManager.php
++++ b/Service/SecureConfigurationManager.php
+@@ -9,10 +9,10 @@ use Magento\Framework\Encryption\EncryptorInterface;
+ class SecureConfigurationManager
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly CacheManager $cacheManager,
+-        private readonly WriterInterface $configWriter,
+-        private readonly EncryptorInterface $encryptor,
++        private ScopeConfigInterface $scopeConfig,
++        private CacheManager $cacheManager,
++        private WriterInterface $configWriter,
++        private EncryptorInterface $encryptor,
+     ) {
+     }
+ 
+@@ -34,7 +34,7 @@ class SecureConfigurationManager
+         return $result;
+     }
+ 
+-    public function save(string $path, mixed $value): bool
++    public function save(string $path, $value): bool
+     {
+         $encryptedValue = $this->encryptor->encrypt($value);
+         $currentValue = $this->scopeConfig->getValue($path);
 diff --git a/Service/StoreConfigurationManager.php b/Service/StoreConfigurationManager.php
 index 8c33941..957dcc6 100644
 --- a/Service/StoreConfigurationManager.php
