@@ -25,7 +25,7 @@ index 4bfddca..62d5615 100644
          if (isset($_ENV[$variableName]) && !empty($_ENV[$variableName])) {
              return $_ENV[$variableName];
 diff --git a/Utilities/InstallConfig.php b/Utilities/InstallConfig.php
-index 301d269..72f8460 100644
+index 9e74d39..4ee9bac 100644
 --- a/Utilities/InstallConfig.php
 +++ b/Utilities/InstallConfig.php
 @@ -59,7 +59,7 @@ class InstallConfig
