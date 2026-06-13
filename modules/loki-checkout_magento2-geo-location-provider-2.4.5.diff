@@ -1,0 +1,30 @@
+diff --git a/GeoLocation/GeoLocation.php b/GeoLocation/GeoLocation.php
+index 97d5ffb..6f37221 100644
+--- a/GeoLocation/GeoLocation.php
++++ b/GeoLocation/GeoLocation.php
+@@ -5,8 +5,8 @@ namespace LokiCheckout\GeoLocationProvider\GeoLocation;
+ class GeoLocation
+ {
+     public function __construct(
+-        private readonly float $latitude,
+-        private readonly float $longitude,
++        private float $latitude,
++        private float $longitude,
+     ) {
+     }
+ 
+diff --git a/Service/GeoLocationService.php b/Service/GeoLocationService.php
+index 7cf04df..56806bb 100644
+--- a/Service/GeoLocationService.php
++++ b/Service/GeoLocationService.php
+@@ -10,8 +10,8 @@ use Magento\Quote\Api\Data\AddressInterface;
+ class GeoLocationService
+ {
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly array $geoLocationProviders = []
++        private Config $config,
++        private array $geoLocationProviders = []
+     )
+     {
+     }
