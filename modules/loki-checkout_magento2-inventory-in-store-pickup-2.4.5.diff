@@ -1,0 +1,64 @@
+diff --git a/Component/InStorePickup/InStorePickupRepository.php b/Component/InStorePickup/InStorePickupRepository.php
+index 7d6fdad..306e723 100644
+--- a/Component/InStorePickup/InStorePickupRepository.php
++++ b/Component/InStorePickup/InStorePickupRepository.php
+@@ -12,12 +12,12 @@ class InStorePickupRepository extends MapRepository
+ {
+     public function __construct(
+         private CheckoutState $checkoutState,
+-        private readonly GetPickupLocationsForQuote $getPickupLocationsForQuote,
+-        private readonly AddressExtensionFactory $addressExtensionFactory,
++        private GetPickupLocationsForQuote $getPickupLocationsForQuote,
++        private AddressExtensionFactory $addressExtensionFactory,
+     ) {
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $quote = $this->checkoutState->getQuote();
+         $shippingAddress = $quote->getShippingAddress();
+@@ -29,7 +29,7 @@ class InStorePickupRepository extends MapRepository
+         return $extensionAttributes->getPickupLocationCode();
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         parent::saveValue($value);
+ 
+@@ -60,7 +60,7 @@ class InStorePickupRepository extends MapRepository
+         $this->checkoutState->saveQuote($quote);
+     }
+ 
+-    private function isPickupLocationAvailable(mixed $value): bool
++    private function isPickupLocationAvailable($value): bool
+     {
+         foreach (
+             $this->getPickupLocationsForQuote->execute(
+diff --git a/Component/InStorePickup/InStorePickupViewModel.php b/Component/InStorePickup/InStorePickupViewModel.php
+index 7e9a774..fe55217 100644
+--- a/Component/InStorePickup/InStorePickupViewModel.php
++++ b/Component/InStorePickup/InStorePickupViewModel.php
+@@ -11,7 +11,7 @@ class InStorePickupViewModel extends StoreSelectViewModel
+ {
+     public function __construct(
+         private GetPickupLocationsForQuote $getPickupLocationsForQuote,
+-        private readonly StreetLinesFactory $streetLinesFactory,
++        private StreetLinesFactory $streetLinesFactory,
+     ) {
+     }
+ 
+diff --git a/ViewModel/CurrentPickupLocation.php b/ViewModel/CurrentPickupLocation.php
+index 5e063b0..3511977 100644
+--- a/ViewModel/CurrentPickupLocation.php
++++ b/ViewModel/CurrentPickupLocation.php
+@@ -16,7 +16,7 @@ class CurrentPickupLocation implements ArgumentInterface
+ {
+     public function __construct(
+         private CheckoutState $checkoutState,
+-        private readonly AddressExtensionFactory $addressExtensionFactory,
++        private AddressExtensionFactory $addressExtensionFactory,
+         private GetPickupLocation $getPickupLocation,
+         private StoreManagerInterface $storeManager
+     ) {
