@@ -1,3 +1,16 @@
+diff --git a/Console/Command/SaveEncryptedCommand.php b/Console/Command/SaveEncryptedCommand.php
+index 2209011..99283d5 100644
+--- a/Console/Command/SaveEncryptedCommand.php
++++ b/Console/Command/SaveEncryptedCommand.php
+@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
+ class SaveEncryptedCommand extends Command
+ {
+     public function __construct(
+-        private readonly Encrypted $encrypted,
++        private Encrypted $encrypted,
+         ?string $name = null)  {
+         parent::__construct($name);
+     }
 diff --git a/ModuleData/ModuleSequence.php b/ModuleData/ModuleSequence.php
 index 229646d..fa2c88d 100644
 --- a/ModuleData/ModuleSequence.php
