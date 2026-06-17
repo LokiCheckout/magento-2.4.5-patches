@@ -1,0 +1,52 @@
+diff --git a/Console/Command/ConvertEmailToCustomerCommand.php b/Console/Command/ConvertEmailToCustomerCommand.php
+index e5385b5..a8cd88f 100644
+--- a/Console/Command/ConvertEmailToCustomerCommand.php
++++ b/Console/Command/ConvertEmailToCustomerCommand.php
+@@ -31,17 +31,17 @@ class ConvertEmailToCustomerCommand extends Command
+     private const ARG_EMAIL = 'email';
+ 
+     public function __construct(
+-        private readonly AccountManagementInterface $accountManagement,
+-        private readonly CustomerRepositoryInterface $customerRepository,
+-        private readonly CustomerInterfaceFactory $customerFactory,
+-        private readonly AddressRepositoryInterface $addressRepository,
+-        private readonly AddressInterfaceFactory $addressFactory,
+-        private readonly RegionInterfaceFactory $regionFactory,
+-        private readonly OrderRepositoryInterface $orderRepository,
+-        private readonly SearchCriteriaBuilder $searchCriteriaBuilder,
+-        private readonly SortOrderBuilder $sortOrderBuilder,
+-        private readonly StoreManagerInterface $storeManager,
+-        private readonly State $appState,
++        private AccountManagementInterface $accountManagement,
++        private CustomerRepositoryInterface $customerRepository,
++        private CustomerInterfaceFactory $customerFactory,
++        private AddressRepositoryInterface $addressRepository,
++        private AddressInterfaceFactory $addressFactory,
++        private RegionInterfaceFactory $regionFactory,
++        private OrderRepositoryInterface $orderRepository,
++        private SearchCriteriaBuilder $searchCriteriaBuilder,
++        private SortOrderBuilder $sortOrderBuilder,
++        private StoreManagerInterface $storeManager,
++        private State $appState,
+         ?string $name = null
+     ) {
+         parent::__construct($name);
+diff --git a/Observer/CreateCustomerFromGuestOrder.php b/Observer/CreateCustomerFromGuestOrder.php
+index e99c53c..6ee85bd 100644
+--- a/Observer/CreateCustomerFromGuestOrder.php
++++ b/Observer/CreateCustomerFromGuestOrder.php
+@@ -24,10 +24,10 @@ use Psr\Log\LoggerInterface;
+ class CreateCustomerFromGuestOrder implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly AccountManagementInterface $accountManagement,
+-        private readonly CustomerInterfaceFactory $customerFactory,
+-        private readonly OrderRepositoryInterface $orderRepository,
+-        private readonly LoggerInterface $logger
++        private AccountManagementInterface $accountManagement,
++        private CustomerInterfaceFactory $customerFactory,
++        private OrderRepositoryInterface $orderRepository,
++        private LoggerInterface $logger
+     ) {
+     }
+ 
