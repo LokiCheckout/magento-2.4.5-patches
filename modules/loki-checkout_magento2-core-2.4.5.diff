@@ -1204,7 +1204,7 @@ index c7b0724d..5e0f7c56 100644
      }
  
 diff --git a/Controller/Index/Index.php b/Controller/Index/Index.php
-index d871eeed..d3c40ce8 100644
+index a9d84222..c5971e8b 100644
 --- a/Controller/Index/Index.php
 +++ b/Controller/Index/Index.php
 @@ -17,13 +17,13 @@ use Magento\Framework\Controller\Result\Redirect as RedirectResult;
