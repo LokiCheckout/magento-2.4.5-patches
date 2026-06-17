@@ -18,7 +18,7 @@ index 0b35a78..d0d7090 100644
      }
  
 diff --git a/Component/ProfileSwitcher/ProfileSwitcherRepository.php b/Component/ProfileSwitcher/ProfileSwitcherRepository.php
-index 9058145..73f34f9 100644
+index 83f6d28..be2b074 100644
 --- a/Component/ProfileSwitcher/ProfileSwitcherRepository.php
 +++ b/Component/ProfileSwitcher/ProfileSwitcherRepository.php
 @@ -15,18 +15,18 @@ use Loki\Components\Exception\RedirectException;
