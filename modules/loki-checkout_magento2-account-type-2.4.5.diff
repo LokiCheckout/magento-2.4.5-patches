@@ -84,7 +84,7 @@ index cf0ac7d..afb6854 100644
      }
  
 diff --git a/Plugin/ToggleCompanyComponentPlugin.php b/Plugin/ToggleCompanyComponentPlugin.php
-index b04904f..4291db9 100644
+index 2b51c8e..c946547 100644
 --- a/Plugin/ToggleCompanyComponentPlugin.php
 +++ b/Plugin/ToggleCompanyComponentPlugin.php
 @@ -9,8 +9,8 @@ use LokiCheckout\AccountType\Config\Config;
