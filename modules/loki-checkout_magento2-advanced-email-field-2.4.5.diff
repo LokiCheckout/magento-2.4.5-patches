@@ -17,17 +17,19 @@ index 6beb6cb..aa1abdf 100644
          if (false === is_array($value)) {
              $proceed($value);
 diff --git a/Plugin/SwitchEmailTemplatePlugin.php b/Plugin/SwitchEmailTemplatePlugin.php
-index e5d5d94..14a6b36 100644
+index e0bfc80..2aa3228 100644
 --- a/Plugin/SwitchEmailTemplatePlugin.php
 +++ b/Plugin/SwitchEmailTemplatePlugin.php
-@@ -10,8 +10,8 @@ use Magento\Customer\Model\Session as CustomerSession;
+@@ -11,9 +11,9 @@ use Magento\Customer\Model\Session as CustomerSession;
  class SwitchEmailTemplatePlugin
  {
      public function __construct(
 -        private readonly CustomerSession $customerSession,
 -        private readonly AccountManagementInterface $accountManagement,
+-        private readonly Config $config
 +        private CustomerSession $customerSession,
 +        private AccountManagementInterface $accountManagement,
++        private Config $config
      ) {
      }
  
