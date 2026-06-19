@@ -161,10 +161,10 @@ index c1d77d8..7a336a1 100644
      }
  
 diff --git a/Controller/Adminhtml/Index/Html.php b/Controller/Adminhtml/Index/Html.php
-index 1ee46cf..c933fc9 100644
+index dbc0b45..9905eb6 100644
 --- a/Controller/Adminhtml/Index/Html.php
 +++ b/Controller/Adminhtml/Index/Html.php
-@@ -32,22 +32,22 @@ class Html extends Action
+@@ -38,24 +38,24 @@ class Html implements HttpPostActionInterface, CsrfAwareActionInterface
      const ADMIN_RESOURCE = 'Loki_Components::index';
  
      public function __construct(
@@ -178,6 +178,8 @@ index 1ee46cf..c933fc9 100644
 -        private readonly AppState $appState,
 -        private readonly LoggerInterface $logger,
 -        private readonly ComponentRegistry $componentRegistry,
+-        private readonly MessageManager $messageManager,
+-        private readonly Validator $formKeyValidator,
 +        private LayoutLoader $layoutLoader,
 +        private RequestDataLoader $requestDataLoader,
 +        private RepositoryDispatcher $repositoryDispatcher,
@@ -188,9 +190,11 @@ index 1ee46cf..c933fc9 100644
 +        private AppState $appState,
 +        private LoggerInterface $logger,
 +        private ComponentRegistry $componentRegistry,
-         Context $context,
++        private MessageManager $messageManager,
++        private Validator $formKeyValidator,
+ 
      ) {
-         parent::__construct($context);
+         //parent::__construct($context);
      }
  
 -    public function execute(): ResultInterface|ResponseInterface
