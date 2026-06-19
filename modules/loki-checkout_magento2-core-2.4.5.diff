@@ -1599,7 +1599,7 @@ index 9c6afdac..a3586cf1 100644
          try {
              $proceed($component, $componentData);
 diff --git a/Repository/NewsletterRepository.php b/Repository/NewsletterRepository.php
-index 819359dc..255af9d2 100644
+index 4abec6fa..2819dabe 100644
 --- a/Repository/NewsletterRepository.php
 +++ b/Repository/NewsletterRepository.php
 @@ -13,8 +13,8 @@ use Magento\Store\Model\Website;
