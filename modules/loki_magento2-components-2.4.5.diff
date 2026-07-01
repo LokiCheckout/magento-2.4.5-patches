@@ -1,3 +1,16 @@
+diff --git a/Attribute/JsProperty.php b/Attribute/JsProperty.php
+index b495878..95a229f 100644
+--- a/Attribute/JsProperty.php
++++ b/Attribute/JsProperty.php
+@@ -8,7 +8,7 @@ use Attribute;
+ class JsProperty
+ {
+     public function __construct(
+-        public readonly string $name,
++        public string $name,
+     ) {
+     }
+ }
 diff --git a/Component/ComponentFactory.php b/Component/ComponentFactory.php
 index dfd4871..e0df5ef 100644
 --- a/Component/ComponentFactory.php
@@ -69,13 +82,13 @@ index 9060320..35872aa 100644
  
  }
 diff --git a/Component/ComponentViewModel.php b/Component/ComponentViewModel.php
-index edd7bba..91bba08 100644
+index 79aac13..1a21a1b 100644
 --- a/Component/ComponentViewModel.php
 +++ b/Component/ComponentViewModel.php
-@@ -54,7 +54,7 @@ class ComponentViewModel implements ComponentViewModelInterface
-         return ObjectManager::getInstance()->get(GetElementId::class)->execute($this->block);
+@@ -56,7 +56,7 @@ class ComponentViewModel implements ComponentViewModelInterface
      }
  
+     #[JsProperty(name: 'value')]
 -    public function getValue(): mixed
 +    public function getValue()
      {
@@ -767,7 +780,7 @@ index 09fd98e..1c00878 100644
      }
  
 diff --git a/Observer/AddHtmlAttributesToComponentBlock.php b/Observer/AddHtmlAttributesToComponentBlock.php
-index dbf09b3..8011279 100644
+index f89c334..95ca9aa 100644
 --- a/Observer/AddHtmlAttributesToComponentBlock.php
 +++ b/Observer/AddHtmlAttributesToComponentBlock.php
 @@ -18,11 +18,11 @@ use Loki\Components\Util\Component\JsDataProvider;
