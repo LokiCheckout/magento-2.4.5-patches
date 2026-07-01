@@ -419,10 +419,10 @@ index 0799d3d8..79187add 100644
          $billingAsShipping = (bool)$value;
          $quote = $this->getContext()->getCheckoutState()->getQuote();
 diff --git a/Component/Checkout/GridLayout/GridLayoutViewModel.php b/Component/Checkout/GridLayout/GridLayoutViewModel.php
-index 1743f58e..0045466c 100644
+index e69c2341..010cd1b2 100644
 --- a/Component/Checkout/GridLayout/GridLayoutViewModel.php
 +++ b/Component/Checkout/GridLayout/GridLayoutViewModel.php
-@@ -12,7 +12,7 @@ class GridLayoutViewModel extends ComponentViewModel
+@@ -13,7 +13,7 @@ class GridLayoutViewModel extends ComponentViewModel
      protected bool $skipValidation = true;
  
      public function __construct(
@@ -605,7 +605,7 @@ index 521dea01..7fb5e736 100644
      }
  
 diff --git a/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php b/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php
-index 9a0007be..33a4e6c1 100644
+index 5e752ed6..edf0c7ac 100644
 --- a/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php
 +++ b/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php
 @@ -18,8 +18,8 @@ class ShippingMethodsRepository extends ComponentRepository
@@ -628,7 +628,7 @@ index 9a0007be..33a4e6c1 100644
      {
          if (strlen($this->currentShippingMethod) > 0) {
              return $this->currentShippingMethod;
-@@ -78,7 +78,7 @@ class ShippingMethodsRepository extends ComponentRepository
+@@ -77,7 +77,7 @@ class ShippingMethodsRepository extends ComponentRepository
          return $sanitizedShippingMethod;
      }
  
@@ -725,10 +725,10 @@ index aa2574cd..44d705c5 100644
      ) {
      }
 diff --git a/Component/Checkout/Step/AbstractStepViewModel.php b/Component/Checkout/Step/AbstractStepViewModel.php
-index c8cf0bb5..8dd34f28 100644
+index c60bfdec..dad3a054 100644
 --- a/Component/Checkout/Step/AbstractStepViewModel.php
 +++ b/Component/Checkout/Step/AbstractStepViewModel.php
-@@ -13,7 +13,7 @@ abstract class AbstractStepViewModel extends ComponentViewModel implements StepV
+@@ -14,7 +14,7 @@ abstract class AbstractStepViewModel extends ComponentViewModel implements StepV
  {
      protected bool $valid = true;
      public function __construct(
@@ -737,7 +737,7 @@ index c8cf0bb5..8dd34f28 100644
      ) {
      }
  
-@@ -42,7 +42,7 @@ abstract class AbstractStepViewModel extends ComponentViewModel implements StepV
+@@ -44,7 +44,7 @@ abstract class AbstractStepViewModel extends ComponentViewModel implements StepV
          return $this->stepNavigator->isCurrentStep($this);
      }
  
@@ -1544,6 +1544,32 @@ index 2c585023..5f1d7384 100644
      ) {
      }
  
+diff --git a/Plugin/DisableAddressFormWhenLocationPlugin.php b/Plugin/DisableAddressFormWhenLocationPlugin.php
+index 1c07d533..fb06f846 100644
+--- a/Plugin/DisableAddressFormWhenLocationPlugin.php
++++ b/Plugin/DisableAddressFormWhenLocationPlugin.php
+@@ -9,7 +9,7 @@ use LokiCheckout\Core\Shipment\ShippingAddressResolverListing;
+ class DisableAddressFormWhenLocationPlugin
+ {
+     public function __construct(
+-        private readonly ShippingAddressResolverListing $shippingAddressResolverListing,
++        private ShippingAddressResolverListing $shippingAddressResolverListing,
+     ) {
+     }
+ 
+diff --git a/Plugin/DisableSameAsBillingForLocationPlugin.php b/Plugin/DisableSameAsBillingForLocationPlugin.php
+index 52f1a2a0..d5446857 100644
+--- a/Plugin/DisableSameAsBillingForLocationPlugin.php
++++ b/Plugin/DisableSameAsBillingForLocationPlugin.php
+@@ -9,7 +9,7 @@ use LokiCheckout\Core\Util\SameAddressService;
+ class DisableSameAsBillingForLocationPlugin
+ {
+     public function __construct(
+-        private readonly ShippingAddressResolverListing $shippingAddressResolverListing,
++        private ShippingAddressResolverListing $shippingAddressResolverListing,
+     ) {
+     }
+ 
 diff --git a/Plugin/FixFreeShippingSubtotalPlugin.php b/Plugin/FixFreeShippingSubtotalPlugin.php
 index d976e8e9..886cd2c9 100644
 --- a/Plugin/FixFreeShippingSubtotalPlugin.php
@@ -1556,6 +1582,19 @@ index d976e8e9..886cd2c9 100644
 -        private readonly CheckoutState $checkoutState
 +        private ScopeConfigInterface $scopeConfig,
 +        private CheckoutState $checkoutState
+     ) {
+     }
+ 
+diff --git a/Plugin/HideSameAsBillingForLocationPlugin.php b/Plugin/HideSameAsBillingForLocationPlugin.php
+index aae8f57f..1ceaebd1 100644
+--- a/Plugin/HideSameAsBillingForLocationPlugin.php
++++ b/Plugin/HideSameAsBillingForLocationPlugin.php
+@@ -9,7 +9,7 @@ use LokiCheckout\Core\Shipment\ShippingAddressResolverListing;
+ class HideSameAsBillingForLocationPlugin
+ {
+     public function __construct(
+-        private readonly ShippingAddressResolverListing $shippingAddressResolverListing,
++        private ShippingAddressResolverListing $shippingAddressResolverListing,
      ) {
      }
  
@@ -1598,6 +1637,21 @@ index 9c6afdac..a3586cf1 100644
      ): void {
          try {
              $proceed($component, $componentData);
+diff --git a/Plugin/ReplaceAddressLabelWhenLocationPlugin.php b/Plugin/ReplaceAddressLabelWhenLocationPlugin.php
+index 7e963d87..dbd9840a 100644
+--- a/Plugin/ReplaceAddressLabelWhenLocationPlugin.php
++++ b/Plugin/ReplaceAddressLabelWhenLocationPlugin.php
+@@ -9,8 +9,8 @@ use Magento\Quote\Model\Quote\Address;
+ class ReplaceAddressLabelWhenLocationPlugin
+ {
+     public function __construct(
+-        private readonly ShippingAddressResolverListing $shippingAddressResolverListing,
+-        private readonly string $addressLabel = 'Pickup Address',
++        private ShippingAddressResolverListing $shippingAddressResolverListing,
++        private string $addressLabel = 'Pickup Address',
+     ) {
+     }
+ 
 diff --git a/Repository/NewsletterRepository.php b/Repository/NewsletterRepository.php
 index 4abec6fa..2819dabe 100644
 --- a/Repository/NewsletterRepository.php
@@ -1811,6 +1865,30 @@ index 5a92ca90..32a1ab10 100644
      {
          $shipmentMethodCode = $iconResolverContext->getShipmentMethodCode();
          $blockName = 'loki-checkout.shipping.methods.'.$shipmentMethodCode;
+diff --git a/Shipment/ShippingAddressResolverInterface.php b/Shipment/ShippingAddressResolverInterface.php
+index 231964db..5eda60b7 100644
+--- a/Shipment/ShippingAddressResolverInterface.php
++++ b/Shipment/ShippingAddressResolverInterface.php
+@@ -6,5 +6,5 @@ use Magento\Quote\Api\Data\AddressInterface;
+ 
+ interface ShippingAddressResolverInterface
+ {
+-    public function resolve(): AddressInterface|null;
++    public function resolve();
+ }
+diff --git a/Shipment/ShippingAddressResolverListing.php b/Shipment/ShippingAddressResolverListing.php
+index 5703dfe4..304e431b 100644
+--- a/Shipment/ShippingAddressResolverListing.php
++++ b/Shipment/ShippingAddressResolverListing.php
+@@ -7,7 +7,7 @@ use Magento\Quote\Model\Quote\Address;
+ class ShippingAddressResolverListing
+ {
+     public function __construct(
+-        private readonly array $shippingAddressResolvers = [],
++        private array $shippingAddressResolvers = [],
+     ) {
+     }
+ 
 diff --git a/Step/FinalStep.php b/Step/FinalStep.php
 index 2f3f3903..19a9ad21 100644
 --- a/Step/FinalStep.php
@@ -2163,6 +2241,19 @@ index bc0bd080..a8778952 100644
      ) {
      }
  
+diff --git a/Util/Checkout/ResetShippingAddress.php b/Util/Checkout/ResetShippingAddress.php
+index 4d459163..ccb9bb67 100644
+--- a/Util/Checkout/ResetShippingAddress.php
++++ b/Util/Checkout/ResetShippingAddress.php
+@@ -8,7 +8,7 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
+ class ResetShippingAddress
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
++        private CheckoutState $checkoutState,
+         private SameAddressService $sameAddressService,
+     ) {
+     }
 diff --git a/Util/Checkout/SaveCart.php b/Util/Checkout/SaveCart.php
 index 4dd4ab36..bbc8694c 100644
 --- a/Util/Checkout/SaveCart.php
@@ -2178,6 +2269,19 @@ index 4dd4ab36..bbc8694c 100644
  
      ) {
      }
+diff --git a/Util/Checkout/UpdatePickupAddress.php b/Util/Checkout/UpdatePickupAddress.php
+index 893fd427..6e92e0bf 100644
+--- a/Util/Checkout/UpdatePickupAddress.php
++++ b/Util/Checkout/UpdatePickupAddress.php
+@@ -8,7 +8,7 @@ use Magento\Quote\Model\Quote\Address;
+ class UpdatePickupAddress
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
++        private CheckoutState $checkoutState,
+     ) {
+     }
+ 
 diff --git a/Util/Component/AddressStateProvider.php b/Util/Component/AddressStateProvider.php
 index 5991887f..fad34b76 100644
 --- a/Util/Component/AddressStateProvider.php
@@ -2620,6 +2724,19 @@ index 39cbd0f8..767b473e 100644
 -    public function validate(): bool|array;
 +    public function validate();
  }
+diff --git a/ViewModel/BillingAddressTitle.php b/ViewModel/BillingAddressTitle.php
+index 61fe17c9..573a8100 100644
+--- a/ViewModel/BillingAddressTitle.php
++++ b/ViewModel/BillingAddressTitle.php
+@@ -8,7 +8,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class BillingAddressTitle implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
++        private CheckoutState $checkoutState,
+     ) {
+     }
+ 
 diff --git a/ViewModel/CheckoutState.php b/ViewModel/CheckoutState.php
 index bfd6e1cb..742b88a4 100644
 --- a/ViewModel/CheckoutState.php
@@ -2788,17 +2905,19 @@ index 83318f1c..e1aef16d 100644
      }
  
 diff --git a/ViewModel/PaymentMethodIcon.php b/ViewModel/PaymentMethodIcon.php
-index 28889de2..c74e9929 100644
+index 346220de..02196675 100644
 --- a/ViewModel/PaymentMethodIcon.php
 +++ b/ViewModel/PaymentMethodIcon.php
-@@ -13,8 +13,8 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+@@ -13,9 +13,9 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
  class PaymentMethodIcon implements ArgumentInterface
  {
      public function __construct(
 -        private readonly IconResolverListing $iconResolverListing,
 -        private readonly IconResolverContextFactory $iconResolverContextFactory,
+-        private readonly bool $enabled = true,
 +        private IconResolverListing $iconResolverListing,
 +        private IconResolverContextFactory $iconResolverContextFactory,
++        private bool $enabled = true,
      ) {
      }
  
@@ -2865,17 +2984,34 @@ index 9f185833..fa82922d 100644
      }
  
 diff --git a/ViewModel/ShipmentMethodIcon.php b/ViewModel/ShipmentMethodIcon.php
-index 3f0b4b2f..a77e9686 100644
+index b4570bc5..dbd8a4c9 100644
 --- a/ViewModel/ShipmentMethodIcon.php
 +++ b/ViewModel/ShipmentMethodIcon.php
-@@ -13,8 +13,8 @@ use LokiCheckout\Core\Shipment\Icon\IconResolverListing;
+@@ -13,9 +13,9 @@ use LokiCheckout\Core\Shipment\Icon\IconResolverListing;
  class ShipmentMethodIcon implements ArgumentInterface
  {
      public function __construct(
 -        private readonly IconResolverListing $iconResolverListing,
 -        private readonly IconResolverContextFactory $iconResolverContextFactory,
+-        private readonly bool $enabled = true,
 +        private IconResolverListing $iconResolverListing,
 +        private IconResolverContextFactory $iconResolverContextFactory,
++        private bool $enabled = true,
+     ) {
+     }
+ 
+diff --git a/ViewModel/ShippingAddressTitle.php b/ViewModel/ShippingAddressTitle.php
+index 30916a88..fb30fc76 100644
+--- a/ViewModel/ShippingAddressTitle.php
++++ b/ViewModel/ShippingAddressTitle.php
+@@ -9,8 +9,8 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class ShippingAddressTitle implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly ShippingAddressResolverListing $shippingAddressResolverListing,
++        private CheckoutState $checkoutState,
++        private ShippingAddressResolverListing $shippingAddressResolverListing,
      ) {
      }
  
@@ -2938,7 +3074,7 @@ index d9a03cf8..542dfef1 100644
          return $this->getAddress()->getData($attributeCode);
      }
 diff --git a/ViewModel/State/ShippingAddressState.php b/ViewModel/State/ShippingAddressState.php
-index 961d524a..114ac258 100644
+index b9abb860..deadfaa3 100644
 --- a/ViewModel/State/ShippingAddressState.php
 +++ b/ViewModel/State/ShippingAddressState.php
 @@ -10,9 +10,9 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
