@@ -27,10 +27,10 @@ index 0ea9084..3c15aa4 100644
          if (false === is_array($value)) {
              return;
 diff --git a/Component/Base/Map/MapViewModel.php b/Component/Base/Map/MapViewModel.php
-index e67f56a..3282c3f 100644
+index 2f97df5..fd1ed02 100644
 --- a/Component/Base/Map/MapViewModel.php
 +++ b/Component/Base/Map/MapViewModel.php
-@@ -12,7 +12,7 @@ use Loki\Map\MapLocation\MapLocation;
+@@ -13,7 +13,7 @@ use Loki\Map\MapLocation\MapLocation;
   */
  class MapViewModel extends ComponentViewModel
  {
@@ -39,10 +39,17 @@ index e67f56a..3282c3f 100644
  
      public function getJsComponentName(): ?string
      {
-@@ -117,7 +117,7 @@ class MapViewModel extends ComponentViewModel
+@@ -115,13 +115,13 @@ class MapViewModel extends ComponentViewModel
          return '';
      }
  
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return $this->getCurrentMapLocationId();
+     }
+ 
+     #[JsProperty('currentMapLocation')]
 -    public function getCurrentMapLocation(): MapLocation|null|false
 +    public function getCurrentMapLocation()
      {
@@ -62,7 +69,7 @@ index e2ea1fd..898092d 100644
      }
  
 diff --git a/MapLocation/MapLocation.php b/MapLocation/MapLocation.php
-index 04b4c47..41b59e1 100644
+index 9628c24..0715d6f 100644
 --- a/MapLocation/MapLocation.php
 +++ b/MapLocation/MapLocation.php
 @@ -12,12 +12,12 @@ use Magento\Framework\DataObject;
