@@ -1,8 +1,23 @@
 diff --git a/Component/Shipment/LocationSelect/LocationSelectRepository.php b/Component/Shipment/LocationSelect/LocationSelectRepository.php
-index b4a5db7..0c73ddd 100644
+index f254483..5668495 100644
 --- a/Component/Shipment/LocationSelect/LocationSelectRepository.php
 +++ b/Component/Shipment/LocationSelect/LocationSelectRepository.php
-@@ -23,7 +23,7 @@ class LocationSelectRepository extends MapRepository
+@@ -17,10 +17,10 @@ use Magento\Quote\Model\Quote\Address;
+ class LocationSelectRepository extends MapRepository
+ {
+     public function __construct(
+-        private readonly QuoteRepositoryInterface $quoteRepository,
+-        private readonly AmastyQuoteRepository $amastyQuoteRepository,
+-        private readonly ShippingAddressResolver $shippingAddressResolver,
+-        private readonly UpdatePickupAddress $updatePickupAddress,
++        private QuoteRepositoryInterface $quoteRepository,
++        private AmastyQuoteRepository $amastyQuoteRepository,
++        private ShippingAddressResolver $shippingAddressResolver,
++        private UpdatePickupAddress $updatePickupAddress,
+     ) {}
+ 
+     public function getMapLocationId(): string
+@@ -28,7 +28,7 @@ class LocationSelectRepository extends MapRepository
          return (string)$this->getAmastyQuote()->getStoreId();
      }
  
@@ -11,8 +26,8 @@ index b4a5db7..0c73ddd 100644
      {
          return $this->getAmastyQuote()->getData();
      }
-@@ -34,7 +34,7 @@ class LocationSelectRepository extends MapRepository
-         return $this->quoteRepository->getByAddressId($quote->getShippingAddress()->getId());
+@@ -38,7 +38,7 @@ class LocationSelectRepository extends MapRepository
+         return $this->amastyQuoteRepository->getQuote();
      }
  
 -    public function saveValue(mixed $value): void
@@ -21,38 +36,73 @@ index b4a5db7..0c73ddd 100644
          if (false === is_array($value)) {
              return;
 diff --git a/Component/Shipment/LocationSelect/LocationSelectViewModel.php b/Component/Shipment/LocationSelect/LocationSelectViewModel.php
-index 2dc86cc..989d5c7 100644
+index da7c06f..0fb2c5d 100644
 --- a/Component/Shipment/LocationSelect/LocationSelectViewModel.php
 +++ b/Component/Shipment/LocationSelect/LocationSelectViewModel.php
-@@ -27,16 +27,16 @@ use Magento\Store\Model\StoreManagerInterface;
- class LocationSelectViewModel extends StoreSelectViewModel
- {
+@@ -24,11 +24,11 @@ class LocationSelectViewModel extends StoreSelectViewModel
+     protected bool $isRequiredByDefault = true;
+ 
      public function __construct(
--        private readonly CollectionFactory $locationCollectionFactory,
 -        private readonly ScheduleProvider $scheduleProvider,
 -        private readonly TimeHandler $timeHandler,
--        private readonly CheckoutSession $checkoutSession,
--        private readonly RequestInterface $request,
--        private readonly StoreManagerInterface $storeManager,
 -        private readonly RegionCollectionFactory $regionCollectionFactory,
--        private readonly LocationProductFilterApplier $locationProductFilterApplier,
 -        private readonly Filter $templateFilter,
 -        private readonly StreetLinesFactory $streetLinesFactory,
-+        private CollectionFactory $locationCollectionFactory,
 +        private ScheduleProvider $scheduleProvider,
 +        private TimeHandler $timeHandler,
-+        private CheckoutSession $checkoutSession,
-+        private RequestInterface $request,
-+        private StoreManagerInterface $storeManager,
 +        private RegionCollectionFactory $regionCollectionFactory,
-+        private LocationProductFilterApplier $locationProductFilterApplier,
 +        private Filter $templateFilter,
 +        private StreetLinesFactory $streetLinesFactory,
+         private LocationProvider $locationProvider,
+     ) {
+     }
+diff --git a/Observer/CleanupQuote.php b/Observer/CleanupQuote.php
+index 84b1795..ea38562 100644
+--- a/Observer/CleanupQuote.php
++++ b/Observer/CleanupQuote.php
+@@ -11,9 +11,9 @@ use Magento\Framework\Event\ObserverInterface;
+ class CleanupQuote implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly ResetShippingAddress $resetShippingAddress,
+-        private readonly QuoteRepositoryInterface $quoteRepository
++        private CheckoutState $checkoutState,
++        private ResetShippingAddress $resetShippingAddress,
++        private QuoteRepositoryInterface $quoteRepository
      ) {
      }
  
+diff --git a/Provider/LocationProvider.php b/Provider/LocationProvider.php
+index 2184ed8..56d34f7 100644
+--- a/Provider/LocationProvider.php
++++ b/Provider/LocationProvider.php
+@@ -16,16 +16,16 @@ use Amasty\Storelocator\Model\ResourceModel\Location\CollectionFactory;
+ class LocationProvider
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly CollectionFactory $locationCollectionFactory,
+-        private readonly RequestInterface $request,
+-        private readonly LocationProductFilterApplier $locationProductFilterApplier,
+-        private readonly StoreManagerInterface $storeManager,
+-        private readonly AmastyQuoteRepository $amastyQuoteRepository,
++        private CheckoutState $checkoutState,
++        private CollectionFactory $locationCollectionFactory,
++        private RequestInterface $request,
++        private LocationProductFilterApplier $locationProductFilterApplier,
++        private StoreManagerInterface $storeManager,
++        private AmastyQuoteRepository $amastyQuoteRepository,
+     ) {
+     }
+ 
+-    public function getFromQuote(): LocationInterface|null
++    public function getFromQuote()
+     {
+         return $this->amastyQuoteRepository->getLocation();
+     }
 diff --git a/Shipment/Icon/IconResolver.php b/Shipment/Icon/IconResolver.php
-index 05a6bb8..6e36e33 100644
+index a07cae8..b9c9189 100644
 --- a/Shipment/Icon/IconResolver.php
 +++ b/Shipment/Icon/IconResolver.php
 @@ -13,7 +13,7 @@ class IconResolver implements IconResolverInterface
@@ -62,18 +112,64 @@ index 05a6bb8..6e36e33 100644
 -    public function resolve(IconResolverContext $iconResolverContext): false|string
 +    public function resolve(IconResolverContext $iconResolverContext)
      {
-         if (false === $this->moduleManager->isEnabled('@todo')) {
+         if (false === $this->moduleManager->isEnabled('Amasty_StorePickupWithLocator')) {
              return false;
+diff --git a/Shipment/ShippingAddressResolver.php b/Shipment/ShippingAddressResolver.php
+index 388a559..7fbb1aa 100644
+--- a/Shipment/ShippingAddressResolver.php
++++ b/Shipment/ShippingAddressResolver.php
+@@ -12,12 +12,12 @@ use Magento\Quote\Model\Quote\AddressFactory;
+ class ShippingAddressResolver implements ShippingAddressResolverInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly LocationProvider $locationProvider,
+-        private readonly AddressFactory $addressFactory
++        private CheckoutState $checkoutState,
++        private LocationProvider $locationProvider,
++        private AddressFactory $addressFactory
+     ) {}
+ 
+-    public function resolve(): AddressInterface|null
++    public function resolve()
+     {
+         $shippingMethod = $this->checkoutState->getQuote()->getShippingAddress()->getShippingMethod();
+         if ($shippingMethod !== 'amstorepickup_amstorepickup') {
 diff --git a/Util/AmastyQuoteRepository.php b/Util/AmastyQuoteRepository.php
-index 9f64125..22130ee 100644
+index bf8bd3a..bb0bffd 100644
 --- a/Util/AmastyQuoteRepository.php
 +++ b/Util/AmastyQuoteRepository.php
-@@ -31,7 +31,7 @@ class AmastyQuoteRepository implements ArgumentInterface
-         return $locationModel;
+@@ -14,11 +14,11 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class AmastyQuoteRepository implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly QuoteRepositoryInterface $quoteRepository,
+-        private readonly QuoteFactory $quoteFactory,
+-        private readonly LocationFactory $locationModelFactory,
+-        private readonly LocationResourceModel $locationResourceModel
++        private CheckoutState $checkoutState,
++        private QuoteRepositoryInterface $quoteRepository,
++        private QuoteFactory $quoteFactory,
++        private LocationFactory $locationModelFactory,
++        private LocationResourceModel $locationResourceModel
+     ) {
      }
  
--    private function getQuote(): mixed
-+    private function getQuote()
-     {
-         $quote = $this->checkoutState->getQuote();
-         $shippingAddressId = $quote->getShippingAddress()->getId();
+diff --git a/ViewModel/SelectedStore.php b/ViewModel/SelectedStore.php
+index d791f06..5f15aeb 100644
+--- a/ViewModel/SelectedStore.php
++++ b/ViewModel/SelectedStore.php
+@@ -11,9 +11,9 @@ use Magento\Quote\Model\Quote\AddressFactory;
+ class SelectedStore implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly AmastyQuoteRepository $quoteRepository,
+-        private readonly AddressRenderer $addressRenderer,
+-        private readonly AddressFactory $addressFactory
++        private AmastyQuoteRepository $quoteRepository,
++        private AddressRenderer $addressRenderer,
++        private AddressFactory $addressFactory
+     ) {
+     }
+ 
