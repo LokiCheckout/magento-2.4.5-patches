@@ -1,9 +1,22 @@
 diff --git a/Component/Shipment/LocationSelect/LocationSelectRepository.php b/Component/Shipment/LocationSelect/LocationSelectRepository.php
-index 01d3900..41d3da7 100644
+index ee19080..b173291 100644
 --- a/Component/Shipment/LocationSelect/LocationSelectRepository.php
 +++ b/Component/Shipment/LocationSelect/LocationSelectRepository.php
-@@ -22,12 +22,12 @@ class LocationSelectRepository extends MapRepository
-         return (string)$this->checkoutState->getQuote()->getExtensionAttributes()->getSimpleShippingLocationId();
+@@ -15,9 +15,9 @@ use Magento\Quote\Model\Quote\Address;
+ class LocationSelectRepository extends MapRepository
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly ShippingAddressResolver $shippingAddressResolver,
+-        private readonly UpdatePickupAddress $updatePickupAddress,
++        private CheckoutState $checkoutState,
++        private ShippingAddressResolver $shippingAddressResolver,
++        private UpdatePickupAddress $updatePickupAddress,
+     ) {
+     }
+ 
+@@ -31,12 +31,12 @@ class LocationSelectRepository extends MapRepository
+         return (string)$extensionAttributes->getSimpleShippingLocationId();
      }
  
 -    public function getValue(): mixed
@@ -18,12 +31,12 @@ index 01d3900..41d3da7 100644
          if (false === is_array($value)) {
              return;
 diff --git a/Component/Shipment/LocationSelect/LocationSelectViewModel.php b/Component/Shipment/LocationSelect/LocationSelectViewModel.php
-index 52073d1..d8ab84c 100644
+index 661713f..981a349 100644
 --- a/Component/Shipment/LocationSelect/LocationSelectViewModel.php
 +++ b/Component/Shipment/LocationSelect/LocationSelectViewModel.php
-@@ -17,10 +17,10 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
- class LocationSelectViewModel extends StoreSelectViewModel
- {
+@@ -21,10 +21,10 @@ class LocationSelectViewModel extends StoreSelectViewModel
+     protected bool $isRequiredByDefault = true;
+ 
      public function __construct(
 -        private readonly LocationRepository $locationRepository,
 -        private readonly SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -160,17 +173,19 @@ index 8727a1f..e6db443 100644
          parent::__construct($context);
      }
 diff --git a/Observer/CleanupQuote.php b/Observer/CleanupQuote.php
-index 18c291f..8d659bf 100644
+index 0ff111e..fc80baf 100644
 --- a/Observer/CleanupQuote.php
 +++ b/Observer/CleanupQuote.php
-@@ -10,8 +10,8 @@ use Magento\Framework\Event\ObserverInterface;
+@@ -11,9 +11,9 @@ use Magento\Framework\Event\ObserverInterface;
  class CleanupQuote implements ObserverInterface
  {
      public function __construct(
 -        private readonly CheckoutState $checkoutState,
 -        private readonly QuoteSimpleShipping $quoteSimpleShipping,
+-        private readonly ResetShippingAddress $resetShippingAddress,
 +        private CheckoutState $checkoutState,
 +        private QuoteSimpleShipping $quoteSimpleShipping,
++        private ResetShippingAddress $resetShippingAddress,
      ) {
      }
  
@@ -184,6 +199,21 @@ index de49089..708b224 100644
      public function __construct(
 -        private readonly OrderRepositoryInterface $orderRepository
 +        private OrderRepositoryInterface $orderRepository
+     ) {
+     }
+ 
+diff --git a/Provider/LocationProvider.php b/Provider/LocationProvider.php
+index 79d1dd2..b7a5e68 100644
+--- a/Provider/LocationProvider.php
++++ b/Provider/LocationProvider.php
+@@ -10,8 +10,8 @@ use Magento\Quote\Api\Data\CartExtensionInterface;
+ class LocationProvider
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly LocationRepository $locationRepository,
++        private CheckoutState $checkoutState,
++        private LocationRepository $locationRepository,
      ) {
      }
  
@@ -221,3 +251,41 @@ index e9d0fd9..f21b560 100644
      {
          if (false === $this->moduleManager->isEnabled('LokiCheckout_SimpleShipping')) {
              return false;
+diff --git a/Shipment/ShippingAddressResolver.php b/Shipment/ShippingAddressResolver.php
+index 05711d0..04302b7 100644
+--- a/Shipment/ShippingAddressResolver.php
++++ b/Shipment/ShippingAddressResolver.php
+@@ -12,12 +12,12 @@ use Magento\Quote\Model\Quote\AddressFactory;
+ class ShippingAddressResolver implements ShippingAddressResolverInterface
+ {
+     public function __construct(
+-        private readonly CheckoutState $checkoutState,
+-        private readonly LocationProvider $locationProvider,
+-        private readonly AddressFactory $addressFactory
++        private CheckoutState $checkoutState,
++        private LocationProvider $locationProvider,
++        private AddressFactory $addressFactory
+     ) {}
+ 
+-    public function resolve(): AddressInterface|null
++    public function resolve()
+     {
+         $shippingMethod = $this->checkoutState->getQuote()->getShippingAddress()->getShippingMethod();
+         if ($shippingMethod !== 'lokisimpleshipping_lokisimpleshipping') {
+diff --git a/ViewModel/SelectedStore.php b/ViewModel/SelectedStore.php
+index 0b6803a..af2d2c3 100644
+--- a/ViewModel/SelectedStore.php
++++ b/ViewModel/SelectedStore.php
+@@ -12,9 +12,9 @@ use Magento\Quote\Model\Quote\Address;
+ class SelectedStore implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly LocationProvider $locationProvider,
+-        private readonly AddressRenderer $addressRenderer,
+-        private readonly ShippingAddressResolver $shippingLocationResolver
++        private LocationProvider $locationProvider,
++        private AddressRenderer $addressRenderer,
++        private ShippingAddressResolver $shippingLocationResolver
+     ) {
+     }
+ 
