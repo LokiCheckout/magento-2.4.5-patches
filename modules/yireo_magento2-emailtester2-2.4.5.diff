@@ -1,0 +1,144 @@
+diff --git a/Block/Adminhtml/Preview.php b/Block/Adminhtml/Preview.php
+index e80d670..81a637d 100644
+--- a/Block/Adminhtml/Preview.php
++++ b/Block/Adminhtml/Preview.php
+@@ -26,8 +26,8 @@ class Preview extends Text
+      * @param array $data
+      */
+     public function __construct(
+-        private readonly Mailer $mailer,
+-        private readonly Session $backendSession,
++        private Mailer $mailer,
++        private Session $backendSession,
+         Context $context,
+         array $data = []
+     ) {
+diff --git a/Controller/Adminhtml/Index/Preview.php b/Controller/Adminhtml/Index/Preview.php
+index 955b16b..06ec249 100644
+--- a/Controller/Adminhtml/Index/Preview.php
++++ b/Controller/Adminhtml/Index/Preview.php
+@@ -37,12 +37,12 @@ class Preview implements HttpGetActionInterface
+      * @param RequestInterface $request
+      */
+     public function __construct(
+-        private readonly PageFactory $resultPageFactory,
+-        private readonly Config $pageConfig,
+-        private readonly Form $formViewModel,
+-        private readonly RequestInterface $request,
+-        private readonly Manager $messageManager,
+-        private readonly RedirectFactory $resultRedirectFactory
++        private PageFactory $resultPageFactory,
++        private Config $pageConfig,
++        private Form $formViewModel,
++        private RequestInterface $request,
++        private Manager $messageManager,
++        private RedirectFactory $resultRedirectFactory
+     ) {
+     }
+ 
+diff --git a/Form/FormProvider.php b/Form/FormProvider.php
+index 05fb2f8..897762a 100644
+--- a/Form/FormProvider.php
++++ b/Form/FormProvider.php
+@@ -105,7 +105,7 @@ class FormProvider implements FormProviderInterface, ItemProviderInterface
+             );
+     }
+ 
+-    public function getItem(int|string $identifier): DataObject
++    public function getItem($identifier): DataObject
+     {
+         return $this->itemFactory->create($this->formHelper->getFormData());
+     }
+diff --git a/Model/Data/Customer.php b/Model/Data/Customer.php
+index ea26f44..3cf57a4 100644
+--- a/Model/Data/Customer.php
++++ b/Model/Data/Customer.php
+@@ -22,10 +22,10 @@ use Magento\Framework\Exception\NoSuchEntityException;
+ class Customer
+ {
+     public function __construct(
+-        private readonly Session $session,
+-        private readonly CustomerRepositoryInterface $customerRepository,
+-        private readonly RequestInterface $request,
+-        private readonly ConfigInterface $config
++        private Session $session,
++        private CustomerRepositoryInterface $customerRepository,
++        private RequestInterface $request,
++        private ConfigInterface $config
+     ) {
+     }
+ 
+diff --git a/Model/Mailer/Variable/Order.php b/Model/Mailer/Variable/Order.php
+index 19aeba8..8a979bd 100644
+--- a/Model/Mailer/Variable/Order.php
++++ b/Model/Mailer/Variable/Order.php
+@@ -48,12 +48,12 @@ class Order implements VariablesInterface
+     private $productId = 0;
+ 
+     public function __construct(
+-        private readonly OrderRepositoryInterface $orderRepository,
+-        private readonly ProductRepositoryInterface $productRepository,
+-        private readonly CustomerRepositoryInterface $customerRepository,
+-        private readonly SearchCriteriaBuilder $searchCriteriaBuilder,
+-        private readonly View $customerViewHelper,
+-        private readonly PhraseFactory $phraseFactory,
++        private OrderRepositoryInterface $orderRepository,
++        private ProductRepositoryInterface $productRepository,
++        private CustomerRepositoryInterface $customerRepository,
++        private SearchCriteriaBuilder $searchCriteriaBuilder,
++        private View $customerViewHelper,
++        private PhraseFactory $phraseFactory,
+     ) {
+     }
+ 
+diff --git a/ViewModel/Form.php b/ViewModel/Form.php
+index bab04e4..6292b0f 100644
+--- a/ViewModel/Form.php
++++ b/ViewModel/Form.php
+@@ -13,10 +13,10 @@ use Magento\Sales\Api\OrderRepositoryInterface;
+ class Form implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly OrderRepositoryInterface $orderRepository,
+-        private readonly ProductRepositoryInterface $productRepository,
+-        private readonly CustomerRepositoryInterface $customerRepository,
+-        private readonly SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory
++        private OrderRepositoryInterface $orderRepository,
++        private ProductRepositoryInterface $productRepository,
++        private CustomerRepositoryInterface $customerRepository,
++        private SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory
+     ) {
+     }
+ 
+diff --git a/ViewModel/Options/EmailTemplateOptions.php b/ViewModel/Options/EmailTemplateOptions.php
+index b54a3a4..7f0315e 100644
+--- a/ViewModel/Options/EmailTemplateOptions.php
++++ b/ViewModel/Options/EmailTemplateOptions.php
+@@ -22,8 +22,8 @@ class EmailTemplateOptions implements OptionSourceInterface, ArgumentInterface
+     protected array $options = [];
+ 
+     public function __construct(
+-        private readonly Collection $emailTemplateCollection,
+-        private readonly Config $emailConfig
++        private Collection $emailTemplateCollection,
++        private Config $emailConfig
+     ) {
+     }
+ 
+diff --git a/ViewModel/Version.php b/ViewModel/Version.php
+index 9641546..a1d0b1c 100644
+--- a/ViewModel/Version.php
++++ b/ViewModel/Version.php
+@@ -13,9 +13,9 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class Version implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly ComponentRegistrar $componentRegistrar,
+-        private readonly File $file,
+-        private readonly Json $jsonDecoder
++        private ComponentRegistrar $componentRegistrar,
++        private File $file,
++        private Json $jsonDecoder
+     ) {
+     }
+ 
