@@ -1,8 +1,8 @@
 diff --git a/Component/Form/FormRepository.php b/Component/Form/FormRepository.php
-index c4d0002..4bf5aa3 100644
+index 8e992a2..3189676 100644
 --- a/Component/Form/FormRepository.php
 +++ b/Component/Form/FormRepository.php
-@@ -26,7 +26,7 @@ class FormRepository extends ComponentRepository
+@@ -31,7 +31,7 @@ class FormRepository extends ComponentRepository
      }
  
      // @todo: Remove the need for this
@@ -11,7 +11,7 @@ index c4d0002..4bf5aa3 100644
      {
          return $this->getItem();
      }
-@@ -67,7 +67,7 @@ class FormRepository extends ComponentRepository
+@@ -73,7 +73,7 @@ class FormRepository extends ComponentRepository
          return $item;
      }
  
@@ -20,7 +20,7 @@ index c4d0002..4bf5aa3 100644
      {
          if (in_array($dataType, ['int', 'tinyint'])) {
              return 0;
-@@ -85,7 +85,7 @@ class FormRepository extends ComponentRepository
+@@ -91,7 +91,7 @@ class FormRepository extends ComponentRepository
      }
  
      // @todo: Rename saveValue to handleValue
@@ -52,19 +52,19 @@ index 2e8a126..5e9c7b9 100644
          if (!is_array($value)) {
              return;
 diff --git a/Component/Grid/GridViewModel.php b/Component/Grid/GridViewModel.php
-index dc2619d..808c066 100644
+index 454c293..55a7b90 100644
 --- a/Component/Grid/GridViewModel.php
 +++ b/Component/Grid/GridViewModel.php
-@@ -93,7 +93,7 @@ class GridViewModel extends ComponentViewModel
+@@ -91,7 +91,7 @@ class GridViewModel extends ComponentViewModel
      }
  
      // @todo: Move this to child-class EntitySelectViewModel
--    public function getCurrentItem(int|string $currentId)
-+    public function getCurrentItem($currentId)
+-    public function getCurrentItem(int|string $currentId): ?DataObject
++    public function getCurrentItem($currentId): ?DataObject
      {
-         return $this->getRepository()->getProviderHandler()->getItem($this->getRepository()->getProvider(), $currentId);
-     }
-@@ -126,7 +126,7 @@ class GridViewModel extends ComponentViewModel
+         try {
+             return $this->getRepository()->getProviderHandler()->getItem($this->getRepository()->getProvider(), $currentId);
+@@ -130,7 +130,7 @@ class GridViewModel extends ComponentViewModel
          $this->getState()->setFilters($filters);
      }
  
@@ -111,6 +111,26 @@ index 4e244a4..c7d8f5e 100644
      {
         if (is_object($value)) {
              return $value;
+diff --git a/Form/Field/Field.php b/Form/Field/Field.php
+index da6152c..b1023fa 100644
+--- a/Form/Field/Field.php
++++ b/Form/Field/Field.php
+@@ -132,13 +132,13 @@ class Field extends DataObject
+     }
+ 
+     // @todo: Move this to EntitySelectField
+-    public function setProvider(string|object $className)
++    public function setProvider($className)
+     {
+         $this->setData('provider', $className);
+     }
+ 
+     // @todo: Move this to EntitySelectField
+-    public function getProvider(): string|object
++    public function getProvider()
+     {
+         return $this->getData('provider');
+     }
 diff --git a/Form/Field/FieldType/CategorySelection.php b/Form/Field/FieldType/CategorySelection.php
 index 21d7861..3b2ced3 100644
 --- a/Form/Field/FieldType/CategorySelection.php
@@ -141,11 +161,11 @@ index 6ea2451..57465b4 100644
      ) {
      }
  
-diff --git a/Form/FieldResolver.php b/Form/FieldResolver.php
-index 060c667..5c7bf24 100644
---- a/Form/FieldResolver.php
-+++ b/Form/FieldResolver.php
-@@ -140,7 +140,7 @@ class FieldResolver
+diff --git a/Form/Field/FieldsResolver.php b/Form/Field/FieldsResolver.php
+index 2f3fb74..6c02e7a 100644
+--- a/Form/Field/FieldsResolver.php
++++ b/Form/Field/FieldsResolver.php
+@@ -138,7 +138,7 @@ class FieldsResolver
      private function resolveFieldType(
          FormRepository $formRepository,
          array $tableColumn
@@ -168,7 +188,7 @@ index 90dec23..a0b650c 100644
          return [
              'code' => $this->getCode(),
 diff --git a/Grid/ColumnLoader.php b/Grid/ColumnLoader.php
-index b6c72d8..c900b55 100644
+index 2e20af3..b984b2b 100644
 --- a/Grid/ColumnLoader.php
 +++ b/Grid/ColumnLoader.php
 @@ -10,9 +10,9 @@ use Magento\Framework\View\Element\AbstractBlock;
@@ -185,7 +205,7 @@ index b6c72d8..c900b55 100644
      }
  
 diff --git a/Grid/Filter/Filter.php b/Grid/Filter/Filter.php
-index 291685c..0d33475 100644
+index 9b44047..82925f0 100644
 --- a/Grid/Filter/Filter.php
 +++ b/Grid/Filter/Filter.php
 @@ -76,7 +76,7 @@ class Filter implements FilterInterface
@@ -195,9 +215,9 @@ index 291685c..0d33475 100644
 -    public function getDefaultValue(): mixed
 +    public function getDefaultValue()
      {
-         if ($this->getConditionType() === 'from_to') {
+         if ($this->getConditionType() === 'from_to' || $this->getFieldType() === 'from_to') {
              return [
-@@ -88,7 +88,7 @@ class Filter implements FilterInterface
+@@ -92,7 +92,7 @@ class Filter implements FilterInterface
          return null;
      }
  
@@ -234,10 +254,27 @@ index 1a27253..616c45d 100644
      public function getConditionType(): string;
  }
 diff --git a/Grid/State.php b/Grid/State.php
-index 34451d9..41c171c 100644
+index 9aa91d1..86d61eb 100644
 --- a/Grid/State.php
 +++ b/Grid/State.php
-@@ -169,7 +169,7 @@ class State
+@@ -14,11 +14,11 @@ use Magento\Ui\Api\Data\BookmarkInterface;
+ class State
+ {
+     public function __construct(
+-        private readonly Session $session,
+-        private readonly FilterStateFactory $filterStateFactory,
+-        private readonly BookmarkLoader $bookmarkLoader,
+-        private readonly string $namespace,
+-        private readonly int $defaultLimit = 20,
++        private Session $session,
++        private FilterStateFactory $filterStateFactory,
++        private BookmarkLoader $bookmarkLoader,
++        private string $namespace,
++        private int $defaultLimit = 20,
+     ) {
+     }
+ 
+@@ -181,7 +181,7 @@ class State
          return null;
      }
  
@@ -246,7 +283,7 @@ index 34451d9..41c171c 100644
      {
          $filters = $this->getFilters();
  
-@@ -214,12 +214,12 @@ class State
+@@ -273,12 +273,12 @@ class State
          ];
      }
  
@@ -262,7 +299,7 @@ index 34451d9..41c171c 100644
          $this->session->setData($this->namespace.'.'.$name, $value);
      }
 diff --git a/Grid/State/FilterState.php b/Grid/State/FilterState.php
-index 79c7390..426708d 100644
+index 336b2e4..7fc787e 100644
 --- a/Grid/State/FilterState.php
 +++ b/Grid/State/FilterState.php
 @@ -7,7 +7,7 @@ class FilterState implements \JsonSerializable
@@ -317,6 +354,19 @@ index 593fa0d..1ca9c3b 100644
 +        private Session $authSession,
      ) {
      }
+ 
+diff --git a/Provider/ItemProviderInterface.php b/Provider/ItemProviderInterface.php
+index 838f33b..e9b7b71 100644
+--- a/Provider/ItemProviderInterface.php
++++ b/Provider/ItemProviderInterface.php
+@@ -8,7 +8,7 @@ use Magento\Framework\DataObject;
+ 
+ interface ItemProviderInterface
+ {
+-    public function getItem(int|string $identifier): DataObject;
++    public function getItem($identifier): DataObject;
+ 
+     public function saveItem(DataObject $item): void;
  
 diff --git a/ProviderHandler/ArrayHandler.php b/ProviderHandler/ArrayHandler.php
 index e9976ed..02177ee 100644
@@ -393,6 +443,41 @@ index e5491af..d77c136 100644
      {
          /** @var AbstractDb $provider */
          return get_class($provider->getResource());
+diff --git a/ProviderHandler/FormHandler.php b/ProviderHandler/FormHandler.php
+index db72cef..ac2f6e1 100644
+--- a/ProviderHandler/FormHandler.php
++++ b/ProviderHandler/FormHandler.php
+@@ -20,13 +20,13 @@ class FormHandler implements ProviderHandlerInterface
+         return $provider instanceof FormProviderInterface;
+     }
+ 
+-    public function getItem(object $provider, int|string $identifier): DataObject
++    public function getItem(object $provider, $identifier): DataObject
+     {
+         /** @var FormProviderInterface $provider */
+         return $provider->getItem($identifier);
+     }
+ 
+-    public function createItem(object $provider, object|null $factory): DataObject
++    public function createItem(object $provider, $factory): DataObject
+     {
+         /** @var FormProviderInterface $provider */
+         return $this->dataObjectFactory->create();
+@@ -60,12 +60,12 @@ class FormHandler implements ProviderHandlerInterface
+         return [];
+     }
+ 
+-    public function getModelClass(object $provider): bool|string
++    public function getModelClass(object $provider)
+     {
+         return false;
+     }
+ 
+-    public function getResourceModelClass(object $provider): bool|string
++    public function getResourceModelClass(object $provider)
+     {
+         return false;
+     }
 diff --git a/ProviderHandler/ProviderHandlerInterface.php b/ProviderHandler/ProviderHandlerInterface.php
 index 35ab842..e588575 100644
 --- a/ProviderHandler/ProviderHandlerInterface.php
@@ -420,10 +505,10 @@ index 35ab842..e588575 100644
 +    public function getResourceModelClass(object $provider);
  }
 diff --git a/ProviderHandler/RepositoryHandler.php b/ProviderHandler/RepositoryHandler.php
-index e508a65..1c98759 100644
+index 8cb07e3..ae0948a 100644
 --- a/ProviderHandler/RepositoryHandler.php
 +++ b/ProviderHandler/RepositoryHandler.php
-@@ -59,7 +59,7 @@ class RepositoryHandler implements ProviderHandlerInterface
+@@ -60,7 +60,7 @@ class RepositoryHandler implements ProviderHandlerInterface
          return $searchResults->getItems();
      }
  
@@ -432,7 +517,7 @@ index e508a65..1c98759 100644
      {
          if (empty($identifier)) {
              throw new RuntimeException('Empty identifier');
-@@ -76,7 +76,7 @@ class RepositoryHandler implements ProviderHandlerInterface
+@@ -81,7 +81,7 @@ class RepositoryHandler implements ProviderHandlerInterface
          throw new RuntimeException('Repository has no load-method we know of.');
      }
  
@@ -441,7 +526,7 @@ index e508a65..1c98759 100644
      {
          if (method_exists($provider, 'create')) {
              return call_user_func([$provider, 'create']);
-@@ -222,7 +222,7 @@ class RepositoryHandler implements ProviderHandlerInterface
+@@ -227,7 +227,7 @@ class RepositoryHandler implements ProviderHandlerInterface
          return $this->filterGroupBuilder->setFilters($filters)->create();
      }
  
@@ -450,7 +535,7 @@ index e508a65..1c98759 100644
      {
          $providerReflection = new ReflectionClass($provider);
          $methodReflection = $providerReflection->getMethod('save');
-@@ -237,7 +237,7 @@ class RepositoryHandler implements ProviderHandlerInterface
+@@ -242,7 +242,7 @@ class RepositoryHandler implements ProviderHandlerInterface
          return $parameter->getType()->getName();
      }
  
@@ -508,6 +593,32 @@ index 2eeccfd..2cde377 100644
      ) {
      }
  
+diff --git a/Ui/Button/ButtonsResolver.php b/Ui/Button/ButtonsResolver.php
+index 5a3c297..5ab6e7e 100644
+--- a/Ui/Button/ButtonsResolver.php
++++ b/Ui/Button/ButtonsResolver.php
+@@ -20,7 +20,7 @@ class ButtonsResolver
+      * @return Button[]
+      */
+     public function resolve(
+-        FormRepository|GridRepository $repository,
++        $repository,
+         AbstractBlock $block,
+     ): array {
+         $provider = $repository->getProvider();
+diff --git a/ViewModel/Form/Field/EntitySelect.php b/ViewModel/Form/Field/EntitySelect.php
+index 45aa1d3..bc7d99b 100644
+--- a/ViewModel/Form/Field/EntitySelect.php
++++ b/ViewModel/Form/Field/EntitySelect.php
+@@ -71,7 +71,7 @@ class EntitySelect implements ArgumentInterface
+         return $item;
+     }
+ 
+-    public function getFieldType(): FieldTypeInterface|EntitySelectInterface
++    public function getFieldType()
+     {
+         return $this->getField()->getFieldType();
+     }
 diff --git a/ViewModel/Options/CountryOptions.php b/ViewModel/Options/CountryOptions.php
 index b535f4f..78f50b3 100644
 --- a/ViewModel/Options/CountryOptions.php
