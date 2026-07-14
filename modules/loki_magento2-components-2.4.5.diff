@@ -174,12 +174,12 @@ index c1d77d8..7a336a1 100644
      }
  
 diff --git a/Controller/Adminhtml/Index/Html.php b/Controller/Adminhtml/Index/Html.php
-index dbc0b45..9905eb6 100644
+index 07af1eb..534e02f 100644
 --- a/Controller/Adminhtml/Index/Html.php
 +++ b/Controller/Adminhtml/Index/Html.php
-@@ -38,24 +38,24 @@ class Html implements HttpPostActionInterface, CsrfAwareActionInterface
-     const ADMIN_RESOURCE = 'Loki_Components::index';
- 
+@@ -36,23 +36,23 @@ use Psr\Log\LoggerInterface;
+ class Html implements HttpPostActionInterface, CsrfAwareActionInterface
+ {
      public function __construct(
 -        private readonly LayoutLoader $layoutLoader,
 -        private readonly RequestDataLoader $requestDataLoader,
@@ -193,6 +193,7 @@ index dbc0b45..9905eb6 100644
 -        private readonly ComponentRegistry $componentRegistry,
 -        private readonly MessageManager $messageManager,
 -        private readonly Validator $formKeyValidator,
+-        private readonly AuthorizationInterface $authorization,
 +        private LayoutLoader $layoutLoader,
 +        private RequestDataLoader $requestDataLoader,
 +        private RepositoryDispatcher $repositoryDispatcher,
@@ -205,9 +206,8 @@ index dbc0b45..9905eb6 100644
 +        private ComponentRegistry $componentRegistry,
 +        private MessageManager $messageManager,
 +        private Validator $formKeyValidator,
- 
++        private AuthorizationInterface $authorization,
      ) {
-         //parent::__construct($context);
      }
  
 -    public function execute(): ResultInterface|ResponseInterface
@@ -1003,10 +1003,10 @@ index 4c1f235..140dc2d 100644
      }
  
 diff --git a/Util/ComponentUtil.php b/Util/ComponentUtil.php
-index 6a59627..8f5ca2f 100644
+index 1073e90..7988714 100644
 --- a/Util/ComponentUtil.php
 +++ b/Util/ComponentUtil.php
-@@ -13,11 +13,11 @@ use Loki\Components\Util\Security\AjaxSignature;
+@@ -14,12 +14,12 @@ use Loki\Components\Util\Security\AjaxSignature;
  class ComponentUtil implements ArgumentInterface
  {
      public function __construct(
@@ -1014,12 +1014,14 @@ index 6a59627..8f5ca2f 100644
 -        private readonly RequestInterface $request,
 -        private readonly FormKeyModel $formKey,
 -        private readonly IdConvertor $idConvertor,
--        private readonly AjaxSignature $ajaxSignature
+-        private readonly AjaxSignature $ajaxSignature,
+-        private readonly State $appState
 +        private UrlFactory $urlFactory,
 +        private RequestInterface $request,
 +        private FormKeyModel $formKey,
 +        private IdConvertor $idConvertor,
-+        private AjaxSignature $ajaxSignature
++        private AjaxSignature $ajaxSignature,
++        private State $appState
      ) {
      }
  
@@ -1112,7 +1114,7 @@ index 6495e38..8157200 100644
          $this->eventManager->dispatch('loki_components_repository_dispatch', ['component' => $component]);
  
 diff --git a/Util/Controller/RequestDataLoader.php b/Util/Controller/RequestDataLoader.php
-index 86554cd..66e89a9 100644
+index 4afe96c..ac7cdd1 100644
 --- a/Util/Controller/RequestDataLoader.php
 +++ b/Util/Controller/RequestDataLoader.php
 @@ -13,9 +13,9 @@ use Loki\Components\Util\Security\AjaxSignature;
@@ -1191,7 +1193,7 @@ index fb25502..13b1043 100644
      }
  
 diff --git a/Util/Security/AjaxSignature.php b/Util/Security/AjaxSignature.php
-index 6afbbfc..7f983e8 100644
+index ccf50c5..4bf9250 100644
 --- a/Util/Security/AjaxSignature.php
 +++ b/Util/Security/AjaxSignature.php
 @@ -7,7 +7,7 @@ use Magento\Framework\App\DeploymentConfig;
