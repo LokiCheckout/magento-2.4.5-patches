@@ -1277,10 +1277,10 @@ index f2dec99b..ee98e6db 100644
          $value = strtoupper((string)$value);
          return preg_replace('/([^A-Z0-9]+)/', '', $value);
 diff --git a/Layout/CountrySpecificLayoutHandler.php b/Layout/CountrySpecificLayoutHandler.php
-index 8be47674..d3e91bd6 100644
+index b4d5af6c..bacdd874 100644
 --- a/Layout/CountrySpecificLayoutHandler.php
 +++ b/Layout/CountrySpecificLayoutHandler.php
-@@ -9,7 +9,7 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
+@@ -10,7 +10,7 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
  class CountrySpecificLayoutHandler implements LayoutHandlerInterface
  {
      public function __construct(
