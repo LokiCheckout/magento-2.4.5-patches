@@ -52,10 +52,10 @@ index 2e8a126..5e9c7b9 100644
          if (!is_array($value)) {
              return;
 diff --git a/Component/Grid/GridViewModel.php b/Component/Grid/GridViewModel.php
-index 454c293..55a7b90 100644
+index 662c81f..430d766 100644
 --- a/Component/Grid/GridViewModel.php
 +++ b/Component/Grid/GridViewModel.php
-@@ -91,7 +91,7 @@ class GridViewModel extends ComponentViewModel
+@@ -101,7 +101,7 @@ class GridViewModel extends ComponentViewModel
      }
  
      // @todo: Move this to child-class EntitySelectViewModel
@@ -64,7 +64,7 @@ index 454c293..55a7b90 100644
      {
          try {
              return $this->getRepository()->getProviderHandler()->getItem($this->getRepository()->getProvider(), $currentId);
-@@ -130,7 +130,7 @@ class GridViewModel extends ComponentViewModel
+@@ -140,7 +140,7 @@ class GridViewModel extends ComponentViewModel
          $this->getState()->setFilters($filters);
      }
  
