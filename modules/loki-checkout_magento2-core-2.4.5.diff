@@ -2124,19 +2124,6 @@ index 00bb0ebb..e6086255 100644
      {
          $component = $this->getPostcodeComponent();
          $postcodeFormatValidator = $this->getPostcodeFormatValidator($countryId);
-diff --git a/Test/Unit/Util/Block/CssClassTest.php b/Test/Unit/Util/Block/CssClassTest.php
-index 8f464dc8..9763896c 100644
---- a/Test/Unit/Util/Block/CssClassTest.php
-+++ b/Test/Unit/Util/Block/CssClassTest.php
-@@ -40,7 +40,7 @@ class CssClassTest extends TestCase
-         $this->assertEquals('__other scope-other class1 class2', $cssClass('class1', 'other'));
-     }
- 
--    private function getBlock(): Template|MockObject
-+    private function getBlock()
-     {
-         $layout = $this->createMock(LayoutInterface::class);
-         $context = $this->createMock(Context::class);
 diff --git a/Test/Unit/Util/Html/PushHtmlAttributesTest.php b/Test/Unit/Util/Html/PushHtmlAttributesTest.php
 index 6d2113e6..0a7d6c91 100644
 --- a/Test/Unit/Util/Html/PushHtmlAttributesTest.php
