@@ -1,0 +1,131 @@
+diff --git a/Component/Checkout/Validator/ValidatorViewModel.php b/Component/Checkout/Validator/ValidatorViewModel.php
+index dc11dec..f44eba9 100644
+--- a/Component/Checkout/Validator/ValidatorViewModel.php
++++ b/Component/Checkout/Validator/ValidatorViewModel.php
+@@ -18,8 +18,8 @@ use Magento\Framework\UrlInterface;
+ class ValidatorViewModel extends CheckoutViewModel
+ {
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly UrlInterface $urlBuilder
++        private Config $config,
++        private UrlInterface $urlBuilder
+     ) {
+     }
+ 
+diff --git a/Config/Config.php b/Config/Config.php
+index 0ab479d..287ed03 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -15,7 +15,7 @@ class Config implements ArgumentInterface
+     private const XML_PATH_SHOW_ERRORS = 'loki_checkout/melissa_address_validator/show_errors_frontend';
+ 
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig
++        private ScopeConfigInterface $scopeConfig
+     ) {
+     }
+ 
+diff --git a/Controller/Address/Apply.php b/Controller/Address/Apply.php
+index a8f843d..309ec0d 100644
+--- a/Controller/Address/Apply.php
++++ b/Controller/Address/Apply.php
+@@ -20,14 +20,14 @@ use Psr\Log\LoggerInterface;
+ class Apply implements HttpPostActionInterface
+ {
+     public function __construct(
+-        private readonly RequestInterface $request,
+-        private readonly JsonFactory $jsonFactory,
+-        private readonly FormKeyValidator $formKeyValidator,
+-        private readonly Config $config,
+-        private readonly CheckoutSession $checkoutSession,
+-        private readonly CartRepositoryInterface $quoteRepository,
+-        private readonly AddressApplyService $applyService,
+-        private readonly LoggerInterface $logger
++        private RequestInterface $request,
++        private JsonFactory $jsonFactory,
++        private FormKeyValidator $formKeyValidator,
++        private Config $config,
++        private CheckoutSession $checkoutSession,
++        private CartRepositoryInterface $quoteRepository,
++        private AddressApplyService $applyService,
++        private LoggerInterface $logger
+     ) {
+     }
+ 
+diff --git a/Controller/Address/Validate.php b/Controller/Address/Validate.php
+index 3042b78..d8d2d02 100644
+--- a/Controller/Address/Validate.php
++++ b/Controller/Address/Validate.php
+@@ -19,13 +19,13 @@ use Psr\Log\LoggerInterface;
+ class Validate implements HttpPostActionInterface
+ {
+     public function __construct(
+-        private readonly RequestInterface $request,
+-        private readonly JsonFactory $jsonFactory,
+-        private readonly FormKeyValidator $formKeyValidator,
+-        private readonly Config $config,
+-        private readonly CheckoutSession $checkoutSession,
+-        private readonly AddressValidationService $validationService,
+-        private readonly LoggerInterface $logger
++        private RequestInterface $request,
++        private JsonFactory $jsonFactory,
++        private FormKeyValidator $formKeyValidator,
++        private Config $config,
++        private CheckoutSession $checkoutSession,
++        private AddressValidationService $validationService,
++        private LoggerInterface $logger
+     ) {
+     }
+ 
+diff --git a/Model/AddressValidationService.php b/Model/AddressValidationService.php
+index 20fd962..ecbaf23 100644
+--- a/Model/AddressValidationService.php
++++ b/Model/AddressValidationService.php
+@@ -16,9 +16,9 @@ use Magento\Quote\Model\Quote\Address;
+ class AddressValidationService
+ {
+     public function __construct(
+-        private readonly AddressMapper $addressMapper,
+-        private readonly Client $client,
+-        private readonly ResponseProcessor $responseProcessor
++        private AddressMapper $addressMapper,
++        private Client $client,
++        private ResponseProcessor $responseProcessor
+     ) {
+     }
+ 
+diff --git a/Model/Melissa/Client.php b/Model/Melissa/Client.php
+index df40579..59134c2 100644
+--- a/Model/Melissa/Client.php
++++ b/Model/Melissa/Client.php
+@@ -18,9 +18,9 @@ class Client
+     private const API_ENDPOINT = 'v3/WEB/GlobalAddress/doGlobalAddress';
+ 
+     public function __construct(
+-        private readonly ClientFactory $clientFactory,
+-        private readonly Config $config,
+-        private readonly LoggerInterface $logger
++        private ClientFactory $clientFactory,
++        private Config $config,
++        private LoggerInterface $logger
+     ) {
+     }
+ 
+diff --git a/Model/Melissa/ResponseProcessor.php b/Model/Melissa/ResponseProcessor.php
+index 50c0012..b12e12d 100644
+--- a/Model/Melissa/ResponseProcessor.php
++++ b/Model/Melissa/ResponseProcessor.php
+@@ -22,9 +22,9 @@ class ResponseProcessor
+     private const MAX_ADDRESS_LINES = 8;
+ 
+     public function __construct(
+-        private readonly RegionFactory $regionFactory,
+-        private readonly Config $config,
+-        private readonly LoggerInterface $logger
++        private RegionFactory $regionFactory,
++        private Config $config,
++        private LoggerInterface $logger
+     ) {
+     }
+ 
