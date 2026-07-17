@@ -1,3 +1,18 @@
+diff --git a/Config/Config.php b/Config/Config.php
+index 6267f23..bb525c2 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -9,8 +9,8 @@ use Magento\Store\Model\ScopeInterface;
+ class Config
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly EncryptorInterface $encryptor,
++        private ScopeConfigInterface $scopeConfig,
++        private EncryptorInterface $encryptor,
+     ) {
+     }
+ 
 diff --git a/Plugin/EnhanceCountryIdRepositoryPlugin.php b/Plugin/EnhanceCountryIdRepositoryPlugin.php
 index f708c63..499d38a 100644
 --- a/Plugin/EnhanceCountryIdRepositoryPlugin.php
