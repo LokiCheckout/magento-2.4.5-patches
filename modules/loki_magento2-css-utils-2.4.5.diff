@@ -13,21 +13,8 @@ index 1d1be51..2c456ea 100644
      ) {
      }
  
-diff --git a/Test/Integration/CssClassTest.php b/Test/Integration/CssClassTest.php
-index d0a3758..7c78a26 100644
---- a/Test/Integration/CssClassTest.php
-+++ b/Test/Integration/CssClassTest.php
-@@ -223,7 +223,7 @@ class CssClassTest extends TestCase
-                 'template' => 'example-template.phtml'
-             ]
-         ]);
--        
-+
-         $block->setNameInLayout($blockName);
-         return $block;
-     }
 diff --git a/Util/CssClass.php b/Util/CssClass.php
-index c067a38..f06cf2b 100644
+index 45be541..4762cd2 100644
 --- a/Util/CssClass.php
 +++ b/Util/CssClass.php
 @@ -16,7 +16,7 @@ class CssClass
