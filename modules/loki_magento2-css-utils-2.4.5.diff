@@ -14,7 +14,7 @@ index 1d1be51..2c456ea 100644
      }
  
 diff --git a/Util/CssClass.php b/Util/CssClass.php
-index 45be541..4762cd2 100644
+index 92d1108..0c80c9c 100644
 --- a/Util/CssClass.php
 +++ b/Util/CssClass.php
 @@ -16,7 +16,7 @@ class CssClass
