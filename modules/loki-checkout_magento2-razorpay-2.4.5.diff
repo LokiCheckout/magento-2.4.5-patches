@@ -1,0 +1,85 @@
+diff --git a/Component/Checkout/Payment/Method/Razorpay/RazorpayRepository.php b/Component/Checkout/Payment/Method/Razorpay/RazorpayRepository.php
+index 5945bc0..231ea0d 100644
+--- a/Component/Checkout/Payment/Method/Razorpay/RazorpayRepository.php
++++ b/Component/Checkout/Payment/Method/Razorpay/RazorpayRepository.php
+@@ -11,12 +11,12 @@ use LokiCheckout\Razorpay\Component\Checkout\Payment\Method\RazorpayComponentCon
+  */
+ class RazorpayRepository extends FieldRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return null;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (!is_array($value)) {
+             return;
+diff --git a/Config/Config.php b/Config/Config.php
+index 6cdef93..c32cd00 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -11,7 +11,7 @@ class Config
+     public const PAYMENT_METHOD_CODE = 'razorpay';
+ 
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
++        private ScopeConfigInterface $scopeConfig,
+     ) {
+     }
+ 
+diff --git a/Controller/Index/Order.php b/Controller/Index/Order.php
+index 37afbe6..a5bb9c3 100644
+--- a/Controller/Index/Order.php
++++ b/Controller/Index/Order.php
+@@ -25,12 +25,12 @@ class Order implements HttpPostActionInterface, CsrfAwareActionInterface
+     private const RZP_BASE_CURRENCY = 'INR';
+ 
+     public function __construct(
+-        private readonly CheckoutSession $checkoutSession,
+-        private readonly JsonFactory $jsonFactory,
+-        private readonly RazorpayConfig $razorpayConfig,
+-        private readonly ModuleListInterface $moduleList,
+-        private readonly ProductMetadataInterface $productMetadata,
+-        private readonly LoggerInterface $logger,
++        private CheckoutSession $checkoutSession,
++        private JsonFactory $jsonFactory,
++        private RazorpayConfig $razorpayConfig,
++        private ModuleListInterface $moduleList,
++        private ProductMetadataInterface $productMetadata,
++        private LoggerInterface $logger,
+     ) {
+     }
+ 
+diff --git a/Observer/VerifyRazorpaySignatureObserver.php b/Observer/VerifyRazorpaySignatureObserver.php
+index 04205f9..e0e5116 100644
+--- a/Observer/VerifyRazorpaySignatureObserver.php
++++ b/Observer/VerifyRazorpaySignatureObserver.php
+@@ -17,9 +17,9 @@ use LokiCheckout\Razorpay\Config\Config;
+ class VerifyRazorpaySignatureObserver implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly RazorpayConfig $razorpayConfig,
+-        private readonly LoggerInterface $logger,
++        private Config $config,
++        private RazorpayConfig $razorpayConfig,
++        private LoggerInterface $logger,
+     ) {
+     }
+ 
+diff --git a/Payment/Icon/IconResolver.php b/Payment/Icon/IconResolver.php
+index 35b6819..4193980 100644
+--- a/Payment/Icon/IconResolver.php
++++ b/Payment/Icon/IconResolver.php
+@@ -16,7 +16,7 @@ class IconResolver implements IconResolverInterface
+     ) {
+     }
+ 
+-    public function resolve(IconResolverContext $iconResolverContext): false|string
++    public function resolve(IconResolverContext $iconResolverContext)
+     {
+         $paymentMethodCode = $iconResolverContext->getPaymentMethodCode();
+         if (false === $this->moduleManager->isEnabled('Razorpay_Magento')) {
