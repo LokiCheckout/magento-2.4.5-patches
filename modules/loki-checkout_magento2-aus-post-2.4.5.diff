@@ -1,0 +1,18 @@
+diff --git a/Shipment/Icon/IconResolver.php b/Shipment/Icon/IconResolver.php
+index 79da2a9..556afeb 100644
+--- a/Shipment/Icon/IconResolver.php
++++ b/Shipment/Icon/IconResolver.php
+@@ -12,11 +12,11 @@ class IconResolver implements IconResolverInterface
+     public function __construct(
+         private ModuleManager $moduleManager,
+         private ImageRenderer $imageRenderer,
+-        private readonly string $imageId = 'LokiCheckout_AusPost::images/auspost.png',
++        private string $imageId = 'LokiCheckout_AusPost::images/auspost.png',
+     ) {
+     }
+ 
+-    public function resolve(IconResolverContext $iconResolverContext): false|string
++    public function resolve(IconResolverContext $iconResolverContext)
+     {
+         if (false === $this->moduleManager->isEnabled('LokiCheckout_AusPost')) {
+             return false;
