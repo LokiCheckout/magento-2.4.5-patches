@@ -43,6 +43,19 @@ index 85f2b0d..bfd35b1 100644
      {
          // @todo: Move this to uploader utility instead
          $folder = 'yireo-test';
+diff --git a/Plugin/ValidatorPlugin.php b/Plugin/ValidatorPlugin.php
+index e95800f..46f20aa 100644
+--- a/Plugin/ValidatorPlugin.php
++++ b/Plugin/ValidatorPlugin.php
+@@ -13,7 +13,7 @@ class ValidatorPlugin
+         Validator $validator,
+         callable $proceed,
+         ComponentInterface $component,
+-        mixed $data = null,
++        $data = null,
+         string $scope = '',
+         int $depth = 0
+     ) {
 diff --git a/Test/Unit/Validator/Component/PasswordComplexityValidatorTest.php b/Test/Unit/Validator/Component/PasswordComplexityValidatorTest.php
 index feccd3e..6a1dd40 100644
 --- a/Test/Unit/Validator/Component/PasswordComplexityValidatorTest.php
