@@ -290,6 +290,21 @@ index 524d84f..ce56984 100644
      {
          $data = [];
          foreach ($this->pollingHandlerListing->getHandlers() as $handler) {
+diff --git a/Controller/Index/Test.php b/Controller/Index/Test.php
+index 61f439d..59cf94e 100644
+--- a/Controller/Index/Test.php
++++ b/Controller/Index/Test.php
+@@ -13,8 +13,8 @@ use Magento\Framework\View\Result\PageFactory;
+ class Test implements HttpGetActionInterface
+ {
+     public function __construct(
+-        private readonly PageFactory $pageFactory,
+-        private readonly AppState $appState,
++        private PageFactory $pageFactory,
++        private AppState $appState,
+     ) {
+     }
+ 
 diff --git a/Factory/ViewModelFactory.php b/Factory/ViewModelFactory.php
 index 60ac3f2..b7da840 100644
 --- a/Factory/ViewModelFactory.php
