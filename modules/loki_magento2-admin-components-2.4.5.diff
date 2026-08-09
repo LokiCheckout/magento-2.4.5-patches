@@ -52,7 +52,7 @@ index 2e8a126..5e9c7b9 100644
          if (!is_array($value)) {
              return;
 diff --git a/Component/Grid/GridViewModel.php b/Component/Grid/GridViewModel.php
-index 662c81f..430d766 100644
+index 3efd9a3..79f4bd0 100644
 --- a/Component/Grid/GridViewModel.php
 +++ b/Component/Grid/GridViewModel.php
 @@ -101,7 +101,7 @@ class GridViewModel extends ComponentViewModel
@@ -99,7 +99,7 @@ index 87a903f..12f9dd0 100644
      }
  
 diff --git a/Filter/Security.php b/Filter/Security.php
-index 4e244a4..c7d8f5e 100644
+index ca1f982..8e1b9de 100644
 --- a/Filter/Security.php
 +++ b/Filter/Security.php
 @@ -11,7 +11,7 @@ use Loki\Components\Filter\FilterScope;
@@ -205,10 +205,10 @@ index 2e20af3..b984b2b 100644
      }
  
 diff --git a/Grid/Filter/Filter.php b/Grid/Filter/Filter.php
-index 9b44047..82925f0 100644
+index 709fa38..c81f595 100644
 --- a/Grid/Filter/Filter.php
 +++ b/Grid/Filter/Filter.php
-@@ -76,7 +76,7 @@ class Filter implements FilterInterface
+@@ -79,7 +79,7 @@ class Filter implements FilterInterface
          return 'input';
      }
  
@@ -217,7 +217,7 @@ index 9b44047..82925f0 100644
      {
          if ($this->getConditionType() === 'from_to' || $this->getFieldType() === 'from_to') {
              return [
-@@ -92,7 +92,7 @@ class Filter implements FilterInterface
+@@ -95,7 +95,7 @@ class Filter implements FilterInterface
          return null;
      }
  
@@ -581,7 +581,7 @@ index 7eb7f94..d8b56e9 100644
      }
  
 diff --git a/Service/CategorySelection/CategoryTreeRenderer.php b/Service/CategorySelection/CategoryTreeRenderer.php
-index 2eeccfd..2cde377 100644
+index 8b946a0..1ab367a 100644
 --- a/Service/CategorySelection/CategoryTreeRenderer.php
 +++ b/Service/CategorySelection/CategoryTreeRenderer.php
 @@ -19,7 +19,7 @@ class CategoryTreeRenderer
