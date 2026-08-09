@@ -31,10 +31,10 @@ index aa2814a..839fd79 100644
          if (!is_array($value)) {
              return;
 diff --git a/Payment/Icon/IconResolver.php b/Payment/Icon/IconResolver.php
-index a74bf01..cc7f7fb 100644
+index ab17b93..17a793c 100644
 --- a/Payment/Icon/IconResolver.php
 +++ b/Payment/Icon/IconResolver.php
-@@ -17,7 +17,7 @@ class IconResolver implements IconResolverInterface
+@@ -22,7 +22,7 @@ class IconResolver implements IconResolverInterface
      ) {
      }
  
@@ -42,7 +42,7 @@ index a74bf01..cc7f7fb 100644
 +    public function resolve(IconResolverContext $iconResolverContext)
      {
          $paymentMethodCode = $iconResolverContext->getPaymentMethodCode();
-         if (false === $this->moduleManager->isEnabled('MultiSafepay_ConnectCore')) {
+ 
 diff --git a/Payment/Redirect/RedirectResolver.php b/Payment/Redirect/RedirectResolver.php
 index 328b95a..be7c966 100644
 --- a/Payment/Redirect/RedirectResolver.php
