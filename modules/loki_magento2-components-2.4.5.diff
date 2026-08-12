@@ -229,7 +229,7 @@ index f428fd2..f312622 100644
      }
  
 diff --git a/Controller/Index/Html.php b/Controller/Index/Html.php
-index b0fdc8d..da7a6ff 100644
+index 60b8d45..53b727d 100644
 --- a/Controller/Index/Html.php
 +++ b/Controller/Index/Html.php
 @@ -35,23 +35,23 @@ use Magento\Framework\Message\ManagerInterface as MessageManager;
