@@ -145,45 +145,6 @@ index 57e36f2b..8ed5a6bf 100644
      {
          if ($this->getContext()->getCheckoutState()->getQuote()->getCustomerIsGuest()) {
              $this->getContext()->getCheckoutState()->getQuote()->setCustomerMiddlename($value);
-diff --git a/Component/Checkout/Address/Postcode/PostcodeContext.php b/Component/Checkout/Address/Postcode/PostcodeContext.php
-index 408ddce6..0e777cc1 100644
---- a/Component/Checkout/Address/Postcode/PostcodeContext.php
-+++ b/Component/Checkout/Address/Postcode/PostcodeContext.php
-@@ -22,20 +22,20 @@ use Loki\Components\Messages\GlobalMessageRegistry;
- class PostcodeContext implements ComponentContextInterface
- {
-     public function __construct(
--        private readonly DirectoryData $directoryData,
--        private readonly AddressStateProvider $addressStateProvider,
--        private readonly CheckoutState $checkoutState,
--        private readonly ShippingAddressState $shippingAddressState,
--        private readonly BillingAddressState $billingAddressState,
--        private readonly CustomerProvider $customerProvider,
--        private readonly StepProvider $stepProvider,
--        private readonly StepNavigator $stepNavigator,
--        private readonly ModuleConfig $moduleConfig,
--        private readonly ScopeConfigInterface $scopeConfig,
--        private readonly AttributeProvider $attributeProvider,
--        private readonly GlobalMessageRegistry $globalMessageRegistry,
--        private readonly CoreMessageManager $coreMessageManager,
--        private readonly UrlFactory $urlFactory,
-+        private DirectoryData $directoryData,
-+        private AddressStateProvider $addressStateProvider,
-+        private CheckoutState $checkoutState,
-+        private ShippingAddressState $shippingAddressState,
-+        private BillingAddressState $billingAddressState,
-+        private CustomerProvider $customerProvider,
-+        private StepProvider $stepProvider,
-+        private StepNavigator $stepNavigator,
-+        private ModuleConfig $moduleConfig,
-+        private ScopeConfigInterface $scopeConfig,
-+        private AttributeProvider $attributeProvider,
-+        private GlobalMessageRegistry $globalMessageRegistry,
-+        private CoreMessageManager $coreMessageManager,
-+        private UrlFactory $urlFactory,
-     ) {
-     }
- 
 diff --git a/Component/Checkout/Address/Region/RegionRepository.php b/Component/Checkout/Address/Region/RegionRepository.php
 index 15d90c86..cb596ed3 100644
 --- a/Component/Checkout/Address/Region/RegionRepository.php
@@ -245,45 +206,6 @@ index 6b55309b..3f4dd298 100644
      {
          if (false === $this->getContext()->getCustomerProvider()->isLoggedIn()) {
              return;
-diff --git a/Component/Checkout/Address/StreetLine/StreetLineContext.php b/Component/Checkout/Address/StreetLine/StreetLineContext.php
-index f5607351..3744369d 100644
---- a/Component/Checkout/Address/StreetLine/StreetLineContext.php
-+++ b/Component/Checkout/Address/StreetLine/StreetLineContext.php
-@@ -22,20 +22,20 @@ use Loki\Components\Messages\GlobalMessageRegistry;
- class StreetLineContext implements ComponentContextInterface
- {
-     public function __construct(
--        private readonly StreetLinesFactory $streetLinesFactory,
--        private readonly AddressStateProvider $addressStateProvider,
--        private readonly CheckoutState $checkoutState,
--        private readonly ShippingAddressState $shippingAddressState,
--        private readonly BillingAddressState $billingAddressState,
--        private readonly CustomerProvider $customerProvider,
--        private readonly StepProvider $stepProvider,
--        private readonly StepNavigator $stepNavigator,
--        private readonly ModuleConfig $moduleConfig,
--        private readonly ScopeConfigInterface $scopeConfig,
--        private readonly AttributeProvider $attributeProvider,
--        private readonly GlobalMessageRegistry $globalMessageRegistry,
--        private readonly CoreMessageManager $coreMessageManager,
--        private readonly UrlFactory $urlFactory,
-+        private StreetLinesFactory $streetLinesFactory,
-+        private AddressStateProvider $addressStateProvider,
-+        private CheckoutState $checkoutState,
-+        private ShippingAddressState $shippingAddressState,
-+        private BillingAddressState $billingAddressState,
-+        private CustomerProvider $customerProvider,
-+        private StepProvider $stepProvider,
-+        private StepNavigator $stepNavigator,
-+        private ModuleConfig $moduleConfig,
-+        private ScopeConfigInterface $scopeConfig,
-+        private AttributeProvider $attributeProvider,
-+        private GlobalMessageRegistry $globalMessageRegistry,
-+        private CoreMessageManager $coreMessageManager,
-+        private UrlFactory $urlFactory,
-     ) {
-     }
- 
 diff --git a/Component/Checkout/Address/StreetLine/StreetLineRepository.php b/Component/Checkout/Address/StreetLine/StreetLineRepository.php
 index 40a58ed4..eff9339b 100644
 --- a/Component/Checkout/Address/StreetLine/StreetLineRepository.php
@@ -702,7 +624,7 @@ index be4b2b24..c7262531 100644
      }
  
 diff --git a/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php b/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php
-index aa2574cd..44d705c5 100644
+index e92ca06b..fd21ec1a 100644
 --- a/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php
 +++ b/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php
 @@ -19,12 +19,12 @@ class ShippingDetailsViewModel extends CheckoutViewModel
@@ -1545,7 +1467,7 @@ index 2c585023..5f1d7384 100644
      }
  
 diff --git a/Plugin/DisableAddressFormWhenLocationPlugin.php b/Plugin/DisableAddressFormWhenLocationPlugin.php
-index 1c07d533..fb06f846 100644
+index dc24550f..98b0d818 100644
 --- a/Plugin/DisableAddressFormWhenLocationPlugin.php
 +++ b/Plugin/DisableAddressFormWhenLocationPlugin.php
 @@ -9,7 +9,7 @@ use LokiCheckout\Core\Shipment\ShippingAddressResolverListing;
@@ -1571,10 +1493,10 @@ index 52f1a2a0..d5446857 100644
      }
  
 diff --git a/Plugin/FixFreeShippingSubtotalPlugin.php b/Plugin/FixFreeShippingSubtotalPlugin.php
-index d976e8e9..886cd2c9 100644
+index c1057def..8ffda5de 100644
 --- a/Plugin/FixFreeShippingSubtotalPlugin.php
 +++ b/Plugin/FixFreeShippingSubtotalPlugin.php
-@@ -9,8 +9,8 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
+@@ -11,8 +11,8 @@ use Magento\Store\Model\ScopeInterface;
  class FixFreeShippingSubtotalPlugin
  {
      public function __construct(
@@ -1668,7 +1590,7 @@ index 4abec6fa..2819dabe 100644
      }
  
 diff --git a/Router/LokiCheckoutRouter.php b/Router/LokiCheckoutRouter.php
-index bc4b44d3..58647dde 100644
+index 5056e2b0..8f4c220e 100644
 --- a/Router/LokiCheckoutRouter.php
 +++ b/Router/LokiCheckoutRouter.php
 @@ -13,12 +13,12 @@ use Magento\Framework\App\RouterInterface;
@@ -1890,10 +1812,10 @@ index 5703dfe4..304e431b 100644
      }
  
 diff --git a/Step/FinalStep.php b/Step/FinalStep.php
-index 2f3f3903..19a9ad21 100644
+index 1d386faa..05b49319 100644
 --- a/Step/FinalStep.php
 +++ b/Step/FinalStep.php
-@@ -26,15 +26,15 @@ use Loki\Components\Exception\RedirectException;
+@@ -29,17 +29,17 @@ use Throwable;
  class FinalStep
  {
      public function __construct(
@@ -1901,24 +1823,28 @@ index 2f3f3903..19a9ad21 100644
 -        private readonly CheckoutState $checkoutState,
 -        private readonly Redirect $redirect,
 -        private readonly EventManager $eventManager,
+-        private readonly Manager $messageManager,
 -        private readonly CartManagementInterface $cartManagement,
 -        private readonly OrderRepositoryInterface $orderRepository,
 -        private readonly OrderSender $orderSender,
 -        private readonly CartRepositoryInterface $cartRepository,
 -        private readonly TaskListing $taskListing,
+-        private readonly UrlFactory $urlFactory
 +        private QuoteValidator $quoteValidator,
 +        private CheckoutState $checkoutState,
 +        private Redirect $redirect,
 +        private EventManager $eventManager,
++        private Manager $messageManager,
 +        private CartManagementInterface $cartManagement,
 +        private OrderRepositoryInterface $orderRepository,
 +        private OrderSender $orderSender,
 +        private CartRepositoryInterface $cartRepository,
 +        private TaskListing $taskListing,
++        private UrlFactory $urlFactory
      ) {
      }
  
-@@ -43,7 +43,7 @@ class FinalStep
+@@ -48,7 +48,7 @@ class FinalStep
       * @throws NoSuchEntityException
       * @throws Exception
       */
@@ -2151,17 +2077,21 @@ index a5d869f5..3f8cb549 100644
          $ibanValidator = new IbanValidator();
          $actualResult = $ibanValidator->validate($ibanNumber);
 diff --git a/Util/AddressRenderer.php b/Util/AddressRenderer.php
-index 91ee6828..d0d7de0e 100644
+index e219f86e..7efcbb96 100644
 --- a/Util/AddressRenderer.php
 +++ b/Util/AddressRenderer.php
-@@ -10,8 +10,8 @@ use Magento\Quote\Model\Quote\Address;
+@@ -13,10 +13,10 @@ use Magento\Quote\Model\Quote\Address;
  class AddressRenderer
  {
      public function __construct(
 -        private readonly AddressConfig $addressConfig,
 -        private readonly AddressMapper $addressMapper,
+-        private readonly ShippingAddressResolverListing $shippingAddressResolverListing,
+-        private readonly LayoutInterface $layout,
 +        private AddressConfig $addressConfig,
 +        private AddressMapper $addressMapper,
++        private ShippingAddressResolverListing $shippingAddressResolverListing,
++        private LayoutInterface $layout,
      ) {
      }
  
@@ -2313,6 +2243,19 @@ index 5991887f..fad34b76 100644
      {
          return $this->getAddressType($block) === 'billing';
      }
+diff --git a/Util/Component/AttributeProvider.php b/Util/Component/AttributeProvider.php
+index a684f28c..31becb77 100644
+--- a/Util/Component/AttributeProvider.php
++++ b/Util/Component/AttributeProvider.php
+@@ -11,7 +11,7 @@ use RuntimeException;
+ class AttributeProvider
+ {
+     public function __construct(
+-        private readonly EavConfig $eavConfig,
++        private EavConfig $eavConfig,
+     ) {
+     }
+ 
 diff --git a/Util/Component/StepProvider.php b/Util/Component/StepProvider.php
 index e8242e1b..8c09438b 100644
 --- a/Util/Component/StepProvider.php
@@ -2784,7 +2727,7 @@ index c970e3ef..3f5154f2 100644
      }
  
 diff --git a/ViewModel/OptionModel/CountryOptionModel.php b/ViewModel/OptionModel/CountryOptionModel.php
-index 8a045d36..ecf307ce 100644
+index 8c339f6e..e2fda517 100644
 --- a/ViewModel/OptionModel/CountryOptionModel.php
 +++ b/ViewModel/OptionModel/CountryOptionModel.php
 @@ -13,10 +13,10 @@ use Loki\Components\Component\ComponentViewModelInterface;
@@ -2939,10 +2882,10 @@ index faff3235..d9af7ddb 100644
      }
  
 diff --git a/ViewModel/ProductRenderer.php b/ViewModel/ProductRenderer.php
-index 7eaf7b9f..9046dccd 100644
+index 6be12f9e..f0e27987 100644
 --- a/ViewModel/ProductRenderer.php
 +++ b/ViewModel/ProductRenderer.php
-@@ -13,9 +13,9 @@ use Magento\Quote\Api\Data\CartItemInterface;
+@@ -14,9 +14,9 @@ use Throwable;
  class ProductRenderer implements ArgumentInterface
  {
      public function __construct(
