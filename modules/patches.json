@@ -222,6 +222,9 @@
             },
             "loki-checkout/magento2-aus-post": {
                 "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-aus-post-2.4.5.diff"
+            },
+            "loki/magento2-auto-translator-command": {
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki_magento2-auto-translator-command-2.4.5.diff"
             }
         }
     }

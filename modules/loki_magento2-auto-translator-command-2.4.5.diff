@@ -1,0 +1,58 @@
+diff --git a/Client/DeeplClient.php b/Client/DeeplClient.php
+index 0842fbe..5f593f7 100644
+--- a/Client/DeeplClient.php
++++ b/Client/DeeplClient.php
+@@ -13,9 +13,9 @@ use RuntimeException;
+ class DeeplClient
+ {
+     public function __construct(
+-        private readonly HttpClientFactory $httpClientFactory,
+-        private readonly Config $config,
+-        private readonly LocaleResolverInterface $localeResolver,
++        private HttpClientFactory $httpClientFactory,
++        private Config $config,
++        private LocaleResolverInterface $localeResolver,
+     ) {
+     }
+ 
+diff --git a/Config/Config.php b/Config/Config.php
+index a111231..9428d78 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -8,7 +8,7 @@ use Magento\Store\Model\ScopeInterface;
+ class Config
+ {
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
++        private ScopeConfigInterface $scopeConfig,
+     ) {
+     }
+ 
+diff --git a/Console/Command/TranslateCsvCommand.php b/Console/Command/TranslateCsvCommand.php
+index d369883..fceebd6 100644
+--- a/Console/Command/TranslateCsvCommand.php
++++ b/Console/Command/TranslateCsvCommand.php
+@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
+ class TranslateCsvCommand extends Command
+ {
+     public function __construct(
+-        private readonly DeeplClient $deeplClient,
++        private DeeplClient $deeplClient,
+     ) {
+         parent::__construct();
+     }
+diff --git a/Controller/Adminhtml/Deepl/Usage.php b/Controller/Adminhtml/Deepl/Usage.php
+index 8b77a5a..c95ca1a 100644
+--- a/Controller/Adminhtml/Deepl/Usage.php
++++ b/Controller/Adminhtml/Deepl/Usage.php
+@@ -15,8 +15,8 @@ class Usage extends Action implements HttpGetActionInterface
+ 
+     public function __construct(
+         Context $context,
+-        private readonly JsonFactory $resultJsonFactory,
+-        private readonly DeeplClient $deeplClient,
++        private JsonFactory $resultJsonFactory,
++        private DeeplClient $deeplClient,
+     ) {
+         parent::__construct($context);
+     }
