@@ -25,7 +25,7 @@ index adca6e7..7975c96 100644
      }
  
 diff --git a/Service/CustomerManager.php b/Service/CustomerManager.php
-index fad44a1..6eedea2 100644
+index ce4efb0..489e906 100644
 --- a/Service/CustomerManager.php
 +++ b/Service/CustomerManager.php
 @@ -21,17 +21,17 @@ use Magento\Customer\Model\ResourceModel\Customer as CustomerResource;
