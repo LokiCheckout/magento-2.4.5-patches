@@ -120,19 +120,19 @@ index e3c0b8f..c1547fd 100644
      ) {
      }
  
-diff --git a/Config/XmlConfig/Converter.php b/Config/XmlConfig/Converter.php
-index ffa6c01..152de82 100644
---- a/Config/XmlConfig/Converter.php
-+++ b/Config/XmlConfig/Converter.php
-@@ -15,7 +15,7 @@ use Loki\Components\Util\DefaultTargets;
- class Converter implements ConverterInterface
- {
-     public function __construct(
+diff --git a/Config/XmlConfig.php b/Config/XmlConfig.php
+index f128102..ab7ed24 100644
+--- a/Config/XmlConfig.php
++++ b/Config/XmlConfig.php
+@@ -27,7 +27,7 @@ class XmlConfig extends ScopedDataConfig
+         ReaderInterface $reader,
+         ScopeInterface $configScope,
+         CacheInterface $cache,
 -        private readonly DefaultTargets $defaultTargets,
 +        private DefaultTargets $defaultTargets,
+         $cacheId,
+         ?SerializerInterface $serializer = null
      ) {
-     }
- 
 diff --git a/Config/XmlConfig/Definition/ComponentDefinition.php b/Config/XmlConfig/Definition/ComponentDefinition.php
 index 793a962..38c3d44 100644
 --- a/Config/XmlConfig/Definition/ComponentDefinition.php
@@ -174,10 +174,10 @@ index c1d77d8..7a336a1 100644
      }
  
 diff --git a/Controller/Adminhtml/Index/Html.php b/Controller/Adminhtml/Index/Html.php
-index 07af1eb..534e02f 100644
+index 3d925c9..ef33caf 100644
 --- a/Controller/Adminhtml/Index/Html.php
 +++ b/Controller/Adminhtml/Index/Html.php
-@@ -36,23 +36,23 @@ use Psr\Log\LoggerInterface;
+@@ -37,24 +37,24 @@ use Psr\Log\LoggerInterface;
  class Html implements HttpPostActionInterface, CsrfAwareActionInterface
  {
      public function __construct(
@@ -194,6 +194,7 @@ index 07af1eb..534e02f 100644
 -        private readonly MessageManager $messageManager,
 -        private readonly Validator $formKeyValidator,
 -        private readonly AuthorizationInterface $authorization,
+-        private readonly Messages $messages
 +        private LayoutLoader $layoutLoader,
 +        private RequestDataLoader $requestDataLoader,
 +        private RepositoryDispatcher $repositoryDispatcher,
@@ -207,6 +208,7 @@ index 07af1eb..534e02f 100644
 +        private MessageManager $messageManager,
 +        private Validator $formKeyValidator,
 +        private AuthorizationInterface $authorization,
++        private Messages $messages
      ) {
      }
  
@@ -229,10 +231,10 @@ index f428fd2..f312622 100644
      }
  
 diff --git a/Controller/Index/Html.php b/Controller/Index/Html.php
-index 60b8d45..53b727d 100644
+index 3d3ae57..7fa6a35 100644
 --- a/Controller/Index/Html.php
 +++ b/Controller/Index/Html.php
-@@ -35,23 +35,23 @@ use Magento\Framework\Message\ManagerInterface as MessageManager;
+@@ -36,24 +36,24 @@ use Magento\Framework\Message\ManagerInterface as MessageManager;
  class Html implements HttpPostActionInterface, CsrfAwareActionInterface
  {
      public function __construct(
@@ -249,6 +251,7 @@ index 60b8d45..53b727d 100644
 -        private readonly ComponentRegistry $componentRegistry,
 -        private readonly ComponentUpdateFactory $componentUpdateFactory,
 -        private readonly Validator $formKeyValidator,
+-        private readonly Messages $messages
 +        private LayoutLoader $layoutLoader,
 +        private RequestDataLoader $requestDataLoader,
 +        private RepositoryDispatcher $repositoryDispatcher,
@@ -262,6 +265,7 @@ index 60b8d45..53b727d 100644
 +        private ComponentRegistry $componentRegistry,
 +        private ComponentUpdateFactory $componentUpdateFactory,
 +        private Validator $formKeyValidator,
++        private Messages $messages
      ) {
      }
  
@@ -306,10 +310,10 @@ index 61f439d..59cf94e 100644
      }
  
 diff --git a/Factory/ViewModelFactory.php b/Factory/ViewModelFactory.php
-index 60ac3f2..b7da840 100644
+index eda49c4..9e32ebf 100644
 --- a/Factory/ViewModelFactory.php
 +++ b/Factory/ViewModelFactory.php
-@@ -9,7 +9,7 @@ use RuntimeException;
+@@ -10,7 +10,7 @@ use RuntimeException;
  class ViewModelFactory
  {
      public function __construct(
@@ -318,7 +322,7 @@ index 60ac3f2..b7da840 100644
      ) {
      }
  
-@@ -27,7 +27,7 @@ class ViewModelFactory
+@@ -28,7 +28,7 @@ class ViewModelFactory
          return $viewModel;
      }
  
@@ -463,7 +467,7 @@ index 71efc2e..f8f400c 100644
          return preg_replace('/\s+/', '', (string)$value);
      }
 diff --git a/Filter/Security.php b/Filter/Security.php
-index 99359f7..d5cb894 100644
+index 40bf7f2..f540787 100644
 --- a/Filter/Security.php
 +++ b/Filter/Security.php
 @@ -4,7 +4,7 @@ namespace Loki\Components\Filter;
@@ -476,7 +480,7 @@ index 99359f7..d5cb894 100644
         if (is_object($value)) {
              return $value;
 diff --git a/Filter/Trim.php b/Filter/Trim.php
-index ca791fb..a6df238 100644
+index 5a99c87..9b56cb0 100644
 --- a/Filter/Trim.php
 +++ b/Filter/Trim.php
 @@ -4,7 +4,7 @@ namespace Loki\Components\Filter;
@@ -486,7 +490,7 @@ index ca791fb..a6df238 100644
 -    public function filter(mixed $value, FilterScope $scope): mixed
 +    public function filter($value, FilterScope $scope)
      {
-         return trim((string)$value);
+         return trim((string)$value, " \f\n\r\t\v\x00");
      }
 diff --git a/Filter/Uppercase.php b/Filter/Uppercase.php
 index 2c5179f..88ff87e 100644
@@ -666,7 +670,7 @@ index f4e42c3..3464bc5 100644
      }
  
 diff --git a/Location/AddressRenderer.php b/Location/AddressRenderer.php
-index 7852eb3..0ac19e5 100644
+index e30d154..86bca43 100644
 --- a/Location/AddressRenderer.php
 +++ b/Location/AddressRenderer.php
 @@ -8,7 +8,7 @@ use Magento\Customer\Model\Address\Config as AddressConfig;
@@ -780,7 +784,7 @@ index b851e03..d78c636 100644
          return $this->toArray();
      }
 diff --git a/Observer/AddDomIdToBlock.php b/Observer/AddDomIdToBlock.php
-index 09fd98e..1c00878 100644
+index 2bd2132..26525fe 100644
 --- a/Observer/AddDomIdToBlock.php
 +++ b/Observer/AddDomIdToBlock.php
 @@ -11,8 +11,8 @@ use Magento\Framework\View\Element\Template;
@@ -795,7 +799,7 @@ index 09fd98e..1c00878 100644
      }
  
 diff --git a/Observer/AddHtmlAttributesToComponentBlock.php b/Observer/AddHtmlAttributesToComponentBlock.php
-index f89c334..95ca9aa 100644
+index cdcf0cd..520738c 100644
 --- a/Observer/AddHtmlAttributesToComponentBlock.php
 +++ b/Observer/AddHtmlAttributesToComponentBlock.php
 @@ -18,11 +18,11 @@ use Loki\Components\Util\Component\JsDataProvider;
@@ -925,6 +929,71 @@ index d33ab77..a8f23f7 100644
      {
          $validator = ObjectManager::getInstance()->get(EmailValidator::class);
          $actualResult = $validator->validate($email);
+diff --git a/Test/Unit/Stub/JsPropertyInterceptedViewModelStub/Interceptor.php b/Test/Unit/Stub/JsPropertyInterceptedViewModelStub/Interceptor.php
+index ceac911..4995943 100644
+--- a/Test/Unit/Stub/JsPropertyInterceptedViewModelStub/Interceptor.php
++++ b/Test/Unit/Stub/JsPropertyInterceptedViewModelStub/Interceptor.php
+@@ -16,7 +16,7 @@ class Interceptor extends JsPropertyInterceptedViewModelStub implements Intercep
+         $this->subjectType = get_parent_class($this);
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $pluginInfo = $this->pluginList->getNext($this->subjectType, 'getValue');
+         return $pluginInfo ? $this->___callPlugins('getValue', func_get_args(), $pluginInfo) : parent::getValue();
+diff --git a/Test/Unit/Stub/JsPropertyParentViewModelStub.php b/Test/Unit/Stub/JsPropertyParentViewModelStub.php
+index 2200873..3730624 100644
+--- a/Test/Unit/Stub/JsPropertyParentViewModelStub.php
++++ b/Test/Unit/Stub/JsPropertyParentViewModelStub.php
+@@ -9,7 +9,7 @@ class JsPropertyParentViewModelStub extends ComponentViewModel
+ {
+     use JsPropertyTraitStub;
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return 'parent-value';
+     }
+diff --git a/Test/Unit/Stub/JsPropertyPluginStub.php b/Test/Unit/Stub/JsPropertyPluginStub.php
+index 2fbc8ab..80f3988 100644
+--- a/Test/Unit/Stub/JsPropertyPluginStub.php
++++ b/Test/Unit/Stub/JsPropertyPluginStub.php
+@@ -4,7 +4,7 @@ namespace Loki\Components\Test\Unit\Stub;
+ 
+ class JsPropertyPluginStub
+ {
+-    public function afterGetValue(object $subject, mixed $result): string
++    public function afterGetValue(object $subject, $result): string
+     {
+         return $result . '-plugged';
+     }
+diff --git a/Test/Unit/Stub/JsPropertyPrivateViewModelStub.php b/Test/Unit/Stub/JsPropertyPrivateViewModelStub.php
+index 21a2786..ccc75df 100644
+--- a/Test/Unit/Stub/JsPropertyPrivateViewModelStub.php
++++ b/Test/Unit/Stub/JsPropertyPrivateViewModelStub.php
+@@ -7,7 +7,7 @@ use Loki\Components\Component\ComponentViewModel;
+ 
+ class JsPropertyPrivateViewModelStub extends ComponentViewModel
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return 'private-value';
+     }
+diff --git a/Test/Unit/Stub/JsPropertyProtectedViewModelStub.php b/Test/Unit/Stub/JsPropertyProtectedViewModelStub.php
+index acf029c..59bcd0b 100644
+--- a/Test/Unit/Stub/JsPropertyProtectedViewModelStub.php
++++ b/Test/Unit/Stub/JsPropertyProtectedViewModelStub.php
+@@ -7,7 +7,7 @@ use Loki\Components\Component\ComponentViewModel;
+ 
+ class JsPropertyProtectedViewModelStub extends ComponentViewModel
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return 'protected-value';
+     }
 diff --git a/Test/Unit/Validator/PastDateValidatorTest.php b/Test/Unit/Validator/PastDateValidatorTest.php
 index d0bbbde..80e32ae 100644
 --- a/Test/Unit/Validator/PastDateValidatorTest.php
@@ -1221,7 +1290,7 @@ index ccf50c5..4bf9250 100644
      }
  
 diff --git a/Validator/DateValidator.php b/Validator/DateValidator.php
-index 73d3ee9..f224586 100644
+index 611fe80..f8fee9f 100644
 --- a/Validator/DateValidator.php
 +++ b/Validator/DateValidator.php
 @@ -6,7 +6,7 @@ use Loki\Components\Component\ComponentInterface;
@@ -1231,10 +1300,10 @@ index 73d3ee9..f224586 100644
 -    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
 +    public function validate($value, ?ComponentInterface $component = null)
      {
-         $date = trim((string)$value);
+         $date = trim((string)$value, " \f\n\r\t\v\x00");
          if ($date === '' || $date === '0') {
 diff --git a/Validator/EmailValidator.php b/Validator/EmailValidator.php
-index 048e752..fddaedf 100644
+index 1eb798b..55bb85f 100644
 --- a/Validator/EmailValidator.php
 +++ b/Validator/EmailValidator.php
 @@ -6,7 +6,7 @@ use Loki\Components\Component\ComponentInterface;
@@ -1244,7 +1313,7 @@ index 048e752..fddaedf 100644
 -    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
 +    public function validate($value, ?ComponentInterface $component = null)
      {
-         $email = trim((string)$value);
+         $email = trim((string)$value, " \f\n\r\t\v\x00");
  
 diff --git a/Validator/LengthValidator.php b/Validator/LengthValidator.php
 index 0041600..2cc9e02 100644
@@ -1273,7 +1342,7 @@ index f2224e1..3943540 100644
          if (false === is_numeric($value)) {
              return [(string)__('Value must contain numbers only')];
 diff --git a/Validator/PastDateValidator.php b/Validator/PastDateValidator.php
-index 9a3d3f9..a1e62e5 100644
+index 103b57d..0e048bb 100644
 --- a/Validator/PastDateValidator.php
 +++ b/Validator/PastDateValidator.php
 @@ -6,7 +6,7 @@ use Loki\Components\Component\ComponentInterface;
@@ -1283,7 +1352,7 @@ index 9a3d3f9..a1e62e5 100644
 -    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
 +    public function validate($value, ?ComponentInterface $component = null)
      {
-         $date = trim((string)$value);
+         $date = trim((string)$value, " \f\n\r\t\v\x00");
          if ($date === '' || $date === '0') {
 diff --git a/Validator/PositiveNumberValidator.php b/Validator/PositiveNumberValidator.php
 index 22d1027..c95e6bd 100644
@@ -1299,7 +1368,7 @@ index 22d1027..c95e6bd 100644
          if (false === is_numeric($value)) {
              return [(string)__('Value must contain numbers only')];
 diff --git a/Validator/RequiredValidator.php b/Validator/RequiredValidator.php
-index 7ed2c54..5b4fb8c 100644
+index 05d25f6..f3df0a2 100644
 --- a/Validator/RequiredValidator.php
 +++ b/Validator/RequiredValidator.php
 @@ -10,13 +10,13 @@ use Loki\Components\Util\SkipValidation;
@@ -1354,12 +1423,12 @@ index dffabfb..8967280 100644
 +    public function validate($value, ?ComponentInterface $component = null);
  }
 diff --git a/ViewModel/Messages.php b/ViewModel/Messages.php
-index 087ce16..a24b10e 100644
+index 9d45e27..aa540be 100644
 --- a/ViewModel/Messages.php
 +++ b/ViewModel/Messages.php
-@@ -12,9 +12,9 @@ use Magento\Framework\View\Element\Message\InterpretationStrategyInterface;
- class Messages implements ArgumentInterface
- {
+@@ -14,9 +14,9 @@ class Messages implements ArgumentInterface
+     private array $messages = [];
+ 
      public function __construct(
 -        private readonly MessageManager $messageManager,
 -        private readonly InterpretationStrategyInterface $interpretationStrategy,
