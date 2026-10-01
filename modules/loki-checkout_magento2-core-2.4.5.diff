@@ -29,7 +29,7 @@ index 22029777..e9d7b493 100644
          if ($value === null) {
              return;
 diff --git a/Component/Base/Payment/AdditionalInformation/AdditionalInformationRepository.php b/Component/Base/Payment/AdditionalInformation/AdditionalInformationRepository.php
-index cef3d00a..3fb10f9a 100644
+index facede68..d1c1b3bb 100644
 --- a/Component/Base/Payment/AdditionalInformation/AdditionalInformationRepository.php
 +++ b/Component/Base/Payment/AdditionalInformation/AdditionalInformationRepository.php
 @@ -10,7 +10,7 @@ use LokiCheckout\Core\Component\Base\Generic\CheckoutContext;
@@ -39,7 +39,7 @@ index cef3d00a..3fb10f9a 100644
 -    public function getValue(): mixed
 +    public function getValue()
      {
-         $value = trim((string)$this->getPropertyValue());
+         $value = trim((string)$this->getPropertyValue(), " \f\n\r\t\v\x00");
          if (!empty($value)) {
 @@ -24,7 +24,7 @@ abstract class AdditionalInformationRepository extends FieldRepository
          return $defaultValue;
@@ -288,7 +288,7 @@ index 3c5dc6fc..386bd5ec 100644
      }
  
 diff --git a/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php b/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
-index 9a182b41..a4cc3d07 100644
+index 0f4d620d..fe264d56 100644
 --- a/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
 +++ b/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
 @@ -21,7 +21,7 @@ class PaymentMethodsRepository extends ComponentRepository
@@ -341,7 +341,7 @@ index 0799d3d8..79187add 100644
          $billingAsShipping = (bool)$value;
          $quote = $this->getContext()->getCheckoutState()->getQuote();
 diff --git a/Component/Checkout/GridLayout/GridLayoutViewModel.php b/Component/Checkout/GridLayout/GridLayoutViewModel.php
-index e69c2341..010cd1b2 100644
+index 97913f81..9dbff664 100644
 --- a/Component/Checkout/GridLayout/GridLayoutViewModel.php
 +++ b/Component/Checkout/GridLayout/GridLayoutViewModel.php
 @@ -13,7 +13,7 @@ class GridLayoutViewModel extends ComponentViewModel
@@ -354,7 +354,7 @@ index e69c2341..010cd1b2 100644
      }
  
 diff --git a/Component/Checkout/Other/Agreements/AgreementsRepository.php b/Component/Checkout/Other/Agreements/AgreementsRepository.php
-index 9f2c9e43..a5f877f3 100644
+index 08353db7..07407b4a 100644
 --- a/Component/Checkout/Other/Agreements/AgreementsRepository.php
 +++ b/Component/Checkout/Other/Agreements/AgreementsRepository.php
 @@ -20,7 +20,7 @@ class AgreementsRepository extends ComponentRepository
@@ -423,19 +423,26 @@ index 1dd28537..22189b97 100644
      }
  
 diff --git a/Component/Checkout/Other/Newsletter/NewsletterRepository.php b/Component/Checkout/Other/Newsletter/NewsletterRepository.php
-index e4df4879..eb49a021 100644
+index 1ade1fa1..2fcfbdb9 100644
 --- a/Component/Checkout/Other/Newsletter/NewsletterRepository.php
 +++ b/Component/Checkout/Other/Newsletter/NewsletterRepository.php
-@@ -9,7 +9,7 @@ use Loki\Field\Component\Base\Field\FieldRepository;
-  */
+@@ -14,12 +14,12 @@ use Magento\Newsletter\Model\Subscriber;
  class NewsletterRepository extends FieldRepository
  {
+     public function __construct(
+-        private readonly Guard $recaptchaGuard,
+-        private readonly RecaptchaConfig $recaptchaConfig,
++        private Guard $recaptchaGuard,
++        private RecaptchaConfig $recaptchaConfig,
+     ) {
+     }
+ 
 -    public function getValue(): mixed
 +    public function getValue()
      {
          $email = $this->getCustomerEmail();
          if (strlen($email) < 1) {
-@@ -38,7 +38,7 @@ class NewsletterRepository extends FieldRepository
+@@ -48,7 +48,7 @@ class NewsletterRepository extends FieldRepository
          return $this->getContext()->getModuleConfig()->isNewsletterCheckedByDefault();
      }
  
@@ -444,6 +451,25 @@ index e4df4879..eb49a021 100644
      {
          $value = (bool)$value;
          $isSubscribed = $this->isSubscribed();
+diff --git a/Component/Checkout/Other/Recaptcha/RecaptchaRepository.php b/Component/Checkout/Other/Recaptcha/RecaptchaRepository.php
+index b3ead6ce..94e261bb 100644
+--- a/Component/Checkout/Other/Recaptcha/RecaptchaRepository.php
++++ b/Component/Checkout/Other/Recaptcha/RecaptchaRepository.php
+@@ -10,12 +10,12 @@ use Loki\Components\Component\ComponentRepository;
+  */
+ class RecaptchaRepository extends ComponentRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return null;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $formId = $this->getViewModel()->getFormId();
+         if (false === $this->getContext()->getRecaptchaConfig()->isEnabledFor($formId)) {
 diff --git a/Component/Checkout/ProgressBar/ProgressBarRepository.php b/Component/Checkout/ProgressBar/ProgressBarRepository.php
 index 818e40f7..d6711d00 100644
 --- a/Component/Checkout/ProgressBar/ProgressBarRepository.php
@@ -560,10 +586,18 @@ index 5e752ed6..edf0c7ac 100644
          $shippingMethodCode = (string)$value;
          $shippingMethodCode = $this->sanitizeShippingMethod($shippingMethodCode);
 diff --git a/Component/Checkout/Sidebar/CouponCode/CouponCodeRepository.php b/Component/Checkout/Sidebar/CouponCode/CouponCodeRepository.php
-index b429e247..72ea0ace 100644
+index 72f53b5c..92356a42 100644
 --- a/Component/Checkout/Sidebar/CouponCode/CouponCodeRepository.php
 +++ b/Component/Checkout/Sidebar/CouponCode/CouponCodeRepository.php
-@@ -15,12 +15,12 @@ class CouponCodeRepository extends FieldRepository
+@@ -14,18 +14,18 @@ use LokiCheckout\Core\Recaptcha\Guard;
+ class CouponCodeRepository extends FieldRepository
+ {
+     public function __construct(
+-        private readonly Guard $recaptchaGuard,
+-        private readonly RecaptchaConfig $recaptchaConfig,
++        private Guard $recaptchaGuard,
++        private RecaptchaConfig $recaptchaConfig,
+         private string $regex = '([^a-zA-Z0-9\-_]+)'
      ) {
      }
  
@@ -624,7 +658,7 @@ index be4b2b24..c7262531 100644
      }
  
 diff --git a/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php b/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php
-index e92ca06b..fd21ec1a 100644
+index 8dd3b07a..7336d2f3 100644
 --- a/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php
 +++ b/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php
 @@ -19,12 +19,12 @@ class ShippingDetailsViewModel extends CheckoutViewModel
@@ -875,17 +909,21 @@ index c7ecfca7..84d0568a 100644
          try {
              $this->getStepNavigator()->setNextStep();
 diff --git a/Component/Customer/LoginForm/LoginFormRepository.php b/Component/Customer/LoginForm/LoginFormRepository.php
-index b83b2409..91ba96c2 100644
+index 5d65021a..72d10681 100644
 --- a/Component/Customer/LoginForm/LoginFormRepository.php
 +++ b/Component/Customer/LoginForm/LoginFormRepository.php
-@@ -14,17 +14,17 @@ use Magento\Customer\Model\Session as CustomerSession;
+@@ -17,19 +17,19 @@ use Magento\Customer\Model\Session as CustomerSession;
  class LoginFormRepository extends ComponentRepository
  {
      public function __construct(
 -        private readonly CheckoutState $checkoutState,
 -        private readonly LoginCustomer $loginCustomer,
+-        private readonly Guard $recaptchaGuard,
+-        private readonly RecaptchaConfig $recaptchaConfig,
 +        private CheckoutState $checkoutState,
 +        private LoginCustomer $loginCustomer,
++        private Guard $recaptchaGuard,
++        private RecaptchaConfig $recaptchaConfig,
      ) {
      }
  
@@ -1199,7 +1237,7 @@ index f2dec99b..ee98e6db 100644
          $value = strtoupper((string)$value);
          return preg_replace('/([^A-Z0-9]+)/', '', $value);
 diff --git a/Layout/CountrySpecificLayoutHandler.php b/Layout/CountrySpecificLayoutHandler.php
-index b4d5af6c..bacdd874 100644
+index 67b15f46..b2192afe 100644
 --- a/Layout/CountrySpecificLayoutHandler.php
 +++ b/Layout/CountrySpecificLayoutHandler.php
 @@ -10,7 +10,7 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
@@ -1227,7 +1265,7 @@ index 5737f6ab..9e224978 100644
      }
  
 diff --git a/Observer/AddDebuggingInfo.php b/Observer/AddDebuggingInfo.php
-index c96d8de2..f9224cf5 100644
+index 06fb9867..715a0e88 100644
 --- a/Observer/AddDebuggingInfo.php
 +++ b/Observer/AddDebuggingInfo.php
 @@ -16,9 +16,9 @@ class AddDebuggingInfo implements ObserverInterface
@@ -1574,6 +1612,77 @@ index 7e963d87..dbd9840a 100644
      ) {
      }
  
+diff --git a/Recaptcha/Config.php b/Recaptcha/Config.php
+index 741b97f8..33f64b8c 100644
+--- a/Recaptcha/Config.php
++++ b/Recaptcha/Config.php
+@@ -25,7 +25,7 @@ class Config implements ArgumentInterface
+     private const DEFAULT_SCORE_THRESHOLD = 0.5;
+ 
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
++        private ScopeConfigInterface $scopeConfig,
+     ) {
+     }
+ 
+@@ -141,7 +141,7 @@ class Config implements ArgumentInterface
+         return (string)__('Something went wrong with reCAPTCHA. Please contact the store owner.');
+     }
+ 
+-    private function getTypeSetting(string $type, string $field, string $scope): mixed
++    private function getTypeSetting(string $type, string $field, string $scope)
+     {
+         $configGroup = Type::getConfigGroup($type);
+         if ($configGroup === null) {
+diff --git a/Recaptcha/Guard.php b/Recaptcha/Guard.php
+index 4a005c9b..c6c1bbbf 100644
+--- a/Recaptcha/Guard.php
++++ b/Recaptcha/Guard.php
+@@ -15,8 +15,8 @@ class Guard
+     private const TTL = 120;
+ 
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly CheckoutSession $checkoutSession,
++        private Config $config,
++        private CheckoutSession $checkoutSession,
+     ) {
+     }
+ 
+diff --git a/Recaptcha/TokenValidator.php b/Recaptcha/TokenValidator.php
+index 86dd1829..0d4b4ae5 100644
+--- a/Recaptcha/TokenValidator.php
++++ b/Recaptcha/TokenValidator.php
+@@ -13,10 +13,10 @@ class TokenValidator implements TokenValidatorInterface
+     private const TIMEOUT = 10;
+ 
+     public function __construct(
+-        private readonly Client $client,
+-        private readonly Config $config,
+-        private readonly RemoteAddress $remoteAddress,
+-        private readonly LoggerInterface $logger,
++        private Client $client,
++        private Config $config,
++        private RemoteAddress $remoteAddress,
++        private LoggerInterface $logger,
+     ) {
+     }
+ 
+diff --git a/Recaptcha/ValidationResult.php b/Recaptcha/ValidationResult.php
+index 07c1f522..1d1886da 100644
+--- a/Recaptcha/ValidationResult.php
++++ b/Recaptcha/ValidationResult.php
+@@ -5,8 +5,8 @@ namespace LokiCheckout\Core\Recaptcha;
+ class ValidationResult
+ {
+     public function __construct(
+-        private readonly bool $valid,
+-        private readonly string $message = '',
++        private bool $valid,
++        private string $message = '',
+     ) {
+     }
+ 
 diff --git a/Repository/NewsletterRepository.php b/Repository/NewsletterRepository.php
 index 4abec6fa..2819dabe 100644
 --- a/Repository/NewsletterRepository.php
@@ -1775,7 +1884,7 @@ index f1003d74..00e038c2 100644
      }
  
 diff --git a/Shipment/Icon/LayoutIconResolver.php b/Shipment/Icon/LayoutIconResolver.php
-index 5a92ca90..32a1ab10 100644
+index efc1112b..47446626 100644
 --- a/Shipment/Icon/LayoutIconResolver.php
 +++ b/Shipment/Icon/LayoutIconResolver.php
 @@ -15,7 +15,7 @@ class LayoutIconResolver implements IconResolverInterface
@@ -1901,6 +2010,44 @@ index 2b7b84bd..845b10a9 100644
      {
          $lastOrderId = $this->checkoutState->getCheckoutSession()->getLastOrderId();
          if (empty($lastOrderId)) {
+diff --git a/Step/FinalStep/Task/AgreementsTask.php b/Step/FinalStep/Task/AgreementsTask.php
+index 303daec1..2518661b 100644
+--- a/Step/FinalStep/Task/AgreementsTask.php
++++ b/Step/FinalStep/Task/AgreementsTask.php
+@@ -12,10 +12,10 @@ use Magento\Quote\Model\Quote;
+ class AgreementsTask implements TaskInterface
+ {
+     public function __construct(
+-        private readonly AgreementsValidatorInterface $agreementsValidator,
+-        private readonly CheckoutSession $checkoutSession,
+-        private readonly ManagerInterface $messageManager,
+-        private readonly UrlFactory $urlFactory,
++        private AgreementsValidatorInterface $agreementsValidator,
++        private CheckoutSession $checkoutSession,
++        private ManagerInterface $messageManager,
++        private UrlFactory $urlFactory,
+     ) {
+     }
+ 
+diff --git a/Step/FinalStep/Task/RecaptchaTask.php b/Step/FinalStep/Task/RecaptchaTask.php
+index 9e434d82..5d03ab1a 100644
+--- a/Step/FinalStep/Task/RecaptchaTask.php
++++ b/Step/FinalStep/Task/RecaptchaTask.php
+@@ -18,10 +18,10 @@ use Magento\Quote\Model\Quote;
+ class RecaptchaTask implements TaskInterface
+ {
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly Guard $guard,
+-        private readonly ManagerInterface $messageManager,
+-        private readonly UrlFactory $urlFactory,
++        private Config $config,
++        private Guard $guard,
++        private ManagerInterface $messageManager,
++        private UrlFactory $urlFactory,
+     ) {
+     }
+ 
 diff --git a/Step/FinalStep/Task/SaveInAddressBookTask.php b/Step/FinalStep/Task/SaveInAddressBookTask.php
 index 66101a72..1f2e028b 100644
 --- a/Step/FinalStep/Task/SaveInAddressBookTask.php
@@ -2003,10 +2150,10 @@ index 28e63691..d2b200e7 100644
      }
  
 diff --git a/Test/Integration/LokiCheckoutTestCase.php b/Test/Integration/LokiCheckoutTestCase.php
-index c0930cbb..2f46e93c 100644
+index daea5f75..199c3263 100644
 --- a/Test/Integration/LokiCheckoutTestCase.php
 +++ b/Test/Integration/LokiCheckoutTestCase.php
-@@ -103,7 +103,7 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
+@@ -159,7 +159,7 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
      }
  
      // @todo: Move into trait
@@ -2015,7 +2162,7 @@ index c0930cbb..2f46e93c 100644
      {
          $repository = $component->getRepository();
          $this->assertInstanceOf(ComponentRepositoryInterface::class, $repository);
-@@ -114,10 +114,10 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
+@@ -170,10 +170,10 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
  
      // @todo: Move into trait
      protected function assertConfigValue(
@@ -2028,7 +2175,7 @@ index c0930cbb..2f46e93c 100644
      ): void {
          $scopeConfig = $this->getObjectManager()->get(ScopeConfigInterface::class);
          $value = $scopeConfig->getValue($path, $scopeType, $scopeValue);
-@@ -129,7 +129,7 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
+@@ -185,7 +185,7 @@ class LokiCheckoutTestCase extends LokiComponentsTestCase
          bool $expectedValue,
          string $path,
          string $scopeType = 'default',
@@ -2038,10 +2185,10 @@ index c0930cbb..2f46e93c 100644
          $scopeConfig = $this->getObjectManager()->get(ScopeConfigInterface::class);
          $value = $scopeConfig->isSetFlag($path, $scopeType, $scopeValue);
 diff --git a/Test/Integration/Validator/Component/PostcodeFormatValidatorTest.php b/Test/Integration/Validator/Component/PostcodeFormatValidatorTest.php
-index 00bb0ebb..e6086255 100644
+index c9af4ce0..88c8d816 100644
 --- a/Test/Integration/Validator/Component/PostcodeFormatValidatorTest.php
 +++ b/Test/Integration/Validator/Component/PostcodeFormatValidatorTest.php
-@@ -31,7 +31,7 @@ class PostcodeFormatValidatorTest extends LokiCheckoutTestCase
+@@ -30,7 +30,7 @@ class PostcodeFormatValidatorTest extends TestCase
      /**
       * @dataProvider getValues
       */
@@ -2077,7 +2224,7 @@ index a5d869f5..3f8cb549 100644
          $ibanValidator = new IbanValidator();
          $actualResult = $ibanValidator->validate($ibanNumber);
 diff --git a/Util/AddressRenderer.php b/Util/AddressRenderer.php
-index e219f86e..7efcbb96 100644
+index 3662d700..b311d6c7 100644
 --- a/Util/AddressRenderer.php
 +++ b/Util/AddressRenderer.php
 @@ -13,10 +13,10 @@ use Magento\Quote\Model\Quote\Address;
@@ -2414,7 +2561,7 @@ index 70375528..98f17468 100644
      }
  
 diff --git a/Util/StreetLines.php b/Util/StreetLines.php
-index 33054fa0..3b4dae6f 100644
+index 73f40d07..0c8959da 100644
 --- a/Util/StreetLines.php
 +++ b/Util/StreetLines.php
 @@ -9,8 +9,8 @@ class StreetLines
@@ -2486,7 +2633,7 @@ index 119ca4ac..5f78870b 100644
          if (false === is_string($value) || empty($value)) {
              return true;
 diff --git a/Validator/Component/EmailAvailableValidator.php b/Validator/Component/EmailAvailableValidator.php
-index 6c377819..6252cc44 100644
+index 2b9763c1..b196f692 100644
 --- a/Validator/Component/EmailAvailableValidator.php
 +++ b/Validator/Component/EmailAvailableValidator.php
 @@ -9,12 +9,12 @@ use Loki\Components\Validator\ValidatorInterface;
@@ -2503,10 +2650,10 @@ index 6c377819..6252cc44 100644
 -    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
 +    public function validate($value, ?ComponentInterface $component = null)
      {
-         $email = trim((string)$value);
+         $email = trim((string)$value, " \f\n\r\t\v\x00");
  
 diff --git a/Validator/Component/GenderValidator.php b/Validator/Component/GenderValidator.php
-index f4663a10..bde0866a 100644
+index 6a11f959..28e6bdf5 100644
 --- a/Validator/Component/GenderValidator.php
 +++ b/Validator/Component/GenderValidator.php
 @@ -9,11 +9,11 @@ use Loki\Components\Validator\ValidatorInterface;
@@ -2521,7 +2668,7 @@ index f4663a10..bde0866a 100644
 -    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
 +    public function validate($value, ?ComponentInterface $component = null)
      {
-         $gender = trim((string)$value);
+         $gender = trim((string)$value, " \f\n\r\t\v\x00");
  
 diff --git a/Validator/Component/IbanValidator.php b/Validator/Component/IbanValidator.php
 index 29a0a153..20a92749 100644
@@ -2537,7 +2684,7 @@ index 29a0a153..20a92749 100644
          if (false === is_string($value) || empty($value)) {
              return true;
 diff --git a/Validator/Component/OptionsValidator.php b/Validator/Component/OptionsValidator.php
-index 61aa52c2..74869489 100644
+index 8d2e49d6..b2fcfeed 100644
 --- a/Validator/Component/OptionsValidator.php
 +++ b/Validator/Component/OptionsValidator.php
 @@ -9,7 +9,7 @@ use Loki\Field\Util\OptionModelInterface;
@@ -2547,7 +2694,7 @@ index 61aa52c2..74869489 100644
 -    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
 +    public function validate($value, ?ComponentInterface $component = null)
      {
-         $value = trim((string)$value);
+         $value = trim((string)$value, " \f\n\r\t\v\x00");
          if ($value === '' || $value === '0') {
 diff --git a/Validator/Component/PostcodeFormatValidator.php b/Validator/Component/PostcodeFormatValidator.php
 index c290b15d..7ccda34b 100644
@@ -2757,7 +2904,7 @@ index 2ab5edbe..18876590 100644
      }
  
 diff --git a/ViewModel/OptionModel/PrefixOptionModel.php b/ViewModel/OptionModel/PrefixOptionModel.php
-index b51e632a..bd7c233b 100644
+index f190aca5..67cb12cd 100644
 --- a/ViewModel/OptionModel/PrefixOptionModel.php
 +++ b/ViewModel/OptionModel/PrefixOptionModel.php
 @@ -11,7 +11,7 @@ use Loki\Field\Util\OptionModelInterface;
