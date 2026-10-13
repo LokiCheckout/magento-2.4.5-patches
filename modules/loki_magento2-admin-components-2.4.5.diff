@@ -1,8 +1,8 @@
 diff --git a/Component/Form/FormRepository.php b/Component/Form/FormRepository.php
-index 8e992a2..3189676 100644
+index 85fac14..74478e9 100644
 --- a/Component/Form/FormRepository.php
 +++ b/Component/Form/FormRepository.php
-@@ -31,7 +31,7 @@ class FormRepository extends ComponentRepository
+@@ -34,7 +34,7 @@ class FormRepository extends ComponentRepository
      }
  
      // @todo: Remove the need for this
@@ -11,7 +11,7 @@ index 8e992a2..3189676 100644
      {
          return $this->getItem();
      }
-@@ -73,7 +73,7 @@ class FormRepository extends ComponentRepository
+@@ -76,7 +76,7 @@ class FormRepository extends ComponentRepository
          return $item;
      }
  
@@ -20,7 +20,7 @@ index 8e992a2..3189676 100644
      {
          if (in_array($dataType, ['int', 'tinyint'])) {
              return 0;
-@@ -91,7 +91,7 @@ class FormRepository extends ComponentRepository
+@@ -94,7 +94,7 @@ class FormRepository extends ComponentRepository
      }
  
      // @todo: Rename saveValue to handleValue
@@ -52,10 +52,10 @@ index 2e8a126..5e9c7b9 100644
          if (!is_array($value)) {
              return;
 diff --git a/Component/Grid/GridViewModel.php b/Component/Grid/GridViewModel.php
-index 3efd9a3..79f4bd0 100644
+index c7a6e6e..73da7ea 100644
 --- a/Component/Grid/GridViewModel.php
 +++ b/Component/Grid/GridViewModel.php
-@@ -101,7 +101,7 @@ class GridViewModel extends ComponentViewModel
+@@ -104,7 +104,7 @@ class GridViewModel extends ComponentViewModel
      }
  
      // @todo: Move this to child-class EntitySelectViewModel
@@ -64,7 +64,7 @@ index 3efd9a3..79f4bd0 100644
      {
          try {
              return $this->getRepository()->getProviderHandler()->getItem($this->getRepository()->getProvider(), $currentId);
-@@ -140,7 +140,7 @@ class GridViewModel extends ComponentViewModel
+@@ -143,7 +143,7 @@ class GridViewModel extends ComponentViewModel
          $this->getState()->setFilters($filters);
      }
  
@@ -112,10 +112,10 @@ index ca1f982..8e1b9de 100644
         if (is_object($value)) {
              return $value;
 diff --git a/Form/Field/Field.php b/Form/Field/Field.php
-index da6152c..b1023fa 100644
+index 6e04c13..df36569 100644
 --- a/Form/Field/Field.php
 +++ b/Form/Field/Field.php
-@@ -132,13 +132,13 @@ class Field extends DataObject
+@@ -139,13 +139,13 @@ class Field extends DataObject
      }
  
      // @todo: Move this to EntitySelectField
@@ -174,6 +174,17 @@ index 2f3fb74..6c02e7a 100644
          if ($tableColumn['COLUMN_NAME'] === $formRepository->getPrimaryKey()) {
              return 'view';
          }
+diff --git a/Form/Item/ItemValidatorInterface.php b/Form/Item/ItemValidatorInterface.php
+index db871b7..bce94a7 100644
+--- a/Form/Item/ItemValidatorInterface.php
++++ b/Form/Item/ItemValidatorInterface.php
+@@ -8,5 +8,5 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ 
+ interface ItemValidatorInterface extends ArgumentInterface
+ {
+-    public function validate(DataObject $item): true|array;
++    public function validate(DataObject $item);
+ }
 diff --git a/Grid/Column/Column.php b/Grid/Column/Column.php
 index 90dec23..a0b650c 100644
 --- a/Grid/Column/Column.php
@@ -594,18 +605,18 @@ index 8b946a0..1ab367a 100644
      }
  
 diff --git a/Ui/Button/ButtonsResolver.php b/Ui/Button/ButtonsResolver.php
-index 5a3c297..5ab6e7e 100644
+index 853b08c..6339a06 100644
 --- a/Ui/Button/ButtonsResolver.php
 +++ b/Ui/Button/ButtonsResolver.php
-@@ -20,7 +20,7 @@ class ButtonsResolver
+@@ -17,7 +17,7 @@ class ButtonsResolver
+     /**
       * @return Button[]
       */
-     public function resolve(
--        FormRepository|GridRepository $repository,
-+        $repository,
-         AbstractBlock $block,
-     ): array {
-         $provider = $repository->getProvider();
+-    public function resolve(FormRepository|GridRepository $repository): array
++    public function resolve($repository): array
+     {
+         $buttons = [];
+         foreach ($this->buttonsResolvers as $buttonsResolver) {
 diff --git a/ViewModel/Form/Field/EntitySelect.php b/ViewModel/Form/Field/EntitySelect.php
 index 45aa1d3..bc7d99b 100644
 --- a/ViewModel/Form/Field/EntitySelect.php
