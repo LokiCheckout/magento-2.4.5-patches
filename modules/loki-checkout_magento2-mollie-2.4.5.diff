@@ -18,24 +18,27 @@ index 31c5b59..55b6616 100644
          $value = (string)$value;
          $quote = $this->getContext()->getCheckoutState()->getQuote();
 diff --git a/Component/Checkout/Payment/Method/Creditcard/CreditcardRepository.php b/Component/Checkout/Payment/Method/Creditcard/CreditcardRepository.php
-index 91e97de..f1308d4 100644
+index ad65ab5..ebb62f5 100644
 --- a/Component/Checkout/Payment/Method/Creditcard/CreditcardRepository.php
 +++ b/Component/Checkout/Payment/Method/Creditcard/CreditcardRepository.php
-@@ -11,12 +11,12 @@ use LokiCheckout\Mollie\Component\MollieContext;
-  */
- class CreditcardRepository extends FieldRepository
- {
+@@ -17,7 +17,7 @@ class CreditcardRepository extends FieldRepository
+     public const SAVE_CARD = 'mollie_save_card';
+     public const CONSENT_TIMESTAMP = 'mollie_consent_timestamp';
+ 
 -    public function getValue(): mixed
 +    public function getValue()
      {
+         $mandateId = (string)$this->getPayment()->getAdditionalInformation(self::MANDATE_ID);
+         if ($mandateId !== '') {
+@@ -27,7 +27,7 @@ class CreditcardRepository extends FieldRepository
          return null;
      }
  
 -    public function saveValue(mixed $value): void
 +    public function saveValue($value): void
      {
-         $value = (string)$value['token'];
-         $quote = $this->getContext()->getCheckoutState()->getQuote();
+         if (false === is_array($value)) {
+             return;
 diff --git a/Component/Checkout/Payment/Method/CreditcardVault/CreditcardVaultRepository.php b/Component/Checkout/Payment/Method/CreditcardVault/CreditcardVaultRepository.php
 index fdb9bb5..936180f 100644
 --- a/Component/Checkout/Payment/Method/CreditcardVault/CreditcardVaultRepository.php
@@ -57,10 +60,10 @@ index fdb9bb5..936180f 100644
          $hash = (string)$value;
          $quote = $this->getContext()->getCheckoutState()->getQuote();
 diff --git a/Component/MollieContext.php b/Component/MollieContext.php
-index db1c8bb..304f4d9 100644
+index 03e192f..221c90c 100644
 --- a/Component/MollieContext.php
 +++ b/Component/MollieContext.php
-@@ -39,14 +39,14 @@ class MollieContext implements ComponentContextInterface
+@@ -40,15 +40,15 @@ class MollieContext implements ComponentContextInterface
          private AttributeProvider $attributeProvider,
          private GlobalMessageRegistry $globalMessageRegistry,
          private CoreMessageManager $coreMessageManager,
@@ -72,6 +75,7 @@ index db1c8bb..304f4d9 100644
 -        private readonly PaymentTokenProvider $paymentTokenProvider,
 -        private readonly IssuerProvider $issuerProvider,
 -        private readonly SupportedNetworks $supportedNetworks,
+-        private readonly SavedCardProvider $savedCardProvider,
 +        private CustomerSession $customerSession,
 +        private StoreManagerInterface $storeManager,
 +        private MollieConfig $mollieConfig,
@@ -80,6 +84,7 @@ index db1c8bb..304f4d9 100644
 +        private PaymentTokenProvider $paymentTokenProvider,
 +        private IssuerProvider $issuerProvider,
 +        private SupportedNetworks $supportedNetworks,
++        private SavedCardProvider $savedCardProvider,
      ) {
      }
  
@@ -97,10 +102,10 @@ index 251f7b8..8a0ecd9 100644
          $paymentMethodCode = $iconResolverContext->getPaymentMethodCode();
          if (false === $this->moduleManager->isEnabled('Mollie_Payment')) {
 diff --git a/Payment/Redirect/RedirectResolver.php b/Payment/Redirect/RedirectResolver.php
-index 504b651..68ef409 100644
+index 94c62eb..5186163 100644
 --- a/Payment/Redirect/RedirectResolver.php
 +++ b/Payment/Redirect/RedirectResolver.php
-@@ -17,7 +17,7 @@ class RedirectResolver implements RedirectResolverInterface
+@@ -16,7 +16,7 @@ class RedirectResolver implements RedirectResolverInterface
      ) {
      }
  
@@ -109,6 +114,27 @@ index 504b651..68ef409 100644
      {
          $paymentMethod = $redirectContext->getPaymentMethod();
          if (false === $paymentMethod instanceof Mollie) {
+diff --git a/Provider/SavedCardProvider.php b/Provider/SavedCardProvider.php
+index 74fbbbe..ea83cb4 100644
+--- a/Provider/SavedCardProvider.php
++++ b/Provider/SavedCardProvider.php
+@@ -29,11 +29,11 @@ class SavedCardProvider
+     private ?array $mandates = null;
+ 
+     public function __construct(
+-        private readonly ObjectManagerInterface $objectManager,
+-        private readonly CustomerSession $customerSession,
+-        private readonly StoreManagerInterface $storeManager,
+-        private readonly MollieConfig $mollieConfig,
+-        private readonly LoggerInterface $logger,
++        private ObjectManagerInterface $objectManager,
++        private CustomerSession $customerSession,
++        private StoreManagerInterface $storeManager,
++        private MollieConfig $mollieConfig,
++        private LoggerInterface $logger,
+     ) {
+     }
+ 
 diff --git a/Validator/Component/In3DobValidator.php b/Validator/Component/In3DobValidator.php
 index 108c78a..2457b11 100644
 --- a/Validator/Component/In3DobValidator.php
@@ -123,10 +149,10 @@ index 108c78a..2457b11 100644
          if ($value !== 'mollie_methods_in3') {
              return true;
 diff --git a/ViewModel/AdditionalPaymentDetails.php b/ViewModel/AdditionalPaymentDetails.php
-index 7dfcbd7..dc78eca 100644
+index 1df0623..efa8931 100644
 --- a/ViewModel/AdditionalPaymentDetails.php
 +++ b/ViewModel/AdditionalPaymentDetails.php
-@@ -11,7 +11,7 @@ use LokiCheckout\Mollie\Provider\IssuerProvider;
+@@ -13,7 +13,7 @@ use LokiCheckout\Mollie\Provider\SavedCardProvider;
  class AdditionalPaymentDetails implements ArgumentInterface
  {
      public function __construct(
@@ -134,4 +160,4 @@ index 7dfcbd7..dc78eca 100644
 +        private CheckoutState $checkoutState,
          private IssuerProvider $issuerProvider,
          private PaymentTokenProvider $paymentTokenProvider,
-     ) {
+         private SavedCardProvider $savedCardProvider,
