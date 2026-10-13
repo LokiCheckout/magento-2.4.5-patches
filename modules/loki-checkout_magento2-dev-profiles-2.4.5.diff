@@ -46,7 +46,7 @@ index 83f6d28..be2b074 100644
          if (empty($value)) {
              return;
 diff --git a/Profile/ProfileListing.php b/Profile/ProfileListing.php
-index 29c4d5b..d2b3b39 100644
+index dec0085..23c84d5 100644
 --- a/Profile/ProfileListing.php
 +++ b/Profile/ProfileListing.php
 @@ -6,7 +6,7 @@ namespace LokiCheckout\DevProfiles\Profile;
@@ -59,7 +59,7 @@ index 29c4d5b..d2b3b39 100644
      }
  
 diff --git a/Service/ProfileManager.php b/Service/ProfileManager.php
-index df8758b..59abaa6 100644
+index f0cf659..9bf99d7 100644
 --- a/Service/ProfileManager.php
 +++ b/Service/ProfileManager.php
 @@ -11,9 +11,9 @@ use LokiCheckout\DevProfiles\Profile\ProfileInterface;
