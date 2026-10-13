@@ -1531,7 +1531,7 @@ index 52f1a2a0..d5446857 100644
      }
  
 diff --git a/Plugin/FixFreeShippingSubtotalPlugin.php b/Plugin/FixFreeShippingSubtotalPlugin.php
-index c1057def..8ffda5de 100644
+index c2ab4d05..fada0674 100644
 --- a/Plugin/FixFreeShippingSubtotalPlugin.php
 +++ b/Plugin/FixFreeShippingSubtotalPlugin.php
 @@ -11,8 +11,8 @@ use Magento\Store\Model\ScopeInterface;
@@ -2347,7 +2347,7 @@ index 893fd427..6e92e0bf 100644
      }
  
 diff --git a/Util/Component/AddressStateProvider.php b/Util/Component/AddressStateProvider.php
-index 5991887f..fad34b76 100644
+index a09fc6d2..de16ab10 100644
 --- a/Util/Component/AddressStateProvider.php
 +++ b/Util/Component/AddressStateProvider.php
 @@ -11,12 +11,12 @@ use LokiCheckout\Core\ViewModel\State\ShippingAddressState;
@@ -2479,12 +2479,12 @@ index 98c9c752..34cbc756 100644
      }
  
 diff --git a/Util/CustomerProvider.php b/Util/CustomerProvider.php
-index bff7833f..378a7c3b 100644
+index 7666d1a4..c328e0f7 100644
 --- a/Util/CustomerProvider.php
 +++ b/Util/CustomerProvider.php
-@@ -20,13 +20,13 @@ use Magento\Framework\UrlFactory;
- class CustomerProvider
- {
+@@ -26,13 +26,13 @@ class CustomerProvider
+     private array $addressLines = [];
+ 
      public function __construct(
 -        private readonly CheckoutState $checkoutState,
 -        private readonly CustomerRepositoryInterface $customerRepository,
