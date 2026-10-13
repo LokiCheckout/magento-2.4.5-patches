@@ -1,0 +1,358 @@
+diff --git a/Config/Config.php b/Config/Config.php
+index 7d38b36..6a24e35 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -11,7 +11,7 @@ class Config
+     private const XML_PATH_ENABLED = 'yireo_hyva_without_graph_ql/settings/enabled';
+ 
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig
++        private ScopeConfigInterface $scopeConfig
+     ) {
+     }
+ 
+diff --git a/Controller/JsonResultBuilder.php b/Controller/JsonResultBuilder.php
+index 7dc9c78..b03343c 100644
+--- a/Controller/JsonResultBuilder.php
++++ b/Controller/JsonResultBuilder.php
+@@ -13,7 +13,7 @@ use Magento\Framework\Controller\Result\JsonFactory;
+ class JsonResultBuilder
+ {
+     public function __construct(
+-        private readonly JsonFactory $jsonFactory
++        private JsonFactory $jsonFactory
+     ) {
+     }
+ 
+diff --git a/Controller/Products/Skus.php b/Controller/Products/Skus.php
+index a2e231b..9f5eff2 100644
+--- a/Controller/Products/Skus.php
++++ b/Controller/Products/Skus.php
+@@ -19,12 +19,12 @@ use Yireo\HyvaWithoutGraphQl\Service\ProductProvider;
+ class Skus implements HttpGetActionInterface
+ {
+     public function __construct(
+-        private readonly RequestInterface $request,
+-        private readonly Config $config,
+-        private readonly JsonResultBuilder $jsonResultBuilder,
+-        private readonly SliderRequestNormalizer $sliderRequestNormalizer,
+-        private readonly ProductProvider $productProvider,
+-        private readonly ProductDataFormatter $productDataFormatter
++        private RequestInterface $request,
++        private Config $config,
++        private JsonResultBuilder $jsonResultBuilder,
++        private SliderRequestNormalizer $sliderRequestNormalizer,
++        private ProductProvider $productProvider,
++        private ProductDataFormatter $productDataFormatter
+     ) {
+     }
+ 
+diff --git a/Controller/Products/Slider.php b/Controller/Products/Slider.php
+index af25cb0..21a0567 100644
+--- a/Controller/Products/Slider.php
++++ b/Controller/Products/Slider.php
+@@ -18,12 +18,12 @@ use Yireo\HyvaWithoutGraphQl\Service\ProductProvider;
+ class Slider implements HttpGetActionInterface
+ {
+     public function __construct(
+-        private readonly RequestInterface $request,
+-        private readonly Config $config,
+-        private readonly JsonResultBuilder $jsonResultBuilder,
+-        private readonly SliderRequestNormalizer $sliderRequestNormalizer,
+-        private readonly ProductProvider $productProvider,
+-        private readonly ProductDataFormatter $productDataFormatter
++        private RequestInterface $request,
++        private Config $config,
++        private JsonResultBuilder $jsonResultBuilder,
++        private SliderRequestNormalizer $sliderRequestNormalizer,
++        private ProductProvider $productProvider,
++        private ProductDataFormatter $productDataFormatter
+     ) {
+     }
+ 
+diff --git a/Controller/Reviews/Customer.php b/Controller/Reviews/Customer.php
+index ac981a0..24cb64e 100644
+--- a/Controller/Reviews/Customer.php
++++ b/Controller/Reviews/Customer.php
+@@ -20,11 +20,11 @@ class Customer implements HttpGetActionInterface
+     private const DEFAULT_PAGE_SIZE = 5;
+ 
+     public function __construct(
+-        private readonly RequestInterface $request,
+-        private readonly Config $config,
+-        private readonly JsonResultBuilder $jsonResultBuilder,
+-        private readonly CustomerSession $customerSession,
+-        private readonly CustomerReviewProvider $customerReviewProvider
++        private RequestInterface $request,
++        private Config $config,
++        private JsonResultBuilder $jsonResultBuilder,
++        private CustomerSession $customerSession,
++        private CustomerReviewProvider $customerReviewProvider
+     ) {
+     }
+ 
+diff --git a/Controller/Reviews/Save.php b/Controller/Reviews/Save.php
+index 546e36b..c997add 100644
+--- a/Controller/Reviews/Save.php
++++ b/Controller/Reviews/Save.php
+@@ -28,13 +28,13 @@ class Save implements HttpPostActionInterface, CsrfAwareActionInterface
+     private const RECAPTCHA_KEY = 'product_review';
+ 
+     public function __construct(
+-        private readonly RequestInterface $request,
+-        private readonly Config $config,
+-        private readonly JsonResultBuilder $jsonResultBuilder,
+-        private readonly FormKeyValidator $formKeyValidator,
+-        private readonly ReCaptchaValidator $reCaptchaValidator,
+-        private readonly ReviewSaver $reviewSaver,
+-        private readonly LoggerInterface $logger
++        private RequestInterface $request,
++        private Config $config,
++        private JsonResultBuilder $jsonResultBuilder,
++        private FormKeyValidator $formKeyValidator,
++        private ReCaptchaValidator $reCaptchaValidator,
++        private ReviewSaver $reviewSaver,
++        private LoggerInterface $logger
+     ) {
+     }
+ 
+diff --git a/Model/ProductFilterParser.php b/Model/ProductFilterParser.php
+index 1489383..5dd4e20 100644
+--- a/Model/ProductFilterParser.php
++++ b/Model/ProductFilterParser.php
+@@ -91,7 +91,7 @@ class ProductFilterParser
+      * @param string $value
+      * @return string|string[]|null
+      */
+-    private function parseValue(string $value): string|array|null
++    private function parseValue(string $value)
+     {
+         $value = trim($value, " \f\n\r\t\v\x00");
+         if ($value === '') {
+diff --git a/Model/SliderRequestNormalizer.php b/Model/SliderRequestNormalizer.php
+index 47ffe41..acd789d 100644
+--- a/Model/SliderRequestNormalizer.php
++++ b/Model/SliderRequestNormalizer.php
+@@ -45,7 +45,7 @@ class SliderRequestNormalizer
+      * @param mixed $value
+      * @return string[]
+      */
+-    private function toStringList(mixed $value): array
++    private function toStringList($value): array
+     {
+         if (is_string($value)) {
+             $value = explode(',', $value);
+@@ -74,7 +74,7 @@ class SliderRequestNormalizer
+      * @param mixed $value
+      * @return int[]
+      */
+-    private function toIntList(mixed $value): array
++    private function toIntList($value): array
+     {
+         $values = [];
+         foreach ($this->toStringList($value) as $item) {
+@@ -86,7 +86,7 @@ class SliderRequestNormalizer
+         return $values;
+     }
+ 
+-    private function toFloatOrNull(mixed $value): ?float
++    private function toFloatOrNull($value): ?float
+     {
+         if (!is_scalar($value)) {
+             return null;
+@@ -100,7 +100,7 @@ class SliderRequestNormalizer
+         return (float)$value;
+     }
+ 
+-    private function toPageSize(mixed $value): int
++    private function toPageSize($value): int
+     {
+         if (!is_scalar($value) || !is_numeric((string)$value)) {
+             return self::DEFAULT_PAGE_SIZE;
+@@ -114,7 +114,7 @@ class SliderRequestNormalizer
+         return min($pageSize, self::MAX_PAGE_SIZE);
+     }
+ 
+-    private function toSortAttribute(mixed $value): string
++    private function toSortAttribute($value): string
+     {
+         if (is_string($value) && in_array($value, self::SORT_ATTRIBUTES, true)) {
+             return $value;
+@@ -123,7 +123,7 @@ class SliderRequestNormalizer
+         return 'position';
+     }
+ 
+-    private function toSortDirection(mixed $value): string
++    private function toSortDirection($value): string
+     {
+         if (is_string($value) && strtoupper($value) === 'DESC') {
+             return 'DESC';
+@@ -132,7 +132,7 @@ class SliderRequestNormalizer
+         return 'ASC';
+     }
+ 
+-    private function toType(mixed $value): string
++    private function toType($value): string
+     {
+         if (is_string($value) && in_array($value, self::LINK_TYPES, true)) {
+             return $value;
+diff --git a/Plugin/TemplateEngine/SwapGraphQlTemplates.php b/Plugin/TemplateEngine/SwapGraphQlTemplates.php
+index eb25012..c50d41a 100644
+--- a/Plugin/TemplateEngine/SwapGraphQlTemplates.php
++++ b/Plugin/TemplateEngine/SwapGraphQlTemplates.php
+@@ -27,10 +27,10 @@ class SwapGraphQlTemplates
+      * @param array<string, array{match: string, template: string}> $appendTemplates
+      */
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly ViewFileSystem $viewFileSystem,
+-        private readonly array $replaceTemplates = [],
+-        private readonly array $appendTemplates = []
++        private Config $config,
++        private ViewFileSystem $viewFileSystem,
++        private array $replaceTemplates = [],
++        private array $appendTemplates = []
+     ) {
+     }
+ 
+diff --git a/Service/CustomerReviewProvider.php b/Service/CustomerReviewProvider.php
+index 34d786e..4cd5b72 100644
+--- a/Service/CustomerReviewProvider.php
++++ b/Service/CustomerReviewProvider.php
+@@ -18,11 +18,11 @@ class CustomerReviewProvider
+     private const ADDITIONAL_ATTRIBUTES = ['url_key', 'image', 'image_label', 'small_image', 'small_image_label'];
+ 
+     public function __construct(
+-        private readonly ReviewCollectionFactory $reviewCollectionFactory,
+-        private readonly VoteCollectionFactory $voteCollectionFactory,
+-        private readonly ProductDataFormatter $productDataFormatter,
+-        private readonly StoreManagerInterface $storeManager,
+-        private readonly TimezoneInterface $timezone
++        private ReviewCollectionFactory $reviewCollectionFactory,
++        private VoteCollectionFactory $voteCollectionFactory,
++        private ProductDataFormatter $productDataFormatter,
++        private StoreManagerInterface $storeManager,
++        private TimezoneInterface $timezone
+     ) {
+     }
+ 
+diff --git a/Service/ProductDataFormatter.php b/Service/ProductDataFormatter.php
+index 181728c..486e8df 100644
+--- a/Service/ProductDataFormatter.php
++++ b/Service/ProductDataFormatter.php
+@@ -21,9 +21,9 @@ class ProductDataFormatter
+     private const XML_PATH_URL_SUFFIX = 'catalog/seo/product_url_suffix';
+ 
+     public function __construct(
+-        private readonly ImageFactory $imageFactory,
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly StoreManagerInterface $storeManager
++        private ImageFactory $imageFactory,
++        private ScopeConfigInterface $scopeConfig,
++        private StoreManagerInterface $storeManager
+     ) {
+     }
+ 
+diff --git a/Service/ProductProvider.php b/Service/ProductProvider.php
+index 5e3b8d5..f6d245b 100644
+--- a/Service/ProductProvider.php
++++ b/Service/ProductProvider.php
+@@ -34,13 +34,13 @@ class ProductProvider
+     ];
+ 
+     public function __construct(
+-        private readonly CollectionFactory $collectionFactory,
+-        private readonly CatalogConfig $catalogConfig,
+-        private readonly CategoryRepositoryInterface $categoryRepository,
+-        private readonly Visibility $visibility,
+-        private readonly ProductLinkManagementInterface $productLinkManagement,
+-        private readonly ProductFilterParser $productFilterParser,
+-        private readonly LoggerInterface $logger
++        private CollectionFactory $collectionFactory,
++        private CatalogConfig $catalogConfig,
++        private CategoryRepositoryInterface $categoryRepository,
++        private Visibility $visibility,
++        private ProductLinkManagementInterface $productLinkManagement,
++        private ProductFilterParser $productFilterParser,
++        private LoggerInterface $logger
+     ) {
+     }
+ 
+diff --git a/Service/ReCaptchaValidator.php b/Service/ReCaptchaValidator.php
+index aff71fd..35b91cb 100644
+--- a/Service/ReCaptchaValidator.php
++++ b/Service/ReCaptchaValidator.php
+@@ -20,12 +20,12 @@ use Psr\Log\LoggerInterface;
+ class ReCaptchaValidator
+ {
+     public function __construct(
+-        private readonly IsCaptchaEnabledInterface $isCaptchaEnabled,
+-        private readonly CaptchaResponseResolverInterface $captchaResponseResolver,
+-        private readonly ValidationConfigResolverInterface $validationConfigResolver,
+-        private readonly ValidatorInterface $captchaValidator,
+-        private readonly ErrorMessageConfigInterface $errorMessageConfig,
+-        private readonly LoggerInterface $logger
++        private IsCaptchaEnabledInterface $isCaptchaEnabled,
++        private CaptchaResponseResolverInterface $captchaResponseResolver,
++        private ValidationConfigResolverInterface $validationConfigResolver,
++        private ValidatorInterface $captchaValidator,
++        private ErrorMessageConfigInterface $errorMessageConfig,
++        private LoggerInterface $logger
+     ) {
+     }
+ 
+diff --git a/Service/ReviewSaver.php b/Service/ReviewSaver.php
+index bf2c7d5..b5e3529 100644
+--- a/Service/ReviewSaver.php
++++ b/Service/ReviewSaver.php
+@@ -22,14 +22,14 @@ use Magento\Store\Model\StoreManagerInterface;
+ class ReviewSaver
+ {
+     public function __construct(
+-        private readonly ProductRepositoryInterface $productRepository,
+-        private readonly ReviewFactory $reviewFactory,
+-        private readonly ReviewResource $reviewResource,
+-        private readonly RatingFactory $ratingFactory,
+-        private readonly ReviewConfig $reviewConfig,
+-        private readonly ReviewHelper $reviewHelper,
+-        private readonly CustomerSession $customerSession,
+-        private readonly StoreManagerInterface $storeManager
++        private ProductRepositoryInterface $productRepository,
++        private ReviewFactory $reviewFactory,
++        private ReviewResource $reviewResource,
++        private RatingFactory $ratingFactory,
++        private ReviewConfig $reviewConfig,
++        private ReviewHelper $reviewHelper,
++        private CustomerSession $customerSession,
++        private StoreManagerInterface $storeManager
+     ) {
+     }
+ 
+diff --git a/ViewModel/Endpoints.php b/ViewModel/Endpoints.php
+index d98fc11..4e755e3 100644
+--- a/ViewModel/Endpoints.php
++++ b/ViewModel/Endpoints.php
+@@ -11,7 +11,7 @@ class Endpoints implements ArgumentInterface
+     private const FRONT_NAME = 'hyva-without-graphql';
+ 
+     public function __construct(
+-        private readonly UrlInterface $url
++        private UrlInterface $url
+     ) {
+     }
+ 
+diff --git a/ViewModel/SliderParameters.php b/ViewModel/SliderParameters.php
+index f21e9da..400ce0d 100644
+--- a/ViewModel/SliderParameters.php
++++ b/ViewModel/SliderParameters.php
+@@ -17,8 +17,8 @@ use Yireo\HyvaWithoutGraphQl\Model\SliderRequestNormalizer;
+ class SliderParameters implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly CheckoutSession $checkoutSession,
+-        private readonly SliderRequestNormalizer $sliderRequestNormalizer
++        private CheckoutSession $checkoutSession,
++        private SliderRequestNormalizer $sliderRequestNormalizer
+     ) {
+     }
+ 

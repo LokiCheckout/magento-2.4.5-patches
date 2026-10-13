@@ -225,6 +225,9 @@
             },
             "loki/magento2-auto-translator-command": {
                 "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki_magento2-auto-translator-command-2.4.5.diff"
+            },
+            "yireo/magento2-hyva-without-graph-ql": {
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/yireo_magento2-hyva-without-graph-ql-2.4.5.diff"
             }
         }
     }
