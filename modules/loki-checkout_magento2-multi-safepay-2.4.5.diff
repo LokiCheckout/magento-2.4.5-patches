@@ -12,7 +12,7 @@ index 7e1e9bc..a280496 100644
          return $this->scopeConfig->getValue($path);
      }
 diff --git a/Component/PaymentComponent/PaymentComponentRepository.php b/Component/PaymentComponent/PaymentComponentRepository.php
-index aa2814a..839fd79 100644
+index 96b222f..b2b0e0f 100644
 --- a/Component/PaymentComponent/PaymentComponentRepository.php
 +++ b/Component/PaymentComponent/PaymentComponentRepository.php
 @@ -9,12 +9,12 @@ use Loki\Components\Component\ComponentRepository;
@@ -57,7 +57,7 @@ index 328b95a..be7c966 100644
          $paymentMethod = $redirectContext->getPaymentMethod();
          if (false === $paymentMethod) {
 diff --git a/Plugin/PaymentMethodsRepositoryPlugin.php b/Plugin/PaymentMethodsRepositoryPlugin.php
-index aceadf1..3b92981 100644
+index 90fe0e7..889c410 100644
 --- a/Plugin/PaymentMethodsRepositoryPlugin.php
 +++ b/Plugin/PaymentMethodsRepositoryPlugin.php
 @@ -8,7 +8,7 @@ use MultiSafepay\ConnectCore\Config\Config;
