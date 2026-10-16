@@ -197,7 +197,7 @@ index 47ffe41..acd789d 100644
          if (is_string($value) && in_array($value, self::LINK_TYPES, true)) {
              return $value;
 diff --git a/Plugin/TemplateEngine/SwapGraphQlTemplates.php b/Plugin/TemplateEngine/SwapGraphQlTemplates.php
-index eb25012..c50d41a 100644
+index c005ca0..ed27bb1 100644
 --- a/Plugin/TemplateEngine/SwapGraphQlTemplates.php
 +++ b/Plugin/TemplateEngine/SwapGraphQlTemplates.php
 @@ -27,10 +27,10 @@ class SwapGraphQlTemplates
@@ -237,10 +237,10 @@ index 34d786e..4cd5b72 100644
      }
  
 diff --git a/Service/ProductDataFormatter.php b/Service/ProductDataFormatter.php
-index 181728c..486e8df 100644
+index 4755b10..b19bf87 100644
 --- a/Service/ProductDataFormatter.php
 +++ b/Service/ProductDataFormatter.php
-@@ -21,9 +21,9 @@ class ProductDataFormatter
+@@ -20,9 +20,9 @@ class ProductDataFormatter
      private const XML_PATH_URL_SUFFIX = 'catalog/seo/product_url_suffix';
  
      public function __construct(
@@ -254,7 +254,7 @@ index 181728c..486e8df 100644
      }
  
 diff --git a/Service/ProductProvider.php b/Service/ProductProvider.php
-index 5e3b8d5..f6d245b 100644
+index ac0b5bd..839f2e5 100644
 --- a/Service/ProductProvider.php
 +++ b/Service/ProductProvider.php
 @@ -34,13 +34,13 @@ class ProductProvider
