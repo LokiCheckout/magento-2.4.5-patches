@@ -1,8 +1,8 @@
 diff --git a/Component/Checkout/Address/Debug/DebugViewModel.php b/Component/Checkout/Address/Debug/DebugViewModel.php
-index 09fa67d..16f09e1 100644
+index aee2565..49f3d31 100644
 --- a/Component/Checkout/Address/Debug/DebugViewModel.php
 +++ b/Component/Checkout/Address/Debug/DebugViewModel.php
-@@ -37,7 +37,7 @@ class DebugViewModel extends AddressFieldViewModel
+@@ -38,7 +38,7 @@ class DebugViewModel extends AddressFieldViewModel
          return '-';
      }
  
@@ -11,29 +11,30 @@ index 09fa67d..16f09e1 100644
      {
          return null;
      }
-diff --git a/Component/Checkout/Address/PostcodeNlContext.php b/Component/Checkout/Address/PostcodeNlContext.php
-index 5fd0427..bc47d13 100644
---- a/Component/Checkout/Address/PostcodeNlContext.php
-+++ b/Component/Checkout/Address/PostcodeNlContext.php
-@@ -36,11 +36,11 @@ class PostcodeNlContext implements ComponentContextInterface
-         private AttributeProvider $attributeProvider,
-         private GlobalMessageRegistry $globalMessageRegistry,
-         private CoreMessageManager $coreMessageManager,
--        private readonly CustomerSession $customerSession,
--        private readonly UrlFactory $urlFactory,
--        private readonly AutocompletionState $autocompletionState,
--        private readonly AddressStateProvider $addressStateProvider,
--        private readonly PostcodeInfo $postcodeInfo,
-+        private CustomerSession $customerSession,
-+        private UrlFactory $urlFactory,
-+        private AutocompletionState $autocompletionState,
-+        private AddressStateProvider $addressStateProvider,
-+        private PostcodeInfo $postcodeInfo,
-     ) {
+diff --git a/Component/Checkout/Address/Finder/FinderRepository.php b/Component/Checkout/Address/Finder/FinderRepository.php
+index cdd20bb..73d6636 100644
+--- a/Component/Checkout/Address/Finder/FinderRepository.php
++++ b/Component/Checkout/Address/Finder/FinderRepository.php
+@@ -10,7 +10,7 @@ use LokiCheckout\PostcodeNl\Component\Checkout\Address\PostcodeNlContext;
+  */
+ class FinderRepository extends FieldRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $address = $this->getContext()->getAddressStateProvider()
+             ->getAddressState($this->getComponentName())
+@@ -26,7 +26,7 @@ class FinderRepository extends FieldRepository
+         return $street.', '.$postcode.' '.$city;
      }
  
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $addressType = $this->getContext()->getAddressStateProvider()->getAddressType($this->getComponentName());
+         if ($this->getContext()->getFinderAddress()->save((string)$value, $addressType)) {
 diff --git a/Component/Checkout/Address/Toggle/ToggleRepository.php b/Component/Checkout/Address/Toggle/ToggleRepository.php
-index 42d76e6..5223789 100644
+index 0ac251e..8712b82 100644
 --- a/Component/Checkout/Address/Toggle/ToggleRepository.php
 +++ b/Component/Checkout/Address/Toggle/ToggleRepository.php
 @@ -10,7 +10,7 @@ use LokiCheckout\PostcodeNl\Component\Checkout\Address\PostcodeNlContext;
@@ -55,78 +56,76 @@ index 42d76e6..5223789 100644
          $active = (bool)$value;
  
 diff --git a/Layout/LayoutHandler.php b/Layout/LayoutHandler.php
-index aceec87..eeb0462 100644
+index 5198668..cd09370 100644
 --- a/Layout/LayoutHandler.php
 +++ b/Layout/LayoutHandler.php
-@@ -11,9 +11,9 @@ use LokiCheckout\PostcodeNl\Util\SupportedCountries;
- class LayoutHandler implements LayoutHandlerInterface
- {
+@@ -13,7 +13,7 @@ class LayoutHandler implements LayoutHandlerInterface
+     private const HANDLE_FINDER = 'loki_checkout_postcodenl_mode_finder';
+ 
      public function __construct(
--        private readonly Config $config,
--        private readonly CheckoutState $checkoutState,
--        private readonly SupportedCountries $supportedCountries
-+        private Config $config,
-+        private CheckoutState $checkoutState,
-+        private SupportedCountries $supportedCountries
+-        private readonly ModeResolver $modeResolver
++        private ModeResolver $modeResolver
      ) {
      }
  
 diff --git a/Plugin/AbstractDisableFieldPlugin.php b/Plugin/AbstractDisableFieldPlugin.php
-index 809b083..f68c39b 100644
+index 094d0fe..9510a78 100644
 --- a/Plugin/AbstractDisableFieldPlugin.php
 +++ b/Plugin/AbstractDisableFieldPlugin.php
-@@ -11,10 +11,10 @@ use LokiCheckout\PostcodeNl\Util\SupportedCountries;
+@@ -12,10 +12,10 @@ use LokiCheckout\PostcodeNl\Util\ModeResolver;
  abstract class AbstractDisableFieldPlugin
  {
      public function __construct(
 -        protected readonly AutocompletionState $autocompletionState,
 -        protected readonly AddressStateProvider $addressStateProvider,
--        protected readonly SupportedCountries $supportedCountries,
+-        protected readonly ModeResolver $modeResolver,
 -        protected readonly Config $config
 +        protected AutocompletionState $autocompletionState,
 +        protected AddressStateProvider $addressStateProvider,
-+        protected SupportedCountries $supportedCountries,
++        protected ModeResolver $modeResolver,
 +        protected Config $config
      ) {
      }
  
 diff --git a/Plugin/AddMessagesToViewModelPlugin.php b/Plugin/AddMessagesToViewModelPlugin.php
-index f77d7a6..4920f18 100644
+index 0a3bf5c..2d0e689 100644
 --- a/Plugin/AddMessagesToViewModelPlugin.php
 +++ b/Plugin/AddMessagesToViewModelPlugin.php
-@@ -10,8 +10,8 @@ use Loki\Components\Messages\LocalMessage;
+@@ -11,9 +11,9 @@ use Loki\Components\Messages\LocalMessage;
  class AddMessagesToViewModelPlugin
  {
      public function __construct(
 -        private readonly AutocompletionState $autocompletionState,
+-        private readonly AddressStateProvider $addressStateProvider,
 -        private readonly Config $config
 +        private AutocompletionState $autocompletionState,
++        private AddressStateProvider $addressStateProvider,
 +        private Config $config
      ) {
      }
  
 diff --git a/Plugin/ModifyStreet1ValidatorsPlugin.php b/Plugin/ModifyStreet1ValidatorsPlugin.php
-index cd1d425..816f262 100644
+index fe187dc..fe71ec1 100644
 --- a/Plugin/ModifyStreet1ValidatorsPlugin.php
 +++ b/Plugin/ModifyStreet1ValidatorsPlugin.php
-@@ -10,9 +10,9 @@ use LokiCheckout\PostcodeNl\Util\SupportedCountries;
+@@ -10,9 +10,9 @@ use LokiCheckout\PostcodeNl\Util\ModeResolver;
  class ModifyStreet1ValidatorsPlugin
  {
      public function __construct(
 -        private readonly Config $config,
 -        private readonly AddressStateProvider $addressStateProvider,
--        private readonly SupportedCountries $supportedCountries,
+-        private readonly ModeResolver $modeResolver,
 +        private Config $config,
 +        private AddressStateProvider $addressStateProvider,
-+        private SupportedCountries $supportedCountries,
++        private ModeResolver $modeResolver,
      ) {
      }
  
 diff --git a/Service/AutocompletionState.php b/Service/AutocompletionState.php
-index 1629ca3..2e3e23d 100644
+index f88f33d..4bf62ee 100644
 --- a/Service/AutocompletionState.php
 +++ b/Service/AutocompletionState.php
-@@ -91,7 +91,7 @@ class AutocompletionState
+@@ -92,7 +92,7 @@ class AutocompletionState
          return (string)$this->load('raw_data');
      }
  
@@ -135,7 +134,7 @@ index 1629ca3..2e3e23d 100644
      {
          $this->save('raw_data', json_encode($rawData));
      }
-@@ -132,7 +132,7 @@ class AutocompletionState
+@@ -152,7 +152,7 @@ class AutocompletionState
          $this->setErrors([]);
      }
  
@@ -144,11 +143,34 @@ index 1629ca3..2e3e23d 100644
      {
          if (empty($this->addressType)) {
              throw new RuntimeException('No address type set');
+diff --git a/Service/FinderAddress.php b/Service/FinderAddress.php
+index a0b7947..01546cb 100644
+--- a/Service/FinderAddress.php
++++ b/Service/FinderAddress.php
+@@ -13,12 +13,12 @@ use Magento\Quote\Api\Data\AddressInterface;
+ class FinderAddress
+ {
+     public function __construct(
+-        private readonly PostcodeEuClientFactory $postcodeEuClientFactory,
+-        private readonly AutocompleteSession $autocompleteSession,
+-        private readonly CheckoutState $checkoutState,
+-        private readonly StreetLinesFactory $streetLinesFactory,
+-        private readonly RegionProvider $regionProvider,
+-        private readonly Config $config,
++        private PostcodeEuClientFactory $postcodeEuClientFactory,
++        private AutocompleteSession $autocompleteSession,
++        private CheckoutState $checkoutState,
++        private StreetLinesFactory $streetLinesFactory,
++        private RegionProvider $regionProvider,
++        private Config $config,
+     ) {
+     }
+ 
 diff --git a/Service/PostcodeInfo.php b/Service/PostcodeInfo.php
-index e169407..4a0217a 100644
+index cf16e76..a358681 100644
 --- a/Service/PostcodeInfo.php
 +++ b/Service/PostcodeInfo.php
-@@ -15,14 +15,14 @@ use LokiCheckout\PostcodeNl\Util\SupportedCountries;
+@@ -15,14 +15,14 @@ use LokiCheckout\PostcodeNl\Util\ModeResolver;
  class PostcodeInfo
  {
      public function __construct(
@@ -157,7 +179,7 @@ index e169407..4a0217a 100644
 -        private readonly ExceptionHandler $exceptionHandler,
 -        private readonly CheckoutState $checkoutState,
 -        private readonly AutocompletionState $autocompletionState,
--        private readonly SupportedCountries $supportedCountries,
+-        private readonly ModeResolver $modeResolver,
 -        private readonly RegionProvider $regionProvider,
 -        private readonly Config $config
 +        private PostcodeEuClientFactory $postcodeEuClientFactory,
@@ -165,9 +187,78 @@ index e169407..4a0217a 100644
 +        private ExceptionHandler $exceptionHandler,
 +        private CheckoutState $checkoutState,
 +        private AutocompletionState $autocompletionState,
-+        private SupportedCountries $supportedCountries,
++        private ModeResolver $modeResolver,
 +        private RegionProvider $regionProvider,
 +        private Config $config
+     ) {
+     }
+ 
+diff --git a/Test/Integration/Client/PostcodeEuClientFactoryTest.php b/Test/Integration/Client/PostcodeEuClientFactoryTest.php
+index dfba0a5..2237d9d 100644
+--- a/Test/Integration/Client/PostcodeEuClientFactoryTest.php
++++ b/Test/Integration/Client/PostcodeEuClientFactoryTest.php
+@@ -60,7 +60,7 @@ final class PostcodeEuClientFactoryTest extends TestCase
+         $this->assertSame($timeout, $httpClient->getConfig('timeout'));
+     }
+ 
+-    private function getProperty(object $object, string $name): mixed
++    private function getProperty(object $object, string $name)
+     {
+         return (new ReflectionProperty(PostcodeEuClient::class, $name))->getValue($object);
+     }
+diff --git a/Test/Unit/Service/PostcodeInfoTest.php b/Test/Unit/Service/PostcodeInfoTest.php
+index 836c60f..b0ca595 100644
+--- a/Test/Unit/Service/PostcodeInfoTest.php
++++ b/Test/Unit/Service/PostcodeInfoTest.php
+@@ -132,7 +132,7 @@ final class PostcodeInfoTest extends TestCase
+         $this->autocompletionState->expects($this->once())->method('setAddressType')->with('shipping');
+         $rawData = [];
+         $this->autocompletionState->method('setRawData')
+-            ->willReturnCallback(function (mixed $data) use (&$rawData) {
++            ->willReturnCallback(function ($data) use (&$rawData) {
+                 $rawData[] = $data;
+             });
+         $houseNumberAdditions = [];
+diff --git a/Util/AutocompleteSession.php b/Util/AutocompleteSession.php
+index 53cf7ea..085133f 100644
+--- a/Util/AutocompleteSession.php
++++ b/Util/AutocompleteSession.php
+@@ -9,7 +9,7 @@ class AutocompleteSession
+     private ?string $fallbackId = null;
+ 
+     public function __construct(
+-        private readonly CheckoutSession $checkoutSession,
++        private CheckoutSession $checkoutSession,
+     ) {
+     }
+ 
+diff --git a/Util/ModeResolver.php b/Util/ModeResolver.php
+index f4e78ad..69680ac 100644
+--- a/Util/ModeResolver.php
++++ b/Util/ModeResolver.php
+@@ -9,9 +9,9 @@ use LokiCheckout\PostcodeNl\Config\Source\ModeOptions;
+ class ModeResolver
+ {
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly SupportedCountries $supportedCountries,
+-        private readonly CheckoutState $checkoutState,
++        private Config $config,
++        private SupportedCountries $supportedCountries,
++        private CheckoutState $checkoutState,
+     ) {
+     }
+ 
+diff --git a/Util/SupportedCountries.php b/Util/SupportedCountries.php
+index 514ebbc..3135962 100644
+--- a/Util/SupportedCountries.php
++++ b/Util/SupportedCountries.php
+@@ -7,7 +7,7 @@ use LokiCheckout\PostcodeNl\Client\PostcodeEuClientFactory;
+ class SupportedCountries
+ {
+     public function __construct(
+-        private readonly PostcodeEuClientFactory $postcodeEuClientFactory,
++        private PostcodeEuClientFactory $postcodeEuClientFactory,
      ) {
      }
  
