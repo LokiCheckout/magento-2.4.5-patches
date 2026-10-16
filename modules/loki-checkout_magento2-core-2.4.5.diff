@@ -69,7 +69,7 @@ index facede68..d1c1b3bb 100644
          if ($propertyName === null) {
              $propertyName = $this->getPropertyName();
 diff --git a/Component/Base/Payment/ApplePay/ApplePayRepository.php b/Component/Base/Payment/ApplePay/ApplePayRepository.php
-index da735959..7ebe3782 100644
+index 010d903c..c4f86b35 100644
 --- a/Component/Base/Payment/ApplePay/ApplePayRepository.php
 +++ b/Component/Base/Payment/ApplePay/ApplePayRepository.php
 @@ -7,12 +7,12 @@ use Loki\Components\Component\ComponentRepository;
@@ -88,7 +88,7 @@ index da735959..7ebe3782 100644
          if (false === is_array($value)) {
              return;
 diff --git a/Component/Base/QuoteField/QuoteFieldRepository.php b/Component/Base/QuoteField/QuoteFieldRepository.php
-index 343e2514..0f37b8ca 100644
+index 560fd270..abc102bd 100644
 --- a/Component/Base/QuoteField/QuoteFieldRepository.php
 +++ b/Component/Base/QuoteField/QuoteFieldRepository.php
 @@ -11,12 +11,12 @@ use Loki\Field\Component\Base\Field\FieldRepository;
@@ -104,8 +104,8 @@ index 343e2514..0f37b8ca 100644
 -    public function saveValue(mixed $value): void
 +    public function saveValue($value): void
      {
-         $quote = $this->getQuote();
-         $quote->setData($this->getFieldName(), $value);
+         if ($value !== null && false === is_scalar($value)) {
+             return;
 diff --git a/Component/Checkout/Address/Firstname/FirstnameRepository.php b/Component/Checkout/Address/Firstname/FirstnameRepository.php
 index 0471bebb..637b3c89 100644
 --- a/Component/Checkout/Address/Firstname/FirstnameRepository.php
@@ -288,7 +288,7 @@ index 3c5dc6fc..386bd5ec 100644
      }
  
 diff --git a/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php b/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
-index 0f4d620d..fe264d56 100644
+index c4e9b14f..cde445c9 100644
 --- a/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
 +++ b/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
 @@ -21,7 +21,7 @@ class PaymentMethodsRepository extends ComponentRepository
@@ -297,7 +297,7 @@ index 0f4d620d..fe264d56 100644
          private PaymentInterfaceFactory $paymentFactory,
 -        private readonly ManagerInterface $eventManager,
 +        private ManagerInterface $eventManager,
-         private ?PaymentProcessingRateLimiterInterface $paymentRateLimiter = null,
+         private PaymentProcessingRateLimiterInterface $paymentRateLimiter,
      ) {
      }
 @@ -54,7 +54,7 @@ class PaymentMethodsRepository extends ComponentRepository
@@ -316,8 +316,8 @@ index 0f4d620d..fe264d56 100644
 -    public function saveValue(mixed $value): void
 +    public function saveValue($value): void
      {
-         if ($this->paymentRateLimiter instanceof PaymentProcessingRateLimiterInterface) {
-             try {
+         try {
+             $this->paymentRateLimiter->limit();
 diff --git a/Component/Checkout/Billing/ShippingAsBilling/ShippingAsBillingRepository.php b/Component/Checkout/Billing/ShippingAsBilling/ShippingAsBillingRepository.php
 index 0799d3d8..79187add 100644
 --- a/Component/Checkout/Billing/ShippingAsBilling/ShippingAsBillingRepository.php
@@ -376,10 +376,10 @@ index 08353db7..07407b4a 100644
          if (empty($value) || false === is_array($value)) {
              return;
 diff --git a/Component/Checkout/Other/Newsletter/NewsletterContext.php b/Component/Checkout/Other/Newsletter/NewsletterContext.php
-index 1dd28537..22189b97 100644
+index ce3bd2ae..d48c616c 100644
 --- a/Component/Checkout/Other/Newsletter/NewsletterContext.php
 +++ b/Component/Checkout/Other/Newsletter/NewsletterContext.php
-@@ -26,24 +26,24 @@ use LokiCheckout\Core\Repository\NewsletterRepository;
+@@ -27,25 +27,25 @@ use LokiCheckout\Core\Repository\NewsletterRepository;
  class NewsletterContext implements ComponentContextInterface
  {
      public function __construct(
@@ -401,6 +401,7 @@ index 1dd28537..22189b97 100644
 -        private readonly UrlFactory $urlFactory,
 -        private readonly ResourceConnection $resourceConnection,
 -        private readonly NewsletterRepository $newsletterRepository,
+-        private readonly NewsletterChoice $newsletterChoice,
 +        private SubscriptionManagerInterface $subscriptionManager,
 +        private SubscriberFactory $subscriberFactory,
 +        private StoreManagerInterface $storeManager,
@@ -419,14 +420,15 @@ index 1dd28537..22189b97 100644
 +        private UrlFactory $urlFactory,
 +        private ResourceConnection $resourceConnection,
 +        private NewsletterRepository $newsletterRepository,
++        private NewsletterChoice $newsletterChoice,
      ) {
      }
  
 diff --git a/Component/Checkout/Other/Newsletter/NewsletterRepository.php b/Component/Checkout/Other/Newsletter/NewsletterRepository.php
-index 1ade1fa1..2fcfbdb9 100644
+index 25bc51ef..c10fe8ba 100644
 --- a/Component/Checkout/Other/Newsletter/NewsletterRepository.php
 +++ b/Component/Checkout/Other/Newsletter/NewsletterRepository.php
-@@ -14,12 +14,12 @@ use Magento\Newsletter\Model\Subscriber;
+@@ -18,12 +18,12 @@ use LokiCheckout\Core\Util\NewsletterChoice;
  class NewsletterRepository extends FieldRepository
  {
      public function __construct(
@@ -442,15 +444,15 @@ index 1ade1fa1..2fcfbdb9 100644
      {
          $email = $this->getCustomerEmail();
          if (strlen($email) < 1) {
-@@ -48,7 +48,7 @@ class NewsletterRepository extends FieldRepository
-         return $this->getContext()->getModuleConfig()->isNewsletterCheckedByDefault();
+@@ -46,7 +46,7 @@ class NewsletterRepository extends FieldRepository
+         return $this->isNewsletterCheckedByDefault() && false === $this->hasCustomerRecord();
      }
  
 -    public function saveValue(mixed $value): void
 +    public function saveValue($value): void
      {
          $value = (bool)$value;
-         $isSubscribed = $this->isSubscribed();
+         $this->getNewsletterChoice()->setChoice($this->getCustomerEmail(), $value);
 diff --git a/Component/Checkout/Other/Recaptcha/RecaptchaRepository.php b/Component/Checkout/Other/Recaptcha/RecaptchaRepository.php
 index b3ead6ce..94e261bb 100644
 --- a/Component/Checkout/Other/Recaptcha/RecaptchaRepository.php
@@ -645,23 +647,25 @@ index b97df9a0..4903d0d9 100644
      }
  
 diff --git a/Component/Checkout/Sidebar/Preview/PaymentDetails/PaymentDetailsViewModel.php b/Component/Checkout/Sidebar/Preview/PaymentDetails/PaymentDetailsViewModel.php
-index be4b2b24..c7262531 100644
+index 5fc74915..27e63237 100644
 --- a/Component/Checkout/Sidebar/Preview/PaymentDetails/PaymentDetailsViewModel.php
 +++ b/Component/Checkout/Sidebar/Preview/PaymentDetails/PaymentDetailsViewModel.php
-@@ -10,7 +10,7 @@ class PaymentDetailsViewModel implements ArgumentInterface
+@@ -11,8 +11,8 @@ class PaymentDetailsViewModel implements ArgumentInterface
  {
      protected bool $skipValidation = true;
      public function __construct(
 -        private readonly CheckoutState $checkoutState,
+-        private readonly Escaper $escaper,
 +        private CheckoutState $checkoutState,
++        private Escaper $escaper,
      ) {
      }
  
 diff --git a/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php b/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php
-index 8dd3b07a..7336d2f3 100644
+index c5117ee9..f14cd93d 100644
 --- a/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php
 +++ b/Component/Checkout/Sidebar/Preview/ShippingDetails/ShippingDetailsViewModel.php
-@@ -19,12 +19,12 @@ class ShippingDetailsViewModel extends CheckoutViewModel
+@@ -20,13 +20,13 @@ class ShippingDetailsViewModel extends CheckoutViewModel
      protected bool $skipValidation = true;
  
      public function __construct(
@@ -671,12 +675,14 @@ index 8dd3b07a..7336d2f3 100644
 -        private readonly ShippingAddressState $shippingAddressState,
 -        private readonly AddressRenderer $addressRenderer,
 -        private readonly SameAddressService $sameAddressService,
+-        private readonly Escaper $escaper,
 +        private CheckoutState $checkoutState,
 +        private ShippingConfig $shippingConfig,
 +        private ScopeConfigInterface $scopeConfig,
 +        private ShippingAddressState $shippingAddressState,
 +        private AddressRenderer $addressRenderer,
 +        private SameAddressService $sameAddressService,
++        private Escaper $escaper,
          private string $separator = ' - '
      ) {
      }
@@ -865,19 +871,24 @@ index b504b85d..a687b993 100644
      public function isValid(): bool;
  }
 diff --git a/Component/Checkout/StepButton/StepBackwardButton/StepBackwardButtonRepository.php b/Component/Checkout/StepButton/StepBackwardButton/StepBackwardButtonRepository.php
-index a90d14cf..8770437e 100644
+index 42577cd5..4ab400fb 100644
 --- a/Component/Checkout/StepButton/StepBackwardButton/StepBackwardButtonRepository.php
 +++ b/Component/Checkout/StepButton/StepBackwardButton/StepBackwardButtonRepository.php
-@@ -13,7 +13,7 @@ use Loki\Components\Component\ComponentRepository;
-  */
+@@ -15,11 +15,11 @@ use Psr\Log\LoggerInterface;
  class StepBackwardButtonRepository extends ComponentRepository
  {
+     public function __construct(
+-        private readonly LoggerInterface $logger,
++        private LoggerInterface $logger,
+     ) {
+     }
+ 
 -    public function getValue(): mixed
 +    public function getValue()
      {
          try {
              return $this->getStepNavigator()->getPreviousStep()->getCode();
-@@ -22,7 +22,7 @@ class StepBackwardButtonRepository extends ComponentRepository
+@@ -28,7 +28,7 @@ class StepBackwardButtonRepository extends ComponentRepository
          }
      }
  
@@ -887,19 +898,24 @@ index a90d14cf..8770437e 100644
          try {
              $this->getStepNavigator()->setPreviousStep();
 diff --git a/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php b/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php
-index c7ecfca7..84d0568a 100644
+index 2cf5689e..dacd9115 100644
 --- a/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php
 +++ b/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php
-@@ -12,7 +12,7 @@ use Loki\Components\Component\ComponentRepository;
-  */
+@@ -14,11 +14,11 @@ use Psr\Log\LoggerInterface;
  class StepForwardButtonRepository extends ComponentRepository
  {
+     public function __construct(
+-        private readonly LoggerInterface $logger,
++        private LoggerInterface $logger,
+     ) {
+     }
+ 
 -    public function getValue(): mixed
 +    public function getValue()
      {
          try {
              return $this->getContext()->getStepNavigator()->getNextStep()->getCode();
-@@ -21,7 +21,7 @@ class StepForwardButtonRepository extends ComponentRepository
+@@ -27,7 +27,7 @@ class StepForwardButtonRepository extends ComponentRepository
          }
      }
  
@@ -952,7 +968,7 @@ index 8cfaed94..ec68ca95 100644
      {
      }
 diff --git a/Config/Config.php b/Config/Config.php
-index b092a076..47c2eab3 100644
+index 4655d73a..fc3fc70f 100644
 --- a/Config/Config.php
 +++ b/Config/Config.php
 @@ -15,10 +15,10 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
@@ -1145,26 +1161,41 @@ index 36bad339..6e16ffe6 100644
      }
  
 diff --git a/Controller/Index/Finalize.php b/Controller/Index/Finalize.php
-index c7b0724d..5e0f7c56 100644
+index 0ef530f6..35e3396b 100644
 --- a/Controller/Index/Finalize.php
 +++ b/Controller/Index/Finalize.php
-@@ -15,10 +15,10 @@ use RuntimeException;
+@@ -18,13 +18,13 @@ use Magento\Framework\Message\ManagerInterface as MessageManager;
  class Finalize implements HttpGetActionInterface
  {
      public function __construct(
 -        private readonly RequestInterface $request,
 -        private readonly RedirectResultFactory $resultRedirectFactory,
+-        private readonly ForwardResultFactory $resultForwardFactory,
 -        private readonly FinalStep $finalStep,
--        private readonly FormKeyValidator $formKeyValidator,
+-        private readonly FinalizeToken $finalizeToken,
+-        private readonly AllowCheckoutAccess $allowCheckoutAccess,
+-        private readonly MessageManager $messageManager,
 +        private RequestInterface $request,
 +        private RedirectResultFactory $resultRedirectFactory,
++        private ForwardResultFactory $resultForwardFactory,
 +        private FinalStep $finalStep,
-+        private FormKeyValidator $formKeyValidator,
++        private FinalizeToken $finalizeToken,
++        private AllowCheckoutAccess $allowCheckoutAccess,
++        private MessageManager $messageManager,
      ) {
      }
  
+@@ -32,7 +32,7 @@ class Finalize implements HttpGetActionInterface
+      * @return RedirectResult|ForwardResult
+      * @throws CouldNotSaveException
+      */
+-    public function execute(): RedirectResult|ForwardResult
++    public function execute()
+     {
+         if (false === $this->allowCheckoutAccess->allow()) {
+             return $this->resultForwardFactory->create()->forward('noroute');
 diff --git a/Controller/Index/Index.php b/Controller/Index/Index.php
-index a9d84222..c5971e8b 100644
+index fa287087..148ddee7 100644
 --- a/Controller/Index/Index.php
 +++ b/Controller/Index/Index.php
 @@ -17,13 +17,13 @@ use Magento\Framework\Controller\Result\Redirect as RedirectResult;
@@ -1188,7 +1219,7 @@ index a9d84222..c5971e8b 100644
      ) {
      }
  
-@@ -62,7 +62,7 @@ class Index implements HttpGetActionInterface
+@@ -67,7 +67,7 @@ class Index implements HttpGetActionInterface
          return $pageResult;
      }
  
@@ -1265,18 +1296,20 @@ index 5737f6ab..9e224978 100644
      }
  
 diff --git a/Observer/AddDebuggingInfo.php b/Observer/AddDebuggingInfo.php
-index 06fb9867..715a0e88 100644
+index 19d92b05..45f90037 100644
 --- a/Observer/AddDebuggingInfo.php
 +++ b/Observer/AddDebuggingInfo.php
-@@ -16,9 +16,9 @@ class AddDebuggingInfo implements ObserverInterface
+@@ -17,10 +17,10 @@ class AddDebuggingInfo implements ObserverInterface
      const DEBUG_BLOCK = 'loki-checkout.utils.debug';
  
      public function __construct(
 -        private readonly ComponentRegistry $componentRegistry,
 -        private readonly Config $config,
+-        private readonly ApplicationMode $applicationMode,
 -        private readonly array $blockPrefixes = [],
 +        private ComponentRegistry $componentRegistry,
 +        private Config $config,
++        private ApplicationMode $applicationMode,
 +        private array $blockPrefixes = [],
      ) {
      }
@@ -1325,7 +1358,7 @@ index 25b5457c..c524f8e6 100644
      }
  
 diff --git a/Observer/ResetStepAfterCartSave.php b/Observer/ResetStepAfterCartSave.php
-index a69d50a9..55638ba1 100644
+index 999067ec..6821e20c 100644
 --- a/Observer/ResetStepAfterCartSave.php
 +++ b/Observer/ResetStepAfterCartSave.php
 @@ -11,9 +11,9 @@ use LokiCheckout\Core\Step\StepNavigator;
@@ -1333,10 +1366,10 @@ index a69d50a9..55638ba1 100644
  {
      public function __construct(
 -        private readonly StepNavigator $stepNavigator,
--        private readonly MessageManager $messageManager,
+-        private readonly LoggerInterface $logger,
 -        private readonly Config $config
 +        private StepNavigator $stepNavigator,
-+        private MessageManager $messageManager,
++        private LoggerInterface $logger,
 +        private Config $config
      ) {
      }
@@ -1559,36 +1592,40 @@ index aae8f57f..1ceaebd1 100644
      }
  
 diff --git a/Plugin/ModifyAddressTemplateVariablesPlugin.php b/Plugin/ModifyAddressTemplateVariablesPlugin.php
-index e67a94a1..a2efd61c 100644
+index 3312efbb..737f6b61 100644
 --- a/Plugin/ModifyAddressTemplateVariablesPlugin.php
 +++ b/Plugin/ModifyAddressTemplateVariablesPlugin.php
-@@ -9,7 +9,7 @@ use Magento\Framework\Filter\Template;
+@@ -10,8 +10,8 @@ use Magento\Framework\Filter\Template;
  class ModifyAddressTemplateVariablesPlugin
  {
      public function __construct(
 -        private readonly Config $config,
+-        private readonly AddressPreviewFlag $addressPreviewFlag,
 +        private Config $config,
++        private AddressPreviewFlag $addressPreviewFlag,
      ) {
      }
  
 diff --git a/Plugin/RedirectEmptyQuoteAfterRepositoryDispatchPlugin.php b/Plugin/RedirectEmptyQuoteAfterRepositoryDispatchPlugin.php
-index 9c6afdac..a3586cf1 100644
+index b539c6ed..1c4f4579 100644
 --- a/Plugin/RedirectEmptyQuoteAfterRepositoryDispatchPlugin.php
 +++ b/Plugin/RedirectEmptyQuoteAfterRepositoryDispatchPlugin.php
-@@ -13,9 +13,9 @@ use Loki\Components\Util\Controller\RepositoryDispatcher;
+@@ -14,10 +14,10 @@ use Psr\Log\LoggerInterface;
  class RedirectEmptyQuoteAfterRepositoryDispatchPlugin
  {
      public function __construct(
 -        private readonly UrlFactory $urlFactory,
 -        private readonly ManagerInterface $messageManager,
+-        private readonly LoggerInterface $logger,
 -        private readonly array $allowedExceptionClasses = []
 +        private UrlFactory $urlFactory,
 +        private ManagerInterface $messageManager,
++        private LoggerInterface $logger,
 +        private array $allowedExceptionClasses = []
      ) {
      }
  
-@@ -23,7 +23,7 @@ class RedirectEmptyQuoteAfterRepositoryDispatchPlugin
+@@ -25,7 +25,7 @@ class RedirectEmptyQuoteAfterRepositoryDispatchPlugin
          RepositoryDispatcher $repositoryDispatcher,
          callable $proceed,
          ComponentInterface $component,
@@ -1650,21 +1687,23 @@ index 4a005c9b..c6c1bbbf 100644
      }
  
 diff --git a/Recaptcha/TokenValidator.php b/Recaptcha/TokenValidator.php
-index 86dd1829..0d4b4ae5 100644
+index cce4dd72..5520d1e8 100644
 --- a/Recaptcha/TokenValidator.php
 +++ b/Recaptcha/TokenValidator.php
-@@ -13,10 +13,10 @@ class TokenValidator implements TokenValidatorInterface
-     private const TIMEOUT = 10;
+@@ -16,11 +16,11 @@ class TokenValidator implements TokenValidatorInterface
+     private const TEST_KEY_HOSTNAME = 'testkey.google.com';
  
      public function __construct(
 -        private readonly Client $client,
 -        private readonly Config $config,
 -        private readonly RemoteAddress $remoteAddress,
 -        private readonly LoggerInterface $logger,
+-        private readonly StoreManagerInterface $storeManager,
 +        private Client $client,
 +        private Config $config,
 +        private RemoteAddress $remoteAddress,
 +        private LoggerInterface $logger,
++        private StoreManagerInterface $storeManager,
      ) {
      }
  
@@ -1684,7 +1723,7 @@ index 07c1f522..1d1886da 100644
      }
  
 diff --git a/Repository/NewsletterRepository.php b/Repository/NewsletterRepository.php
-index 4abec6fa..2819dabe 100644
+index 24d27c14..b6f4c194 100644
 --- a/Repository/NewsletterRepository.php
 +++ b/Repository/NewsletterRepository.php
 @@ -13,8 +13,8 @@ use Magento\Store\Model\Website;
@@ -1718,6 +1757,21 @@ index 5056e2b0..8f4c220e 100644
      {
          /** @var HttpRequest $request */
          $identifier = trim($request->getPathInfo(), '/');
+diff --git a/Setup/Patch/Data/EncryptLicenseKey.php b/Setup/Patch/Data/EncryptLicenseKey.php
+index d59499c8..3a9e5eb3 100644
+--- a/Setup/Patch/Data/EncryptLicenseKey.php
++++ b/Setup/Patch/Data/EncryptLicenseKey.php
+@@ -11,8 +11,8 @@ class EncryptLicenseKey implements DataPatchInterface
+     private const CONFIG_PATH = 'loki_checkout/general/license_key';
+ 
+     public function __construct(
+-        private readonly ResourceConnection $resourceConnection,
+-        private readonly EncryptorInterface $encryptor,
++        private ResourceConnection $resourceConnection,
++        private EncryptorInterface $encryptor,
+     ) {
+     }
+ 
 diff --git a/Shipment/DeliveryDate.php b/Shipment/DeliveryDate.php
 index ed21072e..bfa6c6ba 100644
 --- a/Shipment/DeliveryDate.php
@@ -1921,10 +1975,10 @@ index 5703dfe4..304e431b 100644
      }
  
 diff --git a/Step/FinalStep.php b/Step/FinalStep.php
-index 1d386faa..05b49319 100644
+index adbc341d..f5350c85 100644
 --- a/Step/FinalStep.php
 +++ b/Step/FinalStep.php
-@@ -29,17 +29,17 @@ use Throwable;
+@@ -33,20 +33,20 @@ use Throwable;
  class FinalStep
  {
      public function __construct(
@@ -1938,7 +1992,10 @@ index 1d386faa..05b49319 100644
 -        private readonly OrderSender $orderSender,
 -        private readonly CartRepositoryInterface $cartRepository,
 -        private readonly TaskListing $taskListing,
--        private readonly UrlFactory $urlFactory
+-        private readonly UrlFactory $urlFactory,
+-        private readonly CheckoutHelper $checkoutHelper,
+-        private readonly LoggerInterface $logger,
+-        private readonly PaymentProcessingRateLimiterInterface $paymentRateLimiter,
 +        private QuoteValidator $quoteValidator,
 +        private CheckoutState $checkoutState,
 +        private Redirect $redirect,
@@ -1949,11 +2006,14 @@ index 1d386faa..05b49319 100644
 +        private OrderSender $orderSender,
 +        private CartRepositoryInterface $cartRepository,
 +        private TaskListing $taskListing,
-+        private UrlFactory $urlFactory
++        private UrlFactory $urlFactory,
++        private CheckoutHelper $checkoutHelper,
++        private LoggerInterface $logger,
++        private PaymentProcessingRateLimiterInterface $paymentRateLimiter,
      ) {
      }
  
-@@ -48,7 +48,7 @@ class FinalStep
+@@ -55,7 +55,7 @@ class FinalStep
       * @throws NoSuchEntityException
       * @throws Exception
       */
@@ -1962,6 +2022,21 @@ index 1d386faa..05b49319 100644
      {
          return $this->quoteValidator->validate();
      }
+diff --git a/Step/FinalStep/FinalizeToken.php b/Step/FinalStep/FinalizeToken.php
+index 5e6509e9..d7089927 100644
+--- a/Step/FinalStep/FinalizeToken.php
++++ b/Step/FinalStep/FinalizeToken.php
+@@ -16,8 +16,8 @@ class FinalizeToken
+     private const SESSION_KEY = 'loki_checkout_finalize_token';
+ 
+     public function __construct(
+-        private readonly CheckoutSession $checkoutSession,
+-        private readonly UrlFactory $urlFactory,
++        private CheckoutSession $checkoutSession,
++        private UrlFactory $urlFactory,
+     ) {
+     }
+ 
 diff --git a/Step/FinalStep/Redirect.php b/Step/FinalStep/Redirect.php
 index 98466c44..72f97ca7 100644
 --- a/Step/FinalStep/Redirect.php
@@ -2026,6 +2101,29 @@ index 303daec1..2518661b 100644
 +        private CheckoutSession $checkoutSession,
 +        private ManagerInterface $messageManager,
 +        private UrlFactory $urlFactory,
+     ) {
+     }
+ 
+diff --git a/Step/FinalStep/Task/NewsletterTask.php b/Step/FinalStep/Task/NewsletterTask.php
+index aab2e15d..3d217cc5 100644
+--- a/Step/FinalStep/Task/NewsletterTask.php
++++ b/Step/FinalStep/Task/NewsletterTask.php
+@@ -22,12 +22,12 @@ class NewsletterTask implements TaskInterface
+     private int $storeId = 0;
+ 
+     public function __construct(
+-        private readonly Config $config,
+-        private readonly NewsletterChoice $newsletterChoice,
+-        private readonly NewsletterRepository $newsletterRepository,
+-        private readonly SubscriptionManagerInterface $subscriptionManager,
+-        private readonly CustomerSession $customerSession,
+-        private readonly LoggerInterface $logger,
++        private Config $config,
++        private NewsletterChoice $newsletterChoice,
++        private NewsletterRepository $newsletterRepository,
++        private SubscriptionManagerInterface $subscriptionManager,
++        private CustomerSession $customerSession,
++        private LoggerInterface $logger,
      ) {
      }
  
@@ -2149,6 +2247,19 @@ index 28e63691..d2b200e7 100644
      ) {
      }
  
+diff --git a/Test/Integration/Controller/Index/FinalizeTest.php b/Test/Integration/Controller/Index/FinalizeTest.php
+index d45a7595..09cea220 100644
+--- a/Test/Integration/Controller/Index/FinalizeTest.php
++++ b/Test/Integration/Controller/Index/FinalizeTest.php
+@@ -52,7 +52,7 @@ class FinalizeTest extends TestCase
+         $this->assertInstanceOf(Forward::class, $this->executeWithToken($token));
+     }
+ 
+-    private function executeWithToken(string $token): Redirect|Forward
++    private function executeWithToken(string $token)
+     {
+         $request = ObjectManager::getInstance()->get(RequestInterface::class);
+         $request->setParam(FinalizeToken::PARAM_NAME, $token);
 diff --git a/Test/Integration/LokiCheckoutTestCase.php b/Test/Integration/LokiCheckoutTestCase.php
 index daea5f75..199c3263 100644
 --- a/Test/Integration/LokiCheckoutTestCase.php
@@ -2198,7 +2309,7 @@ index c9af4ce0..88c8d816 100644
          $component = $this->getPostcodeComponent();
          $postcodeFormatValidator = $this->getPostcodeFormatValidator($countryId);
 diff --git a/Test/Unit/Util/Html/PushHtmlAttributesTest.php b/Test/Unit/Util/Html/PushHtmlAttributesTest.php
-index 6d2113e6..0a7d6c91 100644
+index e8c84802..e84a90e0 100644
 --- a/Test/Unit/Util/Html/PushHtmlAttributesTest.php
 +++ b/Test/Unit/Util/Html/PushHtmlAttributesTest.php
 @@ -11,7 +11,7 @@ class PushHtmlAttributesTest extends TestCase
@@ -2224,10 +2335,10 @@ index a5d869f5..3f8cb549 100644
          $ibanValidator = new IbanValidator();
          $actualResult = $ibanValidator->validate($ibanNumber);
 diff --git a/Util/AddressRenderer.php b/Util/AddressRenderer.php
-index 3662d700..b311d6c7 100644
+index 2fed3558..8a760730 100644
 --- a/Util/AddressRenderer.php
 +++ b/Util/AddressRenderer.php
-@@ -13,10 +13,10 @@ use Magento\Quote\Model\Quote\Address;
+@@ -13,11 +13,11 @@ use Magento\Quote\Model\Quote\Address;
  class AddressRenderer
  {
      public function __construct(
@@ -2235,10 +2346,12 @@ index 3662d700..b311d6c7 100644
 -        private readonly AddressMapper $addressMapper,
 -        private readonly ShippingAddressResolverListing $shippingAddressResolverListing,
 -        private readonly LayoutInterface $layout,
+-        private readonly AddressPreviewFlag $addressPreviewFlag,
 +        private AddressConfig $addressConfig,
 +        private AddressMapper $addressMapper,
 +        private ShippingAddressResolverListing $shippingAddressResolverListing,
 +        private LayoutInterface $layout,
++        private AddressPreviewFlag $addressPreviewFlag,
      ) {
      }
  
@@ -2291,17 +2404,15 @@ index 449be7e4..201a2067 100644
      }
  
 diff --git a/Util/Checkout/AllowCheckoutAccess.php b/Util/Checkout/AllowCheckoutAccess.php
-index bc0bd080..a8778952 100644
+index 6337dc1e..c61b54b0 100644
 --- a/Util/Checkout/AllowCheckoutAccess.php
 +++ b/Util/Checkout/AllowCheckoutAccess.php
-@@ -8,8 +8,8 @@ use Magento\Framework\App\RequestInterface;
+@@ -7,7 +7,7 @@ use LokiCheckout\Core\Config\Config;
  class AllowCheckoutAccess
  {
      public function __construct(
 -        private readonly Config $config,
--        private readonly RequestInterface $request,
 +        private Config $config,
-+        private RequestInterface $request,
      ) {
      }
  
@@ -2504,7 +2615,7 @@ index 7666d1a4..c328e0f7 100644
          private CustomerAddressValidator $customerAddressValidator,
          private UrlFactory $urlFactory
 diff --git a/Util/LoginCustomer.php b/Util/LoginCustomer.php
-index c1dace06..352e549b 100644
+index 5a5daa6a..aa6d9001 100644
 --- a/Util/LoginCustomer.php
 +++ b/Util/LoginCustomer.php
 @@ -18,14 +18,14 @@ use Magento\Framework\Stdlib\Cookie\PhpCookieManager;
@@ -2527,6 +2638,19 @@ index c1dace06..352e549b 100644
 +        private CustomerSession $customerSession,
 +        private CheckoutSession $checkoutSession,
 +        private CheckoutState $checkoutState
+     ) {
+     }
+ 
+diff --git a/Util/NewsletterChoice.php b/Util/NewsletterChoice.php
+index 03f4e332..3f2496e1 100644
+--- a/Util/NewsletterChoice.php
++++ b/Util/NewsletterChoice.php
+@@ -14,7 +14,7 @@ class NewsletterChoice
+     public const SUBSCRIBED_EMAILS_SESSION_KEY = 'loki_checkout_newsletter_subscribed_emails';
+ 
+     public function __construct(
+-        private readonly CheckoutSession $checkoutSession,
++        private CheckoutSession $checkoutSession,
      ) {
      }
  
@@ -2561,7 +2685,7 @@ index 70375528..98f17468 100644
      }
  
 diff --git a/Util/StreetLines.php b/Util/StreetLines.php
-index 73f40d07..0c8959da 100644
+index 60fe1c55..6f53974f 100644
 --- a/Util/StreetLines.php
 +++ b/Util/StreetLines.php
 @@ -9,8 +9,8 @@ class StreetLines
@@ -2633,16 +2757,18 @@ index 119ca4ac..5f78870b 100644
          if (false === is_string($value) || empty($value)) {
              return true;
 diff --git a/Validator/Component/EmailAvailableValidator.php b/Validator/Component/EmailAvailableValidator.php
-index 2b9763c1..b196f692 100644
+index 165f9cf1..054bf05b 100644
 --- a/Validator/Component/EmailAvailableValidator.php
 +++ b/Validator/Component/EmailAvailableValidator.php
-@@ -9,12 +9,12 @@ use Loki\Components\Validator\ValidatorInterface;
- class EmailAvailableValidator implements ValidatorInterface
- {
+@@ -13,13 +13,13 @@ class EmailAvailableValidator implements ValidatorInterface
+     private const XML_PATH_ENABLE_GUEST_CHECKOUT_LOGIN = 'checkout/options/enable_guest_checkout_login';
+ 
      public function __construct(
 -        private readonly AccountManagementInterface $accountManagement,
+-        private readonly ScopeConfigInterface $scopeConfig,
 -        private readonly bool $showEmailInMessage = false
 +        private AccountManagementInterface $accountManagement,
++        private ScopeConfigInterface $scopeConfig,
 +        private bool $showEmailInMessage = false
      ) {
      }
@@ -2815,7 +2941,7 @@ index 61fe17c9..573a8100 100644
      }
  
 diff --git a/ViewModel/CheckoutState.php b/ViewModel/CheckoutState.php
-index bfd6e1cb..742b88a4 100644
+index 6fa1f169..35d3642a 100644
 --- a/ViewModel/CheckoutState.php
 +++ b/ViewModel/CheckoutState.php
 @@ -26,17 +26,17 @@ class CheckoutState implements ArgumentInterface
