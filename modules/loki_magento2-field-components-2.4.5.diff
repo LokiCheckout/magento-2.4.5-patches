@@ -1,21 +1,30 @@
 diff --git a/Component/Base/Field/FieldRepository.php b/Component/Base/Field/FieldRepository.php
-index 04ff829..8b42bd2 100644
+index eef850a..61a7079 100644
 --- a/Component/Base/Field/FieldRepository.php
 +++ b/Component/Base/Field/FieldRepository.php
-@@ -18,7 +18,7 @@ abstract class FieldRepository extends ComponentRepository
+@@ -20,7 +20,7 @@ abstract class FieldRepository extends ComponentRepository
          return array_pop($blockNameParts);
      }
  
 -    public function getDefaultValue(): mixed
 +    public function getDefaultValue()
      {
-         $defaultValue = $this->getComponent()->getBlock()->getDefaultValue();
- 
+         $defaultValue = $this->getComponent()->getBlock()?->getDefaultValue();
+         if ($defaultValue !== null && $defaultValue !== '') {
 diff --git a/Component/Base/Field/FieldViewModel.php b/Component/Base/Field/FieldViewModel.php
-index 13e865f..dc9de0f 100644
+index d80d000..8a40526 100644
 --- a/Component/Base/Field/FieldViewModel.php
 +++ b/Component/Base/Field/FieldViewModel.php
-@@ -145,7 +145,7 @@ class FieldViewModel extends ComponentViewModel implements FieldViewModelInterfa
+@@ -135,7 +135,7 @@ class FieldViewModel extends ComponentViewModel implements FieldViewModelInterfa
+         return trim($fieldAttributesAsString, " \f\n\r\t\v\x00");
+     }
+ 
+-    private function escapeAttribute(string|int|float $value): string
++    private function escapeAttribute($value): string
+     {
+         return (string)$this->getEscaper()->escapeHtml((string)$value);
+     }
+@@ -159,7 +159,7 @@ class FieldViewModel extends ComponentViewModel implements FieldViewModelInterfa
          ];
      }
  
@@ -23,9 +32,18 @@ index 13e865f..dc9de0f 100644
 +    public function getValue()
      {
          $value = parent::getValue();
-         if (!empty($value)) {
+         if (false === $this->isEmptyValue($value)) {
+@@ -218,7 +218,7 @@ class FieldViewModel extends ComponentViewModel implements FieldViewModelInterfa
+         return $value === false || $this->isEmptyValue($value);
+     }
+ 
+-    private function isEmptyValue(mixed $value): bool
++    private function isEmptyValue($value): bool
+     {
+         if (is_string($value)) {
+             return trim($value, " \f\n\r\t\v\x00") === '';
 diff --git a/Component/FileUploader/FileUploaderRepository.php b/Component/FileUploader/FileUploaderRepository.php
-index 85f2b0d..bfd35b1 100644
+index 95c8fa6..18a00db 100644
 --- a/Component/FileUploader/FileUploaderRepository.php
 +++ b/Component/FileUploader/FileUploaderRepository.php
 @@ -19,12 +19,12 @@ class FileUploaderRepository extends FieldRepository
@@ -56,16 +74,79 @@ index e95800f..46f20aa 100644
          string $scope = '',
          int $depth = 0
      ) {
+diff --git a/Test/Unit/Component/Base/Field/FieldRepositoryTest.php b/Test/Unit/Component/Base/Field/FieldRepositoryTest.php
+index 68acebe..bd7a336 100644
+--- a/Test/Unit/Component/Base/Field/FieldRepositoryTest.php
++++ b/Test/Unit/Component/Base/Field/FieldRepositoryTest.php
+@@ -90,12 +90,12 @@ class FieldRepositoryTest extends TestCase
+         $component->method('getViewModel')->willReturn($viewModel);
+ 
+         $repository = new class extends FieldRepository {
+-            public function getValue(): mixed
++            public function getValue()
+             {
+                 return null;
+             }
+ 
+-            public function saveValue(mixed $value): void
++            public function saveValue($value): void
+             {
+             }
+         };
+diff --git a/Test/Unit/Component/Base/Field/FieldViewModelTest.php b/Test/Unit/Component/Base/Field/FieldViewModelTest.php
+index 0c32c91..52cfb73 100644
+--- a/Test/Unit/Component/Base/Field/FieldViewModelTest.php
++++ b/Test/Unit/Component/Base/Field/FieldViewModelTest.php
+@@ -53,7 +53,7 @@ class FieldViewModelTest extends TestCase
+     /**
+      * @dataProvider getFalsyButFilledValues
+      */
+-    public function testFalsyValueIsNotReplacedByDefaultValue(mixed $value): void
++    public function testFalsyValueIsNotReplacedByDefaultValue($value): void
+     {
+         $repository = $this->createMock(ComponentRepositoryInterface::class);
+         $repository->method('getValue')->willReturn($value);
+@@ -68,7 +68,7 @@ class FieldViewModelTest extends TestCase
+     /**
+      * @dataProvider getIsEmptyValues
+      */
+-    public function testIsEmpty(mixed $value, bool $expected): void
++    public function testIsEmpty($value, bool $expected): void
+     {
+         $repository = $this->createMock(ComponentRepositoryInterface::class);
+         $repository->method('getValue')->willReturn($value);
+@@ -108,7 +108,7 @@ class FieldViewModelTest extends TestCase
+     /**
+      * @dataProvider getEmptyValues
+      */
+-    public function testEmptyValueIsReplacedByDefaultValue(mixed $value): void
++    public function testEmptyValueIsReplacedByDefaultValue($value): void
+     {
+         $repository = $this->createMock(ComponentRepositoryInterface::class);
+         $repository->method('getValue')->willReturn($value);
+diff --git a/Test/Unit/Util/OptionValueTest.php b/Test/Unit/Util/OptionValueTest.php
+index 8589de5..96a5ee8 100644
+--- a/Test/Unit/Util/OptionValueTest.php
++++ b/Test/Unit/Util/OptionValueTest.php
+@@ -11,7 +11,7 @@ class OptionValueTest extends TestCase
+     /**
+      * @dataProvider getIsSelectedValues
+      */
+-    public function testIsSelected(mixed $option, int|string $optionIndex, mixed $currentValue, bool $expected): void
++    public function testIsSelected($option, $optionIndex, $currentValue, bool $expected): void
+     {
+         $this->assertSame($expected, (new OptionValue())->isSelected($option, $optionIndex, $currentValue));
+     }
 diff --git a/Test/Unit/Validator/Component/PasswordComplexityValidatorTest.php b/Test/Unit/Validator/Component/PasswordComplexityValidatorTest.php
-index feccd3e..6a1dd40 100644
+index a6ab92c..caa117b 100644
 --- a/Test/Unit/Validator/Component/PasswordComplexityValidatorTest.php
 +++ b/Test/Unit/Validator/Component/PasswordComplexityValidatorTest.php
 @@ -12,7 +12,7 @@ class PasswordComplexityValidatorTest extends TestCase
       * @return void
       * @dataProvider getTestValues
       */
--    public function testValidate(string $password, bool|string $expectedResult)
-+    public function testValidate(string $password, $expectedResult)
+-    public function testValidate(mixed $password, bool|string $expectedResult)
++    public function testValidate($password, $expectedResult)
      {
          $passwordComplexity = new PasswordComplexity();
          $validator = new PasswordComplexityValidator($passwordComplexity);
@@ -136,8 +217,50 @@ index f6db5cc..02f5830 100644
  
      public function getLabel(): string;
      public function isDisabled(): bool;
+diff --git a/Util/OptionValue.php b/Util/OptionValue.php
+index eca214f..2610679 100644
+--- a/Util/OptionValue.php
++++ b/Util/OptionValue.php
+@@ -6,24 +6,24 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ 
+ class OptionValue implements ArgumentInterface
+ {
+-    public function getValue(mixed $option, int|string $optionIndex): string
++    public function getValue($option, $optionIndex): string
+     {
+         $value = $option instanceof OptionInterface ? $option->getValue() : $optionIndex;
+ 
+         return $this->toString($value);
+     }
+ 
+-    public function getLabel(mixed $option): string
++    public function getLabel($option): string
+     {
+         return $option instanceof OptionInterface ? $option->getLabel() : $this->toString($option);
+     }
+ 
+-    public function isDisabled(mixed $option): bool
++    public function isDisabled($option): bool
+     {
+         return $option instanceof OptionInterface && $option->isDisabled();
+     }
+ 
+-    public function isSelected(mixed $option, int|string $optionIndex, mixed $currentValue): bool
++    public function isSelected($option, $optionIndex, $currentValue): bool
+     {
+         // The selected flag of an option only applies when there is no current value yet
+         if ($currentValue === null || $currentValue === '' || $currentValue === []) {
+@@ -49,7 +49,7 @@ class OptionValue implements ArgumentInterface
+         return $this->toString($currentValue) === $optionValue;
+     }
+ 
+-    private function toString(mixed $value): string
++    private function toString($value): string
+     {
+         if (is_bool($value)) {
+             return $value ? '1' : '0';
 diff --git a/Validator/PasswordComplexityValidator.php b/Validator/PasswordComplexityValidator.php
-index fab6aab..692e261 100644
+index 092f5ca..713498c 100644
 --- a/Validator/PasswordComplexityValidator.php
 +++ b/Validator/PasswordComplexityValidator.php
 @@ -13,7 +13,7 @@ class PasswordComplexityValidator implements ValidatorInterface
@@ -147,5 +270,5 @@ index fab6aab..692e261 100644
 -    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
 +    public function validate($value, ?ComponentInterface $component = null)
      {
-         if (empty($value)) {
+         if ($value === null || $value === '' || false === is_scalar($value)) {
              return true;
