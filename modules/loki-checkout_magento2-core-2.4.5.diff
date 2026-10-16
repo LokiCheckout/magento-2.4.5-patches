@@ -146,7 +146,7 @@ index 57e36f2b..8ed5a6bf 100644
          if ($this->getContext()->getCheckoutState()->getQuote()->getCustomerIsGuest()) {
              $this->getContext()->getCheckoutState()->getQuote()->setCustomerMiddlename($value);
 diff --git a/Component/Checkout/Address/Region/RegionRepository.php b/Component/Checkout/Address/Region/RegionRepository.php
-index 15d90c86..cb596ed3 100644
+index aa2c643c..065e6edb 100644
 --- a/Component/Checkout/Address/Region/RegionRepository.php
 +++ b/Component/Checkout/Address/Region/RegionRepository.php
 @@ -6,7 +6,7 @@ use LokiCheckout\Core\Component\Base\AddressField\AddressFieldRepository;
@@ -166,7 +166,7 @@ index 15d90c86..cb596ed3 100644
 +    public function saveValue($value): void
      {
          if (is_numeric($value)) {
-             $this->getAddressState()->set('region_id', $value);
+             $this->getAddressState()->set('region_id', (string)$value);
 diff --git a/Component/Checkout/Address/SaveInAddressBook/SaveInAddressBookRepository.php b/Component/Checkout/Address/SaveInAddressBook/SaveInAddressBookRepository.php
 index 80934f2d..fdbe82e2 100644
 --- a/Component/Checkout/Address/SaveInAddressBook/SaveInAddressBookRepository.php
@@ -288,7 +288,7 @@ index 3c5dc6fc..386bd5ec 100644
      }
  
 diff --git a/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php b/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
-index c4e9b14f..cde445c9 100644
+index 9a64231d..ec764b1f 100644
 --- a/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
 +++ b/Component/Checkout/Billing/PaymentMethods/PaymentMethodsRepository.php
 @@ -21,7 +21,7 @@ class PaymentMethodsRepository extends ComponentRepository
@@ -425,7 +425,7 @@ index ce3bd2ae..d48c616c 100644
      }
  
 diff --git a/Component/Checkout/Other/Newsletter/NewsletterRepository.php b/Component/Checkout/Other/Newsletter/NewsletterRepository.php
-index 25bc51ef..c10fe8ba 100644
+index 0fd1a20d..6491e9e5 100644
 --- a/Component/Checkout/Other/Newsletter/NewsletterRepository.php
 +++ b/Component/Checkout/Other/Newsletter/NewsletterRepository.php
 @@ -18,12 +18,12 @@ use LokiCheckout\Core\Util\NewsletterChoice;
@@ -452,7 +452,7 @@ index 25bc51ef..c10fe8ba 100644
 +    public function saveValue($value): void
      {
          $value = (bool)$value;
-         $this->getNewsletterChoice()->setChoice($this->getCustomerEmail(), $value);
+         $accepted = $this->getCustomerId() > 0
 diff --git a/Component/Checkout/Other/Recaptcha/RecaptchaRepository.php b/Component/Checkout/Other/Recaptcha/RecaptchaRepository.php
 index b3ead6ce..94e261bb 100644
 --- a/Component/Checkout/Other/Recaptcha/RecaptchaRepository.php
@@ -555,7 +555,7 @@ index 521dea01..7fb5e736 100644
      }
  
 diff --git a/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php b/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php
-index 5e752ed6..edf0c7ac 100644
+index 3bf1c4ff..90770ec7 100644
 --- a/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php
 +++ b/Component/Checkout/Shipping/ShippingMethods/ShippingMethodsRepository.php
 @@ -18,8 +18,8 @@ class ShippingMethodsRepository extends ComponentRepository
@@ -746,7 +746,7 @@ index 9aa71a26..cd7aef7a 100644
      }
      public function getStepValidator(): ValidatorInterface
 diff --git a/Component/Checkout/Step/BillingStep/BillingStepViewModel.php b/Component/Checkout/Step/BillingStep/BillingStepViewModel.php
-index 737a9cfc..7b854d41 100644
+index 3fa8f0cd..8df0300f 100644
 --- a/Component/Checkout/Step/BillingStep/BillingStepViewModel.php
 +++ b/Component/Checkout/Step/BillingStep/BillingStepViewModel.php
 @@ -43,7 +43,7 @@ class BillingStepViewModel extends AbstractStepViewModel
@@ -898,7 +898,7 @@ index 42577cd5..4ab400fb 100644
          try {
              $this->getStepNavigator()->setPreviousStep();
 diff --git a/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php b/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php
-index 2cf5689e..dacd9115 100644
+index 6013b16a..132026ef 100644
 --- a/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php
 +++ b/Component/Checkout/StepButton/StepForwardButton/StepForwardButtonRepository.php
 @@ -14,11 +14,11 @@ use Psr\Log\LoggerInterface;
@@ -923,7 +923,7 @@ index 2cf5689e..dacd9115 100644
 +    public function saveValue($value): void
      {
          try {
-             $this->getStepNavigator()->setNextStep();
+             if ($this->getStepNavigator()->setNextStep()) {
 diff --git a/Component/Customer/LoginForm/LoginFormRepository.php b/Component/Customer/LoginForm/LoginFormRepository.php
 index 5d65021a..72d10681 100644
 --- a/Component/Customer/LoginForm/LoginFormRepository.php
@@ -1195,13 +1195,13 @@ index 0ef530f6..35e3396b 100644
          if (false === $this->allowCheckoutAccess->allow()) {
              return $this->resultForwardFactory->create()->forward('noroute');
 diff --git a/Controller/Index/Index.php b/Controller/Index/Index.php
-index fa287087..148ddee7 100644
+index 8647463b..392c33b6 100644
 --- a/Controller/Index/Index.php
 +++ b/Controller/Index/Index.php
-@@ -17,13 +17,13 @@ use Magento\Framework\Controller\Result\Redirect as RedirectResult;
- class Index implements HttpGetActionInterface
- {
-     public function __construct(
+@@ -24,13 +24,13 @@ class Index implements HttpGetActionInterface
+      * elements (like the Hyvä scripts in "head.additional"). Injecting it here makes sure it is instantiated first.
+      */
+     public function __construct( // @phpstan-ignore constructor.unusedParameter
 -        private readonly CheckoutState $checkoutState,
 -        private readonly PageResultFactory $pageResultFactory,
 -        private readonly RedirectResultFactory $redirectResultFactory,
@@ -1216,10 +1216,10 @@ index fa287087..148ddee7 100644
 +        private Manager $messageManager,
 +        private AccountManagementInterface $accountManagement,
 +        private UrlFactory $urlFactory,
+         ViewInterface $view,
      ) {
      }
- 
-@@ -67,7 +67,7 @@ class Index implements HttpGetActionInterface
+@@ -75,7 +75,7 @@ class Index implements HttpGetActionInterface
          return $pageResult;
      }
  
@@ -2162,7 +2162,7 @@ index 66101a72..1f2e028b 100644
      }
  
 diff --git a/Step/StepNavigator.php b/Step/StepNavigator.php
-index 0c18b7f3..08e4f417 100644
+index 0db4922c..825cd159 100644
 --- a/Step/StepNavigator.php
 +++ b/Step/StepNavigator.php
 @@ -17,19 +17,19 @@ use Loki\Components\Component\ComponentRegistry;
@@ -2391,7 +2391,7 @@ index 9c66085c..2ad9e09a 100644
          $parentBlock = $block->getParentBlock();
          if (false === $parentBlock instanceof AbstractBlock) {
 diff --git a/Util/Block/SortedBlocks.php b/Util/Block/SortedBlocks.php
-index 449be7e4..201a2067 100644
+index 12cf59b0..61f81a25 100644
 --- a/Util/Block/SortedBlocks.php
 +++ b/Util/Block/SortedBlocks.php
 @@ -13,7 +13,7 @@ use LokiCheckout\Core\Exception\BlockNotFoundException;
@@ -2941,11 +2941,11 @@ index 61fe17c9..573a8100 100644
      }
  
 diff --git a/ViewModel/CheckoutState.php b/ViewModel/CheckoutState.php
-index 6fa1f169..35d3642a 100644
+index 573da2a4..f74c2818 100644
 --- a/ViewModel/CheckoutState.php
 +++ b/ViewModel/CheckoutState.php
-@@ -26,17 +26,17 @@ class CheckoutState implements ArgumentInterface
-     private array $quotes = [];
+@@ -27,17 +27,17 @@ class CheckoutState implements ArgumentInterface
+     private ?TotalsInterface $totals = null;
  
      public function __construct(
 -        private readonly CheckoutSession $checkoutSession,
