@@ -1,15 +1,17 @@
 diff --git a/Component/GridLayout/GridLayoutRepository.php b/Component/GridLayout/GridLayoutRepository.php
-index 111304d..090d860 100644
+index 0859735..6bd358c 100644
 --- a/Component/GridLayout/GridLayoutRepository.php
 +++ b/Component/GridLayout/GridLayoutRepository.php
-@@ -13,12 +13,12 @@ use Loki\Components\Exception\RedirectException;
+@@ -14,13 +14,13 @@ use Loki\Components\Exception\RedirectException;
  class GridLayoutRepository extends ComponentRepository
  {
      public function __construct(
 -        private readonly MessageManager $messageManager,
--        private readonly Config $config
+-        private readonly Config $config,
+-        private readonly XmlConfig $xmlConfig,
 +        private MessageManager $messageManager,
-+        private Config $config
++        private Config $config,
++        private XmlConfig $xmlConfig,
      ) {
      }
  
@@ -18,14 +20,14 @@ index 111304d..090d860 100644
      {
          $currentGridLayout = (string)$this->getContext()->getCheckoutSession()->getCurrentGridLayout();
          if (!empty($currentGridLayout)) {
-@@ -28,7 +28,7 @@ class GridLayoutRepository extends ComponentRepository
+@@ -30,7 +30,7 @@ class GridLayoutRepository extends ComponentRepository
          return $this->config->getGridLayoutName();
      }
  
 -    public function saveValue(mixed $value): void
 +    public function saveValue($value): void
      {
-         if (empty($value)) {
+         if (empty($value) || false === is_string($value)) {
              return;
 diff --git a/Component/Skin/SkinContext.php b/Component/Skin/SkinContext.php
 index 6fc2f66..f2f71ec 100644
@@ -47,17 +49,19 @@ index 6fc2f66..f2f71ec 100644
      }
  
 diff --git a/Component/Skin/SkinRepository.php b/Component/Skin/SkinRepository.php
-index 4421ba0..ac5e14b 100644
+index 40c7964..da3978c 100644
 --- a/Component/Skin/SkinRepository.php
 +++ b/Component/Skin/SkinRepository.php
-@@ -13,12 +13,12 @@ use Loki\Components\Exception\RedirectException;
+@@ -14,13 +14,13 @@ use Loki\Components\Exception\RedirectException;
  class SkinRepository extends ComponentRepository
  {
      public function __construct(
 -        private readonly MessageManager $messageManager,
--        private readonly Config $config
+-        private readonly Config $config,
+-        private readonly XmlConfig $xmlConfig,
 +        private MessageManager $messageManager,
-+        private Config $config
++        private Config $config,
++        private XmlConfig $xmlConfig,
      ) {
      }
  
@@ -66,25 +70,42 @@ index 4421ba0..ac5e14b 100644
      {
          $currentSkin = (string)$this->getContext()->getCheckoutSession()->getCurrentSkin();
          if (!empty($currentSkin)) {
-@@ -28,7 +28,7 @@ class SkinRepository extends ComponentRepository
+@@ -30,7 +30,7 @@ class SkinRepository extends ComponentRepository
          return $this->config->getSkin();
      }
  
 -    public function saveValue(mixed $value): void
 +    public function saveValue($value): void
      {
-         if (empty($value)) {
+         if (empty($value) || false === is_string($value)) {
              return;
+diff --git a/Config/Config.php b/Config/Config.php
+index 58a04c9..4d5e95e 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -10,7 +10,7 @@ class Config
+     public const XML_PATH_ENABLED = 'loki_checkout/demo/enabled';
+ 
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
++        private ScopeConfigInterface $scopeConfig,
+     ) {
+     }
+ 
 diff --git a/Plugin/OverrideConfigFromSessionPlugin.php b/Plugin/OverrideConfigFromSessionPlugin.php
-index 1238943..948ea3e 100644
+index d385396..89e9d38 100644
 --- a/Plugin/OverrideConfigFromSessionPlugin.php
 +++ b/Plugin/OverrideConfigFromSessionPlugin.php
-@@ -8,7 +8,7 @@ use LokiCheckout\Core\Config\Config;
+@@ -10,9 +10,9 @@ use Magento\Checkout\Model\Session as CheckoutSession;
  class OverrideConfigFromSessionPlugin
  {
      public function __construct(
 -        private readonly CheckoutSession $checkoutSession,
+-        private readonly XmlConfig $xmlConfig,
+-        private readonly DemoConfig $demoConfig,
 +        private CheckoutSession $checkoutSession,
++        private XmlConfig $xmlConfig,
++        private DemoConfig $demoConfig,
      ) {
      }
  
