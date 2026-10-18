@@ -968,7 +968,7 @@ index 8cfaed94..ec68ca95 100644
      {
      }
 diff --git a/Config/Config.php b/Config/Config.php
-index 4655d73a..fc3fc70f 100644
+index a4ff7d42..c13ad5ba 100644
 --- a/Config/Config.php
 +++ b/Config/Config.php
 @@ -15,10 +15,10 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
@@ -1268,7 +1268,7 @@ index f2dec99b..ee98e6db 100644
          $value = strtoupper((string)$value);
          return preg_replace('/([^A-Z0-9]+)/', '', $value);
 diff --git a/Layout/CountrySpecificLayoutHandler.php b/Layout/CountrySpecificLayoutHandler.php
-index 67b15f46..b2192afe 100644
+index 7188c728..5ecd53cf 100644
 --- a/Layout/CountrySpecificLayoutHandler.php
 +++ b/Layout/CountrySpecificLayoutHandler.php
 @@ -10,7 +10,7 @@ use LokiCheckout\Core\ViewModel\CheckoutState;
