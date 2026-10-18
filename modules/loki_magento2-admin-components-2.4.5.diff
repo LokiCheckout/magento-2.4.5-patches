@@ -30,7 +30,7 @@ index 85fac14..74478e9 100644
          if (!is_array($value) || !isset($value['actions']) || !is_array($value['actions'])) {
              return;
 diff --git a/Component/Grid/GridRepository.php b/Component/Grid/GridRepository.php
-index 2e8a126..5e9c7b9 100644
+index 18e547d..0720661 100644
 --- a/Component/Grid/GridRepository.php
 +++ b/Component/Grid/GridRepository.php
 @@ -32,7 +32,7 @@ class GridRepository extends ComponentRepository
@@ -43,7 +43,7 @@ index 2e8a126..5e9c7b9 100644
          return $this->getItems();
      }
 @@ -87,7 +87,7 @@ class GridRepository extends ComponentRepository
-         throw new RuntimeException('Empty grid provider for block "'.$this->getBlock()->getNameInLayout().'"');
+         throw new NoProviderException('Empty grid provider for block "'.$this->getBlock()->getNameInLayout().'"');
      }
  
 -    public function saveValue(mixed $value): void
@@ -162,10 +162,10 @@ index 6ea2451..57465b4 100644
      }
  
 diff --git a/Form/Field/FieldsResolver.php b/Form/Field/FieldsResolver.php
-index 2f3fb74..6c02e7a 100644
+index 9b1637c..ece7d4a 100644
 --- a/Form/Field/FieldsResolver.php
 +++ b/Form/Field/FieldsResolver.php
-@@ -138,7 +138,7 @@ class FieldsResolver
+@@ -161,7 +161,7 @@ class FieldsResolver
      private function resolveFieldType(
          FormRepository $formRepository,
          array $tableColumn
@@ -604,6 +604,28 @@ index 8b946a0..1ab367a 100644
      ) {
      }
  
+diff --git a/Test/Unit/Ui/Button/ButtonsResolver/BlockButtonsResolverTest.php b/Test/Unit/Ui/Button/ButtonsResolver/BlockButtonsResolverTest.php
+index 5d28028..951b392 100644
+--- a/Test/Unit/Ui/Button/ButtonsResolver/BlockButtonsResolverTest.php
++++ b/Test/Unit/Ui/Button/ButtonsResolver/BlockButtonsResolverTest.php
+@@ -146,7 +146,7 @@ class BlockButtonsResolverTest extends TestCase
+     }
+ 
+     #[DataProvider('getPrimaryValues')]
+-    public function testPrimaryValuesAreCastToBoolean(mixed $primary, string $expectedCssClass): void
++    public function testPrimaryValuesAreCastToBoolean($primary, string $expectedCssClass): void
+     {
+         $repository = $this->createRepository(FormRepository::class, [
+             'buttons' => [
+@@ -280,7 +280,7 @@ class BlockButtonsResolverTest extends TestCase
+     }
+ 
+     #[DataProvider('getPrimaryOverrideData')]
+-    public function testOverridePrimary(string $initialCssClass, mixed $primary, string $expectedCssClass): void
++    public function testOverridePrimary(string $initialCssClass, $primary, string $expectedCssClass): void
+     {
+         $existing = $this->createButtonFactory()->create('save', 'saveAction', 'Save', $initialCssClass);
+         $repository = $this->createRepository(FormRepository::class, [
 diff --git a/Ui/Button/ButtonsResolver.php b/Ui/Button/ButtonsResolver.php
 index 853b08c..6339a06 100644
 --- a/Ui/Button/ButtonsResolver.php
@@ -617,6 +639,37 @@ index 853b08c..6339a06 100644
      {
          $buttons = [];
          foreach ($this->buttonsResolvers as $buttonsResolver) {
+diff --git a/Ui/Button/ButtonsResolver/BlockButtonsResolver.php b/Ui/Button/ButtonsResolver/BlockButtonsResolver.php
+index 6493cc7..52e099b 100644
+--- a/Ui/Button/ButtonsResolver/BlockButtonsResolver.php
++++ b/Ui/Button/ButtonsResolver/BlockButtonsResolver.php
+@@ -55,7 +55,7 @@ class BlockButtonsResolver implements ButtonsResolverInterface
+         return $buttons;
+     }
+ 
+-    private function getButtonId(int|string $buttonDefinitionIndex, array $buttonDefinition): string
++    private function getButtonId($buttonDefinitionIndex, array $buttonDefinition): string
+     {
+         if (!empty($buttonDefinition['id'])) {
+             return (string)$buttonDefinition['id'];
+@@ -125,7 +125,7 @@ class BlockButtonsResolver implements ButtonsResolverInterface
+     /**
+      * @return ButtonInterface[]
+      */
+-    private function createSubButtons(mixed $subButtonDefinitions): array
++    private function createSubButtons($subButtonDefinitions): array
+     {
+         if (!is_array($subButtonDefinitions)) {
+             return [];
+@@ -152,7 +152,7 @@ class BlockButtonsResolver implements ButtonsResolverInterface
+         return $subButtons;
+     }
+ 
+-    private function toBool(mixed $value): bool
++    private function toBool($value): bool
+     {
+         if (is_bool($value)) {
+             return $value;
 diff --git a/ViewModel/Form/Field/EntitySelect.php b/ViewModel/Form/Field/EntitySelect.php
 index 45aa1d3..bc7d99b 100644
 --- a/ViewModel/Form/Field/EntitySelect.php
