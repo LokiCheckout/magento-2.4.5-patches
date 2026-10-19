@@ -1,0 +1,15 @@
+diff --git a/Plugin/ExcludeMessagePlugin.php b/Plugin/ExcludeMessagePlugin.php
+index 1b18268..03b6458 100644
+--- a/Plugin/ExcludeMessagePlugin.php
++++ b/Plugin/ExcludeMessagePlugin.php
+@@ -16,8 +16,8 @@ class ExcludeMessagePlugin
+ 
+     public function aroundAddRecord(Logger $subject,
+         callable $proceed,
+-        int|Level $level, string $message, array $context = [],
+-        JsonSerializableDateTimeImmutable|null $datetime = null
++        $level, string $message, array $context = [],
++        $datetime = null
+     ): bool {
+         if ($this->messageMatcher->match($message)) {
+             return true;
