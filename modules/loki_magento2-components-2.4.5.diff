@@ -174,13 +174,13 @@ index c1d77d8..7a336a1 100644
      }
  
 diff --git a/Controller/Adminhtml/Index/Html.php b/Controller/Adminhtml/Index/Html.php
-index 3d925c9..ef33caf 100644
+index 0ce9529..848691d 100644
 --- a/Controller/Adminhtml/Index/Html.php
 +++ b/Controller/Adminhtml/Index/Html.php
-@@ -37,24 +37,24 @@ use Psr\Log\LoggerInterface;
- class Html implements HttpPostActionInterface, CsrfAwareActionInterface
- {
+@@ -45,26 +45,26 @@ class Html extends Action implements HttpPostActionInterface, CsrfAwareActionInt
+ 
      public function __construct(
+         Context $context,
 -        private readonly LayoutLoader $layoutLoader,
 -        private readonly RequestDataLoader $requestDataLoader,
 -        private readonly RepositoryDispatcher $repositoryDispatcher,
@@ -191,10 +191,11 @@ index 3d925c9..ef33caf 100644
 -        private readonly AppState $appState,
 -        private readonly LoggerInterface $logger,
 -        private readonly ComponentRegistry $componentRegistry,
--        private readonly MessageManager $messageManager,
 -        private readonly Validator $formKeyValidator,
 -        private readonly AuthorizationInterface $authorization,
--        private readonly Messages $messages
+-        private readonly Messages $messages,
+-        private readonly ComponentUpdateFactory $componentUpdateFactory,
+-        private readonly RenderFlag $renderFlag
 +        private LayoutLoader $layoutLoader,
 +        private RequestDataLoader $requestDataLoader,
 +        private RepositoryDispatcher $repositoryDispatcher,
@@ -205,11 +206,13 @@ index 3d925c9..ef33caf 100644
 +        private AppState $appState,
 +        private LoggerInterface $logger,
 +        private ComponentRegistry $componentRegistry,
-+        private MessageManager $messageManager,
 +        private Validator $formKeyValidator,
 +        private AuthorizationInterface $authorization,
-+        private Messages $messages
++        private Messages $messages,
++        private ComponentUpdateFactory $componentUpdateFactory,
++        private RenderFlag $renderFlag
      ) {
+         parent::__construct($context);
      }
  
 -    public function execute(): ResultInterface|ResponseInterface
@@ -231,10 +234,10 @@ index f428fd2..f312622 100644
      }
  
 diff --git a/Controller/Index/Html.php b/Controller/Index/Html.php
-index 3d3ae57..7fa6a35 100644
+index 1198a81..265bf5b 100644
 --- a/Controller/Index/Html.php
 +++ b/Controller/Index/Html.php
-@@ -36,24 +36,24 @@ use Magento\Framework\Message\ManagerInterface as MessageManager;
+@@ -38,25 +38,25 @@ use Magento\Framework\Message\ManagerInterface as MessageManager;
  class Html implements HttpPostActionInterface, CsrfAwareActionInterface
  {
      public function __construct(
@@ -251,7 +254,8 @@ index 3d3ae57..7fa6a35 100644
 -        private readonly ComponentRegistry $componentRegistry,
 -        private readonly ComponentUpdateFactory $componentUpdateFactory,
 -        private readonly Validator $formKeyValidator,
--        private readonly Messages $messages
+-        private readonly Messages $messages,
+-        private readonly RenderFlag $renderFlag
 +        private LayoutLoader $layoutLoader,
 +        private RequestDataLoader $requestDataLoader,
 +        private RepositoryDispatcher $repositoryDispatcher,
@@ -265,7 +269,8 @@ index 3d3ae57..7fa6a35 100644
 +        private ComponentRegistry $componentRegistry,
 +        private ComponentUpdateFactory $componentUpdateFactory,
 +        private Validator $formKeyValidator,
-+        private Messages $messages
++        private Messages $messages,
++        private RenderFlag $renderFlag
      ) {
      }
  
@@ -467,7 +472,7 @@ index 71efc2e..f8f400c 100644
          return preg_replace('/\s+/', '', (string)$value);
      }
 diff --git a/Filter/Security.php b/Filter/Security.php
-index 40bf7f2..f540787 100644
+index f04eb20..56d05ba 100644
 --- a/Filter/Security.php
 +++ b/Filter/Security.php
 @@ -4,7 +4,7 @@ namespace Loki\Components\Filter;
@@ -521,11 +526,11 @@ index 22cbfa7..eb285b6 100644
      }
  
 diff --git a/Location/Address.php b/Location/Address.php
-index 2303651..254b12d 100644
+index bbade7f..8e0536a 100644
 --- a/Location/Address.php
 +++ b/Location/Address.php
-@@ -7,7 +7,7 @@ use Magento\Framework\DataObject;
- class Address extends DataObject
+@@ -8,7 +8,7 @@ use Magento\Framework\DataObject;
+ class Address extends DataObject implements JsonSerializable
  {
      public function __construct(
 -        private readonly AddressRenderer $addressRenderer,
@@ -533,7 +538,7 @@ index 2303651..254b12d 100644
          private string $street = '',
          private string $houseNumber = '',
          private string $houseNumberAddition = '',
-@@ -269,7 +269,7 @@ class Address extends DataObject
+@@ -270,7 +270,7 @@ class Address extends DataObject implements JsonSerializable
      }
  
      #[\ReturnTypeWillChange]
@@ -655,7 +660,7 @@ index ebe80d8..57f5a9a 100644
      }
  
 diff --git a/Location/AddressFactory.php b/Location/AddressFactory.php
-index f4e42c3..3464bc5 100644
+index 173a760..d572ba1 100644
 --- a/Location/AddressFactory.php
 +++ b/Location/AddressFactory.php
 @@ -8,8 +8,8 @@ use Magento\Quote\Model\Quote\Address as QuoteAddress;
@@ -683,7 +688,7 @@ index e30d154..86bca43 100644
      }
  
 diff --git a/Location/Location.php b/Location/Location.php
-index aabbffd..ad8806c 100644
+index dc3fbfd..3d56ed0 100644
 --- a/Location/Location.php
 +++ b/Location/Location.php
 @@ -9,14 +9,14 @@ use Magento\Framework\DataObject;
@@ -709,7 +714,7 @@ index aabbffd..ad8806c 100644
          array $data = []
      ) {
          parent::__construct($data);
-@@ -79,7 +79,7 @@ class Location extends DataObject implements JsonSerializable
+@@ -80,7 +80,7 @@ class Location extends DataObject implements JsonSerializable
      }
  
      #[\ReturnTypeWillChange]
@@ -784,7 +789,7 @@ index b851e03..d78c636 100644
          return $this->toArray();
      }
 diff --git a/Observer/AddDomIdToBlock.php b/Observer/AddDomIdToBlock.php
-index 2bd2132..26525fe 100644
+index dbce270..b2e172e 100644
 --- a/Observer/AddDomIdToBlock.php
 +++ b/Observer/AddDomIdToBlock.php
 @@ -11,8 +11,8 @@ use Magento\Framework\View\Element\Template;
@@ -799,12 +804,12 @@ index 2bd2132..26525fe 100644
      }
  
 diff --git a/Observer/AddHtmlAttributesToComponentBlock.php b/Observer/AddHtmlAttributesToComponentBlock.php
-index cdcf0cd..520738c 100644
+index f265517..0c52ea0 100644
 --- a/Observer/AddHtmlAttributesToComponentBlock.php
 +++ b/Observer/AddHtmlAttributesToComponentBlock.php
-@@ -18,11 +18,11 @@ use Loki\Components\Util\Component\JsDataProvider;
- class AddHtmlAttributesToComponentBlock implements ObserverInterface
- {
+@@ -20,11 +20,11 @@ class AddHtmlAttributesToComponentBlock implements ObserverInterface
+     private const FIRST_TAG_PATTERN = '/^<([a-zA-Z][a-zA-Z0-9-]*)(?=[\s\/>])((?:"[^"]*"|\'[^\']*\'|[^\'">])*)>/';
+ 
      public function __construct(
 -        private readonly ComponentRegistry $componentRegistry,
 -        private readonly JsDataProvider $jsDataProvider,
@@ -819,6 +824,15 @@ index cdcf0cd..520738c 100644
      ) {
      }
  
+@@ -135,7 +135,7 @@ EOF;
+         return $attributeName;
+     }
+ 
+-    private function escapeAttributeValue(mixed $value): string
++    private function escapeAttributeValue($value): string
+     {
+         return htmlspecialchars((string)$value, ENT_COMPAT | ENT_HTML5, 'UTF-8', false);
+     }
 diff --git a/Observer/AssignAdditionalBlockVariables.php b/Observer/AssignAdditionalBlockVariables.php
 index 5deecd2..15f98f8 100644
 --- a/Observer/AssignAdditionalBlockVariables.php
@@ -847,15 +861,15 @@ index 5deecd2..15f98f8 100644
      }
  
 diff --git a/Polling/PollingHandlerListing.php b/Polling/PollingHandlerListing.php
-index b7dabc5..364702b 100644
+index 559d73b..51a3211 100644
 --- a/Polling/PollingHandlerListing.php
 +++ b/Polling/PollingHandlerListing.php
 @@ -6,7 +6,7 @@ namespace Loki\Components\Polling;
  class PollingHandlerListing
  {
      public function __construct(
--        private readonly array $handlers,
-+        private array $handlers,
+-        private readonly array $handlers = [],
++        private array $handlers = [],
      ) {
      }
  
@@ -890,6 +904,65 @@ index 6d4137e..7172d8f 100644
      {
          $modulePath = $this->componentRegistrar->getPath(ComponentRegistrar::MODULE, $moduleName);
          $moduleXmlPath = $modulePath.'/etc/module.xml';
+diff --git a/Test/Integration/Controller/Index/HtmlTest.php b/Test/Integration/Controller/Index/HtmlTest.php
+index f71d85e..7fa2e3c 100644
+--- a/Test/Integration/Controller/Index/HtmlTest.php
++++ b/Test/Integration/Controller/Index/HtmlTest.php
+@@ -304,7 +304,7 @@ class HtmlTest extends TestCase
+         return $this->renderResult($controller->execute());
+     }
+ 
+-    private function renderResult(mixed $result): HttpResponse
++    private function renderResult($result): HttpResponse
+     {
+         $this->assertInstanceOf(ResultInterface::class, $result);
+ 
+diff --git a/Test/Integration/Dummy/DummyRepository.php b/Test/Integration/Dummy/DummyRepository.php
+index b33b582..6039e38 100644
+--- a/Test/Integration/Dummy/DummyRepository.php
++++ b/Test/Integration/Dummy/DummyRepository.php
+@@ -7,16 +7,16 @@ use Loki\Components\Component\ComponentRepository;
+ class DummyRepository extends ComponentRepository
+ {
+     public function __construct(
+-        private readonly DummyRepositoryStorage $storage
++        private DummyRepositoryStorage $storage
+     ) {
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return $this->storage->getValue($this->getComponentName());
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $this->storage->saveValue($this->getComponentName(), $value);
+     }
+diff --git a/Test/Integration/Dummy/DummyRepositoryStorage.php b/Test/Integration/Dummy/DummyRepositoryStorage.php
+index 77ab87d..f055731 100644
+--- a/Test/Integration/Dummy/DummyRepositoryStorage.php
++++ b/Test/Integration/Dummy/DummyRepositoryStorage.php
+@@ -11,7 +11,7 @@ class DummyRepositoryStorage
+     private array $priorities = [];
+     private array $exceptions = [];
+ 
+-    public function getValue(string $componentName): mixed
++    public function getValue(string $componentName)
+     {
+         return $this->values[$componentName] ?? null;
+     }
+@@ -21,7 +21,7 @@ class DummyRepositoryStorage
+         return array_key_exists($componentName, $this->values);
+     }
+ 
+-    public function saveValue(string $componentName, mixed $value): void
++    public function saveValue(string $componentName, $value): void
+     {
+         if (isset($this->exceptions[$componentName])) {
+             throw $this->exceptions[$componentName];
 diff --git a/Test/Integration/Dummy/LengthViewModelDummy.php b/Test/Integration/Dummy/LengthViewModelDummy.php
 index e248e30..493f46a 100644
 --- a/Test/Integration/Dummy/LengthViewModelDummy.php
@@ -929,6 +1002,75 @@ index d33ab77..a8f23f7 100644
      {
          $validator = ObjectManager::getInstance()->get(EmailValidator::class);
          $actualResult = $validator->validate($email);
+diff --git a/Test/Unit/Component/ComponentContextTest.php b/Test/Unit/Component/ComponentContextTest.php
+index b14c9f7..731a0ee 100644
+--- a/Test/Unit/Component/ComponentContextTest.php
++++ b/Test/Unit/Component/ComponentContextTest.php
+@@ -11,7 +11,7 @@ class ComponentContextTest extends TestCase
+     public function testReturnsInjectedDependencies(): void
+     {
+         $customerSession = new class {
+-            public function __call(string $method, array $arguments): mixed
++            public function __call(string $method, array $arguments)
+             {
+                 return null;
+             }
+diff --git a/Test/Unit/Component/ComponentRepositoryTest.php b/Test/Unit/Component/ComponentRepositoryTest.php
+index 6619991..65f60b7 100644
+--- a/Test/Unit/Component/ComponentRepositoryTest.php
++++ b/Test/Unit/Component/ComponentRepositoryTest.php
+@@ -53,12 +53,12 @@ class ComponentRepositoryTest extends TestCase
+     private function getRepository(): ComponentRepository
+     {
+         return new class extends ComponentRepository {
+-            public function getValue(): mixed
++            public function getValue()
+             {
+                 return null;
+             }
+ 
+-            public function saveValue(mixed $value): void
++            public function saveValue($value): void
+             {
+             }
+         };
+diff --git a/Test/Unit/Component/ComponentTest.php b/Test/Unit/Component/ComponentTest.php
+index ea6e04a..304aa2a 100644
+--- a/Test/Unit/Component/ComponentTest.php
++++ b/Test/Unit/Component/ComponentTest.php
+@@ -27,8 +27,8 @@ class ComponentTest extends TestCase
+ 
+     private const NAME = 'loki-components.test.example';
+ 
+-    private (ObjectManagerInterface&MockObject)|null $objectManager = null;
+-    private (LayoutInterface&MockObject)|null $layout = null;
++    private $objectManager = null;
++    private $layout = null;
+     private ?Validator $validator = null;
+     private ?Filter $filter = null;
+ 
+diff --git a/Test/Unit/Filter/FilterTest.php b/Test/Unit/Filter/FilterTest.php
+index dfbfe4f..f7dd78f 100644
+--- a/Test/Unit/Filter/FilterTest.php
++++ b/Test/Unit/Filter/FilterTest.php
+@@ -50,7 +50,7 @@ class FilterTest extends TestCase
+         $spy = new class implements FilterInterface {
+             public array $properties = [];
+ 
+-            public function filter(mixed $value, FilterScope $scope): mixed
++            public function filter($value, FilterScope $scope)
+             {
+                 $this->properties[] = $scope->getProperty();
+                 return strtoupper((string)$value);
+@@ -72,7 +72,7 @@ class FilterTest extends TestCase
+         $spy = new class implements FilterInterface {
+             public ?ComponentInterface $component = null;
+ 
+-            public function filter(mixed $value, FilterScope $scope): mixed
++            public function filter($value, FilterScope $scope)
+             {
+                 $this->component = $scope->getComponent();
+                 return $value;
 diff --git a/Test/Unit/Stub/JsPropertyInterceptedViewModelStub/Interceptor.php b/Test/Unit/Stub/JsPropertyInterceptedViewModelStub/Interceptor.php
 index ceac911..4995943 100644
 --- a/Test/Unit/Stub/JsPropertyInterceptedViewModelStub/Interceptor.php
@@ -994,6 +1136,19 @@ index acf029c..59bcd0b 100644
      {
          return 'protected-value';
      }
+diff --git a/Test/Unit/Util/IsEmptyTest.php b/Test/Unit/Util/IsEmptyTest.php
+index 6452859..5a6417f 100644
+--- a/Test/Unit/Util/IsEmptyTest.php
++++ b/Test/Unit/Util/IsEmptyTest.php
+@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
+ class IsEmptyTest extends TestCase
+ {
+     #[DataProvider('getValues')]
+-    public function testExecute(array $filters, mixed $value, bool $expectedResult): void
++    public function testExecute(array $filters, $value, bool $expectedResult): void
+     {
+         $component = $this->createMock(ComponentInterface::class);
+         $component->method('getFilters')->willReturn($filters);
 diff --git a/Test/Unit/Validator/PastDateValidatorTest.php b/Test/Unit/Validator/PastDateValidatorTest.php
 index d0bbbde..80e32ae 100644
 --- a/Test/Unit/Validator/PastDateValidatorTest.php
@@ -1007,6 +1162,46 @@ index d0bbbde..80e32ae 100644
      {
          $validator = new PastDateValidator();
          $result = $validator->validate($value);
+diff --git a/Test/Unit/Validator/ValidatorTest.php b/Test/Unit/Validator/ValidatorTest.php
+index 4e74670..bb56442 100644
+--- a/Test/Unit/Validator/ValidatorTest.php
++++ b/Test/Unit/Validator/ValidatorTest.php
+@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
+ class ValidatorTest extends TestCase
+ {
+     private ?LocalMessageRegistry $localMessageRegistry = null;
+-    private (GlobalMessageRegistry&MockObject)|null $globalMessageRegistry = null;
++    private $globalMessageRegistry = null;
+ 
+     protected function setUp(): void
+     {
+@@ -98,7 +98,7 @@ class ValidatorTest extends TestCase
+         $failOnBar = new class implements ValidatorInterface {
+             public array $values = [];
+ 
+-            public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++            public function validate($value, ?ComponentInterface $component = null)
+             {
+                 $this->values[] = $value;
+                 return $value === 'bar' ? ['No bar allowed'] : true;
+@@ -117,7 +117,7 @@ class ValidatorTest extends TestCase
+         $required = new class implements ValidatorInterface {
+             public array $values = [];
+ 
+-            public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++            public function validate($value, ?ComponentInterface $component = null)
+             {
+                 $this->values[] = $value;
+                 return empty($value) ? ['Value is required'] : true;
+@@ -145,7 +145,7 @@ class ValidatorTest extends TestCase
+         return new Validator(new ValidatorRegistry($validators));
+     }
+ 
+-    private function getValidatorStub(bool|array $result): ValidatorInterface
++    private function getValidatorStub($result): ValidatorInterface
+     {
+         $validator = $this->createMock(ValidatorInterface::class);
+         $validator->method('validate')->willReturn($result);
 diff --git a/Util/Ajax.php b/Util/Ajax.php
 index f1445c4..e8447de 100644
 --- a/Util/Ajax.php
@@ -1087,7 +1282,7 @@ index 4c1f235..140dc2d 100644
      }
  
 diff --git a/Util/ComponentUtil.php b/Util/ComponentUtil.php
-index 1073e90..7988714 100644
+index 4103f40..35cf2da 100644
 --- a/Util/ComponentUtil.php
 +++ b/Util/ComponentUtil.php
 @@ -14,12 +14,12 @@ use Loki\Components\Util\Security\AjaxSignature;
@@ -1149,7 +1344,7 @@ index 7cddb20..525130d 100644
      }
  
 diff --git a/Util/Controller/LayoutLoader.php b/Util/Controller/LayoutLoader.php
-index 7f2cac9..769959b 100644
+index 05a5635..b10bb26 100644
 --- a/Util/Controller/LayoutLoader.php
 +++ b/Util/Controller/LayoutLoader.php
 @@ -15,14 +15,14 @@ use Magento\Framework\View\Page\Layout\Reader as PageLayoutReader;
@@ -1175,6 +1370,19 @@ index 7f2cac9..769959b 100644
      ) {
      }
  
+diff --git a/Util/Controller/RenderFlag.php b/Util/Controller/RenderFlag.php
+index 3f8f66c..0244885 100644
+--- a/Util/Controller/RenderFlag.php
++++ b/Util/Controller/RenderFlag.php
+@@ -27,7 +27,7 @@ class RenderFlag
+         return true;
+     }
+ 
+-    private function isEnabled(mixed $render): bool
++    private function isEnabled($render): bool
+     {
+         return in_array($render, [1, '1', true], true);
+     }
 diff --git a/Util/Controller/RepositoryDispatcher.php b/Util/Controller/RepositoryDispatcher.php
 index 6495e38..8157200 100644
 --- a/Util/Controller/RepositoryDispatcher.php
@@ -1198,7 +1406,7 @@ index 6495e38..8157200 100644
          $this->eventManager->dispatch('loki_components_repository_dispatch', ['component' => $component]);
  
 diff --git a/Util/Controller/RequestDataLoader.php b/Util/Controller/RequestDataLoader.php
-index 4afe96c..ac7cdd1 100644
+index 51226f8..a9c2fca 100644
 --- a/Util/Controller/RequestDataLoader.php
 +++ b/Util/Controller/RequestDataLoader.php
 @@ -13,9 +13,9 @@ use Loki\Components\Util\Security\AjaxSignature;
@@ -1214,6 +1422,15 @@ index 4afe96c..ac7cdd1 100644
      ) {
      }
  
+@@ -46,7 +46,7 @@ class RequestDataLoader
+     /**
+      * Multipart requests (like file uploads) send the regular JSON body as POST field `payload`
+      */
+-    private function loadMultipartPayload(Http $request): mixed
++    private function loadMultipartPayload(Http $request)
+     {
+         if (empty($request->getPostValue()) && empty($request->getFiles()->toArray())) {
+             throw new RuntimeException('The request exceeds the maximum upload size of the server');
 diff --git a/Util/Controller/TargetRenderer.php b/Util/Controller/TargetRenderer.php
 index 5fb9825..11c33f7 100644
 --- a/Util/Controller/TargetRenderer.php
@@ -1251,15 +1468,15 @@ index 6e89ad1..b30af00 100644
      }
  
 diff --git a/Util/IsEmpty.php b/Util/IsEmpty.php
-index 5116514..4c19c44 100644
+index df0420e..d09ff41 100644
 --- a/Util/IsEmpty.php
 +++ b/Util/IsEmpty.php
 @@ -7,7 +7,7 @@ use Loki\Components\Component\ComponentInterface;
  
  class IsEmpty
  {
--    public function execute(ComponentInterface $component, mixed $value): bool
-+    public function execute(ComponentInterface $component, $value): bool
+-    public function execute(?ComponentInterface $component, mixed $value): bool
++    public function execute(?ComponentInterface $component, $value): bool
      {
          if ($this->shouldBeNumber($component) && is_numeric($value)) {
              return false;
@@ -1290,7 +1507,7 @@ index ccf50c5..4bf9250 100644
      }
  
 diff --git a/Validator/DateValidator.php b/Validator/DateValidator.php
-index 611fe80..f8fee9f 100644
+index 310c057..6a1bd19 100644
 --- a/Validator/DateValidator.php
 +++ b/Validator/DateValidator.php
 @@ -6,7 +6,7 @@ use Loki\Components\Component\ComponentInterface;
@@ -1316,7 +1533,7 @@ index 1eb798b..55bb85f 100644
          $email = trim((string)$value, " \f\n\r\t\v\x00");
  
 diff --git a/Validator/LengthValidator.php b/Validator/LengthValidator.php
-index 0041600..2cc9e02 100644
+index 293c09e..c6ada9a 100644
 --- a/Validator/LengthValidator.php
 +++ b/Validator/LengthValidator.php
 @@ -8,7 +8,7 @@ use Magento\Framework\View\Element\AbstractBlock;
@@ -1329,7 +1546,7 @@ index 0041600..2cc9e02 100644
          if (false === is_string($value)) {
              return true;
 diff --git a/Validator/NumberValidator.php b/Validator/NumberValidator.php
-index f2224e1..3943540 100644
+index e97a075..7ae5db2 100644
 --- a/Validator/NumberValidator.php
 +++ b/Validator/NumberValidator.php
 @@ -6,7 +6,7 @@ use Loki\Components\Component\ComponentInterface;
@@ -1339,8 +1556,8 @@ index f2224e1..3943540 100644
 -    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
 +    public function validate($value, ?ComponentInterface $component = null)
      {
-         if (false === is_numeric($value)) {
-             return [(string)__('Value must contain numbers only')];
+         if ($value === null || (is_string($value) && trim($value, " \f\n\r\t\v\x00") === '')) {
+             return true;
 diff --git a/Validator/PastDateValidator.php b/Validator/PastDateValidator.php
 index 103b57d..0e048bb 100644
 --- a/Validator/PastDateValidator.php
@@ -1355,7 +1572,7 @@ index 103b57d..0e048bb 100644
          $date = trim((string)$value, " \f\n\r\t\v\x00");
          if ($date === '' || $date === '0') {
 diff --git a/Validator/PositiveNumberValidator.php b/Validator/PositiveNumberValidator.php
-index 22d1027..c95e6bd 100644
+index 2b1cc97..a2418fd 100644
 --- a/Validator/PositiveNumberValidator.php
 +++ b/Validator/PositiveNumberValidator.php
 @@ -6,7 +6,7 @@ use Loki\Components\Component\ComponentInterface;
@@ -1365,13 +1582,13 @@ index 22d1027..c95e6bd 100644
 -    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
 +    public function validate($value, ?ComponentInterface $component = null)
      {
-         if (false === is_numeric($value)) {
-             return [(string)__('Value must contain numbers only')];
+         if ($value === null || (is_string($value) && trim($value, " \f\n\r\t\v\x00") === '')) {
+             return true;
 diff --git a/Validator/RequiredValidator.php b/Validator/RequiredValidator.php
-index 05d25f6..f3df0a2 100644
+index 3077526..6bda557 100644
 --- a/Validator/RequiredValidator.php
 +++ b/Validator/RequiredValidator.php
-@@ -10,13 +10,13 @@ use Loki\Components\Util\SkipValidation;
+@@ -11,13 +11,13 @@ use Magento\Framework\View\Element\AbstractBlock;
  class RequiredValidator implements ValidatorInterface
  {
      public function __construct(
@@ -1390,7 +1607,7 @@ index 05d25f6..f3df0a2 100644
          if (false === $this->ajax->isAjax()) {
              return true;
 diff --git a/Validator/Validator.php b/Validator/Validator.php
-index ec29dc3..7c5d724 100644
+index 7dbe63d..58dc8c3 100644
 --- a/Validator/Validator.php
 +++ b/Validator/Validator.php
 @@ -10,14 +10,14 @@ use Loki\Components\Messages\LocalMessage;
