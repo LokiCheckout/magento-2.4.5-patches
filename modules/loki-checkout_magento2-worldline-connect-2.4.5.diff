@@ -1,0 +1,241 @@
+diff --git a/Component/Checkout/Payment/Method/PaymentRepository.php b/Component/Checkout/Payment/Method/PaymentRepository.php
+index 6fc5798..cd2842b 100644
+--- a/Component/Checkout/Payment/Method/PaymentRepository.php
++++ b/Component/Checkout/Payment/Method/PaymentRepository.php
+@@ -19,12 +19,12 @@ use Magento\Quote\Model\Quote;
+  */
+ class PaymentRepository extends ComponentRepository
+ {
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return null;
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         if (false === is_array($value)) {
+             return;
+@@ -109,7 +109,7 @@ class PaymentRepository extends ComponentRepository
+      *
+      * @param array<mixed> $value
+      */
+-    private function getProductId(string $paymentMethodCode, array $value): int|string
++    private function getProductId(string $paymentMethodCode, array $value)
+     {
+         $methodRegistry = $this->getContext()->getMethodRegistry();
+         $productId = $methodRegistry->getProductId($paymentMethodCode);
+diff --git a/Config/Config.php b/Config/Config.php
+index dc6a019..7afcfa5 100644
+--- a/Config/Config.php
++++ b/Config/Config.php
+@@ -11,8 +11,8 @@ use Worldline\Connect\Model\ConfigInterface;
+ class Config
+ {
+     public function __construct(
+-        private readonly ConfigInterface $connectConfig,
+-        private readonly StoreManagerInterface $storeManager
++        private ConfigInterface $connectConfig,
++        private StoreManagerInterface $storeManager
+     ) {
+     }
+ 
+diff --git a/Payment/Icon/IconResolver.php b/Payment/Icon/IconResolver.php
+index 1b75cd8..a9aff0e 100644
+--- a/Payment/Icon/IconResolver.php
++++ b/Payment/Icon/IconResolver.php
+@@ -17,15 +17,15 @@ class IconResolver implements IconResolverInterface
+     private const SINGLE_ICON_CSS = 'w-16';
+ 
+     public function __construct(
+-        private readonly MethodRegistry $methodRegistry,
+-        private readonly ProductListProvider $productListProvider,
+-        private readonly CheckoutState $checkoutState,
+-        private readonly ImageRenderer $imageRenderer,
+-        private readonly Escaper $escaper
++        private MethodRegistry $methodRegistry,
++        private ProductListProvider $productListProvider,
++        private CheckoutState $checkoutState,
++        private ImageRenderer $imageRenderer,
++        private Escaper $escaper
+     ) {
+     }
+ 
+-    public function resolve(IconResolverContext $iconResolverContext): false|string
++    public function resolve(IconResolverContext $iconResolverContext)
+     {
+         $paymentMethodCode = $iconResolverContext->getPaymentMethodCode();
+         if (false === $this->methodRegistry->isConnectMethod($paymentMethodCode)) {
+@@ -54,7 +54,7 @@ class IconResolver implements IconResolverInterface
+     /**
+      * @param array<array{label: string, logo: string}> $products
+      */
+-    private function renderIcons(array $products, string $cssClass): false|string
++    private function renderIcons(array $products, string $cssClass)
+     {
+         $html = '';
+         foreach ($products as $product) {
+diff --git a/Payment/MethodRegistry.php b/Payment/MethodRegistry.php
+index ecd5a52..9f75159 100644
+--- a/Payment/MethodRegistry.php
++++ b/Payment/MethodRegistry.php
+@@ -22,8 +22,8 @@ class MethodRegistry
+     private const MODEL_PREFIX = 'Worldline\\Connect\\';
+ 
+     public function __construct(
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly PaymentHelper $paymentHelper
++        private ScopeConfigInterface $scopeConfig,
++        private PaymentHelper $paymentHelper
+     ) {
+     }
+ 
+@@ -102,7 +102,7 @@ class MethodRegistry
+         return in_array($this->getType($paymentMethodCode), [self::TYPE_PRODUCT, self::TYPE_HOSTED_CHECKOUT], true);
+     }
+ 
+-    private function getConfigData(string $paymentMethodCode, string $field): mixed
++    private function getConfigData(string $paymentMethodCode, string $field)
+     {
+         try {
+             return $this->paymentHelper->getMethodInstance($paymentMethodCode)->getConfigData($field);
+diff --git a/Payment/Redirect/RedirectResolver.php b/Payment/Redirect/RedirectResolver.php
+index c99cc06..5c09148 100644
+--- a/Payment/Redirect/RedirectResolver.php
++++ b/Payment/Redirect/RedirectResolver.php
+@@ -21,12 +21,12 @@ class RedirectResolver implements RedirectResolverInterface
+     public const INLINE_PAYMENT_PATH = 'epayments/inlinePayment/processReturn';
+ 
+     public function __construct(
+-        private readonly MethodRegistry $methodRegistry,
+-        private readonly UrlInterface $urlBuilder
++        private MethodRegistry $methodRegistry,
++        private UrlInterface $urlBuilder
+     ) {
+     }
+ 
+-    public function resolve(RedirectContext $redirectContext): false|string
++    public function resolve(RedirectContext $redirectContext)
+     {
+         $order = $redirectContext->getOrder();
+         if (false === $order) {
+diff --git a/Plugin/HideVaultMethodsPlugin.php b/Plugin/HideVaultMethodsPlugin.php
+index f65b17d..2faf1e5 100644
+--- a/Plugin/HideVaultMethodsPlugin.php
++++ b/Plugin/HideVaultMethodsPlugin.php
+@@ -15,7 +15,7 @@ use Magento\Payment\Api\Data\PaymentMethodInterface;
+ class HideVaultMethodsPlugin
+ {
+     public function __construct(
+-        private readonly MethodRegistry $methodRegistry
++        private MethodRegistry $methodRegistry
+     ) {
+     }
+ 
+diff --git a/Plugin/PaymentFormElementIdPlugin.php b/Plugin/PaymentFormElementIdPlugin.php
+index e910ef4..67fcaa9 100644
+--- a/Plugin/PaymentFormElementIdPlugin.php
++++ b/Plugin/PaymentFormElementIdPlugin.php
+@@ -18,8 +18,8 @@ class PaymentFormElementIdPlugin
+     private const BLOCK_NAME_PATTERN = '/^loki-checkout\.payment\.methods\.(worldline_[a-z0-9_]+)\.form$/';
+ 
+     public function __construct(
+-        private readonly IdConvertor $idConvertor,
+-        private readonly MethodRegistry $methodRegistry
++        private IdConvertor $idConvertor,
++        private MethodRegistry $methodRegistry
+     ) {
+     }
+ 
+diff --git a/Service/ClientSessionProvider.php b/Service/ClientSessionProvider.php
+index 1d1bdb3..98ac103 100644
+--- a/Service/ClientSessionProvider.php
++++ b/Service/ClientSessionProvider.php
+@@ -19,9 +19,9 @@ class ClientSessionProvider
+     private ?array $session = null;
+ 
+     public function __construct(
+-        private readonly SessionManagerInterface $sessionManager,
+-        private readonly CustomerSession $customerSession,
+-        private readonly LoggerInterface $logger
++        private SessionManagerInterface $sessionManager,
++        private CustomerSession $customerSession,
++        private LoggerInterface $logger
+     ) {
+     }
+ 
+diff --git a/Service/CreatePaymentService.php b/Service/CreatePaymentService.php
+index d06ea6d..398b77a 100644
+--- a/Service/CreatePaymentService.php
++++ b/Service/CreatePaymentService.php
+@@ -20,10 +20,10 @@ use Worldline\Connect\Api\BaseCreatePaymentManagementInterface;
+ class CreatePaymentService
+ {
+     public function __construct(
+-        private readonly BaseCreatePaymentManagementInterface $createPaymentManagement,
+-        private readonly PaymentInterfaceFactory $paymentFactory,
+-        private readonly CartRepositoryInterface $cartRepository,
+-        private readonly LoggerInterface $logger
++        private BaseCreatePaymentManagementInterface $createPaymentManagement,
++        private PaymentInterfaceFactory $paymentFactory,
++        private CartRepositoryInterface $cartRepository,
++        private LoggerInterface $logger
+     ) {
+     }
+ 
+diff --git a/Service/ProductListProvider.php b/Service/ProductListProvider.php
+index dea3722..b74b964 100644
+--- a/Service/ProductListProvider.php
++++ b/Service/ProductListProvider.php
+@@ -23,12 +23,12 @@ class ProductListProvider
+     private array $products = [];
+ 
+     public function __construct(
+-        private readonly ClientInterface $client,
+-        private readonly ClientSessionProvider $clientSessionProvider,
+-        private readonly CacheInterface $cache,
+-        private readonly SerializerInterface $serializer,
+-        private readonly ResolverInterface $localeResolver,
+-        private readonly LoggerInterface $logger
++        private ClientInterface $client,
++        private ClientSessionProvider $clientSessionProvider,
++        private CacheInterface $cache,
++        private SerializerInterface $serializer,
++        private ResolverInterface $localeResolver,
++        private LoggerInterface $logger
+     ) {
+     }
+ 
+diff --git a/Step/FinalStep/Task/PreventOrderBeforePaymentTask.php b/Step/FinalStep/Task/PreventOrderBeforePaymentTask.php
+index 0943c95..7ec5be5 100644
+--- a/Step/FinalStep/Task/PreventOrderBeforePaymentTask.php
++++ b/Step/FinalStep/Task/PreventOrderBeforePaymentTask.php
+@@ -19,10 +19,10 @@ use Magento\Quote\Model\Quote;
+ class PreventOrderBeforePaymentTask implements TaskInterface
+ {
+     public function __construct(
+-        private readonly MethodRegistry $methodRegistry,
+-        private readonly Config $config,
+-        private readonly ManagerInterface $messageManager,
+-        private readonly UrlFactory $urlFactory
++        private MethodRegistry $methodRegistry,
++        private Config $config,
++        private ManagerInterface $messageManager,
++        private UrlFactory $urlFactory
+     ) {
+     }
+ 
+diff --git a/ViewModel/FormKeyProvider.php b/ViewModel/FormKeyProvider.php
+index 1dd534d..cd47ad6 100644
+--- a/ViewModel/FormKeyProvider.php
++++ b/ViewModel/FormKeyProvider.php
+@@ -9,7 +9,7 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class FormKeyProvider implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly FormKey $formKey
++        private FormKey $formKey
+     ) {
+     }
+ 
