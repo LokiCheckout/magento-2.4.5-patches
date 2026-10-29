@@ -1,0 +1,75 @@
+diff --git a/Payment/Icon/IconResolver.php b/Payment/Icon/IconResolver.php
+index cc9e3a9..9abcc5a 100644
+--- a/Payment/Icon/IconResolver.php
++++ b/Payment/Icon/IconResolver.php
+@@ -11,12 +11,12 @@ use Magento\Framework\Module\Manager as ModuleManager;
+ class IconResolver implements IconResolverInterface
+ {
+     public function __construct(
+-        private readonly ModuleManager $moduleManager,
+-        private readonly Assets $assets,
++        private ModuleManager $moduleManager,
++        private Assets $assets,
+     ) {
+     }
+ 
+-    public function resolve(IconResolverContext $iconResolverContext): false|string
++    public function resolve(IconResolverContext $iconResolverContext)
+     {
+         if (false === $this->moduleManager->isEnabled('Bambora_Online')) {
+             return false;
+diff --git a/Payment/Redirect/RedirectResolver.php b/Payment/Redirect/RedirectResolver.php
+index adf3e93..605088b 100644
+--- a/Payment/Redirect/RedirectResolver.php
++++ b/Payment/Redirect/RedirectResolver.php
+@@ -13,12 +13,12 @@ use Throwable;
+ class RedirectResolver implements RedirectResolverInterface
+ {
+     public function __construct(
+-        private readonly OrderRepositoryInterface $orderRepository,
+-        private readonly LoggerInterface $logger,
++        private OrderRepositoryInterface $orderRepository,
++        private LoggerInterface $logger,
+     ) {
+     }
+ 
+-    public function resolve(RedirectContext $redirectContext): false|string
++    public function resolve(RedirectContext $redirectContext)
+     {
+         $paymentMethod = $redirectContext->getPaymentMethod();
+         if (false === $paymentMethod instanceof BamboraCheckoutPayment) {
+diff --git a/Test/Integration/Payment/Redirect/RedirectResolverTest.php b/Test/Integration/Payment/Redirect/RedirectResolverTest.php
+index 81198b7..eb9c6bc 100644
+--- a/Test/Integration/Payment/Redirect/RedirectResolverTest.php
++++ b/Test/Integration/Payment/Redirect/RedirectResolverTest.php
+@@ -45,7 +45,7 @@ class RedirectResolverTest extends TestCase
+         $this->configureBambora('T123456789', 'access-token', 'secret-token');
+ 
+         $this->curl = $this->createMock(Curl::class);
+-        $this->curl->method('setOption')->willReturnCallback(function (int $option, mixed $value) {
++        $this->curl->method('setOption')->willReturnCallback(function (int $option, $value) {
+             if ($option === CURLOPT_POSTFIELDS) {
+                 $this->requests[] = json_decode((string)$value, true);
+             }
+@@ -122,7 +122,7 @@ class RedirectResolverTest extends TestCase
+         $this->assertStringContainsString('bambora/checkout/cancel', (string)$this->resolve($this->getOrder()));
+     }
+ 
+-    private function resolve(OrderInterface $order): false|string
++    private function resolve(OrderInterface $order)
+     {
+         $objectManager = $this->getObjectManager();
+         $objectManager->get(CheckoutSession::class)->setLastOrderId($order->getEntityId());
+diff --git a/Test/Unit/Payment/Redirect/RedirectResolverTest.php b/Test/Unit/Payment/Redirect/RedirectResolverTest.php
+index 3868d78..31742ed 100644
+--- a/Test/Unit/Payment/Redirect/RedirectResolverTest.php
++++ b/Test/Unit/Payment/Redirect/RedirectResolverTest.php
+@@ -94,7 +94,7 @@ class RedirectResolverTest extends TestCase
+         $this->assertSame('https://example.com/bambora/checkout/cancel', $actual);
+     }
+ 
+-    private function getRedirectContext(MethodInterface $paymentMethod, false|Order $order): RedirectContext
++    private function getRedirectContext(MethodInterface $paymentMethod, $order): RedirectContext
+     {
+         $redirectContext = $this->createMock(RedirectContext::class);
+         $redirectContext->method('getPaymentMethod')->willReturn($paymentMethod);
