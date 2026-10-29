@@ -1,0 +1,119 @@
+diff --git a/Component/Checkout/Payment/Method/Tilopay/TilopayViewModel.php b/Component/Checkout/Payment/Method/Tilopay/TilopayViewModel.php
+index f230c88..a40a3f2 100644
+--- a/Component/Checkout/Payment/Method/Tilopay/TilopayViewModel.php
++++ b/Component/Checkout/Payment/Method/Tilopay/TilopayViewModel.php
+@@ -18,9 +18,9 @@ class TilopayViewModel extends CheckoutViewModel
+     protected bool $skipValidation = true;
+ 
+     public function __construct(
+-        private readonly TilopayConfig $tilopayConfig,
+-        private readonly SdkOptionsBuilder $sdkOptionsBuilder,
+-        private readonly UrlInterface $url,
++        private TilopayConfig $tilopayConfig,
++        private SdkOptionsBuilder $sdkOptionsBuilder,
++        private UrlInterface $url,
+     ) {
+     }
+ 
+diff --git a/Controller/Order/Place.php b/Controller/Order/Place.php
+index 289f911..f9551ee 100644
+--- a/Controller/Order/Place.php
++++ b/Controller/Order/Place.php
+@@ -27,15 +27,15 @@ use Tilopay\Payment\Model\Ui\ConfigProvider;
+ class Place implements HttpPostActionInterface
+ {
+     public function __construct(
+-        private readonly RequestInterface $request,
+-        private readonly JsonFactory $jsonFactory,
+-        private readonly FormKeyValidator $formKeyValidator,
+-        private readonly CheckoutSession $checkoutSession,
+-        private readonly FinalStep $finalStep,
+-        private readonly MessageManager $messageManager,
+-        private readonly TilopayClient $tilopayClient,
+-        private readonly SdkOptionsBuilder $sdkOptionsBuilder,
+-        private readonly LoggerInterface $logger,
++        private RequestInterface $request,
++        private JsonFactory $jsonFactory,
++        private FormKeyValidator $formKeyValidator,
++        private CheckoutSession $checkoutSession,
++        private FinalStep $finalStep,
++        private MessageManager $messageManager,
++        private TilopayClient $tilopayClient,
++        private SdkOptionsBuilder $sdkOptionsBuilder,
++        private LoggerInterface $logger,
+     ) {
+     }
+ 
+diff --git a/Payment/Icon/IconResolver.php b/Payment/Icon/IconResolver.php
+index 6899c77..afb5b6a 100644
+--- a/Payment/Icon/IconResolver.php
++++ b/Payment/Icon/IconResolver.php
+@@ -11,11 +11,11 @@ class IconResolver implements IconResolverInterface
+     private const ICON_FILE = 'view/frontend/web/images/tilopay.svg';
+ 
+     public function __construct(
+-        private readonly ModuleManager $moduleManager,
++        private ModuleManager $moduleManager,
+     ) {
+     }
+ 
+-    public function resolve(IconResolverContext $iconResolverContext): false|string
++    public function resolve(IconResolverContext $iconResolverContext)
+     {
+         if (false === $this->moduleManager->isEnabled('Tilopay_Payment')) {
+             return false;
+diff --git a/Payment/Redirect/RedirectResolver.php b/Payment/Redirect/RedirectResolver.php
+index 47163dc..21f0f9a 100644
+--- a/Payment/Redirect/RedirectResolver.php
++++ b/Payment/Redirect/RedirectResolver.php
+@@ -15,11 +15,11 @@ use Tilopay\Payment\Model\Ui\ConfigProvider;
+ class RedirectResolver implements RedirectResolverInterface
+ {
+     public function __construct(
+-        private readonly SdkOptionsBuilder $sdkOptionsBuilder,
++        private SdkOptionsBuilder $sdkOptionsBuilder,
+     ) {
+     }
+ 
+-    public function resolve(RedirectContext $redirectContext): false|string
++    public function resolve(RedirectContext $redirectContext)
+     {
+         $paymentMethod = $redirectContext->getPaymentMethod();
+         if (false === $paymentMethod || $paymentMethod->getCode() !== ConfigProvider::CODE) {
+diff --git a/Payment/SdkOptionsBuilder.php b/Payment/SdkOptionsBuilder.php
+index 95ea05d..c8504ad 100644
+--- a/Payment/SdkOptionsBuilder.php
++++ b/Payment/SdkOptionsBuilder.php
+@@ -17,9 +17,9 @@ class SdkOptionsBuilder
+     public const RESPONSE_ROUTE = 'tilopay/response/index';
+ 
+     public function __construct(
+-        private readonly TilopayConfig $tilopayConfig,
+-        private readonly UrlInterface $url,
+-        private readonly LocaleResolver $localeResolver,
++        private TilopayConfig $tilopayConfig,
++        private UrlInterface $url,
++        private LocaleResolver $localeResolver,
+     ) {
+     }
+ 
+@@ -74,8 +74,8 @@ class SdkOptionsBuilder
+         float $amount,
+         string $email,
+         int $storeId,
+-        QuoteAddress|OrderAddress|null $billingAddress,
+-        QuoteAddress|OrderAddress|null $shippingAddress,
++        $billingAddress,
++        $shippingAddress,
+     ): array {
+         $amount = round($amount, 2);
+         $capture = $this->tilopayConfig->getPaymentAction($storeId) === MethodInterface::ACTION_AUTHORIZE_CAPTURE;
+@@ -94,7 +94,7 @@ class SdkOptionsBuilder
+         ];
+     }
+ 
+-    private function getAddressOptions(string $prefix, QuoteAddress|OrderAddress|null $address): array
++    private function getAddressOptions(string $prefix, $address): array
+     {
+         $street = $address ? array_values((array)$address->getStreet()) : [];
+ 
