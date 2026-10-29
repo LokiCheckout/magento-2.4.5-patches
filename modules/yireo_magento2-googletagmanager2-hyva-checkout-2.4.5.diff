@@ -1,0 +1,20 @@
+diff --git a/MageWire/Checkout.php b/MageWire/Checkout.php
+index 0b4fc01..c68293f 100644
+--- a/MageWire/Checkout.php
++++ b/MageWire/Checkout.php
+@@ -35,13 +35,13 @@ class Checkout extends Component
+      * the data layer reads it from the quote instead, so the payload is unused.
+      */
+     #[On('shipping_method_selected')]
+-    public function triggerShippingMethod(mixed ...$payload): void
++    public function triggerShippingMethod(...$payload): void
+     {
+         $this->pushEvent($this->addShippingInfo->get());
+     }
+ 
+     #[On('payment_method_selected')]
+-    public function triggerPaymentMethod(mixed ...$payload): void
++    public function triggerPaymentMethod(...$payload): void
+     {
+         $quote = $this->checkoutSession->getQuote();
+         $this->addPaymentInfo->setCartId((int) $quote->getId());
