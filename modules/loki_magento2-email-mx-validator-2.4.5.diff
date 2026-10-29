@@ -1,3 +1,27 @@
+diff --git a/Component/TestEmailRepository.php b/Component/TestEmailRepository.php
+index b4c3396..8a5c40b 100644
+--- a/Component/TestEmailRepository.php
++++ b/Component/TestEmailRepository.php
+@@ -13,16 +13,16 @@ class TestEmailRepository extends ComponentRepository
+     private const SESSION_KEY = 'loki_email_mx_validator_test_email';
+ 
+     public function __construct(
+-        private readonly Generic $session
++        private Generic $session
+     ) {
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         return $this->session->getData(self::SESSION_KEY);
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $this->session->setData(self::SESSION_KEY, $value);
+     }
 diff --git a/Config/Config.php b/Config/Config.php
 index 927fa17..dc9cb77 100644
 --- a/Config/Config.php
@@ -12,7 +36,7 @@ index 927fa17..dc9cb77 100644
      }
  
 diff --git a/Plugin/ValidateEmailMxRecordPlugin.php b/Plugin/ValidateEmailMxRecordPlugin.php
-index 883c11c..6338baa 100644
+index 3b8e45a..20da1a9 100644
 --- a/Plugin/ValidateEmailMxRecordPlugin.php
 +++ b/Plugin/ValidateEmailMxRecordPlugin.php
 @@ -18,9 +18,9 @@ class ValidateEmailMxRecordPlugin
@@ -25,28 +49,73 @@ index 883c11c..6338baa 100644
 +        $result,
 +        $value,
 +    ) {
-         if ($this->config->enableMxValidationForEmail() && !empty($value)) {
-             $result = $this->checkMxRecord((string)$value);
-             if (is_array($result)) {
-@@ -31,7 +31,7 @@ class ValidateEmailMxRecordPlugin
+         if (true !== $result) {
+             return $result;
+         }
+@@ -32,7 +32,7 @@ class ValidateEmailMxRecordPlugin
          return $result;
      }
  
 -    private function checkMxRecord(string $email): bool|array
 +    private function checkMxRecord(string $email)
      {
-         $parts = explode('@', $email);
-         if (count($parts) < 2) {
+         $parts = explode('@', trim($email, " \n\r\t\v\0"));
+         $domain = count($parts) >= 2 ? trim((string)end($parts), " \n\r\t\v\0") : '';
+diff --git a/Test/Integration/Stub/DnsStub.php b/Test/Integration/Stub/DnsStub.php
+index ce7d12a..0f1a909 100644
+--- a/Test/Integration/Stub/DnsStub.php
++++ b/Test/Integration/Stub/DnsStub.php
+@@ -13,12 +13,12 @@ class DnsStub extends Dns
+      * @param array<string, array> $records Records per domain, unknown domains have no records
+      */
+     public function __construct(
+-        private readonly array $records = []
++        private array $records = []
+     ) {
+         parent::__construct();
+     }
+ 
+-    public function getRecords(Domain|string $search, int|string|array $types = DNS_ALL): array
++    public function getRecords($search, $types = DNS_ALL): array
+     {
+         $domain = (string)$search;
+         $this->lookups[] = $domain;
 diff --git a/Test/Integration/Validator/EmailValidatorTest.php b/Test/Integration/Validator/EmailValidatorTest.php
-index 4c930a8..fc55a76 100644
+index 760e881..18a63d8 100644
 --- a/Test/Integration/Validator/EmailValidatorTest.php
 +++ b/Test/Integration/Validator/EmailValidatorTest.php
-@@ -25,7 +25,7 @@ class EmailValidatorTest extends TestCase
-      * @dataProvider getValues
-      */
-     #[Config('loki_components/validators/enable_mx_validation_for_email', true, 'store', 'default')]
--    public function testWithVariousValues(string $email, true|string $expectedResult): void
-+    public function testWithVariousValues(string $email, $expectedResult): void
+@@ -33,7 +33,7 @@ class EmailValidatorTest extends TestCase
+ 
+     #[Config('loki_components/validators/enable_mx_validation_for_email', 1, 'store', 'default')]
+     #[DataProvider('getValues')]
+-    public function testWithVariousValues(string $email, true|string $expectedResult, array $expectedLookups): void
++    public function testWithVariousValues(string $email, $expectedResult, array $expectedLookups): void
      {
-         $validator = ObjectManager::getInstance()->get(EmailValidator::class);
-         $actualResult = $validator->validate($email);
+         $dnsStub = $this->replaceDns(['yireo.com' => [['type' => 'MX']]]);
+ 
+diff --git a/Test/Unit/Config/ConfigTest.php b/Test/Unit/Config/ConfigTest.php
+index 192655f..2ccb65b 100644
+--- a/Test/Unit/Config/ConfigTest.php
++++ b/Test/Unit/Config/ConfigTest.php
+@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
+ class ConfigTest extends TestCase
+ {
+     #[DataProvider('getConfigValues')]
+-    public function testEnableMxValidationForEmail(mixed $configValue, bool $expectedResult): void
++    public function testEnableMxValidationForEmail($configValue, bool $expectedResult): void
+     {
+         $scopeConfig = $this->createMock(ScopeConfigInterface::class);
+         $scopeConfig->expects($this->once())
+diff --git a/Test/Unit/Plugin/ValidateEmailMxRecordPluginTest.php b/Test/Unit/Plugin/ValidateEmailMxRecordPluginTest.php
+index 709a5d4..f076cd6 100644
+--- a/Test/Unit/Plugin/ValidateEmailMxRecordPluginTest.php
++++ b/Test/Unit/Plugin/ValidateEmailMxRecordPluginTest.php
+@@ -23,7 +23,7 @@ class ValidateEmailMxRecordPluginTest extends TestCase
+     }
+ 
+     #[DataProvider('getEmptyValues')]
+-    public function testSkipsLookupWithEmptyValue(mixed $value): void
++    public function testSkipsLookupWithEmptyValue($value): void
+     {
+         $dns = $this->createMock(Dns::class);
+         $dns->expects($this->never())->method('getRecords');
