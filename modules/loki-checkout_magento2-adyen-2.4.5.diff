@@ -18,10 +18,10 @@ index e90447a..baf0984 100644
          if (!is_array($value)) {
              return;
 diff --git a/Component/Checkout/Payment/Method/AbstractMethodViewModel.php b/Component/Checkout/Payment/Method/AbstractMethodViewModel.php
-index 0fe3836..61575aa 100644
+index a41e319..968024a 100644
 --- a/Component/Checkout/Payment/Method/AbstractMethodViewModel.php
 +++ b/Component/Checkout/Payment/Method/AbstractMethodViewModel.php
-@@ -17,11 +17,11 @@ use Magento\Store\Model\StoreManagerInterface;
+@@ -18,11 +18,11 @@ use Magento\Store\Model\StoreManagerInterface;
  abstract class AbstractMethodViewModel extends CheckoutViewModel
  {
      public function __construct(
