@@ -1,5 +1,5 @@
 diff --git a/Component/Base/Map/MapRepository.php b/Component/Base/Map/MapRepository.php
-index 0ea9084..3c15aa4 100644
+index 3f7e0c8..7b422a0 100644
 --- a/Component/Base/Map/MapRepository.php
 +++ b/Component/Base/Map/MapRepository.php
 @@ -10,12 +10,12 @@ use Loki\Map\Session\MapSession;
@@ -27,7 +27,7 @@ index 0ea9084..3c15aa4 100644
          if (false === is_array($value)) {
              return;
 diff --git a/Component/Base/Map/MapViewModel.php b/Component/Base/Map/MapViewModel.php
-index 2f97df5..fd1ed02 100644
+index 422d403..7d3fae9 100644
 --- a/Component/Base/Map/MapViewModel.php
 +++ b/Component/Base/Map/MapViewModel.php
 @@ -13,7 +13,7 @@ use Loki\Map\MapLocation\MapLocation;
@@ -39,7 +39,7 @@ index 2f97df5..fd1ed02 100644
  
      public function getJsComponentName(): ?string
      {
-@@ -115,13 +115,13 @@ class MapViewModel extends ComponentViewModel
+@@ -117,13 +117,13 @@ class MapViewModel extends ComponentViewModel
          return '';
      }
  
@@ -56,20 +56,22 @@ index 2f97df5..fd1ed02 100644
          if ($this->currentMapLocation !== null) {
              return $this->currentMapLocation;
 diff --git a/Config/Config.php b/Config/Config.php
-index e2ea1fd..898092d 100644
+index f7254e6..4d95774 100644
 --- a/Config/Config.php
 +++ b/Config/Config.php
-@@ -11,7 +11,7 @@ use Magento\Store\Model\ScopeInterface;
+@@ -12,8 +12,8 @@ use Magento\Store\Model\ScopeInterface;
  class Config implements ArgumentInterface
  {
      public function __construct(
--        private readonly ScopeConfigInterface $scopeConfig
-+        private ScopeConfigInterface $scopeConfig
+-        private readonly ScopeConfigInterface $scopeConfig,
+-        private readonly Escaper $escaper
++        private ScopeConfigInterface $scopeConfig,
++        private Escaper $escaper
      ) {
      }
  
 diff --git a/MapLocation/MapLocation.php b/MapLocation/MapLocation.php
-index 9628c24..0715d6f 100644
+index a4c24a9..dc2b638 100644
 --- a/MapLocation/MapLocation.php
 +++ b/MapLocation/MapLocation.php
 @@ -12,12 +12,12 @@ use Magento\Framework\DataObject;
@@ -91,7 +93,7 @@ index 9628c24..0715d6f 100644
          private bool $selectable = true,
          array $data = [],
      ) {
-@@ -80,7 +80,7 @@ class MapLocation extends DataObject implements JsonSerializable
+@@ -95,7 +95,7 @@ class MapLocation extends DataObject implements JsonSerializable
      }
  
      #[\ReturnTypeWillChange]
@@ -122,3 +124,111 @@ index f8675d2..b1bd96f 100644
      {
          $lokiMaps = (array)$this->customerSession->getLokiMaps();
          $lokiMaps[$prefix][$key] = $value;
+diff --git a/Test/Fixture/TestIconMapViewModel.php b/Test/Fixture/TestIconMapViewModel.php
+index 503a42a..8140969 100644
+--- a/Test/Fixture/TestIconMapViewModel.php
++++ b/Test/Fixture/TestIconMapViewModel.php
+@@ -62,9 +62,9 @@ class TestIconMapViewModel extends MapViewModel
+     private ?array $mapLocations = null;
+ 
+     public function __construct(
+-        private readonly AddressFactory $addressFactory,
+-        private readonly LocationFactory $locationFactory,
+-        private readonly MapLocationFactory $mapLocationFactory,
++        private AddressFactory $addressFactory,
++        private LocationFactory $locationFactory,
++        private MapLocationFactory $mapLocationFactory,
+     ) {
+     }
+ 
+diff --git a/Test/Fixture/TestMapViewModel.php b/Test/Fixture/TestMapViewModel.php
+index 7d64676..587c213 100644
+--- a/Test/Fixture/TestMapViewModel.php
++++ b/Test/Fixture/TestMapViewModel.php
+@@ -78,9 +78,9 @@ class TestMapViewModel extends MapViewModel
+     private ?array $mapLocations = null;
+ 
+     public function __construct(
+-        private readonly AddressFactory $addressFactory,
+-        private readonly LocationFactory $locationFactory,
+-        private readonly MapLocationFactory $mapLocationFactory,
++        private AddressFactory $addressFactory,
++        private LocationFactory $locationFactory,
++        private MapLocationFactory $mapLocationFactory,
+     ) {
+     }
+ 
+diff --git a/Test/Integration/Controller/ComponentUpdateTest.php b/Test/Integration/Controller/ComponentUpdateTest.php
+index 81dd07f..171d02a 100644
+--- a/Test/Integration/Controller/ComponentUpdateTest.php
++++ b/Test/Integration/Controller/ComponentUpdateTest.php
+@@ -76,7 +76,7 @@ class ComponentUpdateTest extends AbstractController
+         $this->assertSame([], $mapSession->getAll(self::BLOCK_NAME));
+     }
+ 
+-    private function dispatchUpdate(mixed $update): void
++    private function dispatchUpdate($update): void
+     {
+         $body = [
+             'updates' => [['blockName' => self::BLOCK_NAME, 'update' => $update]],
+diff --git a/Test/Unit/Component/Base/Map/MapRepositoryTest.php b/Test/Unit/Component/Base/Map/MapRepositoryTest.php
+index 08443ba..4365d1a 100644
+--- a/Test/Unit/Component/Base/Map/MapRepositoryTest.php
++++ b/Test/Unit/Component/Base/Map/MapRepositoryTest.php
+@@ -109,7 +109,7 @@ class MapRepositoryTest extends TestCase
+     }
+ 
+     #[DataProvider('getMapLocationIdData')]
+-    public function testSaveValueSanitizesMapLocationId(mixed $mapLocationId, string $expected): void
++    public function testSaveValueSanitizesMapLocationId($mapLocationId, string $expected): void
+     {
+         $repository = $this->getRepository();
+         $repository->saveValue(['mapLocationId' => $mapLocationId]);
+diff --git a/Test/Unit/Component/Base/Map/MapViewModelTest.php b/Test/Unit/Component/Base/Map/MapViewModelTest.php
+index 77b71d1..ca92474 100644
+--- a/Test/Unit/Component/Base/Map/MapViewModelTest.php
++++ b/Test/Unit/Component/Base/Map/MapViewModelTest.php
+@@ -276,7 +276,7 @@ class MapViewModelTest extends TestCase
+             $viewModel = new MapViewModel();
+         } else {
+             $viewModel = new class($mapLocations) extends MapViewModel {
+-                public function __construct(private readonly array $testMapLocations)
++                public function __construct(private array $testMapLocations)
+                 {
+                 }
+ 
+diff --git a/Test/Unit/Config/ConfigTest.php b/Test/Unit/Config/ConfigTest.php
+index 3ee08fb..4a9e703 100644
+--- a/Test/Unit/Config/ConfigTest.php
++++ b/Test/Unit/Config/ConfigTest.php
+@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
+ class ConfigTest extends TestCase
+ {
+     #[DataProvider('getMapTypeData')]
+-    public function testGetMapType(string $requestedMapType, mixed $configValue, string $expected): void
++    public function testGetMapType(string $requestedMapType, $configValue, string $expected): void
+     {
+         $config = $this->createConfig($this->getScopeConfig([
+             'loki_map_components/generic/map_type' => $configValue,
+@@ -43,7 +43,7 @@ class ConfigTest extends TestCase
+     }
+ 
+     #[DataProvider('getCoordinateData')]
+-    public function testGetDefaultCoordinates(mixed $value, float $expected): void
++    public function testGetDefaultCoordinates($value, float $expected): void
+     {
+         $config = $this->createConfig($this->getScopeConfig([
+             'loki_map_components/generic/default_latitude' => $value,
+diff --git a/Test/Unit/Stub/CustomerSessionStub.php b/Test/Unit/Stub/CustomerSessionStub.php
+index 5a95473..01bc1b1 100644
+--- a/Test/Unit/Stub/CustomerSessionStub.php
++++ b/Test/Unit/Stub/CustomerSessionStub.php
+@@ -7,7 +7,7 @@ use Magento\Customer\Model\Session as CustomerSession;
+ 
+ class CustomerSessionStub extends CustomerSession
+ {
+-    public mixed $lokiMaps = null;
++    public $lokiMaps = null;
+ 
+     public function __construct()
+     {
