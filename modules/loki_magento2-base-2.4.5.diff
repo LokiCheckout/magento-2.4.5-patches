@@ -25,7 +25,7 @@ index 1f8663e..5014db9 100644
      }
  
 diff --git a/Test/Integration/Template/TemplateRenderingTest.php b/Test/Integration/Template/TemplateRenderingTest.php
-index 5a8ba95..b1f1314 100644
+index 1525da0..13c380d 100644
 --- a/Test/Integration/Template/TemplateRenderingTest.php
 +++ b/Test/Integration/Template/TemplateRenderingTest.php
 @@ -41,7 +41,7 @@ class TemplateRenderingTest extends TestCase
