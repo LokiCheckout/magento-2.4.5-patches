@@ -1,0 +1,129 @@
+diff --git a/Component/QuoteAddressExtendedField/QuoteAddressExtendedFieldRepository.php b/Component/QuoteAddressExtendedField/QuoteAddressExtendedFieldRepository.php
+index 685cbec..6046507 100644
+--- a/Component/QuoteAddressExtendedField/QuoteAddressExtendedFieldRepository.php
++++ b/Component/QuoteAddressExtendedField/QuoteAddressExtendedFieldRepository.php
+@@ -15,14 +15,14 @@ use Magento\Quote\Model\ResourceModel\Quote\Address as QuoteAddressResource;
+ class QuoteAddressExtendedFieldRepository extends FieldRepository
+ {
+     public function __construct(
+-        private readonly QuoteAddressExtendedRepository $quoteAddressExtendedRepository,
+-        private readonly CheckoutState $checkoutState,
+-        private readonly AddressResolver $addressResolver,
+-        private readonly QuoteAddressResource $quoteAddressResource
++        private QuoteAddressExtendedRepository $quoteAddressExtendedRepository,
++        private CheckoutState $checkoutState,
++        private AddressResolver $addressResolver,
++        private QuoteAddressResource $quoteAddressResource
+     ) {
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         $quoteAddressId = (int)$this->getQuoteAddress()?->getId();
+         if ($quoteAddressId < 1) {
+@@ -38,7 +38,7 @@ class QuoteAddressExtendedFieldRepository extends FieldRepository
+         return (string)$quoteAddressExtended->getData($this->getFieldName());
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $fieldName = $this->getFieldName();
+         if (in_array($fieldName, QuoteAddressExtendedRepository::RESERVED_COLUMNS, true)) {
+diff --git a/Cron/DeleteOrphanedRows.php b/Cron/DeleteOrphanedRows.php
+index 4f85ce1..245c89b 100644
+--- a/Cron/DeleteOrphanedRows.php
++++ b/Cron/DeleteOrphanedRows.php
+@@ -9,7 +9,7 @@ use Loki\QuoteAddressExtended\Model\ResourceModel\QuoteAddressExtended as QuoteA
+ class DeleteOrphanedRows
+ {
+     public function __construct(
+-        private readonly QuoteAddressExtendedResource $resource
++        private QuoteAddressExtendedResource $resource
+     ) {
+     }
+ 
+diff --git a/Observer/AddQuoteAddressExtendedToEmailVars.php b/Observer/AddQuoteAddressExtendedToEmailVars.php
+index 2f62000..4de47ec 100644
+--- a/Observer/AddQuoteAddressExtendedToEmailVars.php
++++ b/Observer/AddQuoteAddressExtendedToEmailVars.php
+@@ -18,7 +18,7 @@ class AddQuoteAddressExtendedToEmailVars implements ObserverInterface
+     public const BILLING_TEMPLATE_VARIABLE = 'loki_billing_address_extended';
+ 
+     public function __construct(
+-        private readonly QuoteAddressExtendedRepository $quoteAddressExtendedRepository
++        private QuoteAddressExtendedRepository $quoteAddressExtendedRepository
+     ) {
+     }
+ 
+diff --git a/Observer/LinkOrderAddressesToQuoteAddressExtended.php b/Observer/LinkOrderAddressesToQuoteAddressExtended.php
+index fd3d146..5594c43 100644
+--- a/Observer/LinkOrderAddressesToQuoteAddressExtended.php
++++ b/Observer/LinkOrderAddressesToQuoteAddressExtended.php
+@@ -16,8 +16,8 @@ use Psr\Log\LoggerInterface;
+ class LinkOrderAddressesToQuoteAddressExtended implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly QuoteAddressExtendedRepository $quoteAddressExtendedRepository,
+-        private readonly LoggerInterface $logger
++        private QuoteAddressExtendedRepository $quoteAddressExtendedRepository,
++        private LoggerInterface $logger
+     ) {
+     }
+ 
+diff --git a/Repository/QuoteAddressExtendedRepository.php b/Repository/QuoteAddressExtendedRepository.php
+index af0e0d2..96b9604 100644
+--- a/Repository/QuoteAddressExtendedRepository.php
++++ b/Repository/QuoteAddressExtendedRepository.php
+@@ -27,9 +27,9 @@ class QuoteAddressExtendedRepository
+     ];
+ 
+     public function __construct(
+-        private readonly QuoteAddressExtendedResource $resource,
+-        private readonly QuoteAddressExtendedFactory $quoteAddressExtendedFactory,
+-        private readonly CollectionFactory $collectionFactory
++        private QuoteAddressExtendedResource $resource,
++        private QuoteAddressExtendedFactory $quoteAddressExtendedFactory,
++        private CollectionFactory $collectionFactory
+     ) {
+     }
+ 
+diff --git a/ViewModel/Adminhtml/OrderAddressExtendedView.php b/ViewModel/Adminhtml/OrderAddressExtendedView.php
+index a1cd15d..52792ee 100644
+--- a/ViewModel/Adminhtml/OrderAddressExtendedView.php
++++ b/ViewModel/Adminhtml/OrderAddressExtendedView.php
+@@ -19,11 +19,11 @@ class OrderAddressExtendedView implements ArgumentInterface
+     private array $quoteAddressExtended = [];
+ 
+     public function __construct(
+-        private readonly QuoteAddressExtendedRepository $quoteAddressExtendedRepository,
+-        private readonly AddressResolver $addressResolver,
+-        private readonly RequestInterface $request,
+-        private readonly OrderRepositoryInterface $orderRepository,
+-        private readonly InvoiceRepositoryInterface $invoiceRepository
++        private QuoteAddressExtendedRepository $quoteAddressExtendedRepository,
++        private AddressResolver $addressResolver,
++        private RequestInterface $request,
++        private OrderRepositoryInterface $orderRepository,
++        private InvoiceRepositoryInterface $invoiceRepository
+     ) {
+     }
+ 
+diff --git a/ViewModel/CheckoutQuoteAddressExtendedView.php b/ViewModel/CheckoutQuoteAddressExtendedView.php
+index ff8a4fc..49157ea 100644
+--- a/ViewModel/CheckoutQuoteAddressExtendedView.php
++++ b/ViewModel/CheckoutQuoteAddressExtendedView.php
+@@ -13,9 +13,9 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class CheckoutQuoteAddressExtendedView implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly QuoteAddressExtendedRepository $quoteAddressExtendedRepository,
+-        private readonly CheckoutState $checkoutState,
+-        private readonly AddressResolver $addressResolver
++        private QuoteAddressExtendedRepository $quoteAddressExtendedRepository,
++        private CheckoutState $checkoutState,
++        private AddressResolver $addressResolver
+     ) {
+     }
+ 
