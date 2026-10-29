@@ -1,3 +1,22 @@
+diff --git a/Component/Base/Field/FieldComponent.php b/Component/Base/Field/FieldComponent.php
+index 214a49f..aceb974 100644
+--- a/Component/Base/Field/FieldComponent.php
++++ b/Component/Base/Field/FieldComponent.php
+@@ -47,12 +47,12 @@ class FieldComponent extends Component
+         return array_values(array_diff($filters, self::SECRET_FIELD_SKIPPED_FILTERS));
+     }
+ 
+-    private function isSecretField(mixed $viewModel): bool
++    private function isSecretField($viewModel): bool
+     {
+         return $viewModel instanceof FieldViewModel && $viewModel->isSecretField();
+     }
+ 
+-    private function validateOptions(mixed $viewModel): bool
++    private function validateOptions($viewModel): bool
+     {
+         if (false === $viewModel instanceof FieldViewModelInterface) {
+             return false;
 diff --git a/Component/Base/Field/FieldRepository.php b/Component/Base/Field/FieldRepository.php
 index eef850a..61a7079 100644
 --- a/Component/Base/Field/FieldRepository.php
@@ -12,11 +31,11 @@ index eef850a..61a7079 100644
          $defaultValue = $this->getComponent()->getBlock()?->getDefaultValue();
          if ($defaultValue !== null && $defaultValue !== '') {
 diff --git a/Component/Base/Field/FieldViewModel.php b/Component/Base/Field/FieldViewModel.php
-index d80d000..8a40526 100644
+index 1231d99..f643d03 100644
 --- a/Component/Base/Field/FieldViewModel.php
 +++ b/Component/Base/Field/FieldViewModel.php
-@@ -135,7 +135,7 @@ class FieldViewModel extends ComponentViewModel implements FieldViewModelInterfa
-         return trim($fieldAttributesAsString, " \f\n\r\t\v\x00");
+@@ -159,7 +159,7 @@ class FieldViewModel extends ComponentViewModel implements FieldViewModelInterfa
+             || str_starts_with($attributeName, '@');
      }
  
 -    private function escapeAttribute(string|int|float $value): string
@@ -24,8 +43,8 @@ index d80d000..8a40526 100644
      {
          return (string)$this->getEscaper()->escapeHtml((string)$value);
      }
-@@ -159,7 +159,7 @@ class FieldViewModel extends ComponentViewModel implements FieldViewModelInterfa
-         ];
+@@ -193,7 +193,7 @@ class FieldViewModel extends ComponentViewModel implements FieldViewModelInterfa
+         return $this->getInputType() === 'password';
      }
  
 -    public function getValue(): mixed
@@ -33,7 +52,7 @@ index d80d000..8a40526 100644
      {
          $value = parent::getValue();
          if (false === $this->isEmptyValue($value)) {
-@@ -218,7 +218,7 @@ class FieldViewModel extends ComponentViewModel implements FieldViewModelInterfa
+@@ -260,7 +260,7 @@ class FieldViewModel extends ComponentViewModel implements FieldViewModelInterfa
          return $value === false || $this->isEmptyValue($value);
      }
  
@@ -42,30 +61,82 @@ index d80d000..8a40526 100644
      {
          if (is_string($value)) {
              return trim($value, " \f\n\r\t\v\x00") === '';
-diff --git a/Component/FileUploader/FileUploaderRepository.php b/Component/FileUploader/FileUploaderRepository.php
-index 95c8fa6..18a00db 100644
---- a/Component/FileUploader/FileUploaderRepository.php
-+++ b/Component/FileUploader/FileUploaderRepository.php
-@@ -19,12 +19,12 @@ class FileUploaderRepository extends FieldRepository
+diff --git a/Component/Test/TestFieldRepository.php b/Component/Test/TestFieldRepository.php
+index 4f45667..f9c8584 100644
+--- a/Component/Test/TestFieldRepository.php
++++ b/Component/Test/TestFieldRepository.php
+@@ -10,16 +10,16 @@ use Loki\Field\Component\Base\Field\FieldRepository;
+ class TestFieldRepository extends FieldRepository
+ {
+     public function __construct(
+-        private readonly TestFieldStorage $storage
++        private TestFieldStorage $storage
      ) {
      }
  
 -    public function getValue(): mixed
 +    public function getValue()
      {
-         return false;
+         return $this->storage->getValue($this->getComponentName());
      }
  
 -    public function saveValue(mixed $value): void
 +    public function saveValue($value): void
      {
-         // @todo: Move this to uploader utility instead
-         $folder = 'yireo-test';
+         $this->storage->saveValue($this->getComponentName(), $value);
+     }
+diff --git a/Component/Test/TestFieldStorage.php b/Component/Test/TestFieldStorage.php
+index 47e40cf..47cb0b8 100644
+--- a/Component/Test/TestFieldStorage.php
++++ b/Component/Test/TestFieldStorage.php
+@@ -14,12 +14,12 @@ class TestFieldStorage
+     private const MAX_VALUE_SIZE = 4096;
+ 
+     public function __construct(
+-        private readonly Session $session,
+-        private readonly AppState $appState,
++        private Session $session,
++        private AppState $appState,
+     ) {
+     }
+ 
+-    public function getValue(string $componentName): mixed
++    public function getValue(string $componentName)
+     {
+         return $this->getValues()[$componentName] ?? null;
+     }
+@@ -29,7 +29,7 @@ class TestFieldStorage
+         return array_key_exists($componentName, $this->getValues());
+     }
+ 
+-    public function saveValue(string $componentName, mixed $value): void
++    public function saveValue(string $componentName, $value): void
+     {
+         if (false === $this->isAllowed($value)) {
+             return;
+@@ -50,7 +50,7 @@ class TestFieldStorage
+         return (array)$this->session->getData(self::SESSION_KEY);
+     }
+ 
+-    private function isAllowed(mixed $value): bool
++    private function isAllowed($value): bool
+     {
+         // The test page is only available in developer mode, so the test values should not be stored otherwise
+         if ($this->appState->getMode() !== AppState::MODE_DEVELOPER) {
 diff --git a/Plugin/ValidatorPlugin.php b/Plugin/ValidatorPlugin.php
-index e95800f..46f20aa 100644
+index 9434f54..ab34da8 100644
 --- a/Plugin/ValidatorPlugin.php
 +++ b/Plugin/ValidatorPlugin.php
-@@ -13,7 +13,7 @@ class ValidatorPlugin
+@@ -11,7 +11,7 @@ use Loki\Field\Validator\FieldValueGuard;
+ class ValidatorPlugin
+ {
+     public function __construct(
+-        private readonly FieldValueGuard $fieldValueGuard
++        private FieldValueGuard $fieldValueGuard
+     ) {
+     }
+ 
+@@ -19,7 +19,7 @@ class ValidatorPlugin
          Validator $validator,
          callable $proceed,
          ComponentInterface $component,
@@ -74,14 +145,27 @@ index e95800f..46f20aa 100644
          string $scope = '',
          int $depth = 0
      ) {
+diff --git a/Test/Integration/Controller/HtmlRoundtripTest.php b/Test/Integration/Controller/HtmlRoundtripTest.php
+index d573823..56d16b2 100644
+--- a/Test/Integration/Controller/HtmlRoundtripTest.php
++++ b/Test/Integration/Controller/HtmlRoundtripTest.php
+@@ -128,7 +128,7 @@ class HtmlRoundtripTest extends TestCase
+         $this->assertFalse($this->getStorage()->hasValue(self::PREFIX . 'checkbox'));
+     }
+ 
+-    private function post(string $fieldName, mixed $value): HttpResponse
++    private function post(string $fieldName, $value): HttpResponse
+     {
+         $blockName = self::PREFIX . $fieldName;
+         $payload = [
 diff --git a/Test/Unit/Component/Base/Field/FieldRepositoryTest.php b/Test/Unit/Component/Base/Field/FieldRepositoryTest.php
-index 68acebe..bd7a336 100644
+index f077f7b..c279d44 100644
 --- a/Test/Unit/Component/Base/Field/FieldRepositoryTest.php
 +++ b/Test/Unit/Component/Base/Field/FieldRepositoryTest.php
-@@ -90,12 +90,12 @@ class FieldRepositoryTest extends TestCase
-         $component->method('getViewModel')->willReturn($viewModel);
- 
-         $repository = new class extends FieldRepository {
+@@ -170,12 +170,12 @@ class FieldRepositoryTest extends TestCase
+     private function createRepository(): FieldRepository
+     {
+         return new class extends FieldRepository {
 -            public function getValue(): mixed
 +            public function getValue()
              {
@@ -94,62 +178,119 @@ index 68acebe..bd7a336 100644
              }
          };
 diff --git a/Test/Unit/Component/Base/Field/FieldViewModelTest.php b/Test/Unit/Component/Base/Field/FieldViewModelTest.php
-index 0c32c91..52cfb73 100644
+index c1695aa..b8d1e64 100644
 --- a/Test/Unit/Component/Base/Field/FieldViewModelTest.php
 +++ b/Test/Unit/Component/Base/Field/FieldViewModelTest.php
-@@ -53,7 +53,7 @@ class FieldViewModelTest extends TestCase
-     /**
-      * @dataProvider getFalsyButFilledValues
-      */
+@@ -138,7 +138,7 @@ class FieldViewModelTest extends TestCase
+     }
+ 
+     #[DataProvider('getFalsyButFilledValues')]
 -    public function testFalsyValueIsNotReplacedByDefaultValue(mixed $value): void
 +    public function testFalsyValueIsNotReplacedByDefaultValue($value): void
      {
          $repository = $this->createMock(ComponentRepositoryInterface::class);
          $repository->method('getValue')->willReturn($value);
-@@ -68,7 +68,7 @@ class FieldViewModelTest extends TestCase
-     /**
-      * @dataProvider getIsEmptyValues
-      */
+@@ -151,7 +151,7 @@ class FieldViewModelTest extends TestCase
+     }
+ 
+     #[DataProvider('getIsEmptyValues')]
 -    public function testIsEmpty(mixed $value, bool $expected): void
 +    public function testIsEmpty($value, bool $expected): void
      {
          $repository = $this->createMock(ComponentRepositoryInterface::class);
          $repository->method('getValue')->willReturn($value);
-@@ -108,7 +108,7 @@ class FieldViewModelTest extends TestCase
-     /**
-      * @dataProvider getEmptyValues
-      */
+@@ -189,7 +189,7 @@ class FieldViewModelTest extends TestCase
+     }
+ 
+     #[DataProvider('getEmptyValues')]
 -    public function testEmptyValueIsReplacedByDefaultValue(mixed $value): void
 +    public function testEmptyValueIsReplacedByDefaultValue($value): void
      {
          $repository = $this->createMock(ComponentRepositoryInterface::class);
          $repository->method('getValue')->willReturn($value);
+@@ -377,7 +377,7 @@ class FieldViewModelTest extends TestCase
+     }
+ 
+     #[DataProvider('getEmptyValues')]
+-    public function testRequiredEmptyFieldIsInvalid(mixed $value): void
++    public function testRequiredEmptyFieldIsInvalid($value): void
+     {
+         $repository = $this->createMock(ComponentRepositoryInterface::class);
+         $repository->method('getValue')->willReturn($value);
+diff --git a/Test/Unit/Config/ConfigTest.php b/Test/Unit/Config/ConfigTest.php
+index d214918..69d79b9 100644
+--- a/Test/Unit/Config/ConfigTest.php
++++ b/Test/Unit/Config/ConfigTest.php
+@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
+ class ConfigTest extends TestCase
+ {
+     #[DataProvider('getUseRequiredBlockValues')]
+-    public function testUseRequiredBlock(mixed $value, bool $expected): void
++    public function testUseRequiredBlock($value, bool $expected): void
+     {
+         $scopeConfig = $this->createMock(ScopeConfigInterface::class);
+         $scopeConfig->expects($this->once())
 diff --git a/Test/Unit/Util/OptionValueTest.php b/Test/Unit/Util/OptionValueTest.php
-index 8589de5..96a5ee8 100644
+index f4e8b2f..8c1dd0b 100644
 --- a/Test/Unit/Util/OptionValueTest.php
 +++ b/Test/Unit/Util/OptionValueTest.php
-@@ -11,7 +11,7 @@ class OptionValueTest extends TestCase
-     /**
-      * @dataProvider getIsSelectedValues
-      */
+@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
+ class OptionValueTest extends TestCase
+ {
+     #[DataProvider('getIsSelectedValues')]
 -    public function testIsSelected(mixed $option, int|string $optionIndex, mixed $currentValue, bool $expected): void
 +    public function testIsSelected($option, $optionIndex, $currentValue, bool $expected): void
      {
          $this->assertSame($expected, (new OptionValue())->isSelected($option, $optionIndex, $currentValue));
      }
 diff --git a/Test/Unit/Validator/Component/PasswordComplexityValidatorTest.php b/Test/Unit/Validator/Component/PasswordComplexityValidatorTest.php
-index a6ab92c..caa117b 100644
+index 002f6c8..ca7a53c 100644
 --- a/Test/Unit/Validator/Component/PasswordComplexityValidatorTest.php
 +++ b/Test/Unit/Validator/Component/PasswordComplexityValidatorTest.php
-@@ -12,7 +12,7 @@ class PasswordComplexityValidatorTest extends TestCase
-      * @return void
-      * @dataProvider getTestValues
-      */
--    public function testValidate(mixed $password, bool|string $expectedResult)
-+    public function testValidate($password, $expectedResult)
+@@ -10,7 +10,7 @@ use Loki\Field\ViewModel\PasswordComplexity;
+ class PasswordComplexityValidatorTest extends TestCase
+ {
+     #[DataProvider('getTestValues')]
+-    public function testValidate(mixed $password, bool|string $expectedResult): void
++    public function testValidate($password, $expectedResult): void
      {
          $passwordComplexity = new PasswordComplexity();
          $validator = new PasswordComplexityValidator($passwordComplexity);
+@@ -46,7 +46,7 @@ class PasswordComplexityValidatorTest extends TestCase
+     }
+ 
+     #[DataProvider('getSkippedValues')]
+-    public function testEmptyOrNonScalarValuesAreSkipped(mixed $value): void
++    public function testEmptyOrNonScalarValuesAreSkipped($value): void
+     {
+         $validator = new PasswordComplexityValidator(new PasswordComplexity());
+         $this->assertTrue($validator->validate($value));
+diff --git a/Test/Unit/Validator/FieldValueGuardTest.php b/Test/Unit/Validator/FieldValueGuardTest.php
+index 9ad2fef..549c0c1 100644
+--- a/Test/Unit/Validator/FieldValueGuardTest.php
++++ b/Test/Unit/Validator/FieldValueGuardTest.php
+@@ -13,7 +13,7 @@ class FieldValueGuardTest extends TestCase
+     use BlockMock;
+ 
+     #[DataProvider('getValues')]
+-    public function testGetError(array $blockData, mixed $value, bool $expectError): void
++    public function testGetError(array $blockData, $value, bool $expectError): void
+     {
+         $error = (new FieldValueGuard())->getError($this->getViewModel($blockData), $value);
+         $this->assertSame($expectError, $error !== null);
+diff --git a/Test/Unit/Validator/OptionValidatorTest.php b/Test/Unit/Validator/OptionValidatorTest.php
+index d97c131..e4667f9 100644
+--- a/Test/Unit/Validator/OptionValidatorTest.php
++++ b/Test/Unit/Validator/OptionValidatorTest.php
+@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
+ class OptionValidatorTest extends TestCase
+ {
+     #[DataProvider('getValues')]
+-    public function testValidate(mixed $value, bool $expected): void
++    public function testValidate($value, bool $expected): void
+     {
+         $result = (new OptionValidator(new OptionValue()))->validate($value, $this->getComponent([
+             new Option('red', 'Red'),
 diff --git a/Util/Option.php b/Util/Option.php
 index 0aab399..26cb79b 100644
 --- a/Util/Option.php
@@ -259,6 +400,53 @@ index eca214f..2610679 100644
      {
          if (is_bool($value)) {
              return $value ? '1' : '0';
+diff --git a/Validator/FieldValueGuard.php b/Validator/FieldValueGuard.php
+index c154280..2f7df74 100644
+--- a/Validator/FieldValueGuard.php
++++ b/Validator/FieldValueGuard.php
+@@ -28,12 +28,12 @@ class FieldValueGuard
+     private const BOOLEAN_FIELD_TYPES = ['checkbox', 'switch'];
+ 
+     public function __construct(
+-        private readonly int $defaultMaxLength = self::DEFAULT_MAX_LENGTH,
+-        private readonly int $defaultTextareaMaxLength = self::DEFAULT_TEXTAREA_MAX_LENGTH,
++        private int $defaultMaxLength = self::DEFAULT_MAX_LENGTH,
++        private int $defaultTextareaMaxLength = self::DEFAULT_TEXTAREA_MAX_LENGTH,
+     ) {
+     }
+ 
+-    public function getError(FieldViewModel $viewModel, mixed $value): ?Phrase
++    public function getError(FieldViewModel $viewModel, $value): ?Phrase
+     {
+         $block = $viewModel->getBlock();
+         if (false === $block instanceof AbstractBlock) {
+@@ -77,7 +77,7 @@ class FieldValueGuard
+         return empty($fieldAttributes['multiple']) && empty($block->getMultiple());
+     }
+ 
+-    private function isBooleanValue(mixed $value): bool
++    private function isBooleanValue($value): bool
+     {
+         return in_array($value, [true, false, null, 0, 1, '0', '1', ''], true);
+     }
+diff --git a/Validator/OptionValidator.php b/Validator/OptionValidator.php
+index 068da53..8ae3eea 100644
+--- a/Validator/OptionValidator.php
++++ b/Validator/OptionValidator.php
+@@ -12,11 +12,11 @@ use Loki\Field\Util\OptionValue;
+ class OptionValidator implements ValidatorInterface
+ {
+     public function __construct(
+-        private readonly OptionValue $optionValue
++        private OptionValue $optionValue
+     ) {
+     }
+ 
+-    public function validate(mixed $value, ?ComponentInterface $component = null): bool|array
++    public function validate($value, ?ComponentInterface $component = null)
+     {
+         if ($value === null || $value === '' || is_bool($value)) {
+             return true;
 diff --git a/Validator/PasswordComplexityValidator.php b/Validator/PasswordComplexityValidator.php
 index 092f5ca..713498c 100644
 --- a/Validator/PasswordComplexityValidator.php
