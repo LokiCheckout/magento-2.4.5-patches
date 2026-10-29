@@ -1,0 +1,119 @@
+diff --git a/Component/QuoteExtendedField/QuoteExtendedFieldRepository.php b/Component/QuoteExtendedField/QuoteExtendedFieldRepository.php
+index 1514f03..f7451a9 100644
+--- a/Component/QuoteExtendedField/QuoteExtendedFieldRepository.php
++++ b/Component/QuoteExtendedField/QuoteExtendedFieldRepository.php
+@@ -12,12 +12,12 @@ use Magento\Framework\Exception\NoSuchEntityException;
+ class QuoteExtendedFieldRepository extends FieldRepository
+ {
+     public function __construct(
+-        private readonly QuoteExtendedRepository $quoteExtendedRepository,
+-        private readonly CheckoutState $checkoutState
++        private QuoteExtendedRepository $quoteExtendedRepository,
++        private CheckoutState $checkoutState
+     ) {
+     }
+ 
+-    public function getValue(): mixed
++    public function getValue()
+     {
+         try {
+             $quoteExtended = $this->quoteExtendedRepository->getByQuoteId($this->checkoutState->getQuoteId());
+@@ -28,7 +28,7 @@ class QuoteExtendedFieldRepository extends FieldRepository
+         return (string)$quoteExtended->getData($this->getFieldName());
+     }
+ 
+-    public function saveValue(mixed $value): void
++    public function saveValue($value): void
+     {
+         $fieldName = $this->getFieldName();
+         if (in_array($fieldName, QuoteExtendedRepository::RESERVED_COLUMNS, true)) {
+diff --git a/Cron/DeleteOrphanedRows.php b/Cron/DeleteOrphanedRows.php
+index b881f14..7e29b6a 100644
+--- a/Cron/DeleteOrphanedRows.php
++++ b/Cron/DeleteOrphanedRows.php
+@@ -9,7 +9,7 @@ use Loki\QuoteExtended\Model\ResourceModel\QuoteExtended as QuoteExtendedResourc
+ class DeleteOrphanedRows
+ {
+     public function __construct(
+-        private readonly QuoteExtendedResource $resource
++        private QuoteExtendedResource $resource
+     ) {
+     }
+ 
+diff --git a/Observer/AddQuoteExtendedToEmailVars.php b/Observer/AddQuoteExtendedToEmailVars.php
+index 053243c..b2ab6bc 100644
+--- a/Observer/AddQuoteExtendedToEmailVars.php
++++ b/Observer/AddQuoteExtendedToEmailVars.php
+@@ -16,7 +16,7 @@ class AddQuoteExtendedToEmailVars implements ObserverInterface
+     public const TEMPLATE_VARIABLE = 'loki_quote_extended';
+ 
+     public function __construct(
+-        private readonly QuoteExtendedRepository $quoteExtendedRepository
++        private QuoteExtendedRepository $quoteExtendedRepository
+     ) {
+     }
+ 
+diff --git a/Observer/LinkOrderToQuoteExtended.php b/Observer/LinkOrderToQuoteExtended.php
+index 763c341..b430953 100644
+--- a/Observer/LinkOrderToQuoteExtended.php
++++ b/Observer/LinkOrderToQuoteExtended.php
+@@ -14,8 +14,8 @@ use Psr\Log\LoggerInterface;
+ class LinkOrderToQuoteExtended implements ObserverInterface
+ {
+     public function __construct(
+-        private readonly QuoteExtendedRepository $quoteExtendedRepository,
+-        private readonly LoggerInterface $logger
++        private QuoteExtendedRepository $quoteExtendedRepository,
++        private LoggerInterface $logger
+     ) {
+     }
+ 
+diff --git a/Repository/QuoteExtendedRepository.php b/Repository/QuoteExtendedRepository.php
+index c62cf14..b97cca3 100644
+--- a/Repository/QuoteExtendedRepository.php
++++ b/Repository/QuoteExtendedRepository.php
+@@ -17,8 +17,8 @@ class QuoteExtendedRepository
+     public const RESERVED_COLUMNS = ['entity_id', 'quote_id', 'order_id', 'created_at', 'updated_at'];
+ 
+     public function __construct(
+-        private readonly QuoteExtendedResource $resource,
+-        private readonly QuoteExtendedFactory $quoteExtendedFactory
++        private QuoteExtendedResource $resource,
++        private QuoteExtendedFactory $quoteExtendedFactory
+     ) {
+     }
+ 
+diff --git a/ViewModel/Adminhtml/OrderQuoteExtendedView.php b/ViewModel/Adminhtml/OrderQuoteExtendedView.php
+index 4af3e06..981fdba 100644
+--- a/ViewModel/Adminhtml/OrderQuoteExtendedView.php
++++ b/ViewModel/Adminhtml/OrderQuoteExtendedView.php
+@@ -18,10 +18,10 @@ class OrderQuoteExtendedView implements ArgumentInterface
+     private ?QuoteExtended $quoteExtended = null;
+ 
+     public function __construct(
+-        private readonly QuoteExtendedRepository $quoteExtendedRepository,
+-        private readonly RequestInterface $request,
+-        private readonly OrderRepositoryInterface $orderRepository,
+-        private readonly InvoiceRepositoryInterface $invoiceRepository
++        private QuoteExtendedRepository $quoteExtendedRepository,
++        private RequestInterface $request,
++        private OrderRepositoryInterface $orderRepository,
++        private InvoiceRepositoryInterface $invoiceRepository
+     ) {
+     }
+ 
+diff --git a/ViewModel/CheckoutQuoteExtendedView.php b/ViewModel/CheckoutQuoteExtendedView.php
+index 8b9f16f..a30ba77 100644
+--- a/ViewModel/CheckoutQuoteExtendedView.php
++++ b/ViewModel/CheckoutQuoteExtendedView.php
+@@ -12,8 +12,8 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
+ class CheckoutQuoteExtendedView implements ArgumentInterface
+ {
+     public function __construct(
+-        private readonly QuoteExtendedRepository $quoteExtendedRepository,
+-        private readonly CheckoutState $checkoutState
++        private QuoteExtendedRepository $quoteExtendedRepository,
++        private CheckoutState $checkoutState
+     ) {
+     }
+ 

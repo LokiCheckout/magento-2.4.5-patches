@@ -240,6 +240,9 @@
             },
             "loki-checkout/magento2-tilopay": {
                 "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-tilopay-2.4.5.diff"
+            },
+            "loki-checkout/magento2-quote-extended": {
+                "Magento 2.4.5 patch": "https://raw.githubusercontent.com/LokiCheckout/magento-2.4.5-patches/refs/heads/main/modules/loki-checkout_magento2-quote-extended-2.4.5.diff"
             }
         }
     }
